@@ -188,6 +188,8 @@ namespace EveCharacterMonitor
 
         private void AlertIconClick()
         {
+            niAlertIcon.Visible = false;
+            tmrAlertRefresh.Enabled = false;
             using (SkillCompleteDialog f = new SkillCompleteDialog(m_completedSkills))
             {
                 f.ShowDialog();
