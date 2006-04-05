@@ -21,10 +21,12 @@ namespace EveCharacterMonitor
         }
 
         private bool m_useStored = false;
+        private Settings m_settings;
 
-        public Login(bool useStored)
+        public Login(bool useStored, Settings settings)
         {
             m_useStored = useStored;
+            m_settings = settings;
             InitializeComponent();
             GetStored();
         }
@@ -51,52 +53,25 @@ namespace EveCharacterMonitor
             get { return cbRemember.Checked; }
         }
 
-        public const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";
-
         private void Login_Load(object sender, EventArgs e)
         {
         }
 
-        public static string StoreFileName()
-        {
-            string ca = String.Empty;
-            if (Environment.GetCommandLineArgs().Length>1)
-                ca = Environment.GetCommandLineArgs()[1];
-            return String.Format(STORE_FILE_NAME, ca);
-        }
-
         private void GetStored()
         {
-            try
+            if (m_useStored && !String.IsNullOrEmpty(m_settings.Username) && !String.IsNullOrEmpty(m_settings.Password))
             {
-                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
-                using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(StoreFileName(), FileMode.Open))
-                {
-                    XmlDocument xdoc = new XmlDocument();
-                    xdoc.Load(s);
-
-                    tbUserName.Text = ((XmlElement)xdoc.SelectSingleNode("/logindata/username")).GetAttribute("value");
-                    tbPassword.Text = ((XmlElement)xdoc.SelectSingleNode("/logindata/password")).GetAttribute("value");
-                    XmlNode cn = xdoc.SelectSingleNode("/logindata/character");
-                    if (cn != null)
-                    {
-                        m_preferredChar = (cn as XmlElement).GetAttribute("value");
-                    }
-                    cbRemember.Checked = true;
-
-                }
+                m_useStored = true;
+                tbUserName.Text = m_settings.Username;
+                tbPassword.Text = m_settings.Password;
+                cbRemember.Checked = true;
             }
-            catch (FileNotFoundException)
+            else
             {
                 m_useStored = false;
                 tbUserName.Text = String.Empty;
                 tbPassword.Text = String.Empty;
                 cbRemember.Checked = false;
-            }
-            catch (Exception ex)
-            {
-                m_useStored = false;
-                MessageBox.Show(ex.Message);
             }
         }
 
@@ -120,35 +95,18 @@ namespace EveCharacterMonitor
 
             if (cbRemember.Checked)
             {
-                XmlDocument xdoc = new XmlDocument();
-                xdoc.AppendChild(xdoc.CreateElement("logindata"));
-                XmlElement uel = xdoc.CreateElement("username");
-                uel.SetAttribute("value", tbUserName.Text);
-                xdoc.DocumentElement.AppendChild(uel);
-                XmlElement pel = xdoc.CreateElement("password");
-                pel.SetAttribute("value", tbPassword.Text);
-                xdoc.DocumentElement.AppendChild(pel);
-
-                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
-                using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(StoreFileName(), FileMode.Create, store))
-                using (StreamWriter sw = new StreamWriter(s))
-                {
-                    sw.Write(xdoc.InnerXml);
-                }
+                m_settings.Username = tbUserName.Text;
+                m_settings.Password = tbPassword.Text;
             }
             else
             {
-                try
-                {
-                    using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
-                    {
-                        store.DeleteFile(StoreFileName());
-                    }
-                }
-                catch { }
+                m_settings.Username = String.Empty;
+                m_settings.Password = String.Empty;
             }
 
-            m_preferredChar = String.Empty;
+            m_settings.Character = String.Empty;
+            m_settings.Save();
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

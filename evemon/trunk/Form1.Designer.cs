@@ -42,6 +42,7 @@ namespace EveCharacterMonitor
             this.lblIntelligence = new System.Windows.Forms.Label();
             this.lbSkills = new System.Windows.Forms.ListBox();
             this.pnlSkillInTraining = new System.Windows.Forms.Panel();
+            this.llAlertOptions = new System.Windows.Forms.LinkLabel();
             this.lblTrainingCompletion = new System.Windows.Forms.Label();
             this.lblTrainingTimeLeft = new System.Windows.Forms.Label();
             this.lblSkillInTraining = new System.Windows.Forms.Label();
@@ -50,6 +51,8 @@ namespace EveCharacterMonitor
             this.lnkChange = new System.Windows.Forms.LinkLabel();
             this.niAlert = new System.Windows.Forms.NotifyIcon(this.components);
             this.tmrAlert = new System.Windows.Forms.Timer(this.components);
+            this.llSettings = new System.Windows.Forms.LinkLabel();
+            this.niMinimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlSkillInTraining.SuspendLayout();
             this.SuspendLayout();
@@ -161,6 +164,7 @@ namespace EveCharacterMonitor
             // 
             this.pnlSkillInTraining.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlSkillInTraining.Controls.Add(this.llAlertOptions);
             this.pnlSkillInTraining.Controls.Add(this.lblTrainingCompletion);
             this.pnlSkillInTraining.Controls.Add(this.lblTrainingTimeLeft);
             this.pnlSkillInTraining.Controls.Add(this.lblSkillInTraining);
@@ -169,6 +173,17 @@ namespace EveCharacterMonitor
             this.pnlSkillInTraining.Name = "pnlSkillInTraining";
             this.pnlSkillInTraining.Size = new System.Drawing.Size(402, 42);
             this.pnlSkillInTraining.TabIndex = 11;
+            // 
+            // llAlertOptions
+            // 
+            this.llAlertOptions.AutoSize = true;
+            this.llAlertOptions.Location = new System.Drawing.Point(3, 13);
+            this.llAlertOptions.Name = "llAlertOptions";
+            this.llAlertOptions.Size = new System.Drawing.Size(55, 13);
+            this.llAlertOptions.TabIndex = 4;
+            this.llAlertOptions.TabStop = true;
+            this.llAlertOptions.Text = "Set alert...";
+            this.llAlertOptions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llAlertOptions_LinkClicked);
             // 
             // lblTrainingCompletion
             // 
@@ -239,11 +254,30 @@ namespace EveCharacterMonitor
             this.tmrAlert.Interval = 60000;
             this.tmrAlert.Tick += new System.EventHandler(this.tmrAlert_Tick);
             // 
+            // llSettings
+            // 
+            this.llSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.llSettings.AutoSize = true;
+            this.llSettings.Location = new System.Drawing.Point(360, 114);
+            this.llSettings.Name = "llSettings";
+            this.llSettings.Size = new System.Drawing.Size(54, 13);
+            this.llSettings.TabIndex = 14;
+            this.llSettings.TabStop = true;
+            this.llSettings.Text = "Settings...";
+            this.llSettings.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llSettings_LinkClicked);
+            // 
+            // niMinimizeIcon
+            // 
+            this.niMinimizeIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("niMinimizeIcon.Icon")));
+            this.niMinimizeIcon.Text = "EVE Character Monitor";
+            this.niMinimizeIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.niMinimizeIcon_MouseClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(426, 440);
+            this.Controls.Add(this.llSettings);
             this.Controls.Add(this.lnkChange);
             this.Controls.Add(this.pnlSkillInTraining);
             this.Controls.Add(this.lbSkills);
@@ -262,6 +296,7 @@ namespace EveCharacterMonitor
             this.MinimumSize = new System.Drawing.Size(368, 306);
             this.Name = "Form1";
             this.Text = "EVE Character Monitor";
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlSkillInTraining.ResumeLayout(false);
@@ -293,6 +328,9 @@ namespace EveCharacterMonitor
         private System.Windows.Forms.LinkLabel lnkChange;
         private System.Windows.Forms.NotifyIcon niAlert;
         private System.Windows.Forms.Timer tmrAlert;
+        private System.Windows.Forms.LinkLabel llAlertOptions;
+        private System.Windows.Forms.LinkLabel llSettings;
+        private System.Windows.Forms.NotifyIcon niMinimizeIcon;
     }
 }
 

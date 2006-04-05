@@ -19,6 +19,13 @@ namespace EveCharacterMonitor
             InitializeComponent();
         }
 
+        public Form1(string ckey)
+        {
+            InitializeComponent();
+            m_settings = Settings.LoadFromKey(ckey);
+        }
+
+        private Settings m_settings;
         private EveCharacterReader m_ecr;
 
         private void Form1_Load(object sender, EventArgs e)
@@ -102,6 +109,7 @@ namespace EveCharacterMonitor
                                 "learning " + lblSkillInTraining.Text + ".";
                             niAlert.Visible = true;
                             niAlert.ShowBalloonTip(30000);
+                            Emailer.SendAlertMail(m_settings, lblSkillInTraining.Text, lblCharacterName.Text);
                         }
                     }
                     lblTrainingTimeLeft.Text = sb.ToString();
@@ -130,22 +138,28 @@ namespace EveCharacterMonitor
 
         void m_ecr_NeedLogin(EveCharacterReader sender, NeedLoginEventArgs e)
         {
-            using (Login lf = new Login(firstLogin))
+            if (firstLogin && !String.IsNullOrEmpty(m_settings.Username) && !String.IsNullOrEmpty(m_settings.Password))
             {
-                if (!lf.UseStored || String.IsNullOrEmpty(lf.Username) || String.IsNullOrEmpty(lf.Password))
-                    lf.ShowDialog();
-                if (lf.DialogResult == DialogResult.OK || lf.UseStored)
+                e.Username = m_settings.Username;
+                e.Password = m_settings.Password;
+                m_preferChar = m_settings.Character;
+                m_rememberChar = true;
+                firstLogin = false;
+                return;
+            }
+
+            using (Login lf = new Login(firstLogin, m_settings))
+            {
+                lf.ShowDialog();
+                if (lf.DialogResult == DialogResult.OK)
                 {
                     e.Username = lf.Username;
                     e.Password = lf.Password;
-                    if (lf.UseStored)
-                    {
-                        m_preferChar = lf.PreferredChar;
-                    }
+                    m_preferChar = String.Empty;
                     m_rememberChar = lf.Remember;
+                    firstLogin = false;
                 }
             }
-            firstLogin = false;
         }
 
         private void tmrTrainingTimer_Tick(object sender, EventArgs e)
@@ -184,51 +198,16 @@ namespace EveCharacterMonitor
                     }
                 }
                 if (m_rememberChar)
-                    RememberCharacter(res);
+                {
+                    m_settings.Character = res;
+                    m_settings.Save();
+                }
                 SelectCharacter(res);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Unexpected Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
-            }
-        }
-
-        private void RememberCharacter(string res)
-        {
-            //Load
-            XmlDocument xdoc = null;
-            try
-            {
-                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
-                using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(Login.StoreFileName(), FileMode.Open))
-                {
-                    xdoc = new XmlDocument();
-                    xdoc.Load(s);
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                return;
-            }
-
-            // Update
-            XmlNode cn = xdoc.SelectSingleNode("/logindata/character");
-            if (cn != null)
-                (cn as XmlElement).SetAttribute("value", res);
-            else
-            {
-                XmlElement el = xdoc.CreateElement("character");
-                el.SetAttribute("value", res);
-                xdoc.DocumentElement.AppendChild(el);
-            }
-
-            // Save
-            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
-            using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(Login.StoreFileName(), FileMode.Create, store))
-            using (StreamWriter sw = new StreamWriter(s))
-            {
-                sw.Write(xdoc.InnerXml);
             }
         }
 
@@ -302,6 +281,60 @@ namespace EveCharacterMonitor
                 return;
             }
             niAlert.ShowBalloonTip(30000);
+        }
+
+        public override string Text
+        {
+            get
+            {
+                return base.Text;
+            }
+            set
+            {
+                niMinimizeIcon.Text = value;
+                base.Text = value;
+            }
+        }
+
+        private void llAlertOptions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            using (AlertOptions f = new AlertOptions(m_settings))
+            {
+                f.ShowDialog();
+            }
+        }
+
+        private void niMinimizeIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized && m_settings.MinimizeToTray)
+            {
+                niMinimizeIcon.Visible = true;
+                this.Visible = false;
+            }
+            else
+            {
+                niMinimizeIcon.Visible = false;
+            }
+            if (this.WindowState == FormWindowState.Normal)
+                lbSkills.Width = this.ClientSize.Width - (lbSkills.Left * 2);
+        }
+
+        private void llSettings_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            using (SettingsForm f = new SettingsForm(m_settings))
+            {
+                f.ShowDialog();
+            }
+        }
+
+        private void niMinimizeIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.Visible = true;
+            this.WindowState = FormWindowState.Normal;
         }
     }
 }

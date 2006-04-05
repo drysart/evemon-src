@@ -12,9 +12,13 @@ namespace EveCharacterMonitor
         [STAThread]
         static void Main()
         {
+            string ca = String.Empty;
+            if (Environment.GetCommandLineArgs().Length > 1)
+                ca = Environment.GetCommandLineArgs()[1];
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Form1(ca));
         }
     }
 }
