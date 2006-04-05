@@ -336,5 +336,21 @@ namespace EveCharacterMonitor
             this.Visible = true;
             this.WindowState = FormWindowState.Normal;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //using (LoginCharSelect f = new LoginCharSelect())
+            //{
+            //    f.ShowDialog();
+            //    if (f.DialogResult == DialogResult.OK)
+            //    {
+            //        MessageBox.Show("un = " + f.Username +
+            //            "\npw = " + f.Password +
+            //            "\ncn = " + f.CharacterName);
+            //    }
+            //}
+            MainWindow f = new MainWindow(m_settings);
+            f.Show();
+        }
     }
 }

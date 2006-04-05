@@ -18,7 +18,8 @@ namespace EveCharacterMonitor
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(ca));
+            //Application.Run(new Form1(ca));
+            Application.Run(new MainWindow(Settings.LoadFromKey(ca)));
         }
     }
 }

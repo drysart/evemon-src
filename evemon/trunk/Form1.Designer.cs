@@ -53,6 +53,7 @@ namespace EveCharacterMonitor
             this.tmrAlert = new System.Windows.Forms.Timer(this.components);
             this.llSettings = new System.Windows.Forms.LinkLabel();
             this.niMinimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlSkillInTraining.SuspendLayout();
             this.SuspendLayout();
@@ -272,11 +273,22 @@ namespace EveCharacterMonitor
             this.niMinimizeIcon.Text = "EVE Character Monitor";
             this.niMinimizeIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.niMinimizeIcon_MouseClick);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(338, 88);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(426, 440);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.llSettings);
             this.Controls.Add(this.lnkChange);
             this.Controls.Add(this.pnlSkillInTraining);
@@ -331,6 +343,7 @@ namespace EveCharacterMonitor
         private System.Windows.Forms.LinkLabel llAlertOptions;
         private System.Windows.Forms.LinkLabel llSettings;
         private System.Windows.Forms.NotifyIcon niMinimizeIcon;
+        private System.Windows.Forms.Button button1;
     }
 }
 

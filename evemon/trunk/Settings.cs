@@ -40,6 +40,14 @@ namespace EveCharacterMonitor
             set { m_character = value; }
         }
 
+        private List<CharLoginInfo> m_characterList = new List<CharLoginInfo>();
+
+        public List<CharLoginInfo> CharacterList
+        {
+            get { return m_characterList; }
+            set { m_characterList = value; }
+        }
+
         private bool m_enableEmailAlert = false;
 
         public bool EnableEmailAlert
@@ -152,6 +160,45 @@ namespace EveCharacterMonitor
                 XmlSerializer xs = new XmlSerializer(typeof(Settings));
                 xs.Serialize(s, this);
             }
+        }
+
+        internal bool AddCharacter(CharLoginInfo cli)
+        {
+            foreach (CharLoginInfo tx in m_characterList)
+            {
+                if (cli.CharacterName == tx.CharacterName)
+                    return false;
+            }
+            m_characterList.Add(cli);
+            this.Save();
+            return true;
+        }
+    }
+
+    public class CharLoginInfo
+    {
+        private string m_username;
+
+        public string Username
+        {
+            get { return m_username; }
+            set { m_username = value; }
+        }
+
+        private string m_password;
+
+        public string Password
+        {
+            get { return m_password; }
+            set { m_password = value; }
+        }
+
+        private string m_characterName;
+
+        public string CharacterName
+        {
+            get { return m_characterName; }
+            set { m_characterName = value; }
         }
     }
 }
