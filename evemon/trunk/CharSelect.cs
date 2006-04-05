@@ -15,7 +15,7 @@ namespace EveCharacterMonitor
             InitializeComponent();
         }
 
-        public CharSelect(IEnumerable<string> charEnum)
+        public CharSelect(IEnumerable<string> charEnum, string preferChar)
             : this()
         {
             int c = 0;
@@ -27,6 +27,8 @@ namespace EveCharacterMonitor
             }
             if (c == 1)
                 m_result = lbChars.Items[0] as string;
+            if (lbChars.Items.Contains(preferChar))
+                m_result = preferChar;
         }
 
         private void lbChars_DoubleClick(object sender, EventArgs e)

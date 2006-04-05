@@ -39,10 +39,30 @@ namespace EveCharacterMonitor
             get { return tbPassword.Text; }
         }
 
-        private const string STORE_FILE_NAME = "evecharactermonitor-logindata.xml";
+        private string m_preferredChar = String.Empty;
+
+        public string PreferredChar
+        {
+            get { return m_preferredChar; }
+        }
+
+        public bool Remember
+        {
+            get { return cbRemember.Checked; }
+        }
+
+        public const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";
 
         private void Login_Load(object sender, EventArgs e)
         {
+        }
+
+        public static string StoreFileName()
+        {
+            string ca = String.Empty;
+            if (Environment.GetCommandLineArgs().Length>1)
+                ca = Environment.GetCommandLineArgs()[1];
+            return String.Format(STORE_FILE_NAME, ca);
         }
 
         private void GetStored()
@@ -50,13 +70,18 @@ namespace EveCharacterMonitor
             try
             {
                 using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
-                using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(STORE_FILE_NAME, FileMode.Open))
+                using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(StoreFileName(), FileMode.Open))
                 {
                     XmlDocument xdoc = new XmlDocument();
                     xdoc.Load(s);
 
                     tbUserName.Text = ((XmlElement)xdoc.SelectSingleNode("/logindata/username")).GetAttribute("value");
                     tbPassword.Text = ((XmlElement)xdoc.SelectSingleNode("/logindata/password")).GetAttribute("value");
+                    XmlNode cn = xdoc.SelectSingleNode("/logindata/character");
+                    if (cn != null)
+                    {
+                        m_preferredChar = (cn as XmlElement).GetAttribute("value");
+                    }
                     cbRemember.Checked = true;
 
                 }
@@ -105,7 +130,7 @@ namespace EveCharacterMonitor
                 xdoc.DocumentElement.AppendChild(pel);
 
                 using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
-                using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(STORE_FILE_NAME, FileMode.Create, store))
+                using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(StoreFileName(), FileMode.Create, store))
                 using (StreamWriter sw = new StreamWriter(s))
                 {
                     sw.Write(xdoc.InnerXml);
@@ -117,12 +142,13 @@ namespace EveCharacterMonitor
                 {
                     using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
                     {
-                        store.DeleteFile(STORE_FILE_NAME);
+                        store.DeleteFile(StoreFileName());
                     }
                 }
                 catch { }
             }
 
+            m_preferredChar = String.Empty;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

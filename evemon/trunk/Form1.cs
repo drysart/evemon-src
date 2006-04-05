@@ -6,6 +6,10 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using System.IO;
+using System.IO.IsolatedStorage;
+using System.Xml;
+
 namespace EveCharacterMonitor
 {
     public partial class Form1 : Form
@@ -121,6 +125,8 @@ namespace EveCharacterMonitor
         }
 
         bool firstLogin = true;
+        private string m_preferChar = String.Empty;
+        private bool m_rememberChar = false;
 
         void m_ecr_NeedLogin(EveCharacterReader sender, NeedLoginEventArgs e)
         {
@@ -132,6 +138,11 @@ namespace EveCharacterMonitor
                 {
                     e.Username = lf.Username;
                     e.Password = lf.Password;
+                    if (lf.UseStored)
+                    {
+                        m_preferChar = lf.PreferredChar;
+                    }
+                    m_rememberChar = lf.Remember;
                 }
             }
             firstLogin = false;
@@ -161,7 +172,7 @@ namespace EveCharacterMonitor
 
                 string res = null;
                 IEnumerable<string> charsEnum = m_ecr.Characters;
-                using (CharSelect csf = new CharSelect(charsEnum))
+                using (CharSelect csf = new CharSelect(charsEnum, m_preferChar))
                 {
                     if (csf.Result==null)
                         csf.ShowDialog();
@@ -172,12 +183,52 @@ namespace EveCharacterMonitor
                         throw new ApplicationException("no char selected");
                     }
                 }
+                if (m_rememberChar)
+                    RememberCharacter(res);
                 SelectCharacter(res);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Unexpected Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
+            }
+        }
+
+        private void RememberCharacter(string res)
+        {
+            //Load
+            XmlDocument xdoc = null;
+            try
+            {
+                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
+                using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(Login.StoreFileName(), FileMode.Open))
+                {
+                    xdoc = new XmlDocument();
+                    xdoc.Load(s);
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                return;
+            }
+
+            // Update
+            XmlNode cn = xdoc.SelectSingleNode("/logindata/character");
+            if (cn != null)
+                (cn as XmlElement).SetAttribute("value", res);
+            else
+            {
+                XmlElement el = xdoc.CreateElement("character");
+                el.SetAttribute("value", res);
+                xdoc.DocumentElement.AppendChild(el);
+            }
+
+            // Save
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
+            using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(Login.StoreFileName(), FileMode.Create, store))
+            using (StreamWriter sw = new StreamWriter(s))
+            {
+                sw.Write(xdoc.InnerXml);
             }
         }
 

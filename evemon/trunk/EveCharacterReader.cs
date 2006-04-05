@@ -310,6 +310,7 @@ namespace EveCharacterMonitor
             m_memory = Convert.ToInt32(charRoot.SelectSingleNode("attributes/memory").InnerText);
             m_willpower = Convert.ToInt32(charRoot.SelectSingleNode("attributes/willpower").InnerText);
 
+            double learningBonus = 1.0;
             m_skillGroups.Clear();
             foreach (XmlElement sgel in charRoot.SelectNodes("skills/skillGroup"))
             {
@@ -327,6 +328,7 @@ namespace EveCharacterMonitor
                     s.Level = Convert.ToInt32(skel.SelectSingleNode("level").InnerText);
                     sg.Skills.Add(s);
 
+
                     if (s.Name == "Analytical Mind" || s.Name=="Logic")
                         m_intelligence += s.Level;
                     if (s.Name == "Empathy" || s.Name == "Presence")
@@ -337,10 +339,18 @@ namespace EveCharacterMonitor
                         m_willpower += s.Level;
                     if (s.Name == "Spatial Awareness" || s.Name == "Clarity")
                         m_perception += s.Level;
+                    if (s.Name == "Learning")
+                        learningBonus = 1.0 + (0.02 * s.Level);
                 }
 
                 m_skillGroups.Add(sg);
             }
+
+            m_intelligence = Convert.ToInt32(Math.Round(m_intelligence * learningBonus));
+            m_charisma = Convert.ToInt32(Math.Round(m_charisma * learningBonus));
+            m_memory = Convert.ToInt32(Math.Round(m_memory * learningBonus));
+            m_willpower = Convert.ToInt32(Math.Round(m_willpower * learningBonus));
+            m_perception = Convert.ToInt32(Math.Round(m_perception * learningBonus));
 
             if (CharacterInfoUpdated != null)
                 CharacterInfoUpdated(this, new EventArgs());
@@ -488,7 +498,7 @@ namespace EveCharacterMonitor
                 "&login=Login&Check=OK&r=&t=", null);
             string s = GetUrl("http://myeve.eve-online.com/character/skilltree.asp", null);
 
-            Regex re = new Regex(@"<a href=""/character/skilltree.asp\?characterID=(\d+)"".*?<br>([^<>]+?)<\/td><\/table>", RegexOptions.IgnoreCase);
+            Regex re = new Regex(@"<a href=""/character/skilltree.asp\?characterID=(\d+)"".*?<br>([^<>]+?)<\/td>", RegexOptions.IgnoreCase);
             MatchCollection mcol = re.Matches(s);
             if (mcol.Count == 0)
             {
