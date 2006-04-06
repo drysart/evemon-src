@@ -6,6 +6,13 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 
+using System.IO;
+using System.Reflection;
+using System.Xml;
+using System.Xml.XPath;
+using System.Xml.Xsl;
+using System.Xml.Serialization;
+
 namespace EveCharacterMonitor
 {
     public partial class CharacterMonitor : UserControl
@@ -79,14 +86,17 @@ namespace EveCharacterMonitor
         private string m_skillTrainingName;
         private DateTime m_estimatedCompletion;
         private string m_lastCompletedSkill = String.Empty;
+        private CharacterInfo m_characterInfo;
 
         private void GotCharacterInfo(EveSession sess, CharacterInfo ci)
         {
             this.Invoke(new MethodInvoker(delegate
             {
+                m_characterInfo = ci;
                 lblCharacterName.Text = m_cli.CharacterName;
                 if (ci == null)
                 {
+                    btnSave.Enabled = false;
                     lblBioInfo.Text = String.Empty;
                     lblCorpInfo.Text = "(cannot retrieve character info)";
                     lblBalance.Text = String.Empty;
@@ -102,6 +112,7 @@ namespace EveCharacterMonitor
                 }
                 else
                 {
+                    btnSave.Enabled = true;
                     lblBioInfo.Text = ci.Gender + " " + ci.Race + " " + ci.BloodLine;
                     lblCorpInfo.Text = "Corporation: " + ci.CorpName;
                     lblBalance.Text = "Balance: " + ci.Balance.ToString("#,##0.00") + " ISK";
@@ -141,21 +152,94 @@ namespace EveCharacterMonitor
             }));
         }
 
+        private string m_shortText = String.Empty;
+        private TimeSpan m_shortTimeSpan = TimeSpan.Zero;
+
+        public string ShortText
+        {
+            get { return m_shortText; }
+        }
+
+        public TimeSpan ShortTimeSpan
+        {
+            get { return m_shortTimeSpan; }
+        }
+
+        public EventHandler ShortInfoChanged;
+
         private void CalcSkillRemainText()
         {
+            DateTime now = DateTime.Now;
             if (m_estimatedCompletion != DateTime.MaxValue)
             {
                 lblTrainingRemain.Text = TimeSpanDescriptive(m_estimatedCompletion);
-                if (m_estimatedCompletion > DateTime.Now)
+                if (m_estimatedCompletion > now)
+                {
                     lblTrainingEst.Text = m_estimatedCompletion.ToString();
+                    SetShortData(m_cli.CharacterName + ": " +
+                        TimeSpanDescriptiveShort(m_estimatedCompletion),
+                        now - m_estimatedCompletion);
+                }
                 else
+                {
                     lblTrainingEst.Text = String.Empty;
+                    SetShortData(m_cli.CharacterName + ": Done", TimeSpan.Zero);
+                }
             }
             else
             {
                 lblTrainingRemain.Text = String.Empty;
                 lblTrainingEst.Text = String.Empty;
+                SetShortData(String.Empty, TimeSpan.Zero);
             }
+        }
+
+        private string TimeSpanDescriptiveShort(DateTime t)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (t > DateTime.Now)
+            {
+                TimeSpan ts = t - DateTime.Now;
+                if (ts.Days > 0)
+                {
+                    sb.Append(ts.Days.ToString());
+                    sb.Append("d");
+                }
+                ts -= TimeSpan.FromDays(ts.Days);
+                if (ts.Hours > 0)
+                {
+                    sb.Append(ts.Hours.ToString());
+                    sb.Append("h");
+                }
+                ts -= TimeSpan.FromHours(ts.Hours);
+                if (ts.Minutes > 0)
+                {
+                    sb.Append(ts.Minutes.ToString());
+                    sb.Append("m");
+                }
+                ts -= TimeSpan.FromMinutes(ts.Minutes);
+                if (ts.Seconds > 0)
+                {
+                    sb.Append(ts.Seconds.ToString());
+                    sb.Append("s");
+                }
+                return sb.ToString();
+            }
+            else
+            {
+                return "Done";
+            }
+        }
+
+        private void SetShortData(string newShortText, TimeSpan timeSpan)
+        {
+            bool fireEvent = false;
+            if (newShortText != m_shortText || timeSpan != m_shortTimeSpan)
+                fireEvent = true;
+            m_shortText = newShortText;
+            m_shortTimeSpan = timeSpan;
+            if (fireEvent && ShortInfoChanged != null)
+                ShortInfoChanged(this, new EventArgs());
         }
 
         private string TimeSpanDescriptive(DateTime t)
@@ -217,6 +301,91 @@ namespace EveCharacterMonitor
             {
                 m_lastCompletedSkill = m_skillTrainingName;
                 OnSkillTrainingComplete(m_cli.CharacterName, m_skillTrainingName);
+            }
+        }
+
+        private enum SaveFormat
+        {
+            None = 0,
+            Text = 1,
+            Html = 2,
+            Xml = 3
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            sfdSaveDialog.FileName = m_cli.CharacterName;
+            sfdSaveDialog.FilterIndex = (int)SaveFormat.Xml;
+            DialogResult dr = sfdSaveDialog.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                SaveFile((SaveFormat)sfdSaveDialog.FilterIndex, sfdSaveDialog.FileName);
+            }
+        }
+
+        private void SaveFile(SaveFormat saveFormat, string fileName)
+        {
+            try
+            {
+                Stream outerStream;
+                XPathDocument xpdoc;
+                if (saveFormat == SaveFormat.Xml)
+                    outerStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None);
+                else
+                    outerStream = new MemoryStream(32767);
+                try
+                {
+                    using (XmlTextWriter xtw = new XmlTextWriter(outerStream, System.Text.Encoding.UTF8))
+                    {
+                        if (saveFormat == SaveFormat.Xml)
+                        {
+                            xtw.Indentation = 1;
+                            xtw.IndentChar = '\t';
+                            xtw.Formatting = Formatting.Indented;
+                        }
+                        XmlSerializer xs = new XmlSerializer(typeof(CharacterInfo));
+                        XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                        ns.Add("", "");
+                        xs.Serialize(xtw, m_characterInfo, ns);
+                    }
+                    if (saveFormat == SaveFormat.Xml)
+                        return;
+
+                    MemoryStream ms = (MemoryStream)outerStream;
+                    ms.Position = 0;
+                    using (StreamReader tr = new StreamReader(ms))
+                    {
+                        xpdoc = new XPathDocument(tr);
+                    }
+                }
+                finally
+                {
+                    outerStream.Dispose();
+                }
+
+                XslCompiledTransform xstDoc2 = new XslCompiledTransform();
+                //System.Xml.Xsl.XslTransform xstDoc = new System.Xml.Xsl.XslTransform();
+                using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("EveCharacterMonitor.output-" + saveFormat.ToString().ToLower() + ".xsl"))
+                using (XmlTextReader xtr = new XmlTextReader(s))
+                {
+                    //xstDoc.Load(xtr);
+                    xstDoc2.Load(xtr);
+                }
+
+                using (StreamWriter sw = new StreamWriter(fileName, false))
+                using (XmlTextWriter xtw = new XmlTextWriter(sw))
+                {
+                    xtw.Indentation = 1;
+                    xtw.IndentChar = '\t';
+                    xtw.Formatting = Formatting.Indented;
+                    //xstDoc.Transform(xpdoc, null, xtw);
+                    xstDoc2.Transform(xpdoc, null, xtw);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Failed to save:\n" + ex.Message, "Could not save", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

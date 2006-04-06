@@ -8,6 +8,7 @@ using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace EveCharacterMonitor
 {
@@ -252,13 +253,25 @@ namespace EveCharacterMonitor
             if (m_cookies == null)
                 m_cookies = new CookieContainer();
 
+            int maxRedirects = 6;
         AGAIN:
+            if (maxRedirects-- <= 0)
+                return String.Empty;
             HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
             wr.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1";
             wr.Referer = refer;
             wr.CookieContainer = m_cookies;
             wr.AllowAutoRedirect = false;
-            HttpWebResponse resp = (HttpWebResponse)wr.GetResponse();
+            HttpWebResponse resp = null;
+            try
+            {
+                resp = (HttpWebResponse)wr.GetResponse();
+            }
+            catch (WebException)
+            {
+                Thread.Sleep(TimeSpan.FromSeconds(3));
+                goto AGAIN;
+            }
             if (resp.StatusCode == HttpStatusCode.Redirect)
             {
                 string loc = resp.GetResponseHeader("Location");
@@ -289,6 +302,11 @@ namespace EveCharacterMonitor
             }
 
             return res;
+        }
+
+        public void ReLogin()
+        {
+            WebLogin();
         }
 
         private bool WebLogin()
@@ -389,66 +407,12 @@ namespace EveCharacterMonitor
 
     public delegate void GetCharacterInfoCallback(EveSession sender, CharacterInfo ci);
 
-    public class CharacterInfo
+    [XmlRoot("attributes")]
+    public class EveAttributes
     {
-        private int m_characterId;
-
-        public int CharacterId
-        {
-            get { return m_characterId; }
-            set { m_characterId = value; }
-        }
-
-        private SkillInTraining m_skillInTraining;
-
-        public SkillInTraining SkillInTraining
-        {
-            get { return m_skillInTraining; }
-            set { m_skillInTraining = value; }
-        }
-
-        private string m_race;
-
-        public string Race
-        {
-            get { return m_race; }
-            set { m_race = value; }
-        }
-
-        private string m_bloodLine;
-
-        public string BloodLine
-        {
-            get { return m_bloodLine; }
-            set { m_bloodLine = value; }
-        }
-
-        private string m_gender;
-
-        public string Gender
-        {
-            get { return m_gender; }
-            set { m_gender = value; }
-        }
-
-        private string m_corpName;
-
-        public string CorpName
-        {
-            get { return m_corpName; }
-            set { m_corpName = value; }
-        }
-
-        private Decimal m_balance;
-
-        public Decimal Balance
-        {
-            get { return m_balance; }
-            set { m_balance = value; }
-        }
-
         private int m_intelligence;
 
+        [XmlElement("intelligence")]
         public int Intelligence
         {
             get { return m_intelligence; }
@@ -457,6 +421,7 @@ namespace EveCharacterMonitor
 
         private int m_charisma;
 
+        [XmlElement("charisma")]
         public int Charisma
         {
             get { return m_charisma; }
@@ -465,6 +430,7 @@ namespace EveCharacterMonitor
 
         private int m_perception;
 
+        [XmlElement("perception")]
         public int Perception
         {
             get { return m_perception; }
@@ -473,6 +439,7 @@ namespace EveCharacterMonitor
 
         private int m_memory;
 
+        [XmlElement("memory")]
         public int Memory
         {
             get { return m_memory; }
@@ -481,14 +448,128 @@ namespace EveCharacterMonitor
 
         private int m_willpower;
 
+        [XmlElement("willpower")]
         public int Willpower
         {
             get { return m_willpower; }
             set { m_willpower = value; }
         }
+    }
+
+    [XmlRoot("character")]
+    public class CharacterInfo
+    {
+        private int m_characterId;
+
+        [XmlAttribute("characterID")]
+        public int CharacterId
+        {
+            get { return m_characterId; }
+            set { m_characterId = value; }
+        }
+
+        private SkillInTraining m_skillInTraining;
+
+        [XmlElement("skillInTraining")]
+        public SkillInTraining SkillInTraining
+        {
+            get { return m_skillInTraining; }
+            set { m_skillInTraining = value; }
+        }
+
+        private string m_race;
+
+        [XmlElement("race")]
+        public string Race
+        {
+            get { return m_race; }
+            set { m_race = value; }
+        }
+
+        private string m_bloodLine;
+
+        [XmlElement("bloodLine")]
+        public string BloodLine
+        {
+            get { return m_bloodLine; }
+            set { m_bloodLine = value; }
+        }
+
+        private string m_gender;
+
+        [XmlElement("gender")]
+        public string Gender
+        {
+            get { return m_gender; }
+            set { m_gender = value; }
+        }
+
+        private string m_corpName;
+
+        [XmlElement("corporationName")]
+        public string CorpName
+        {
+            get { return m_corpName; }
+            set { m_corpName = value; }
+        }
+
+        private Decimal m_balance;
+
+        [XmlElement("balance")]
+        public Decimal Balance
+        {
+            get { return m_balance; }
+            set { m_balance = value; }
+        }
+
+        private EveAttributes m_attributes = new EveAttributes();
+
+        [XmlElement("attributes")]
+        public EveAttributes Attributes
+        {
+            get { return m_attributes; }
+            set { m_attributes = value; }
+        }
+
+        [XmlIgnore]
+        public int Intelligence
+        {
+            get { return m_attributes.Intelligence; }
+            set { m_attributes.Intelligence = value; }
+        }
+
+        [XmlIgnore]
+        public int Charisma
+        {
+            get { return m_attributes.Charisma; }
+            set { m_attributes.Charisma = value; }
+        }
+
+        [XmlIgnore]
+        public int Perception
+        {
+            get { return m_attributes.Perception; }
+            set { m_attributes.Perception = value; }
+        }
+
+        [XmlIgnore]
+        public int Memory
+        {
+            get { return m_attributes.Memory; }
+            set { m_attributes.Memory = value; }
+        }
+
+        [XmlIgnore]
+        public int Willpower
+        {
+            get { return m_attributes.Willpower; }
+            set { m_attributes.Willpower = value; }
+        }
 
         private List<SkillGroup> m_skillGroups = new List<SkillGroup>();
 
+        [XmlArray("skills")]
+        [XmlArrayItem("skillGroup")]
         public List<SkillGroup> SkillGroups
         {
             get { return m_skillGroups; }
@@ -496,24 +577,28 @@ namespace EveCharacterMonitor
         }
     }
 
+    [XmlRoot("skillGroup")]
     public class SkillGroup
     {
         private string m_name;
         private int m_id;
         private List<Skill> m_skills = new List<Skill>();
 
+        [XmlAttribute("groupName")]
         public string Name
         {
             get { return m_name; }
             set { m_name = value; }
         }
 
+        [XmlAttribute("groupID")]
         public int Id
         {
             get { return m_id; }
             set { m_id = value; }
         }
 
+        [XmlElement("skill")]
         public List<Skill> Skills
         {
             get { return m_skills; }
@@ -541,6 +626,7 @@ namespace EveCharacterMonitor
         }
     }
 
+    [XmlRoot("skill")]
     public class Skill
     {
         private string m_name;
@@ -549,30 +635,35 @@ namespace EveCharacterMonitor
         private int m_skillPoints;
         private int m_level;
 
+        [XmlAttribute("typeName")]
         public string Name
         {
             get { return m_name; }
             set { m_name = value; }
         }
 
+        [XmlAttribute("typeID")]
         public int Id
         {
             get { return m_id; }
             set { m_id = value; }
         }
 
+        [XmlElement("rank")]
         public int Rank
         {
             get { return m_rank; }
             set { m_rank = value; }
         }
 
+        [XmlElement("skillpoints")]
         public int SkillPoints
         {
             get { return m_skillPoints; }
             set { m_skillPoints = value; }
         }
 
+        [XmlElement("level")]
         public int Level
         {
             get { return m_level; }
@@ -597,6 +688,7 @@ namespace EveCharacterMonitor
         }
     }
 
+    [XmlRoot("skillInTraining")]
     public class SkillInTraining
     {
         private string m_skillName;

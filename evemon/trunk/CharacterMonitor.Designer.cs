@@ -47,7 +47,9 @@ namespace EveCharacterMonitor
             this.label1 = new System.Windows.Forms.Label();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             this.pnlCharData = new System.Windows.Forms.Panel();
+            this.btnSave = new System.Windows.Forms.Button();
             this.tmrTick = new System.Windows.Forms.Timer(this.components);
+            this.sfdSaveDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pbCharImage)).BeginInit();
             this.pnlTraining.SuspendLayout();
             this.pnlCharData.SuspendLayout();
@@ -213,6 +215,7 @@ namespace EveCharacterMonitor
             // 
             // pnlCharData
             // 
+            this.pnlCharData.Controls.Add(this.btnSave);
             this.pnlCharData.Controls.Add(this.pbCharImage);
             this.pnlCharData.Controls.Add(this.lblCharacterName);
             this.pnlCharData.Controls.Add(this.lblBioInfo);
@@ -229,10 +232,27 @@ namespace EveCharacterMonitor
             this.pnlCharData.Size = new System.Drawing.Size(384, 135);
             this.pnlCharData.TabIndex = 14;
             // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Enabled = false;
+            this.btnSave.Location = new System.Drawing.Point(323, 105);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(61, 23);
+            this.btnSave.TabIndex = 12;
+            this.btnSave.Text = "Save...";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.button1_Click);
+            // 
             // tmrTick
             // 
             this.tmrTick.Interval = 1000;
             this.tmrTick.Tick += new System.EventHandler(this.tmrTick_Tick);
+            // 
+            // sfdSaveDialog
+            // 
+            this.sfdSaveDialog.Filter = "Text Format|*.txt|HTML Format|*.html|XML Format|*.xml";
+            this.sfdSaveDialog.Title = "Save Character Info";
             // 
             // CharacterMonitor
             // 
@@ -275,5 +295,7 @@ namespace EveCharacterMonitor
         private System.Windows.Forms.Timer tmrUpdate;
         private System.Windows.Forms.Panel pnlCharData;
         private System.Windows.Forms.Timer tmrTick;
+        private System.Windows.Forms.SaveFileDialog sfdSaveDialog;
+        private System.Windows.Forms.Button btnSave;
     }
 }

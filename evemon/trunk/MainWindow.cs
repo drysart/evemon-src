@@ -72,6 +72,23 @@ namespace EveCharacterMonitor
 
         private void AddTab(CharLoginInfo cli)
         {
+            AGAIN:
+            if (!cli.Validate())
+            {
+                DialogResult dr = MessageBox.Show(
+                    "Unable to show character monitor for " + cli.CharacterName + ", " +
+                    "could not validate username/password/character combination.",
+                    "Could Not Validate Character",
+                    MessageBoxButtons.RetryCancel,
+                    MessageBoxIcon.Error);
+                if (dr == DialogResult.Retry)
+                {
+                    EveSession.GetSession(cli.Username, cli.Password).ReLogin();
+                    goto AGAIN;
+                }
+                return;
+            }
+
             TabPage tp = new TabPage(cli.CharacterName);
             tp.UseVisualStyleBackColor = true;
             tp.Tag = cli;
@@ -80,32 +97,68 @@ namespace EveCharacterMonitor
             cm.Parent = tp;
             cm.Dock = DockStyle.Fill;
             cm.SkillTrainingCompleted += new SkillTrainingCompletedHandler(cm_SkillTrainingCompleted);
+            cm.ShortInfoChanged += new EventHandler(cm_ShortInfoChanged);
             cm.Start();
             tcCharacterTabs.TabPages.Add(tp);
             SetRemoveEnable();
+        }
+
+        private void cm_ShortInfoChanged(object sender, EventArgs e)
+        {
+            this.Invoke(new MethodInvoker(delegate
+            {
+                SortedList<TimeSpan, string> shortInfos = new SortedList<TimeSpan, string>();
+                foreach (TabPage tp in tcCharacterTabs.TabPages)
+                {
+                    CharacterMonitor cm = tp.Controls[0] as CharacterMonitor;
+                    if (cm != null && !String.IsNullOrEmpty(cm.ShortText))
+                    {
+                        shortInfos.Add(cm.ShortTimeSpan, cm.ShortText);
+                    }
+                }
+                int ttCharsLeft = 64;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < shortInfos.Count; i++)
+                {
+                    string tKey = shortInfos[shortInfos.Keys[i]];
+                    if (sb.Length > 0)
+                        tKey = "\n" + tKey;
+                    ttCharsLeft -= tKey.Length;
+                    if (ttCharsLeft > 0)
+                        sb.Append(tKey);
+                    else
+                        break;
+                }
+                if (sb.Length == 0)
+                    sb.Append("EVEMon - No skills in training!");
+                niMinimizeIcon.Text = sb.ToString();
+            }));
         }
 
         private List<string> m_completedSkills = new List<string>();
 
         private void cm_SkillTrainingCompleted(object sender, SkillTrainingCompletedEventArgs e)
         {
-            string sa = e.CharacterName + " has finished learning " + e.SkillName + ".";
-            m_completedSkills.Add(sa);
+            this.Invoke(new MethodInvoker(delegate
+            {
+                string sa = e.CharacterName + " has finished learning " + e.SkillName + ".";
+                m_completedSkills.Add(sa);
 
-            niAlertIcon.Text = "Skill Training Completed";
-            niAlertIcon.BalloonTipTitle = "Skill Training Completed";
-            if (m_completedSkills.Count==1)
-                niAlertIcon.BalloonTipText = sa;
-            else
-                niAlertIcon.BalloonTipText = m_completedSkills.Count.ToString() + " skills completed. Click for more info.";
-            niAlertIcon.BalloonTipIcon = ToolTipIcon.Info;
-            niAlertIcon.Visible = true;
-            niAlertIcon.ShowBalloonTip(30000);
-            Emailer.SendAlertMail(m_settings, e.SkillName, e.CharacterName);
+                niAlertIcon.Text = "Skill Training Completed";
+                niAlertIcon.BalloonTipTitle = "Skill Training Completed";
+                if (m_completedSkills.Count == 1)
+                    niAlertIcon.BalloonTipText = sa;
+                else
+                    niAlertIcon.BalloonTipText = m_completedSkills.Count.ToString() + " skills completed. Click for more info.";
+                niAlertIcon.BalloonTipIcon = ToolTipIcon.Info;
+                niAlertIcon.Visible = true;
+                niAlertIcon.ShowBalloonTip(30000);
+                Emailer.SendAlertMail(m_settings, e.SkillName, e.CharacterName);
 
-            tmrAlertRefresh.Enabled = false;
-            tmrAlertRefresh.Interval = 60000;
-            tmrAlertRefresh.Enabled = true;
+                tmrAlertRefresh.Enabled = false;
+                tmrAlertRefresh.Interval = 60000;
+                tmrAlertRefresh.Enabled = true;
+            }));
         }
 
         private void SetRemoveEnable()
@@ -121,6 +174,8 @@ namespace EveCharacterMonitor
             CharacterMonitor cm = tp.Controls[0] as CharacterMonitor;
             if (cm != null)
                 cm.Stop();
+            cm.SkillTrainingCompleted -= new SkillTrainingCompletedHandler(cm_SkillTrainingCompleted);
+            cm.ShortInfoChanged -= new EventHandler(cm_ShortInfoChanged);
             CharLoginInfo cli = tp.Tag as CharLoginInfo;
             tcCharacterTabs.TabPages.Remove(tp);
             m_settings.CharacterList.Remove(cli);

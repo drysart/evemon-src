@@ -216,5 +216,11 @@ namespace EveCharacterMonitor
             get { return m_characterName; }
             set { m_characterName = value; }
         }
+
+        public bool Validate()
+        {
+            EveSession s = EveSession.GetSession(m_username, m_password);
+            return (s.GetCharacterId(m_characterName) > 0);
+        }
     }
 }
