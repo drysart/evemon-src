@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Windows.Forms;
 
 namespace EveCharacterMonitor
 {
@@ -190,9 +191,46 @@ namespace EveCharacterMonitor
                 throw new ApplicationException("Unable to log in");
         }
 
+        private static Thread m_mainThread;
+
+        public static Thread MainThread
+        {
+            get { return m_mainThread; }
+            set { m_mainThread = value; }
+        }
+
+        private void MainThreadInvoke(MethodInvoker mi)
+        {
+            if (Thread.CurrentThread != m_mainThread)
+                mi.Invoke();
+            else
+            {
+                using (BusyDialog f = new BusyDialog())
+                {
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(delegate(object o)
+                    {
+                        mi.Invoke();
+                        f.Complete();
+                    }));
+                    f.ShowDialog();
+                }
+            }
+
+        }
+
         private CookieContainer m_cookies;
 
         private string GetUrl(string url, string refer)
+        {
+            string result = null;
+            MainThreadInvoke(new MethodInvoker(delegate
+            {
+                result = InternalGetUrl(url, refer);
+            }));
+            return result;
+        }
+
+        private string InternalGetUrl(string url, string refer)
         {
             if (String.IsNullOrEmpty(refer))
                 refer = "http://myeve.eve-online.com/news.asp";

@@ -37,6 +37,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusyDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BusyDialog.Designer.cs">
+      <DependentUpon>BusyDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="CharacterMonitor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -71,6 +77,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BusyDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BusyDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CharacterMonitor.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CharacterMonitor.cs</DependentUpon>

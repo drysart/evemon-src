@@ -16,6 +16,8 @@ namespace EveCharacterMonitor
             if (Environment.GetCommandLineArgs().Length > 1)
                 ca = Environment.GetCommandLineArgs()[1];
 
+            EveSession.MainThread = System.Threading.Thread.CurrentThread;
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1(ca));
