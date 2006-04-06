@@ -167,6 +167,7 @@ namespace EveCharacterMonitor
             this.pnlTraining.Name = "pnlTraining";
             this.pnlTraining.Size = new System.Drawing.Size(384, 45);
             this.pnlTraining.TabIndex = 13;
+            this.pnlTraining.Visible = false;
             // 
             // lblTrainingEst
             // 
@@ -174,9 +175,9 @@ namespace EveCharacterMonitor
             this.lblTrainingEst.AutoSize = true;
             this.lblTrainingEst.Location = new System.Drawing.Point(116, 32);
             this.lblTrainingEst.Name = "lblTrainingEst";
-            this.lblTrainingEst.Size = new System.Drawing.Size(109, 13);
+            this.lblTrainingEst.Size = new System.Drawing.Size(11, 13);
             this.lblTrainingEst.TabIndex = 3;
-            this.lblTrainingEst.Text = "4/5/2006 2:24:35 PM";
+            this.lblTrainingEst.Text = ".";
             // 
             // lblTrainingRemain
             // 
@@ -184,9 +185,9 @@ namespace EveCharacterMonitor
             this.lblTrainingRemain.AutoSize = true;
             this.lblTrainingRemain.Location = new System.Drawing.Point(116, 19);
             this.lblTrainingRemain.Name = "lblTrainingRemain";
-            this.lblTrainingRemain.Size = new System.Drawing.Size(203, 13);
+            this.lblTrainingRemain.Size = new System.Drawing.Size(11, 13);
             this.lblTrainingRemain.TabIndex = 2;
-            this.lblTrainingRemain.Text = "1 day, 13 hours, 29 minutes, 12 seconds";
+            this.lblTrainingRemain.Text = ".";
             // 
             // lblTrainingSkill
             // 
@@ -194,9 +195,9 @@ namespace EveCharacterMonitor
             this.lblTrainingSkill.AutoSize = true;
             this.lblTrainingSkill.Location = new System.Drawing.Point(116, 6);
             this.lblTrainingSkill.Name = "lblTrainingSkill";
-            this.lblTrainingSkill.Size = new System.Drawing.Size(91, 13);
+            this.lblTrainingSkill.Size = new System.Drawing.Size(44, 13);
             this.lblTrainingSkill.TabIndex = 1;
-            this.lblTrainingSkill.Text = "Analytical Mind IV";
+            this.lblTrainingSkill.Text = "Nothing";
             // 
             // label1
             // 
