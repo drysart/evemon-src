@@ -104,6 +104,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>SkillCompleteDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UpdateNotifyForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UpdateNotifyForm.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -129,6 +133,13 @@
     </Compile>
     <Compile Include="SkillCompleteDialog.Designer.cs">
       <DependentUpon>SkillCompleteDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UpdateManager.cs" />
+    <Compile Include="UpdateNotifyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateNotifyForm.Designer.cs">
+      <DependentUpon>UpdateNotifyForm.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

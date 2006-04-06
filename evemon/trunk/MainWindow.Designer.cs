@@ -148,6 +148,7 @@ namespace EveCharacterMonitor
             this.MaximizeBox = false;
             this.Name = "MainWindow";
             this.Text = "EVEMon";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainWindow_FormClosed);
             this.Resize += new System.EventHandler(this.MainWindow_Resize);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);

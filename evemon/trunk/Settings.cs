@@ -88,6 +88,22 @@ namespace EveCharacterMonitor
             set { m_minimizeToTray = value; }
         }
 
+        private string m_ignoreUpdateVersion = "0.0.0.0";
+
+        public string IgnoreUpdateVersion
+        {
+            get { return m_ignoreUpdateVersion; }
+            set {
+                Version v = new Version("0.0.0.0");
+                try
+                {
+                    v = new Version(value);
+                }
+                catch { }
+                m_ignoreUpdateVersion = v.ToString();
+            }
+        }
+
         private const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";
 
         private static string StoreFileName(string key)

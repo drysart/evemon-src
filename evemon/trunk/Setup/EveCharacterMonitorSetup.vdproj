@@ -15,13 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_66D8D0688A1A4455B03606449AE08C0A"
+        "MsmKey" = "8:_D4F185BBCBC1440FB790B216C660C12D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D4F185BBCBC1440FB790B216C660C12D"
+        "MsmKey" = "8:_D762CB7602CB452BAFD1CC5DADA9FAB0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -121,9 +121,9 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_66D8D0688A1A4455B03606449AE08C0A"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D762CB7602CB452BAFD1CC5DADA9FAB0"
             {
-            "SourcePath" = "8:..\\EveCharacterMonitor\\eve.exe_I006b_040f.ico"
+            "SourcePath" = "8:..\\..\\..\\My Documents\\Visual Studio 2005\\Projects\\Timer\\EveCharacterMonitor\\eve.exe_I006b_040f.ico"
             "TargetName" = "8:eve.exe_I006b_040f.ico"
             "Tag" = "8:"
             "Folder" = "8:_E9502C7349DE4726ADB58FA4215ADC61"
@@ -207,14 +207,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EVE Character Monitor"
-        "ProductCode" = "8:{5408EC1D-9A47-452C-B614-D7D695511B6A}"
-        "PackageCode" = "8:{A527B577-9944-4C70-933A-52DD8C895895}"
+        "ProductCode" = "8:{E2BE7C86-D158-42F8-832F-3E0997C91459}"
+        "PackageCode" = "8:{B6BCAC53-A1F4-4EBA-93B6-49DF99000C3D}"
         "UpgradeCode" = "8:{58326FBE-234A-4DE0-92CF-41A957A8CE23}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.3"
+        "ProductVersion" = "8:1.0.4"
         "Manufacturer" = "8:Evercrest.com"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -338,7 +338,7 @@
             "Target" = "8:_D4F185BBCBC1440FB790B216C660C12D"
             "Folder" = "8:_CB3264B682E2430E84B47524B697CD81"
             "WorkingFolder" = "8:_E9502C7349DE4726ADB58FA4215ADC61"
-            "Icon" = "8:_66D8D0688A1A4455B03606449AE08C0A"
+            "Icon" = "8:_D762CB7602CB452BAFD1CC5DADA9FAB0"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_CEDE59155087429DAD78EA17D4BCC693"
@@ -352,7 +352,7 @@
             "Target" = "8:_D4F185BBCBC1440FB790B216C660C12D"
             "Folder" = "8:_1EDDE652BEE845BC877C85FE7197DAEC"
             "WorkingFolder" = "8:_E9502C7349DE4726ADB58FA4215ADC61"
-            "Icon" = "8:_66D8D0688A1A4455B03606449AE08C0A"
+            "Icon" = "8:_D762CB7602CB452BAFD1CC5DADA9FAB0"
             "Feature" = "8:"
             }
         }
@@ -756,7 +756,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D4F185BBCBC1440FB790B216C660C12D"
             {
-            "SourcePath" = "8:..\\EveCharacterMonitor\\obj\\Release\\EveCharacterMonitor.exe"
+            "SourcePath" = "8:..\\obj\\Release\\EveCharacterMonitor.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E9502C7349DE4726ADB58FA4215ADC61"
