@@ -63,6 +63,37 @@ namespace EveCharacterMonitor
             get { return m_emailServer; }
             set { m_emailServer = value; }
         }
+        
+        private bool m_emailServerRequiresSsl = false;
+
+        public bool EmailServerRequiresSsl
+        {
+            get { return m_emailServerRequiresSsl; }
+            set { m_emailServerRequiresSsl = value; }
+        }
+
+        private bool m_emailAuthRequired = false;
+
+        public bool EmailAuthRequired
+        {
+            get { return m_emailAuthRequired; }
+            set { m_emailAuthRequired = value; }
+        }
+
+        private string m_emailUsername;
+        private string m_emailPassword;
+
+        public string EmailAuthUsername
+        {
+            get { return m_emailUsername; }
+            set { m_emailUsername = value; }
+        }
+
+        public string EmailAuthPassword
+        {
+            get { return m_emailPassword; }
+            set { m_emailPassword = value; }
+        }
 
         private string m_emailFromAddress;
 
@@ -168,13 +199,23 @@ namespace EveCharacterMonitor
             m_key = key;
         }
 
+        private bool m_neverSave = false;
+
+        public void NeverSave()
+        {
+            m_neverSave = true;
+        }
+
         public void Save()
         {
-            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
-            using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(StoreFileName(m_key), FileMode.Create, store))
+            if (!m_neverSave)
             {
-                XmlSerializer xs = new XmlSerializer(typeof(Settings));
-                xs.Serialize(s, this);
+                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
+                using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(StoreFileName(m_key), FileMode.Create, store))
+                {
+                    XmlSerializer xs = new XmlSerializer(typeof(Settings));
+                    xs.Serialize(s, this);
+                }
             }
         }
 

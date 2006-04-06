@@ -44,13 +44,22 @@ namespace EveCharacterMonitor
             this.Close();
         }
 
+        private void ApplyToSettings(Settings s)
+        {
+            s.MinimizeToTray = cbMinimizeToTray.Checked;
+            s.EnableEmailAlert = cbSendEmail.Checked;
+            s.EmailServer = tbMailServer.Text;
+            s.EmailServerRequiresSsl = cbEmailServerRequireSsl.Checked;
+            s.EmailAuthRequired = cbEmailAuthRequired.Checked;
+            s.EmailAuthUsername = tbEmailUsername.Text;
+            s.EmailAuthPassword = tbEmailPassword.Text;
+            s.EmailFromAddress = tbFromAddress.Text;
+            s.EmailToAddress = tbToAddress.Text;
+        }
+
         private void btnOk_Click(object sender, EventArgs e)
         {
-            m_settings.MinimizeToTray = cbMinimizeToTray.Checked;
-            m_settings.EnableEmailAlert = cbSendEmail.Checked;
-            m_settings.EmailServer = tbMailServer.Text;
-            m_settings.EmailFromAddress = tbFromAddress.Text;
-            m_settings.EmailToAddress = tbToAddress.Text;
+            ApplyToSettings(m_settings);
             m_settings.Save();
 
             this.DialogResult = DialogResult.OK;
@@ -62,6 +71,10 @@ namespace EveCharacterMonitor
             cbMinimizeToTray.Checked = m_settings.MinimizeToTray;
             cbSendEmail.Checked = m_settings.EnableEmailAlert;
             tbMailServer.Text = m_settings.EmailServer;
+            cbEmailServerRequireSsl.Checked = m_settings.EmailServerRequiresSsl;
+            cbEmailAuthRequired.Checked = m_settings.EmailAuthRequired;
+            tbEmailUsername.Text = m_settings.EmailAuthUsername;
+            tbEmailPassword.Text = m_settings.EmailAuthPassword;
             tbFromAddress.Text = m_settings.EmailFromAddress;
             tbToAddress.Text = m_settings.EmailToAddress;
             UpdateDisables();
@@ -76,11 +89,15 @@ namespace EveCharacterMonitor
         {
             tlpEmailSettings.Enabled = cbSendEmail.Checked;
             btnTestEmail.Enabled = cbSendEmail.Checked;
+            tlpEmailAuthTable.Enabled = cbEmailAuthRequired.Checked;
         }
 
         private void btnTestEmail_Click(object sender, EventArgs e)
         {
-            if (!Emailer.SendTestMail(tbMailServer.Text, tbFromAddress.Text, tbToAddress.Text))
+            Settings ts = new Settings();
+            ts.NeverSave();
+            ApplyToSettings(ts);
+            if (!Emailer.SendTestMail(ts))
             {
                 MessageBox.Show("The message failed to send.", "Mail Failure", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -88,6 +105,11 @@ namespace EveCharacterMonitor
             {
                 MessageBox.Show("The message sent successfully. Please verify that the message was received.", "Mail Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void cbEmailAuthRequired_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateDisables();
         }
     }
 }
