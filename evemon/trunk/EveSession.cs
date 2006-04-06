@@ -132,11 +132,12 @@ namespace EveCharacterMonitor
 
             CharacterInfo result = ProcessCharacterXml(xdoc, charId);
             result.SkillInTraining = sit;
+#if DEBUG
             IntelligenceBonus ib = new IntelligenceBonus();
             ib.Name = "woof woof";
             ib.Amount = 3;
             result.AttributeBonuses.Bonuses.Add(ib);
-
+#endif
             callback(this, result);
         }
 

@@ -59,7 +59,7 @@ namespace EveCharacterMonitor
             tmrUpdate.Interval = 10;
             tmrUpdate.Enabled = true;
             tmrTick.Enabled = true;
-            m_session.GetCharaterImageAsync(m_charId, new GetCharacterImageCallback(GotCharacterImage));
+            GetCharacterImage();
         }
 
         public void Stop()
@@ -70,9 +70,15 @@ namespace EveCharacterMonitor
             tmrUpdate.Enabled = false;
         }
 
+        private DateTime m_tryImageAgainTime = DateTime.MaxValue;
+
         private void GotCharacterImage(EveSession sender, Image i)
         {
             pbCharImage.Image = i;
+            if (i == null)
+                m_tryImageAgainTime = DateTime.Now + TimeSpan.FromSeconds(10);
+            else
+                m_tryImageAgainTime = DateTime.MaxValue;
         }
 
         private void tmrUpdate_Tick(object sender, EventArgs e)
@@ -323,6 +329,16 @@ namespace EveCharacterMonitor
                 m_lastCompletedSkill = m_skillTrainingName;
                 OnSkillTrainingComplete(m_cli.CharacterName, m_skillTrainingName);
             }
+            if (m_tryImageAgainTime <= DateTime.Now && pbCharImage.Image == null)
+            {
+                GetCharacterImage();
+            }
+        }
+
+        private void GetCharacterImage()
+        {
+            m_tryImageAgainTime = DateTime.MaxValue;
+            m_session.GetCharaterImageAsync(m_charId, new GetCharacterImageCallback(GotCharacterImage));
         }
 
         private enum SaveFormat
