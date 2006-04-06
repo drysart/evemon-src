@@ -78,9 +78,6 @@ namespace EveCharacterMonitor
             int charId = p.A;
             GetCharacterInfoCallback callback = p.B;
 
-            CharacterInfo result = new CharacterInfo();
-            result.CharacterId = charId;
-
             bool firstAttempt = true;
             AGAIN:
             string htmld = GetUrl("http://myeve.eve-online.com/character/skilltree.asp?characterID=" +
@@ -95,10 +92,12 @@ namespace EveCharacterMonitor
                 firstAttempt = false;
                 goto AGAIN;
             }
+
+            SkillInTraining sit = null;
             int cti = htmld.IndexOf("Currently training to: ");
             if (cti != -1)
             {
-                SkillInTraining sit = new SkillInTraining();
+                sit = new SkillInTraining();
                 string bsubstr = ReverseString(htmld.Substring(cti - 400, 400));
                 string s1 = Regex.Match(bsubstr, @"knaR>i< / (.+?)>""xp11:ezis-tnof").Groups[1].Value;
                 sit.SkillName = ReverseString(s1);
@@ -106,25 +105,12 @@ namespace EveCharacterMonitor
                 sit.TrainingToLevel = Convert.ToInt32(Regex.Match(fsubstr, @"Currently training to: <\/font><strong>level (\d) </st").Groups[1].Value);
                 string timeLeft = Regex.Match(fsubstr, @"Time left: <\/font><strong>(.+?)<\/strong>").Groups[1].Value;
                 sit.EstimatedCompletion = DateTime.Now + ConvertTimeStringToTimeSpan(timeLeft);
-
-                //DEBUG
-                //sit.EstimatedCompletion = DateTime.Now + TimeSpan.FromSeconds(10);
-
                 sit.CurrentPoints = Convert.ToInt32(Regex.Match(fsubstr, @"SP done: </font><strong>(\d+) of \d+</strong>").Groups[1].Value);
                 sit.NeededPoints = Convert.ToInt32(Regex.Match(fsubstr, @"SP done: </font><strong>\d+ of (\d+)</strong>").Groups[1].Value);
-                result.SkillInTraining = sit;
             }
             else
             {
-                result.SkillInTraining = null;
-
-                //DEBUG
-                //SkillInTraining sit = new SkillInTraining();
-                //sit.SkillName = "Learning";
-                //sit.CurrentPoints = 1;
-                //sit.EstimatedCompletion = DateTime.Now + TimeSpan.FromSeconds(20);
-                //sit.TrainingToLevel = 3;
-                //result.SkillInTraining = sit;
+                sit = null;
             }
 
             firstAttempt = true;
@@ -143,66 +129,26 @@ namespace EveCharacterMonitor
             }
             XmlDocument xdoc = new XmlDocument();
             xdoc.LoadXml(data);
-            ProcessCharacterXml(xdoc, result);
+
+            CharacterInfo result = ProcessCharacterXml(xdoc, charId);
+            result.SkillInTraining = sit;
+            IntelligenceBonus ib = new IntelligenceBonus();
+            ib.Name = "woof woof";
+            ib.Amount = 3;
+            result.AttributeBonuses.Bonuses.Add(ib);
 
             callback(this, result);
         }
 
-        private void ProcessCharacterXml(XmlDocument xdoc, CharacterInfo ci)
+        private CharacterInfo ProcessCharacterXml(XmlDocument xdoc, int characterId)
         {
-            XmlElement charRoot = xdoc.DocumentElement.SelectSingleNode("/charactersheet/characters/character[@characterID='" + ci.CharacterId.ToString() + "']") as XmlElement;
-            ci.Race = charRoot.SelectSingleNode("race").InnerText; 
-            ci.BloodLine = charRoot.SelectSingleNode("bloodLine").InnerText;
-            ci.Gender = charRoot.SelectSingleNode("gender").InnerText;
-            ci.CorpName = charRoot.SelectSingleNode("corporationName").InnerText;
-            ci.Balance = Convert.ToDecimal(charRoot.SelectSingleNode("balance").InnerText);
-            ci.Intelligence = Convert.ToInt32(charRoot.SelectSingleNode("attributes/intelligence").InnerText);
-            ci.Charisma = Convert.ToInt32(charRoot.SelectSingleNode("attributes/charisma").InnerText);
-            ci.Perception = Convert.ToInt32(charRoot.SelectSingleNode("attributes/perception").InnerText);
-            ci.Memory = Convert.ToInt32(charRoot.SelectSingleNode("attributes/memory").InnerText);
-            ci.Willpower = Convert.ToInt32(charRoot.SelectSingleNode("attributes/willpower").InnerText);
+            XmlSerializer xs = new XmlSerializer(typeof(CharacterInfo));
+            XmlElement charRoot = xdoc.DocumentElement.SelectSingleNode("/charactersheet/characters/character[@characterID='" + characterId.ToString() + "']") as XmlElement;
 
-            ci.SkillGroups.Clear();
-            double learningBonus = 1.0;
-            foreach (XmlElement sgel in charRoot.SelectNodes("skills/skillGroup"))
+            using (XmlNodeReader xnr = new XmlNodeReader(charRoot))
             {
-                SkillGroup sg = new SkillGroup();
-                sg.Name = sgel.GetAttribute("groupName");
-                sg.Id = Convert.ToInt32(sgel.GetAttribute("groupID"));
-
-                foreach (XmlElement skel in sgel.SelectNodes("skill"))
-                {
-                    Skill s = new Skill();
-                    s.Name = skel.GetAttribute("typeName");
-                    s.Id = Convert.ToInt32(skel.GetAttribute("typeID"));
-                    s.Rank = Convert.ToInt32(skel.SelectSingleNode("rank").InnerText);
-                    s.SkillPoints = Convert.ToInt32(skel.SelectSingleNode("skillpoints").InnerText);
-                    s.Level = Convert.ToInt32(skel.SelectSingleNode("level").InnerText);
-                    sg.Skills.Add(s);
-
-
-                    if (s.Name == "Analytical Mind" || s.Name == "Logic")
-                        ci.Intelligence += s.Level;
-                    if (s.Name == "Empathy" || s.Name == "Presence")
-                        ci.Charisma += s.Level;
-                    if (s.Name == "Instant Recall" || s.Name == "Eidetic Memory")
-                        ci.Memory += s.Level;
-                    if (s.Name == "Iron Will" || s.Name == "Focus")
-                        ci.Willpower += s.Level;
-                    if (s.Name == "Spatial Awareness" || s.Name == "Clarity")
-                        ci.Perception += s.Level;
-                    if (s.Name == "Learning")
-                        learningBonus = 1.0 + (0.02 * s.Level);
-                }
-
-                ci.SkillGroups.Add(sg);
+                return (CharacterInfo)xs.Deserialize(xnr);
             }
-
-            ci.Intelligence = Convert.ToInt32(Math.Round(ci.Intelligence * learningBonus));
-            ci.Charisma = Convert.ToInt32(Math.Round(ci.Charisma * learningBonus));
-            ci.Memory = Convert.ToInt32(Math.Round(ci.Memory * learningBonus));
-            ci.Willpower = Convert.ToInt32(Math.Round(ci.Willpower * learningBonus));
-            ci.Perception = Convert.ToInt32(Math.Round(ci.Perception * learningBonus));
         }
 
         private TimeSpan ConvertTimeStringToTimeSpan(string timeLeft)
@@ -410,55 +356,265 @@ namespace EveCharacterMonitor
     [XmlRoot("attributes")]
     public class EveAttributes
     {
-        private int m_intelligence;
+        private CharacterInfo m_owner;
+
+        internal void SetOwner(CharacterInfo ci)
+        {
+            m_owner = ci;
+        }
+
+        private int[] m_values = new int[5] { 0, 0, 0, 0, 0 };
 
         [XmlElement("intelligence")]
-        public int Intelligence
+        public int BaseIntelligence
         {
-            get { return m_intelligence; }
-            set { m_intelligence = value; }
+            get { return m_values[(int)EveAttribute.Intelligence]; }
+            set { m_values[(int)EveAttribute.Intelligence] = value; }
         }
-
-        private int m_charisma;
 
         [XmlElement("charisma")]
-        public int Charisma
+        public int BaseCharisma
         {
-            get { return m_charisma; }
-            set { m_charisma = value; }
+            get { return m_values[(int)EveAttribute.Charisma]; }
+            set { m_values[(int)EveAttribute.Charisma] = value; }
         }
-
-        private int m_perception;
 
         [XmlElement("perception")]
-        public int Perception
+        public int BasePerception
         {
-            get { return m_perception; }
-            set { m_perception = value; }
+            get { return m_values[(int)EveAttribute.Perception]; }
+            set { m_values[(int)EveAttribute.Perception] = value; }
         }
-
-        private int m_memory;
 
         [XmlElement("memory")]
-        public int Memory
+        public int BaseMemory
         {
-            get { return m_memory; }
-            set { m_memory = value; }
+            get { return m_values[(int)EveAttribute.Memory]; }
+            set { m_values[(int)EveAttribute.Memory] = value; }
         }
 
-        private int m_willpower;
-
         [XmlElement("willpower")]
-        public int Willpower
+        public int BaseWillpower
         {
-            get { return m_willpower; }
-            set { m_willpower = value; }
+            get { return m_values[(int)EveAttribute.Willpower]; }
+            set { m_values[(int)EveAttribute.Willpower] = value; }
+        }
+
+        [XmlIgnore]
+        public double AdjustedIntelligence
+        {
+            get { return GetAdjustedAttribute(EveAttribute.Intelligence); }
+        }
+
+        [XmlIgnore]
+        public double AdjustedCharisma
+        {
+            get { return GetAdjustedAttribute(EveAttribute.Charisma); }
+        }
+
+        [XmlIgnore]
+        public double AdjustedPerception
+        {
+            get { return GetAdjustedAttribute(EveAttribute.Perception); }
+        }
+
+        [XmlIgnore]
+        public double AdjustedMemory
+        {
+            get { return GetAdjustedAttribute(EveAttribute.Memory); }
+        }
+
+        [XmlIgnore]
+        public double AdjustedWillpower
+        {
+            get { return GetAdjustedAttribute(EveAttribute.Willpower); }
+        }
+
+        public double GetAttributeAdjustment(EveAttribute eveAttribute, EveAttributeAdjustment adjustment)
+        {
+            double result = 0.0;
+            double learningBonus = 1.0;
+            if ((adjustment & EveAttributeAdjustment.Base) != 0)
+                result += m_values[(int)eveAttribute];
+            if ((adjustment & EveAttributeAdjustment.Implants) != 0)
+            {
+                foreach (EveAttributeBonus eab in m_owner.AttributeBonuses.Bonuses)
+                {
+                    if (eab.EveAttribute == eveAttribute)
+                        result += eab.Amount;
+                }
+            }
+            if (((adjustment & EveAttributeAdjustment.Skills) != 0) ||
+                ((adjustment & EveAttributeAdjustment.Learning) != 0))
+            {
+                foreach (SkillGroup sg in m_owner.SkillGroups)
+                {
+                    if (sg.Name == "Learning")
+                    {
+                        foreach (Skill s in sg.Skills)
+                        {
+                            if ((adjustment & EveAttributeAdjustment.Skills) != 0)
+                            {
+                                switch (eveAttribute)
+                                {
+                                    case EveAttribute.Intelligence:
+                                        if (s.Name == "Analytical Mind" || s.Name == "Logic")
+                                            result += s.Level;
+                                        break;
+                                    case EveAttribute.Charisma:
+                                        if (s.Name == "Empathy" || s.Name == "Presence")
+                                            result += s.Level;
+                                        break;
+                                    case EveAttribute.Memory:
+                                        if (s.Name == "Instant Recall" || s.Name == "Eidetic Memory")
+                                            result += s.Level;
+                                        break;
+                                    case EveAttribute.Willpower:
+                                        if (s.Name == "Iron Will" || s.Name == "Focus")
+                                            result += s.Level;
+                                        break;
+                                    case EveAttribute.Perception:
+                                        if (s.Name == "Spatial Awareness" || s.Name == "Clarity")
+                                            result += s.Level;
+                                        break;
+                                }
+                            }
+                            if (s.Name == "Learning")
+                                learningBonus = 1.0 + (0.02 * s.Level);
+                        }
+                    }
+                }
+            }
+            if ((adjustment & EveAttributeAdjustment.Learning) != 0)
+            {
+                result = result * learningBonus;
+            }
+            return result;
+        }
+
+        private double GetAdjustedAttribute(EveAttribute eveAttribute)
+        {
+            return GetAttributeAdjustment(eveAttribute, EveAttributeAdjustment.AllWithLearning);
+        }
+    }
+
+    [Flags]
+    public enum EveAttributeAdjustment
+    {
+        Base = 1,
+        Skills = 2,
+        Implants = 4,
+        AllWithoutLearning = 7,
+        Learning = 8,
+        AllWithLearning = 15
+    }
+
+    public enum EveAttribute
+    {
+        Intelligence,
+        Charisma,
+        Perception,
+        Memory,
+        Willpower
+    }
+
+    public abstract class EveAttributeBonus
+    {
+        private string m_name;
+        private int m_amount;
+
+        [XmlIgnore]
+        public abstract EveAttribute EveAttribute { get; }
+
+        [XmlElement("augmentatorName")]
+        public string Name
+        {
+            get { return m_name; }
+            set { m_name = value; }
+        }
+
+        [XmlElement("augmentatorValue")]
+        public int Amount
+        {
+            get { return m_amount; }
+            set { m_amount = value; }
+        }
+    }
+
+    [XmlRoot("intelligenceBonus")]
+    public class IntelligenceBonus: EveAttributeBonus
+    {
+        public override EveAttribute EveAttribute
+        {
+        	get { return EveAttribute.Intelligence; }
+        }
+    }
+
+    [XmlRoot("charismaBonus")]
+    public class CharismaBonus: EveAttributeBonus
+    {
+        public override EveAttribute EveAttribute
+        {
+        	get { return EveAttribute.Charisma; }
+        }
+    }
+    
+    [XmlRoot("perceptionBonus")]
+    public class PerceptionBonus: EveAttributeBonus
+    {
+        public override EveAttribute EveAttribute
+        {
+        	get { return EveAttribute.Perception; }
+        }
+    }
+
+    [XmlRoot("memoryBonus")]
+    public class MemoryBonus: EveAttributeBonus
+    {
+        public override EveAttribute EveAttribute
+        {
+        	get { return EveAttribute.Memory; }
+        }
+    }
+
+    [XmlRoot("willpowerBonus")]
+    public class WillpowerBonus: EveAttributeBonus
+    {
+        public override EveAttribute EveAttribute
+        {
+        	get { return EveAttribute.Willpower; }
+        }
+    }
+
+    [XmlRoot("attributeEnhancers")]
+    public class AttributeBonusCollection
+    {
+        private List<EveAttributeBonus> m_attributeBonuses = new List<EveAttributeBonus>();
+
+        [XmlElement("intelligenceBonus", typeof(IntelligenceBonus))]
+        [XmlElement("charismaBonus", typeof(CharismaBonus))]
+        [XmlElement("perceptionBonus", typeof(PerceptionBonus))]
+        [XmlElement("memoryBonus", typeof(MemoryBonus))]
+        [XmlElement("willpowerBonus", typeof(WillpowerBonus))]
+        public List<EveAttributeBonus> Bonuses
+        {
+            get { return m_attributeBonuses; }
+            set { m_attributeBonuses = value; }
         }
     }
 
     [XmlRoot("character")]
     public class CharacterInfo
     {
+        private string m_name;
+
+        [XmlAttribute("name")]
+        public string Name
+        {
+            get { return m_name; }
+            set { m_name = value; }
+        }
+
         private int m_characterId;
 
         [XmlAttribute("characterID")]
@@ -528,42 +684,60 @@ namespace EveCharacterMonitor
         public EveAttributes Attributes
         {
             get { return m_attributes; }
-            set { m_attributes = value; }
+            set {
+                m_attributes = value;
+                if (value != null)
+                    value.SetOwner(this);
+            }
+        }
+
+        private AttributeBonusCollection m_attributeBonuses = new AttributeBonusCollection();
+
+        [XmlElement("attributeEnhancers")]
+        public AttributeBonusCollection AttributeBonuses
+        {
+            get { return m_attributeBonuses; }
+            set { m_attributeBonuses = value; }
         }
 
         [XmlIgnore]
+        [Obsolete]
         public int Intelligence
         {
-            get { return m_attributes.Intelligence; }
-            set { m_attributes.Intelligence = value; }
+            get { return m_attributes.BaseIntelligence; }
+            set { m_attributes.BaseIntelligence = value; }
         }
 
         [XmlIgnore]
+        [Obsolete]
         public int Charisma
         {
-            get { return m_attributes.Charisma; }
-            set { m_attributes.Charisma = value; }
+            get { return m_attributes.BaseCharisma; }
+            set { m_attributes.BaseCharisma = value; }
         }
 
         [XmlIgnore]
+        [Obsolete]
         public int Perception
         {
-            get { return m_attributes.Perception; }
-            set { m_attributes.Perception = value; }
+            get { return m_attributes.BasePerception; }
+            set { m_attributes.BasePerception = value; }
         }
 
         [XmlIgnore]
+        [Obsolete]
         public int Memory
         {
-            get { return m_attributes.Memory; }
-            set { m_attributes.Memory = value; }
+            get { return m_attributes.BaseMemory; }
+            set { m_attributes.BaseMemory = value; }
         }
 
         [XmlIgnore]
+        [Obsolete]
         public int Willpower
         {
-            get { return m_attributes.Willpower; }
-            set { m_attributes.Willpower = value; }
+            get { return m_attributes.BaseWillpower; }
+            set { m_attributes.BaseWillpower = value; }
         }
 
         private List<SkillGroup> m_skillGroups = new List<SkillGroup>();
@@ -631,6 +805,8 @@ namespace EveCharacterMonitor
     {
         private string m_name;
         private int m_id;
+        private int m_groupId;
+        private int m_flag;
         private int m_rank;
         private int m_skillPoints;
         private int m_level;
@@ -649,15 +825,51 @@ namespace EveCharacterMonitor
             set { m_id = value; }
         }
 
+        [XmlElement("groupID")]
+        public int GroupId
+        {
+            get { return m_groupId; }
+            set { m_groupId = value; }
+        }
+
+        [XmlElement("flag")]
+        public int Flag
+        {
+            get { return m_flag; }
+            set { m_flag = value; }
+        }
+
         [XmlElement("rank")]
         public int Rank
         {
             get { return m_rank; }
-            set { m_rank = value; }
+            set {
+                m_rank = value;
+                for (int i = 0; i < 5; i++)
+                {
+                    if (m_skillLevel[i] == 0)
+                    {
+                        int pointsForLevel = Convert.ToInt32(250 * m_rank * Math.Pow(32, Convert.ToDouble(i) / 2));
+                        // There's some sort of weird rounding error
+                        // these values need to be corrected by one.
+                        if (pointsForLevel == 1414)
+                            pointsForLevel = 1415;
+                        else if (pointsForLevel == 2828)
+                            pointsForLevel = 2829;
+                        else if (pointsForLevel == 7071)
+                            pointsForLevel = 7072;
+                        else if (pointsForLevel == 181019)
+                            pointsForLevel = 181020;
+                        else if (pointsForLevel == 226274)
+                            pointsForLevel = 226275;
+                        m_skillLevel[i] = pointsForLevel;
+                    }
+                }
+            }
         }
 
-        [XmlElement("skillpoints")]
-        public int SkillPoints
+            [XmlElement("skillpoints")]
+            public int SkillPoints
         {
             get { return m_skillPoints; }
             set { m_skillPoints = value; }
@@ -668,6 +880,43 @@ namespace EveCharacterMonitor
         {
             get { return m_level; }
             set { m_level = value; }
+        }
+
+        private int[] m_skillLevel = new int[5] { 0, 0, 0, 0, 0 };
+
+        [XmlElement("skilllevel1")]
+        public int SkillLevel1
+        {
+            get { return m_skillLevel[0]; }
+            set { m_skillLevel[0] = value; }
+        }
+
+        [XmlElement("skilllevel2")]
+        public int SkillLevel2
+        {
+            get { return m_skillLevel[1]; }
+            set { m_skillLevel[1] = value; }
+        }
+
+        [XmlElement("skilllevel3")]
+        public int SkillLevel3
+        {
+            get { return m_skillLevel[2]; }
+            set { m_skillLevel[2] = value; }
+        }
+
+        [XmlElement("skilllevel4")]
+        public int SkillLevel4
+        {
+            get { return m_skillLevel[3]; }
+            set { m_skillLevel[3] = value; }
+        }
+
+        [XmlElement("skilllevel5")]
+        public int SkillLevel5
+        {
+            get { return m_skillLevel[4]; }
+            set { m_skillLevel[4] = value; }
         }
 
         private static string[] s_levels = new string[6] { "(none)", "I", "II", "III", "IV", "V" };

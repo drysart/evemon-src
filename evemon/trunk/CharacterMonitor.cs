@@ -116,11 +116,16 @@ namespace EveCharacterMonitor
                     lblBioInfo.Text = ci.Gender + " " + ci.Race + " " + ci.BloodLine;
                     lblCorpInfo.Text = "Corporation: " + ci.CorpName;
                     lblBalance.Text = "Balance: " + ci.Balance.ToString("#,##0.00") + " ISK";
-                    lblIntelligence.Text = ci.Intelligence.ToString() + " Intelligence";
-                    lblCharisma.Text = ci.Charisma.ToString() + " Charisma";
-                    lblPerception.Text = ci.Perception.ToString() + " Perception";
-                    lblMemory.Text = ci.Memory.ToString() + " Memory";
-                    lblWillpower.Text = ci.Willpower.ToString() + " Willpower";
+                    SetAttributeLabel(ci, lblIntelligence, EveAttribute.Intelligence);
+                    SetAttributeLabel(ci, lblCharisma, EveAttribute.Charisma);
+                    SetAttributeLabel(ci, lblPerception, EveAttribute.Perception);
+                    SetAttributeLabel(ci, lblMemory, EveAttribute.Memory);
+                    SetAttributeLabel(ci, lblWillpower, EveAttribute.Willpower);
+                    //lblIntelligence.Text = ci.Attributes.AdjustedIntelligence.ToString("#.00") + " Intelligence";
+                    //lblCharisma.Text = ci.Attributes.AdjustedCharisma.ToString("#.00") + " Charisma";
+                    //lblPerception.Text = ci.Attributes.AdjustedPerception.ToString("#.00") + " Perception";
+                    //lblMemory.Text = ci.Attributes.AdjustedMemory.ToString("#.00") + " Memory";
+                    //lblWillpower.Text = ci.Attributes.AdjustedWillpower.ToString("#.00") + " Willpower";
 
                     lbSkills.Items.Clear();
                     foreach (SkillGroup sg in ci.SkillGroups)
@@ -150,6 +155,22 @@ namespace EveCharacterMonitor
                 tmrUpdate.Interval = 5 * 60 * 1000;
                 tmrUpdate.Enabled = true;
             }));
+        }
+
+        private void SetAttributeLabel(CharacterInfo ci, Label label, EveAttribute eveAttribute)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(ci.Attributes.GetAttributeAdjustment(eveAttribute, EveAttributeAdjustment.AllWithLearning).ToString("#.00"));
+            sb.Append(' ');
+            sb.Append(eveAttribute.ToString());
+            double implantValue = ci.Attributes.GetAttributeAdjustment(eveAttribute, EveAttributeAdjustment.Implants | EveAttributeAdjustment.Learning);
+            if (implantValue > 0)
+            {
+                sb.Append(" (");
+                sb.Append(implantValue.ToString("#.##"));
+                sb.Append(" from implants)");
+            }
+            label.Text = sb.ToString();
         }
 
         private string m_shortText = String.Empty;
@@ -325,6 +346,15 @@ namespace EveCharacterMonitor
 
         private void SaveFile(SaveFormat saveFormat, string fileName)
         {
+            //IntelligenceBonus ib = new IntelligenceBonus();
+            //ib.Name = "Test Cybernetic Subprocessor";
+            //ib.Amount = 3;
+            //m_characterInfo.AttributeBonuses.Bonuses.Add(ib);
+            //CharismaBonus cb = new CharismaBonus();
+            //cb.Name = "Test Charisma Bonii";
+            //cb.Amount = 3;
+            //m_characterInfo.AttributeBonuses.Bonuses.Add(cb);
+
             try
             {
                 Stream outerStream;
