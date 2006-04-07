@@ -497,6 +497,8 @@ namespace EveCharacterMonitor
 
         private void lbSkills_DrawItem(object sender, DrawItemEventArgs e)
         {
+            if (e.Index < 0)
+                return;
             object item = lbSkills.Items[e.Index];
             Graphics g = e.Graphics;
 
@@ -551,6 +553,8 @@ namespace EveCharacterMonitor
 
         private void lbSkills_MeasureItem(object sender, MeasureItemEventArgs e)
         {
+            if (e.Index < 0)
+                return;
             object item = lbSkills.Items[e.Index];
             if (item is SkillGroup)
                 e.ItemHeight = SKILL_HEADER_HEIGHT;
