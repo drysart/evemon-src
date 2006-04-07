@@ -70,7 +70,14 @@ namespace EveCharacterMonitor
                     }
 
                     XmlDocument xdoc = new XmlDocument();
-                    xdoc.Load(UPDATE_URL + "?ver=" + currentVersion.ToString());
+                    try
+                    {
+                        xdoc.Load(UPDATE_URL + "?ver=" + currentVersion.ToString());
+                    }
+                    catch (System.Net.WebException)
+                    {
+                        return;
+                    }
 
                     if (xdoc.DocumentElement.Name != "evemon")
                         return;
