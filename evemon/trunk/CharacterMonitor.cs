@@ -356,6 +356,13 @@ namespace EveCharacterMonitor
             DialogResult dr = sfdSaveDialog.ShowDialog();
             if (dr == DialogResult.OK)
             {
+                if ((SaveFormat)sfdSaveDialog.FilterIndex != SaveFormat.Xml)
+                {
+                    MessageBox.Show("Saving to formats other than XML is not yet " +
+                        "supported. Try again next version.", "Not Yet Implemented",
+                        MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    return;
+                }
                 SaveFile((SaveFormat)sfdSaveDialog.FilterIndex, sfdSaveDialog.FileName);
             }
         }
