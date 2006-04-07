@@ -499,6 +499,7 @@ namespace EveCharacterMonitor
         {
             object item = lbSkills.Items[e.Index];
             Graphics g = e.Graphics;
+
             if (item is SkillGroup)
             {
                 SkillGroup sg = (SkillGroup)item;
@@ -509,15 +510,15 @@ namespace EveCharacterMonitor
                 }
                 using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
                 {
-                    SizeF titleSize = g.MeasureString(sg.Name, boldf);
-                    PointF titleTopLeft = new PointF(e.Bounds.Left + 3,
-                        e.Bounds.Top + ((e.Bounds.Height / 2) - (titleSize.Height / 2)));
-                    PointF detailTopLeft = new PointF(/*titleTopLeft.X +*/ titleSize.Width, titleTopLeft.Y);
+                    Size titleSizeInt = TextRenderer.MeasureText(g, sg.Name, boldf, new Size(0, 0), TextFormatFlags.NoPadding|TextFormatFlags.NoClipping);
+                    Point titleTopLeftInt = new Point(e.Bounds.Left + 3,
+                        e.Bounds.Top + ((e.Bounds.Height / 2) - (titleSizeInt.Height / 2)));
+                    Point detailTopLeftInt = new Point(titleTopLeftInt.X + titleSizeInt.Width, titleTopLeftInt.Y);
 
-                    g.DrawString(sg.Name, boldf, Brushes.White, titleTopLeft);
-                    g.DrawString(String.Format(", {0} Skill{1}, {2} Points",
-                        sg.Skills.Count, sg.Skills.Count > 1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0")),
-                        lbSkills.Font, Brushes.White, detailTopLeft);
+                    string detailText = String.Format(", {0} Skill{1}, {2} Points",
+                        sg.Skills.Count, sg.Skills.Count > 1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
+                    TextRenderer.DrawText(g, sg.Name, boldf, titleTopLeftInt, Color.White);
+                    TextRenderer.DrawText(g, detailText, lbSkills.Font, detailTopLeftInt, Color.White);
                 }
             }
             else if (item is Skill)
@@ -532,18 +533,18 @@ namespace EveCharacterMonitor
                 using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
                 {
                     string skillName = s.Name + " " + Skill.RomanSkillLevel[s.Level];
-                    SizeF skillNameSize = g.MeasureString(skillName, boldf);
-                    PointF skillNameTopLeft = new PointF(e.Bounds.Left + 6,
-                        e.Bounds.Top + ((e.Bounds.Height / 2) - (skillNameSize.Height / 2)));
-                    PointF detailTopLeft = new PointF(skillNameTopLeft.X + skillNameSize.Width, skillNameTopLeft.Y);
+                    Size skillNameSizeInt = TextRenderer.MeasureText(g, skillName, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+                    Point skillNameTopLeftInt = new Point(e.Bounds.Left + 6,
+                        e.Bounds.Top + ((e.Bounds.Height / 2) - (skillNameSizeInt.Height / 2)));
+                    Point detailTopLeftInt = new Point(skillNameTopLeftInt.X + skillNameSizeInt.Width, skillNameTopLeftInt.Y);
 
-                    g.DrawString(skillName, boldf, Brushes.Black, skillNameTopLeft);
-                    g.DrawString("(Rank " + s.Rank.ToString() + ")", lbSkills.Font, Brushes.Black, detailTopLeft);
+                    TextRenderer.DrawText(g, skillName, boldf, skillNameTopLeftInt, Color.Black);
+                    TextRenderer.DrawText(g, " (Rank " + s.Rank.ToString() + ")", lbSkills.Font, detailTopLeftInt, Color.Black);
 
                     string skillPoints = String.Format("{0}/{1}", s.SkillPoints.ToString("#,##0"), s.SkillLevel5.ToString("#,##0"));
-                    SizeF skillPointSize = g.MeasureString(skillPoints, lbSkills.Font);
-                    PointF skillPointTopLeft = new PointF(e.Bounds.Right - skillPointSize.Width - 6, skillNameTopLeft.Y);
-                    g.DrawString(skillPoints, lbSkills.Font, Brushes.Black, skillPointTopLeft);
+                    Size skillPointSizeInt = TextRenderer.MeasureText(g, skillPoints, lbSkills.Font, new Size(0,0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+                    Point skillPointTopLeftInt = new Point(e.Bounds.Right - skillPointSizeInt.Width - 6, skillNameTopLeftInt.Y);
+                    TextRenderer.DrawText(g, skillPoints, lbSkills.Font, skillPointTopLeftInt, Color.Black);
                 }
             }
         }
