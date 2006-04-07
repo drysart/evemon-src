@@ -48,7 +48,8 @@ namespace EveCharacterMonitor
 
             foreach (CharLoginInfo cli in m_settings.CharacterList)
             {
-                AddTab(cli);
+                if (cli!=null)
+                    AddTab(cli);
             }
         }
 
