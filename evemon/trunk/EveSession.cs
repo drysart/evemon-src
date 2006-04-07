@@ -585,10 +585,15 @@ namespace EveCharacterMonitor
 
     public enum EveAttribute
     {
+        [XmlEnum("intelligence")]
         Intelligence,
+        [XmlEnum("charisma")]
         Charisma,
+        [XmlEnum("perception")]
         Perception,
+        [XmlEnum("memory")]
         Memory,
+        [XmlEnum("willpower")]
         Willpower
     }
 
@@ -822,6 +827,19 @@ namespace EveCharacterMonitor
         {
             get { return m_skillGroups; }
             set { m_skillGroups = value; }
+        }
+
+        public Skill GetSkill(string skillName)
+        {
+            foreach (SkillGroup sg in m_skillGroups)
+            {
+                foreach (Skill s in sg.Skills)
+                {
+                    if (s.Name == skillName)
+                        return s;
+                }
+            }
+            return null;
         }
     }
 

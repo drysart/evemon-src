@@ -23,13 +23,15 @@ namespace EveCharacterMonitor
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
         }
 
+        private Settings m_settings;
         private CharLoginInfo m_cli;
         private EveSession m_session;
         private int m_charId;
 
-        public CharacterMonitor(CharLoginInfo cli)
+        public CharacterMonitor(Settings s, CharLoginInfo cli)
             : this()
         {
+            m_settings = s;
             m_cli = cli;
         }
 
@@ -103,6 +105,7 @@ namespace EveCharacterMonitor
                 if (ci == null)
                 {
                     btnSave.Enabled = false;
+                    btnPlan.Enabled = false;
                     lblBioInfo.Text = String.Empty;
                     lblCorpInfo.Text = "(cannot retrieve character info)";
                     lblBalance.Text = String.Empty;
@@ -119,6 +122,7 @@ namespace EveCharacterMonitor
                 else
                 {
                     btnSave.Enabled = true;
+                    btnPlan.Enabled = true;
                     lblBioInfo.Text = ci.Gender + " " + ci.Race + " " + ci.BloodLine;
                     lblCorpInfo.Text = "Corporation: " + ci.CorpName;
                     lblBalance.Text = "Balance: " + ci.Balance.ToString("#,##0.00") + " ISK";
@@ -560,6 +564,36 @@ namespace EveCharacterMonitor
                 e.ItemHeight = SKILL_HEADER_HEIGHT;
             else if (item is Skill)
                 e.ItemHeight = SKILL_DETAIL_HEIGHT;
+        }
+
+        private WeakReference m_plannerWindow;
+
+        private void btnPlan_Click(object sender, EventArgs e)
+        {
+            if (m_plannerWindow != null)
+            {
+                object o = m_plannerWindow.Target;
+                if (o != null && o is SkillPlanner.PlannerWindow)
+                {
+                    SkillPlanner.PlannerWindow pw = (SkillPlanner.PlannerWindow)o;
+                    if (pw.Visible)
+                    {
+                        pw.BringToFront();
+                        pw.Focus();
+                        return;
+                    }
+                    try
+                    {
+                        pw.Show();
+                        return;
+                    }
+                    catch (ObjectDisposedException) { }
+                }
+                m_plannerWindow = null;
+            }
+            SkillPlanner.PlannerWindow npw = new EveCharacterMonitor.SkillPlanner.PlannerWindow(m_settings, m_characterInfo);
+            npw.Show();
+            m_plannerWindow = new WeakReference(npw);
         }
     }
 

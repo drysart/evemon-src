@@ -94,7 +94,7 @@ namespace EveCharacterMonitor
             tp.UseVisualStyleBackColor = true;
             tp.Tag = cli;
             tp.Padding = new Padding(5);
-            CharacterMonitor cm = new CharacterMonitor(cli);
+            CharacterMonitor cm = new CharacterMonitor(m_settings, cli);
             cm.Parent = tp;
             cm.Dock = DockStyle.Fill;
             cm.SkillTrainingCompleted += new SkillTrainingCompletedHandler(cm_SkillTrainingCompleted);

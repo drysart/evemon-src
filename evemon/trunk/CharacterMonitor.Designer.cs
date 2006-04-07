@@ -47,6 +47,7 @@ namespace EveCharacterMonitor
             this.label1 = new System.Windows.Forms.Label();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             this.pnlCharData = new System.Windows.Forms.Panel();
+            this.btnPlan = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.tmrTick = new System.Windows.Forms.Timer(this.components);
             this.sfdSaveDialog = new System.Windows.Forms.SaveFileDialog();
@@ -220,6 +221,7 @@ namespace EveCharacterMonitor
             // 
             // pnlCharData
             // 
+            this.pnlCharData.Controls.Add(this.btnPlan);
             this.pnlCharData.Controls.Add(this.btnSave);
             this.pnlCharData.Controls.Add(this.pbCharImage);
             this.pnlCharData.Controls.Add(this.lblCharacterName);
@@ -236,6 +238,18 @@ namespace EveCharacterMonitor
             this.pnlCharData.Name = "pnlCharData";
             this.pnlCharData.Size = new System.Drawing.Size(384, 135);
             this.pnlCharData.TabIndex = 14;
+            // 
+            // btnPlan
+            // 
+            this.btnPlan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPlan.Enabled = false;
+            this.btnPlan.Location = new System.Drawing.Point(323, 76);
+            this.btnPlan.Name = "btnPlan";
+            this.btnPlan.Size = new System.Drawing.Size(61, 23);
+            this.btnPlan.TabIndex = 13;
+            this.btnPlan.Text = "Plan...";
+            this.btnPlan.UseVisualStyleBackColor = true;
+            this.btnPlan.Click += new System.EventHandler(this.btnPlan_Click);
             // 
             // btnSave
             // 
@@ -302,5 +316,6 @@ namespace EveCharacterMonitor
         private System.Windows.Forms.Timer tmrTick;
         private System.Windows.Forms.SaveFileDialog sfdSaveDialog;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnPlan;
     }
 }
