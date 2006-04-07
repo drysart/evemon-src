@@ -469,6 +469,41 @@ namespace EveCharacterMonitor
             get { return GetAdjustedAttribute(EveAttribute.Willpower); }
         }
 
+        [XmlElement("adjustedIntelligence")]
+        public string _adjustedIntelligence
+        {
+            get { return this.AdjustedIntelligence.ToString("#.00"); }
+            set { /* ignored */ }
+        }
+
+        [XmlElement("adjustedCharisma")]
+        public string _adjustedCharisma
+        {
+            get { return this.AdjustedCharisma.ToString("#.00"); }
+            set { /* ignored */ }
+        }
+
+        [XmlElement("adjustedPerception")]
+        public string _adjustedPerception
+        {
+            get { return this.AdjustedPerception.ToString("#.00"); }
+            set { /* ignored */ }
+        }
+        
+        [XmlElement("adjustedMemory")]
+        public string _adjustedMemory
+        {
+            get { return this.AdjustedMemory.ToString("#.00"); }
+            set { /* ignored */ }
+        }
+        
+        [XmlElement("adjustedWillpower")]
+        public string _adjustedWillpower
+        {
+            get { return this.AdjustedWillpower.ToString("#.00"); }
+            set { /* ignored */ }
+        }
+
         public double GetAttributeAdjustment(EveAttribute eveAttribute, EveAttributeAdjustment adjustment)
         {
             double result = 0.0;
@@ -837,6 +872,16 @@ namespace EveCharacterMonitor
             sb.Append(" points");
             return sb.ToString();
         }
+
+        public int GetTotalPoints()
+        {
+            int result = 0;
+            foreach (Skill s in m_skills)
+            {
+                result += s.SkillPoints;
+            }
+            return result;
+        }
     }
 
     [XmlRoot("skill")]
@@ -959,6 +1004,11 @@ namespace EveCharacterMonitor
         }
 
         private static string[] s_levels = new string[6] { "(none)", "I", "II", "III", "IV", "V" };
+   
+        public static string[] RomanSkillLevel
+        {
+            get { return s_levels; }
+        }
 
         public override string ToString()
         {

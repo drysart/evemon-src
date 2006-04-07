@@ -156,8 +156,7 @@
     <Resource Include="eve.exe_I006b_040f.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="output-html.xsl" />
-    <Content Include="output-text.xsl" />
+    <EmbeddedResource Include="output-html.xsl" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

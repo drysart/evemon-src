@@ -356,28 +356,76 @@ namespace EveCharacterMonitor
             DialogResult dr = sfdSaveDialog.ShowDialog();
             if (dr == DialogResult.OK)
             {
-                if ((SaveFormat)sfdSaveDialog.FilterIndex != SaveFormat.Xml)
-                {
-                    MessageBox.Show("Saving to formats other than XML is not yet " +
-                        "supported. Try again next version.", "Not Yet Implemented",
-                        MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    return;
-                }
                 SaveFile((SaveFormat)sfdSaveDialog.FilterIndex, sfdSaveDialog.FileName);
+            }
+        }
+
+        private void SaveTextFile(string fileName)
+        {
+            using (StreamWriter sw = new StreamWriter(fileName, false))
+            {
+                MethodInvoker writeSep = new MethodInvoker(delegate
+                {
+                    sw.WriteLine("=======================================================================");
+                });
+                MethodInvoker writeSubSep = new MethodInvoker(delegate
+                {
+                    sw.WriteLine("-----------------------------------------------------------------------");
+                });
+                sw.WriteLine("BASIC INFO");
+                writeSep();
+                sw.WriteLine("     Name: {0}", m_characterInfo.Name);
+                sw.WriteLine("   Gender: {0}", m_characterInfo.Gender);
+                sw.WriteLine("     Race: {0}", m_characterInfo.Race);
+                sw.WriteLine("Bloodline: {0}", m_characterInfo.BloodLine);
+                sw.WriteLine("  Balance: {0} ISK", m_characterInfo.Balance.ToString("#,##0.00"));
+                sw.WriteLine();
+                sw.WriteLine("Intelligence: {0}", m_characterInfo.Attributes.AdjustedIntelligence.ToString("#0.00").PadLeft(5));
+                sw.WriteLine("    Charisma: {0}", m_characterInfo.Attributes.AdjustedCharisma.ToString("#0.00").PadLeft(5));
+                sw.WriteLine("  Perception: {0}", m_characterInfo.Attributes.AdjustedPerception.ToString("#0.00").PadLeft(5));
+                sw.WriteLine("      Memory: {0}", m_characterInfo.Attributes.AdjustedMemory.ToString("#0.00").PadLeft(5));
+                sw.WriteLine("   Willpower: {0}", m_characterInfo.Attributes.AdjustedWillpower.ToString("#0.00").PadLeft(5));
+                sw.WriteLine();
+                if (m_characterInfo.AttributeBonuses.Bonuses.Count > 0)
+                {
+                    sw.WriteLine("IMPLANTS");
+                    writeSep();
+                    foreach (EveAttributeBonus tb in m_characterInfo.AttributeBonuses.Bonuses)
+                    {
+                        sw.WriteLine("+{0} {1} : {2}", tb.Amount, tb.EveAttribute.ToString().PadRight(13), tb.Name);
+                    }
+                    sw.WriteLine();
+                }
+                sw.WriteLine("SKILLS");
+                writeSep();
+                foreach (SkillGroup sg in m_characterInfo.SkillGroups)
+                {
+                    sw.WriteLine("{0}, {1} Skill{2}, {3} Points",
+                        sg.Name, sg.Skills.Count, sg.Skills.Count>1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
+                    foreach (Skill s in sg.Skills)
+                    {
+                        string skillDesc = s.Name + " " + Skill.RomanSkillLevel[s.Level] + " (" + s.Rank.ToString() + ")";
+                        sw.WriteLine(": {0} {1}/{2} Points",
+                            skillDesc.PadRight(40), s.SkillPoints.ToString("#,##0"), s.SkillLevel5.ToString("#,##0"));
+                        if (m_characterInfo.SkillInTraining != null && m_characterInfo.SkillInTraining.SkillName == s.Name)
+                        {
+                            sw.WriteLine(":  (Currently training to level {0}, completes {1})",
+                                Skill.RomanSkillLevel[m_characterInfo.SkillInTraining.TrainingToLevel],
+                                m_characterInfo.SkillInTraining.EstimatedCompletion.ToString());
+                        }
+                    }
+                    writeSubSep();
+                }
             }
         }
 
         private void SaveFile(SaveFormat saveFormat, string fileName)
         {
-            //IntelligenceBonus ib = new IntelligenceBonus();
-            //ib.Name = "Test Cybernetic Subprocessor";
-            //ib.Amount = 3;
-            //m_characterInfo.AttributeBonuses.Bonuses.Add(ib);
-            //CharismaBonus cb = new CharismaBonus();
-            //cb.Name = "Test Charisma Bonii";
-            //cb.Amount = 3;
-            //m_characterInfo.AttributeBonuses.Bonuses.Add(cb);
-
+            if (saveFormat == SaveFormat.Text)
+            {
+                SaveTextFile(fileName);
+                return;
+            }
             try
             {
                 Stream outerStream;
@@ -400,15 +448,17 @@ namespace EveCharacterMonitor
                         XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                         ns.Add("", "");
                         xs.Serialize(xtw, m_characterInfo, ns);
-                    }
-                    if (saveFormat == SaveFormat.Xml)
-                        return;
+                        xtw.Flush();
 
-                    MemoryStream ms = (MemoryStream)outerStream;
-                    ms.Position = 0;
-                    using (StreamReader tr = new StreamReader(ms))
-                    {
-                        xpdoc = new XPathDocument(tr);
+                        if (saveFormat == SaveFormat.Xml)
+                            return;
+
+                        MemoryStream ms = (MemoryStream)outerStream;
+                        ms.Position = 0;
+                        using (StreamReader tr = new StreamReader(ms))
+                        {
+                            xpdoc = new XPathDocument(tr);
+                        }
                     }
                 }
                 finally
