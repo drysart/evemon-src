@@ -491,6 +491,71 @@ namespace EveCharacterMonitor
                     "Failed to save:\n" + ex.Message, "Could not save", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private const int SKILL_HEADER_HEIGHT = 20;
+        private const int SKILL_DETAIL_HEIGHT = 15;
+
+        private void lbSkills_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            object item = lbSkills.Items[e.Index];
+            Graphics g = e.Graphics;
+            if (item is SkillGroup)
+            {
+                SkillGroup sg = (SkillGroup)item;
+
+                using (Brush b = new SolidBrush(Color.FromArgb(75, 75, 75)))
+                {
+                    g.FillRectangle(b, e.Bounds);
+                }
+                using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
+                {
+                    SizeF titleSize = g.MeasureString(sg.Name, boldf);
+                    PointF titleTopLeft = new PointF(e.Bounds.Left + 3,
+                        e.Bounds.Top + ((e.Bounds.Height / 2) - (titleSize.Height / 2)));
+                    PointF detailTopLeft = new PointF(/*titleTopLeft.X +*/ titleSize.Width, titleTopLeft.Y);
+
+                    g.DrawString(sg.Name, boldf, Brushes.White, titleTopLeft);
+                    g.DrawString(String.Format(", {0} Skill{1}, {2} Points",
+                        sg.Skills.Count, sg.Skills.Count > 1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0")),
+                        lbSkills.Font, Brushes.White, detailTopLeft);
+                }
+            }
+            else if (item is Skill)
+            {
+                Skill s = (Skill)item;
+
+                if ((e.Index % 2) == 0)
+                    g.FillRectangle(Brushes.White, e.Bounds);
+                else
+                    g.FillRectangle(Brushes.LightGray, e.Bounds);
+
+                using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
+                {
+                    string skillName = s.Name + " " + Skill.RomanSkillLevel[s.Level];
+                    SizeF skillNameSize = g.MeasureString(skillName, boldf);
+                    PointF skillNameTopLeft = new PointF(e.Bounds.Left + 6,
+                        e.Bounds.Top + ((e.Bounds.Height / 2) - (skillNameSize.Height / 2)));
+                    PointF detailTopLeft = new PointF(skillNameTopLeft.X + skillNameSize.Width, skillNameTopLeft.Y);
+
+                    g.DrawString(skillName, boldf, Brushes.Black, skillNameTopLeft);
+                    g.DrawString("(Rank " + s.Rank.ToString() + ")", lbSkills.Font, Brushes.Black, detailTopLeft);
+
+                    string skillPoints = String.Format("{0}/{1}", s.SkillPoints.ToString("#,##0"), s.SkillLevel5.ToString("#,##0"));
+                    SizeF skillPointSize = g.MeasureString(skillPoints, lbSkills.Font);
+                    PointF skillPointTopLeft = new PointF(e.Bounds.Right - skillPointSize.Width - 6, skillNameTopLeft.Y);
+                    g.DrawString(skillPoints, lbSkills.Font, Brushes.Black, skillPointTopLeft);
+                }
+            }
+        }
+
+        private void lbSkills_MeasureItem(object sender, MeasureItemEventArgs e)
+        {
+            object item = lbSkills.Items[e.Index];
+            if (item is SkillGroup)
+                e.ItemHeight = SKILL_HEADER_HEIGHT;
+            else if (item is Skill)
+                e.ItemHeight = SKILL_DETAIL_HEIGHT;
+        }
     }
 
     public delegate void SkillTrainingCompletedHandler(object sender, SkillTrainingCompletedEventArgs e);

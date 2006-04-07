@@ -149,12 +149,16 @@ namespace EveCharacterMonitor
             // lbSkills
             // 
             this.lbSkills.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbSkills.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.lbSkills.FormattingEnabled = true;
             this.lbSkills.IntegralHeight = false;
+            this.lbSkills.ItemHeight = 15;
             this.lbSkills.Location = new System.Drawing.Point(0, 135);
             this.lbSkills.Name = "lbSkills";
             this.lbSkills.Size = new System.Drawing.Size(384, 222);
             this.lbSkills.TabIndex = 12;
+            this.lbSkills.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbSkills_DrawItem);
+            this.lbSkills.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.lbSkills_MeasureItem);
             // 
             // pnlTraining
             // 
