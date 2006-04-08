@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Xml;
 using System.Xml.Serialization;
+using EveCharacterMonitor.SkillPlanner;
 
 namespace EveCharacterMonitor
 {
@@ -133,6 +134,23 @@ namespace EveCharacterMonitor
                 catch { }
                 m_ignoreUpdateVersion = v.ToString();
             }
+        }
+
+        private List<PlanInfo> m_skillPlans = new List<PlanInfo>();
+
+        public List<PlanInfo> SkillPlans
+        {
+            get { return m_skillPlans; }
+        }
+
+        public PlanInfo GetSkillPlanForCharacter(string name)
+        {
+            foreach (PlanInfo pi in m_skillPlans)
+            {
+                if (pi.CharacterName == name)
+                    return pi;
+            }
+            return null;
         }
 
         private const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";

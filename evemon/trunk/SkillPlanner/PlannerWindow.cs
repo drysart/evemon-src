@@ -20,6 +20,7 @@ namespace EveCharacterMonitor.SkillPlanner
         private Settings m_settings;
         private CharacterInfo m_characterInfo;
         private PlannerData m_plannerData;
+        private PlanInfo m_planInfo;
 
         public PlannerWindow(Settings s, CharacterInfo ci)
             : this()
@@ -27,6 +28,16 @@ namespace EveCharacterMonitor.SkillPlanner
             m_settings = s;
             m_characterInfo = ci;
             m_plannerData = PlannerData.GetPlannerData();
+            m_planInfo = s.GetSkillPlanForCharacter(ci.Name);
+
+            if (m_planInfo==null)
+            {
+                m_planInfo = new PlanInfo();
+                m_planInfo.CharacterName = ci.Name;
+                s.SkillPlans.Add(m_planInfo);
+            }
+
+            m_planInfo.CleanupPlan(ci);
         }
 
         private void PlannerWindow_Load(object sender, EventArgs e)
@@ -61,14 +72,86 @@ namespace EveCharacterMonitor.SkillPlanner
             tlp.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
 
-            Label l = new Label();
-            l.Text = "test test";
-            l.TextAlign = ContentAlignment.MiddleCenter;
-            l.AutoSize = true;
-            tlp.Controls.Add(l, 1, 1);
-            tlp.Dock = DockStyle.Fill;
+            //Panel containerPanel = new Panel();
+            //containerPanel.AutoScroll = true;
+            //containerPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
 
+            Control xc = GetSkillControlRecursive(ps, true, 0);
+
+            //SkillBoxControl sbc = new SkillBoxControl(ps, m_characterInfo, m_planInfo, true);
+            //tlp.Dock = DockStyle.Fill;
+            //sbc.Location = new Point(0, 0);
+            //containerPanel.ClientSize = sbc.Size;
+            //containerPanel.Controls.Add(sbc);
+
+            //tlp.Controls.Add(containerPanel, 1, 1);
+            tlp.Controls.Add(xc, 1, 1);
+
+            tlp.Location = new Point(0, 0);
+            tlp.Size = pnlSkillDisplay.ClientSize;
+            //tlp.Anchor = AnchorStyles.Top | AnchorStyles.Left; // | AnchorStyles.Right | AnchorStyles.Bottom;
+            tlp.AutoSize = true;
+            tlp.AutoSizeMode = AutoSizeMode.GrowOnly;
+            //tlp.Dock = DockStyle.Fill;
             pnlSkillDisplay.Controls.Add(tlp);
+            //xc.Padding = new Padding(3);
+            //pnlSkillDisplay.Controls.Add(xc);
+            //FixupLocation();
+        }
+
+        private const int LR_PADDING = 10;
+        private const int UD_PADDING = 5;
+        private const bool LAYOUT_HORIZONTAL = false;
+
+        private Control GetSkillControlRecursive(PlannerSkill ps, bool primary, int prereqLevel)
+        {
+            SkillBoxControl sbc = new SkillBoxControl(ps, m_characterInfo, m_planInfo, primary, prereqLevel);
+            if (ps.Prereqs.Count == 0)
+                return sbc;
+
+            Panel cPanel = new Panel();
+
+            if (LAYOUT_HORIZONTAL)
+            {
+                int curTop = 0;
+                foreach (PlannerPrereq prereq in ps.Prereqs)
+                {
+                    PlannerSkill tps = m_plannerData.GetSkill(prereq.Name);
+                    Control c = GetSkillControlRecursive(tps, false, prereq.Level);
+                    c.Top = curTop;
+                    c.Left = sbc.Width + LR_PADDING;
+                    curTop += c.Height + UD_PADDING;
+                    cPanel.Controls.Add(c);
+                    if (cPanel.Width < c.Right)
+                        cPanel.Width = c.Right;
+                }
+                curTop -= UD_PADDING;
+                cPanel.Height = curTop;
+                sbc.Top = (curTop / 2) - (sbc.Height / 2);
+                sbc.Left = 0;
+            }
+            else
+            {
+                int curLeft = 0;
+                foreach (PlannerPrereq prereq in ps.Prereqs)
+                {
+                    PlannerSkill tps = m_plannerData.GetSkill(prereq.Name);
+                    Control c = GetSkillControlRecursive(tps, false, prereq.Level);
+                    c.Top = sbc.Height + LR_PADDING;
+                    c.Left = curLeft;
+                    curLeft += c.Width + UD_PADDING;
+                    cPanel.Controls.Add(c);
+                    if (cPanel.Height < c.Bottom)
+                        cPanel.Height = c.Bottom;
+                }
+                curLeft -= UD_PADDING;
+                cPanel.Width = curLeft;
+                sbc.Top = 0;
+                sbc.Left = (curLeft / 2) - (sbc.Width / 2);
+            }
+            cPanel.Controls.Add(sbc);
+
+            return cPanel;
         }
 
         private Skill GetCharacterSkillForPlannerSkill(PlannerSkill ps)
@@ -91,6 +174,16 @@ namespace EveCharacterMonitor.SkillPlanner
                     };
                     break;
                 case 2: // Planned Skills
+                    sfd = delegate(PlannerSkill el)
+                    {
+                        foreach (PlannedSkill ps in m_planInfo.PlannedSkills)
+                        {
+                            if (ps.Name == el.Name)
+                                return true;
+                        }
+                        return false;
+                    };
+                    break;
                 case 0: // All Skills
                 default:
                     sfd = delegate(PlannerSkill el)
@@ -119,6 +212,20 @@ namespace EveCharacterMonitor.SkillPlanner
                     tvSkillView.Nodes.Add(gtn);
                 }
             }
+        }
+
+        private void pnlSkillDisplay_ClientSizeChanged(object sender, EventArgs e)
+        {
+            if (pnlSkillDisplay.Controls.Count == 0)
+                return;
+            pnlSkillDisplay.SuspendLayout();
+            Control c = pnlSkillDisplay.Controls[0];
+            c.Size = pnlSkillDisplay.ClientSize;
+            pnlSkillDisplay.ResumeLayout();
+        }
+
+        private void FixupLocation()
+        {
         }
     }
 }

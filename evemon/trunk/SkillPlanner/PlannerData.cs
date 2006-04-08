@@ -61,6 +61,17 @@ namespace EveCharacterMonitor.SkillPlanner
                 psg.Cook(this);
             }
         }
+
+        internal PlannerSkill GetSkill(string skillName)
+        {
+            foreach (PlannerSkillGroup psg in m_skillGroups)
+            {
+                PlannerSkill ps = psg.GetSkill(skillName);
+                if (ps != null)
+                    return ps;
+            }
+            return null;
+        }
     }
 
     [XmlRoot("c")]
@@ -98,6 +109,16 @@ namespace EveCharacterMonitor.SkillPlanner
             {
                 ps.Cook(owner, this);
             }
+        }
+
+        internal PlannerSkill GetSkill(string skillName)
+        {
+            foreach (PlannerSkill ps in m_skills)
+            {
+                if (ps.Name == skillName)
+                    return ps;
+            }
+            return null;
         }
     }
 
@@ -190,6 +211,17 @@ namespace EveCharacterMonitor.SkillPlanner
             {
                 pp.Cook(owner, this);
             }
+        }
+
+        public TimeSpan CalculateTimeToSkill(int fromLevel, int toLevel, EveAttributes attributes)
+        {
+            Double fromPoints = Convert.ToDouble(Skill.GetSkillPointsForLevel(m_rank, fromLevel));
+            Double toPoints = Convert.ToDouble(Skill.GetSkillPointsForLevel(m_rank, toLevel));
+
+            Double min = (toPoints - fromPoints) /
+                (attributes.GetAttributeAdjustment(m_primaryAttribute, EveAttributeAdjustment.AllWithLearning) +
+                    (attributes.GetAttributeAdjustment(m_secondaryAttribute, EveAttributeAdjustment.AllWithLearning) / 2));
+            return TimeSpan.FromMinutes(min);
         }
     }
 

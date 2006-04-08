@@ -225,7 +225,46 @@ namespace EveCharacterMonitor
             }
         }
 
-        private string TimeSpanDescriptiveShort(DateTime t)
+        public static string TimeSpanDescriptiveMedium(TimeSpan ts)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (ts < TimeSpan.Zero)
+            {
+                ts -= (ts + ts);
+            }
+            if (ts.Days > 0)
+            {
+                sb.Append(ts.Days.ToString());
+                sb.Append("D");
+            }
+            ts -= TimeSpan.FromDays(ts.Days);
+            if (ts.Hours > 0)
+            {
+                if (sb.Length > 0)
+                    sb.Append(", ");
+                sb.Append(ts.Hours.ToString());
+                sb.Append("H");
+            }
+            ts -= TimeSpan.FromHours(ts.Hours);
+            if (ts.Minutes > 0)
+            {
+                if (sb.Length > 0)
+                    sb.Append(", ");
+                sb.Append(ts.Minutes.ToString());
+                sb.Append("M");
+            }
+            ts -= TimeSpan.FromMinutes(ts.Minutes);
+            if (ts.Seconds > 0)
+            {
+                if (sb.Length > 0)
+                    sb.Append(", ");
+                sb.Append(ts.Seconds.ToString());
+                sb.Append("S");
+            }
+            return sb.ToString();
+        }
+
+        public static string TimeSpanDescriptiveShort(DateTime t)
         {
             StringBuilder sb = new StringBuilder();
             if (t > DateTime.Now)

@@ -87,12 +87,14 @@ namespace EveCharacterMonitor.SkillPlanner
             // 
             // pnlSkillDisplay
             // 
+            this.pnlSkillDisplay.AutoScroll = true;
             this.pnlSkillDisplay.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pnlSkillDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlSkillDisplay.Location = new System.Drawing.Point(3, 3);
             this.pnlSkillDisplay.Name = "pnlSkillDisplay";
             this.pnlSkillDisplay.Size = new System.Drawing.Size(381, 454);
             this.pnlSkillDisplay.TabIndex = 0;
+            this.pnlSkillDisplay.ClientSizeChanged += new System.EventHandler(this.pnlSkillDisplay_ClientSizeChanged);
             // 
             // PlannerWindow
             // 

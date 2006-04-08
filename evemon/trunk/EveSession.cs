@@ -951,27 +951,32 @@ namespace EveCharacterMonitor
                 {
                     if (m_skillLevel[i] == 0)
                     {
-                        int pointsForLevel = Convert.ToInt32(250 * m_rank * Math.Pow(32, Convert.ToDouble(i) / 2));
-                        // There's some sort of weird rounding error
-                        // these values need to be corrected by one.
-                        if (pointsForLevel == 1414)
-                            pointsForLevel = 1415;
-                        else if (pointsForLevel == 2828)
-                            pointsForLevel = 2829;
-                        else if (pointsForLevel == 7071)
-                            pointsForLevel = 7072;
-                        else if (pointsForLevel == 181019)
-                            pointsForLevel = 181020;
-                        else if (pointsForLevel == 226274)
-                            pointsForLevel = 226275;
-                        m_skillLevel[i] = pointsForLevel;
+                        m_skillLevel[i] = GetSkillPointsForLevel(m_rank, i + 1);
                     }
                 }
             }
         }
 
-            [XmlElement("skillpoints")]
-            public int SkillPoints
+        public static int GetSkillPointsForLevel(int rank, int level)
+        {
+            int pointsForLevel = Convert.ToInt32(250 * rank * Math.Pow(32, Convert.ToDouble(level-1) / 2));
+            // There's some sort of weird rounding error
+            // these values need to be corrected by one.
+            if (pointsForLevel == 1414)
+                pointsForLevel = 1415;
+            else if (pointsForLevel == 2828)
+                pointsForLevel = 2829;
+            else if (pointsForLevel == 7071)
+                pointsForLevel = 7072;
+            else if (pointsForLevel == 181019)
+                pointsForLevel = 181020;
+            else if (pointsForLevel == 226274)
+                pointsForLevel = 226275;
+            return pointsForLevel;
+        }
+
+        [XmlElement("skillpoints")]
+        public int SkillPoints
         {
             get { return m_skillPoints; }
             set { m_skillPoints = value; }
