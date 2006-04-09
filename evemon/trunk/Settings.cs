@@ -248,6 +248,13 @@ namespace EveCharacterMonitor
             this.Save();
             return true;
         }
+
+        internal static void ResetKey(string p)
+        {
+            Settings s = new Settings();
+            s.SetKey(p);
+            s.Save();
+        }
     }
 
     public class CharLoginInfo

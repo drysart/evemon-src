@@ -47,6 +47,7 @@ namespace EveCharacterMonitor
             this.label1 = new System.Windows.Forms.Label();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             this.pnlCharData = new System.Windows.Forms.Panel();
+            this.btnDebugError = new System.Windows.Forms.Button();
             this.lblSkillHeader = new System.Windows.Forms.Label();
             this.btnPlan = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -222,6 +223,7 @@ namespace EveCharacterMonitor
             // 
             // pnlCharData
             // 
+            this.pnlCharData.Controls.Add(this.btnDebugError);
             this.pnlCharData.Controls.Add(this.lblSkillHeader);
             this.pnlCharData.Controls.Add(this.btnPlan);
             this.pnlCharData.Controls.Add(this.btnSave);
@@ -240,6 +242,18 @@ namespace EveCharacterMonitor
             this.pnlCharData.Name = "pnlCharData";
             this.pnlCharData.Size = new System.Drawing.Size(384, 148);
             this.pnlCharData.TabIndex = 14;
+            // 
+            // btnDebugError
+            // 
+            this.btnDebugError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDebugError.Location = new System.Drawing.Point(323, 47);
+            this.btnDebugError.Name = "btnDebugError";
+            this.btnDebugError.Size = new System.Drawing.Size(58, 23);
+            this.btnDebugError.TabIndex = 15;
+            this.btnDebugError.Text = "ERROR";
+            this.btnDebugError.UseVisualStyleBackColor = true;
+            this.btnDebugError.Visible = false;
+            this.btnDebugError.Click += new System.EventHandler(this.btnDebugError_Click);
             // 
             // lblSkillHeader
             // 
@@ -330,5 +344,6 @@ namespace EveCharacterMonitor
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnPlan;
         private System.Windows.Forms.Label lblSkillHeader;
+        private System.Windows.Forms.Button btnDebugError;
     }
 }

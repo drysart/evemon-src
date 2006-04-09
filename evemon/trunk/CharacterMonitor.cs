@@ -21,6 +21,9 @@ namespace EveCharacterMonitor
         {
             InitializeComponent();
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+#if DEBUG
+            btnDebugError.Visible = true;
+#endif
         }
 
         private Settings m_settings;
@@ -539,8 +542,8 @@ namespace EveCharacterMonitor
             }
         }
 
-        private const int SKILL_HEADER_HEIGHT = 20;
-        private const int SKILL_DETAIL_HEIGHT = 15;
+        private const int SKILL_HEADER_HEIGHT = 21;
+        private const int SKILL_DETAIL_HEIGHT = 16;
 
         private void lbSkills_DrawItem(object sender, DrawItemEventArgs e)
         {
@@ -637,6 +640,11 @@ namespace EveCharacterMonitor
             SkillPlanner.PlannerWindow npw = new EveCharacterMonitor.SkillPlanner.PlannerWindow(m_settings, m_characterInfo);
             npw.Show();
             m_plannerWindow = new WeakReference(npw);
+        }
+
+        private void btnDebugError_Click(object sender, EventArgs e)
+        {
+            throw new ApplicationException("OMG WTF");
         }
     }
 
