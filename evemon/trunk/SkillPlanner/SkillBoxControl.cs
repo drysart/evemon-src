@@ -145,6 +145,7 @@ namespace EveCharacterMonitor.SkillPlanner
 
         private TimeSpan CalculateTimeSpanFor(PlannerPrereq thisp)
         {
+            PlannerSkill ps = PlannerData.GetPlannerData().GetSkill(thisp.Name);
             Skill s = m_characterInfo.GetSkill(thisp.Name);
             int fromLevel = 0;
             if (s != null)
@@ -152,7 +153,13 @@ namespace EveCharacterMonitor.SkillPlanner
             int toLevel = thisp.Level;
 
             PlannerData pd = PlannerData.GetPlannerData();
-            return pd.GetSkill(thisp.Name).CalculateTimeToSkill(fromLevel, toLevel, m_characterInfo.Attributes);
+            TimeSpan res = pd.GetSkill(thisp.Name).CalculateTimeToSkill(fromLevel, toLevel, m_characterInfo.Attributes);
+
+            foreach (PlannerPrereq pp in ps.Prereqs)
+            {
+                res += CalculateTimeSpanFor(pp);
+            }
+            return res;
         }
 
         private void cmsPrimaryMenu_Opening(object sender, CancelEventArgs e)

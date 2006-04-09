@@ -32,6 +32,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.tvSkillView = new System.Windows.Forms.TreeView();
             this.cbSkillFilter = new System.Windows.Forms.ComboBox();
             this.pnlSkillDisplay = new System.Windows.Forms.Panel();
+            this.lbPlannedList = new System.Windows.Forms.ListBox();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
             this.scMain.SuspendLayout();
@@ -46,6 +47,7 @@ namespace EveCharacterMonitor.SkillPlanner
             // 
             // scMain.Panel1
             // 
+            this.scMain.Panel1.Controls.Add(this.lbPlannedList);
             this.scMain.Panel1.Controls.Add(this.tvSkillView);
             this.scMain.Panel1.Controls.Add(this.cbSkillFilter);
             // 
@@ -76,9 +78,10 @@ namespace EveCharacterMonitor.SkillPlanner
             this.cbSkillFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSkillFilter.FormattingEnabled = true;
             this.cbSkillFilter.Items.AddRange(new object[] {
-            "All Skills",
-            "Known Skills",
-            "Planned Skills"});
+            "Show All Skills",
+            "Show Known Skills",
+            "Show Planned Skills",
+            "Order Planned Skills"});
             this.cbSkillFilter.Location = new System.Drawing.Point(12, 12);
             this.cbSkillFilter.Name = "cbSkillFilter";
             this.cbSkillFilter.Size = new System.Drawing.Size(169, 21);
@@ -95,6 +98,16 @@ namespace EveCharacterMonitor.SkillPlanner
             this.pnlSkillDisplay.Size = new System.Drawing.Size(381, 454);
             this.pnlSkillDisplay.TabIndex = 0;
             this.pnlSkillDisplay.ClientSizeChanged += new System.EventHandler(this.pnlSkillDisplay_ClientSizeChanged);
+            // 
+            // lbPlannedList
+            // 
+            this.lbPlannedList.FormattingEnabled = true;
+            this.lbPlannedList.IntegralHeight = false;
+            this.lbPlannedList.Location = new System.Drawing.Point(0, 98);
+            this.lbPlannedList.Name = "lbPlannedList";
+            this.lbPlannedList.Size = new System.Drawing.Size(76, 43);
+            this.lbPlannedList.TabIndex = 2;
+            this.lbPlannedList.Visible = false;
             // 
             // PlannerWindow
             // 
@@ -118,5 +131,6 @@ namespace EveCharacterMonitor.SkillPlanner
         private System.Windows.Forms.TreeView tvSkillView;
         private System.Windows.Forms.ComboBox cbSkillFilter;
         private System.Windows.Forms.Panel pnlSkillDisplay;
+        private System.Windows.Forms.ListBox lbPlannedList;
     }
 }

@@ -145,6 +145,12 @@
     <Compile Include="SkillCompleteDialog.Designer.cs">
       <DependentUpon>SkillCompleteDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkillPlanner\LineDrawControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\LineDrawControl.Designer.cs">
+      <DependentUpon>LineDrawControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkillPlanner\PlanInfo.cs" />
     <Compile Include="SkillPlanner\PlannerData.cs" />
     <Compile Include="SkillPlanner\PlannerWindow.cs">
@@ -172,6 +178,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="output-html.xsl" />
+    <EmbeddedResource Include="SkillPlanner\LineDrawControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LineDrawControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\PlannerWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PlannerWindow.cs</DependentUpon>

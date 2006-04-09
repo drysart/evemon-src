@@ -110,12 +110,18 @@ namespace EveCharacterMonitor.SkillPlanner
                 return sbc;
 
             Panel cPanel = new Panel();
+            cPanel.BackColor = Color.Transparent;
 
+            List<LineDrawControl> m_lines = new List<LineDrawControl>();
             if (LAYOUT_HORIZONTAL)
             {
                 int curTop = 0;
                 foreach (PlannerPrereq prereq in ps.Prereqs)
                 {
+                    LineDrawControl ldc = new LineDrawControl();
+                    cPanel.Controls.Add(ldc);
+                    m_lines.Add(ldc);
+
                     PlannerSkill tps = m_plannerData.GetSkill(prereq.Name);
                     Control c = GetSkillControlRecursive(tps, false, prereq.Level);
                     c.Top = curTop;
@@ -124,6 +130,8 @@ namespace EveCharacterMonitor.SkillPlanner
                     cPanel.Controls.Add(c);
                     if (cPanel.Width < c.Right)
                         cPanel.Width = c.Right;
+
+                    ldc.SetPointA(c.Left + sbc.Width / 2, c.Top + c.Height / 2);
                 }
                 curTop -= UD_PADDING;
                 cPanel.Height = curTop;
@@ -135,6 +143,10 @@ namespace EveCharacterMonitor.SkillPlanner
                 int curLeft = 0;
                 foreach (PlannerPrereq prereq in ps.Prereqs)
                 {
+                    LineDrawControl ldc = new LineDrawControl();
+                    cPanel.Controls.Add(ldc);
+                    m_lines.Add(ldc);
+
                     PlannerSkill tps = m_plannerData.GetSkill(prereq.Name);
                     Control c = GetSkillControlRecursive(tps, false, prereq.Level);
                     c.Top = sbc.Height + LR_PADDING;
@@ -143,6 +155,8 @@ namespace EveCharacterMonitor.SkillPlanner
                     cPanel.Controls.Add(c);
                     if (cPanel.Height < c.Bottom)
                         cPanel.Height = c.Bottom;
+
+                    ldc.SetPointA(c.Left + c.Width / 2, c.Top + sbc.Height / 2);
                 }
                 curLeft -= UD_PADDING;
                 cPanel.Width = curLeft;
@@ -150,6 +164,11 @@ namespace EveCharacterMonitor.SkillPlanner
                 sbc.Left = (curLeft / 2) - (sbc.Width / 2);
             }
             cPanel.Controls.Add(sbc);
+            foreach (LineDrawControl xldc in m_lines)
+            {
+                xldc.SetPointB(sbc.Left + sbc.Width / 2, sbc.Top + sbc.Height / 2);
+                xldc.SendToBack();
+            }
 
             return cPanel;
         }
@@ -167,13 +186,16 @@ namespace EveCharacterMonitor.SkillPlanner
 
             switch (cbSkillFilter.SelectedIndex)
             {
-                case 1: // Known Skills
+                case 3: // Order Planned Skills
+                    SetupPlannedSkillOrder();
+                    return;
+                case 1: // Show Known Skills
                     sfd = delegate(PlannerSkill el)
                     {
                         return (GetCharacterSkillForPlannerSkill(el) != null);
                     };
                     break;
-                case 2: // Planned Skills
+                case 2: // Show Planned Skills
                     sfd = delegate(PlannerSkill el)
                     {
                         foreach (PlannedSkill ps in m_planInfo.PlannedSkills)
@@ -184,7 +206,7 @@ namespace EveCharacterMonitor.SkillPlanner
                         return false;
                     };
                     break;
-                case 0: // All Skills
+                case 0: // Show All Skills
                 default:
                     sfd = delegate(PlannerSkill el)
                     {
@@ -193,6 +215,9 @@ namespace EveCharacterMonitor.SkillPlanner
                     break;
             }
 
+            lbPlannedList.Visible = false;
+            tvSkillView.Visible = true;
+            pnlSkillDisplay.Visible = true;
             tvSkillView.Nodes.Clear();
 
             foreach (PlannerSkillGroup psg in m_plannerData.SkillGroups)
@@ -211,6 +236,23 @@ namespace EveCharacterMonitor.SkillPlanner
                 {
                     tvSkillView.Nodes.Add(gtn);
                 }
+            }
+        }
+
+        private void SetupPlannedSkillOrder()
+        {
+            lbPlannedList.Location = tvSkillView.Location;
+            lbPlannedList.Size = tvSkillView.Size;
+            lbPlannedList.Anchor = tvSkillView.Anchor;
+
+            tvSkillView.Visible = false;
+            pnlSkillDisplay.Visible = false;
+            lbPlannedList.Visible = true;
+
+            lbPlannedList.Items.Clear();
+            foreach (PlannedSkill ps in m_planInfo.PlannedSkills)
+            {
+                lbPlannedList.Items.Add(ps.Name);
             }
         }
 
