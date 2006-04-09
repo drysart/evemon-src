@@ -47,6 +47,7 @@ namespace EveCharacterMonitor
             this.label1 = new System.Windows.Forms.Label();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             this.pnlCharData = new System.Windows.Forms.Panel();
+            this.lblSkillHeader = new System.Windows.Forms.Label();
             this.btnPlan = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.tmrTick = new System.Windows.Forms.Timer(this.components);
@@ -154,9 +155,9 @@ namespace EveCharacterMonitor
             this.lbSkills.FormattingEnabled = true;
             this.lbSkills.IntegralHeight = false;
             this.lbSkills.ItemHeight = 15;
-            this.lbSkills.Location = new System.Drawing.Point(0, 135);
+            this.lbSkills.Location = new System.Drawing.Point(0, 148);
             this.lbSkills.Name = "lbSkills";
-            this.lbSkills.Size = new System.Drawing.Size(384, 222);
+            this.lbSkills.Size = new System.Drawing.Size(384, 209);
             this.lbSkills.TabIndex = 12;
             this.lbSkills.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbSkills_DrawItem);
             this.lbSkills.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.lbSkills_MeasureItem);
@@ -221,6 +222,7 @@ namespace EveCharacterMonitor
             // 
             // pnlCharData
             // 
+            this.pnlCharData.Controls.Add(this.lblSkillHeader);
             this.pnlCharData.Controls.Add(this.btnPlan);
             this.pnlCharData.Controls.Add(this.btnSave);
             this.pnlCharData.Controls.Add(this.pbCharImage);
@@ -236,8 +238,18 @@ namespace EveCharacterMonitor
             this.pnlCharData.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlCharData.Location = new System.Drawing.Point(0, 0);
             this.pnlCharData.Name = "pnlCharData";
-            this.pnlCharData.Size = new System.Drawing.Size(384, 135);
+            this.pnlCharData.Size = new System.Drawing.Size(384, 148);
             this.pnlCharData.TabIndex = 14;
+            // 
+            // lblSkillHeader
+            // 
+            this.lblSkillHeader.AutoSize = true;
+            this.lblSkillHeader.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSkillHeader.Location = new System.Drawing.Point(-3, 132);
+            this.lblSkillHeader.Name = "lblSkillHeader";
+            this.lblSkillHeader.Size = new System.Drawing.Size(148, 13);
+            this.lblSkillHeader.TabIndex = 14;
+            this.lblSkillHeader.Text = "Known Skills (0 Total SP):";
             // 
             // btnPlan
             // 
@@ -317,5 +329,6 @@ namespace EveCharacterMonitor
         private System.Windows.Forms.SaveFileDialog sfdSaveDialog;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnPlan;
+        private System.Windows.Forms.Label lblSkillHeader;
     }
 }
