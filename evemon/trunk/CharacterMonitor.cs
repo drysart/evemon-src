@@ -141,6 +141,7 @@ namespace EveCharacterMonitor
                     //lblWillpower.Text = ci.Attributes.AdjustedWillpower.ToString("#.00") + " Willpower";
 
                     int totalSP = 0;
+                    int totalSkills = 0;
                     lbSkills.Items.Clear();
                     foreach (SkillGroup sg in ci.SkillGroups)
                     {
@@ -150,9 +151,10 @@ namespace EveCharacterMonitor
                             lbSkills.Items.Add(s);
                             totalSP += s.SkillPoints;
                         }
+                        totalSkills += sg.Skills.Count;
                     }
 
-                    lblSkillHeader.Text = String.Format("Known Skills ({0} Total SP):", totalSP.ToString("#,##0"));
+                    lblSkillHeader.Text = String.Format("{0} Known Skills ({1} Total SP):", totalSkills.ToString("#"), totalSP.ToString("#,##0"));
 
                     if (ci.SkillInTraining == null)
                     {
