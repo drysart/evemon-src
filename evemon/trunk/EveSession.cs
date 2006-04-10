@@ -368,6 +368,92 @@ namespace EveCharacterMonitor
                 callback(this, null);
             }
         }
+
+        public void UpdateGrandCharacterInfoAsync(GrandCharacterInfo grandCharacterInfo)
+        {
+            ThreadPool.QueueUserWorkItem(new WaitCallback(delegate
+            {
+                this.UpdateGrandCharacterInfo(grandCharacterInfo);
+            }));
+        }
+
+        public void UpdateGrandCharacterInfo(GrandCharacterInfo grandCharacterInfo)
+        {
+            GrandSkill newTrainingSkill = null;
+            int trainingToLevel = -1;
+            DateTime estimatedCompletion = DateTime.MaxValue;
+
+            bool firstAttempt = true;
+        AGAIN:
+            string htmld = GetUrl("http://myeve.eve-online.com/character/skilltree.asp?characterID=" +
+                                    grandCharacterInfo.CharacterId.ToString(), null);
+            if (!htmld.Contains("skills trained, for a total of"))
+            {
+                if (!WebLogin() || !firstAttempt)
+                {
+//                    callback(this, null);
+                    return;
+                }
+                firstAttempt = false;
+                goto AGAIN;
+            }
+
+            int cti = htmld.IndexOf("Currently training to: ");
+            if (cti != -1)
+            {
+                string bsubstr = ReverseString(htmld.Substring(cti - 400, 400));
+                string s1 = Regex.Match(bsubstr, @"knaR>i< / (.+?)>""xp11:ezis-tnof").Groups[1].Value;
+                string skillName = ReverseString(s1);
+                string fsubstr = htmld.Substring(cti, 800);
+                trainingToLevel = Convert.ToInt32(Regex.Match(fsubstr, @"Currently training to: <\/font><strong>level (\d) </st").Groups[1].Value);
+                string timeLeft = Regex.Match(fsubstr, @"Time left: <\/font><strong>(.+?)<\/strong>").Groups[1].Value;
+                estimatedCompletion = DateTime.Now + ConvertTimeStringToTimeSpan(timeLeft);
+                //sit.CurrentPoints = Convert.ToInt32(Regex.Match(fsubstr, @"SP done: </font><strong>(\d+) of \d+</strong>").Groups[1].Value);
+                //sit.NeededPoints = Convert.ToInt32(Regex.Match(fsubstr, @"SP done: </font><strong>\d+ of (\d+)</strong>").Groups[1].Value);
+
+                newTrainingSkill = grandCharacterInfo.GetSkill(skillName);
+            }
+            //else
+            //{
+            //    //sit = null;
+            //    grandCharacterInfo.CancelCurrentSkillTraining();
+            //}
+
+            firstAttempt = true;
+        BAGAIN:
+            string data = GetUrl("http://myeve.eve-online.com/character/xml.asp?characterID=" +
+                                    grandCharacterInfo.CharacterId.ToString(), null);
+            if (!data.Contains("<charactersheet>"))
+            {
+                if (!WebLogin() || !firstAttempt)
+                {
+//                    callback(this, null);
+                    return;
+                }
+                firstAttempt = false;
+                goto BAGAIN;
+            }
+            XmlDocument xdoc = new XmlDocument();
+            xdoc.LoadXml(data);
+
+            CharacterInfo result = ProcessCharacterXml(xdoc, grandCharacterInfo.CharacterId);
+//            result.SkillInTraining = sit;
+//#if DEBUG
+//            IntelligenceBonus ib = new IntelligenceBonus();
+//            ib.Name = "woof woof";
+//            ib.Amount = 3;
+//            result.AttributeBonuses.Bonuses.Add(ib);
+//#endif
+//            callback(this, result);
+
+            grandCharacterInfo.AssignFromCharacterInfo(result);
+
+            grandCharacterInfo.CancelCurrentSkillTraining();
+            if (newTrainingSkill != null)
+            {
+                newTrainingSkill.SetTrainingInfo(trainingToLevel, estimatedCompletion);
+            }
+        }
     }
 
     public class Pair<TypeA, TypeB>

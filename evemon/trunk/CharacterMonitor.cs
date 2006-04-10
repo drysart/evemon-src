@@ -61,10 +61,181 @@ namespace EveCharacterMonitor
                 m_session = null;
                 throw new ApplicationException("Could not start character monitor");
             }
+
+            m_grandCharacterInfo = new GrandCharacterInfo(m_charId, m_cli.CharacterName);
+            m_grandCharacterInfo.BioInfoChanged += new EventHandler(m_grandCharacterInfo_BioInfoChanged);
+            m_grandCharacterInfo.BalanceChanged += new EventHandler(m_grandCharacterInfo_BalanceChanged);
+            m_grandCharacterInfo.AttributeChanged += new EventHandler(m_grandCharacterInfo_AttributeChanged);
+            m_grandCharacterInfo.SkillChanged += new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
+
             tmrUpdate.Interval = 10;
             tmrUpdate.Enabled = true;
             tmrTick.Enabled = true;
             GetCharacterImage();
+        }
+
+        void m_grandCharacterInfo_SkillChanged(object sender, SkillChangedEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    m_grandCharacterInfo_SkillChanged(sender, e);
+                }));
+                return;
+            }
+
+            lbSkills.BeginUpdate();
+            try
+            {
+                foreach (GrandSkill gs in e.SkillList)
+                {
+                    GrandSkillGroup gsg = gs.SkillGroup;
+
+                    if (gs.CurrentSkillPoints > 0)
+                    {
+                        // Find the existing listbox item...
+                        int lbIndex = -1;
+                        int shouldInsertAt = -1;
+                        bool shouldInsertSkillGroup = true;
+                        bool inMySkillGroup = false;
+                        bool found = false;
+                        for (int i = 0; i < lbSkills.Items.Count; i++)
+                        {
+                            //string s;
+                            //s.CompareTo();
+                            object o = lbSkills.Items[i];
+                            if (o == gs)
+                            {
+                                shouldInsertSkillGroup = false;
+                                lbIndex = i;
+                                found = true;
+                                break;
+                            }
+                            else if (o == gsg)
+                            {
+                                inMySkillGroup = true;
+                                shouldInsertSkillGroup = false;
+                            }
+                            else if (o is GrandSkillGroup && ((GrandSkillGroup)o).Name.CompareTo(gsg.Name) > 0)
+                            {
+                                shouldInsertAt = i;
+                                shouldInsertSkillGroup = (!inMySkillGroup);
+                                break;
+                            }
+                            else if (inMySkillGroup && o is GrandSkill && ((GrandSkill)o).Name.CompareTo(gs.Name) > 0)
+                            {
+                                shouldInsertAt = i;
+                                shouldInsertSkillGroup = false;
+                                break;
+                            }
+                        }
+
+                        if (shouldInsertSkillGroup)
+                        {
+                            if (shouldInsertAt >= 0)
+                            {
+                                lbSkills.Items.Insert(shouldInsertAt, gsg);
+                                shouldInsertAt++;
+                            }
+                            else
+                            {
+                                lbSkills.Items.Add(gsg);
+                                shouldInsertAt = -1;
+                            }
+                        }
+                        if (!found)
+                        {
+                            if (shouldInsertAt >= 0)
+                            {
+                                lbSkills.Items.Insert(shouldInsertAt, gs);
+                                lbIndex = shouldInsertAt;
+                            }
+                            else
+                            {
+                                lbSkills.Items.Add(gs);
+                                lbIndex = lbSkills.Items.Count - 1;
+                            }
+                        }
+
+                        lbSkills.Invalidate(lbSkills.GetItemRectangle(lbIndex));
+                    }
+
+                    if (gs.InTraining)
+                    {
+                        m_skillTrainingName = gs.Name + " " + Skill.RomanSkillLevel[gs.TrainingToLevel];
+                        lblTrainingSkill.Text = m_skillTrainingName;
+                        m_estimatedCompletion = gs.EstimatedCompletion;
+                        CalcSkillRemainText();
+                        pnlTraining.Visible = true;
+                    }
+                    else if (m_grandCharacterInfo.CurrentlyTrainingSkill == null)
+                    {
+                        m_skillTrainingName = String.Empty;
+                        m_estimatedCompletion = DateTime.MaxValue;
+                        pnlTraining.Visible = false;
+                    }
+                }
+            }
+            finally
+            {
+                lbSkills.EndUpdate();
+            }
+
+            UpdateSkillHeaderStats();
+        }
+
+        private void UpdateSkillHeaderStats()
+        {
+            lblSkillHeader.Text = String.Format("{0} Known Skills ({1} Total SP):", m_grandCharacterInfo.KnownSkillCount, m_grandCharacterInfo.SkillPointTotal.ToString("#,##0"));
+        }
+
+        void m_grandCharacterInfo_AttributeChanged(object sender, EventArgs e)
+        {
+            this.Invoke(new MethodInvoker(delegate
+            {
+                SetAttributeLabel(lblIntelligence, EveAttribute.Intelligence);
+                SetAttributeLabel(lblCharisma, EveAttribute.Charisma);
+                SetAttributeLabel(lblPerception, EveAttribute.Perception);
+                SetAttributeLabel(lblMemory, EveAttribute.Memory);
+                SetAttributeLabel(lblWillpower, EveAttribute.Willpower);
+            }));
+        }
+
+        private void SetAttributeLabel(Label lblWillpower, EveAttribute eveAttribute)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(eveAttribute.ToString());
+            sb.Append(": ");
+            sb.Append(m_grandCharacterInfo.GetEffectiveAttribute(eveAttribute).ToString("0.00"));
+            double fromImplants = m_grandCharacterInfo.GetAttributeBonusFromImplants(eveAttribute);
+            if (fromImplants > 0)
+            {
+                sb.Append(" (+");
+                sb.Append(fromImplants.ToString("0.00"));
+                sb.Append(" from implants)");
+            }
+            lblWillpower.Text = sb.ToString();
+        }
+
+        private void m_grandCharacterInfo_BalanceChanged(object sender, EventArgs e)
+        {
+            this.Invoke(new MethodInvoker(delegate
+            {
+                lblBalance.Text = "Balance: " + m_grandCharacterInfo.Balance.ToString("#,##0.00") + " ISK";
+            }));
+        }
+
+        private void m_grandCharacterInfo_BioInfoChanged(object sender, EventArgs e)
+        {
+            this.Invoke(new MethodInvoker(delegate
+            {
+                lblCharacterName.Text = m_grandCharacterInfo.Name;
+                lblBioInfo.Text = m_grandCharacterInfo.Gender + " " +
+                    m_grandCharacterInfo.Race + " " +
+                    m_grandCharacterInfo.Bloodline;
+                lblCorpInfo.Text = "Corporation: " + m_grandCharacterInfo.CorporationName;
+            }));
         }
 
         public void Stop()
@@ -89,7 +260,8 @@ namespace EveCharacterMonitor
         private void tmrUpdate_Tick(object sender, EventArgs e)
         {
             tmrUpdate.Enabled = false;
-            m_session.GetCharacterInfoAsync(m_charId, new GetCharacterInfoCallback(GotCharacterInfo));
+            //m_session.GetCharacterInfoAsync(m_charId, new GetCharacterInfoCallback(GotCharacterInfo));
+            m_session.UpdateGrandCharacterInfoAsync(m_grandCharacterInfo);
         }
 
         private static string[] m_skillLevelRoman = new string[6] { "(none)", "I", "II", "III", "IV", "V" };
@@ -98,6 +270,8 @@ namespace EveCharacterMonitor
         private DateTime m_estimatedCompletion;
         private string m_lastCompletedSkill = String.Empty;
         private CharacterInfo m_characterInfo;
+
+        private GrandCharacterInfo m_grandCharacterInfo;
 
         private void GotCharacterInfo(EveSession sess, CharacterInfo ci)
         {
@@ -376,6 +550,14 @@ namespace EveCharacterMonitor
         {
             CalcSkillRemainText();
 
+            GrandSkill trainingSkill = m_grandCharacterInfo.CurrentlyTrainingSkill;
+            if (trainingSkill != null)
+            {
+                int idx = lbSkills.Items.IndexOf(trainingSkill);
+                lbSkills.Invalidate(lbSkills.GetItemRectangle(idx));
+                UpdateSkillHeaderStats();
+            }
+
             if (m_estimatedCompletion < DateTime.Now && m_skillTrainingName != m_lastCompletedSkill)
             {
                 m_lastCompletedSkill = m_skillTrainingName;
@@ -554,9 +736,9 @@ namespace EveCharacterMonitor
             object item = lbSkills.Items[e.Index];
             Graphics g = e.Graphics;
 
-            if (item is SkillGroup)
+            if (item is GrandSkillGroup)
             {
-                SkillGroup sg = (SkillGroup)item;
+                GrandSkillGroup sg = (GrandSkillGroup)item;
 
                 using (Brush b = new SolidBrush(Color.FromArgb(75, 75, 75)))
                 {
@@ -564,20 +746,20 @@ namespace EveCharacterMonitor
                 }
                 using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
                 {
-                    Size titleSizeInt = TextRenderer.MeasureText(g, sg.Name, boldf, new Size(0, 0), TextFormatFlags.NoPadding|TextFormatFlags.NoClipping);
+                    Size titleSizeInt = TextRenderer.MeasureText(g, sg.Name, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
                     Point titleTopLeftInt = new Point(e.Bounds.Left + 3,
                         e.Bounds.Top + ((e.Bounds.Height / 2) - (titleSizeInt.Height / 2)));
                     Point detailTopLeftInt = new Point(titleTopLeftInt.X + titleSizeInt.Width, titleTopLeftInt.Y);
 
                     string detailText = String.Format(", {0} Skill{1}, {2} Points",
-                        sg.Skills.Count, sg.Skills.Count > 1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
+                        sg.KnownCount, sg.KnownCount > 1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
                     TextRenderer.DrawText(g, sg.Name, boldf, titleTopLeftInt, Color.White);
                     TextRenderer.DrawText(g, detailText, lbSkills.Font, detailTopLeftInt, Color.White);
                 }
             }
-            else if (item is Skill)
+            else if (item is GrandSkill)
             {
-                Skill s = (Skill)item;
+                GrandSkill s = (GrandSkill)item;
 
                 if ((e.Index % 2) == 0)
                     g.FillRectangle(Brushes.White, e.Bounds);
@@ -595,12 +777,59 @@ namespace EveCharacterMonitor
                     TextRenderer.DrawText(g, skillName, boldf, skillNameTopLeftInt, Color.Black);
                     TextRenderer.DrawText(g, " (Rank " + s.Rank.ToString() + ")", lbSkills.Font, detailTopLeftInt, Color.Black);
 
-                    string skillPoints = String.Format("{0}/{1}", s.SkillPoints.ToString("#,##0"), s.SkillLevel5.ToString("#,##0"));
-                    Size skillPointSizeInt = TextRenderer.MeasureText(g, skillPoints, lbSkills.Font, new Size(0,0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+                    string skillPoints = String.Format("{0}/{1}", s.CurrentSkillPoints.ToString("#,##0"), s.GetPointsRequiredForLevel(5).ToString("#,##0"));
+                    Size skillPointSizeInt = TextRenderer.MeasureText(g, skillPoints, lbSkills.Font, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
                     Point skillPointTopLeftInt = new Point(e.Bounds.Right - skillPointSizeInt.Width - 6, skillNameTopLeftInt.Y);
                     TextRenderer.DrawText(g, skillPoints, lbSkills.Font, skillPointTopLeftInt, Color.Black);
                 }
             }
+            //if (item is SkillGroup)
+            //{
+            //    SkillGroup sg = (SkillGroup)item;
+
+            //    using (Brush b = new SolidBrush(Color.FromArgb(75, 75, 75)))
+            //    {
+            //        g.FillRectangle(b, e.Bounds);
+            //    }
+            //    using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
+            //    {
+            //        Size titleSizeInt = TextRenderer.MeasureText(g, sg.Name, boldf, new Size(0, 0), TextFormatFlags.NoPadding|TextFormatFlags.NoClipping);
+            //        Point titleTopLeftInt = new Point(e.Bounds.Left + 3,
+            //            e.Bounds.Top + ((e.Bounds.Height / 2) - (titleSizeInt.Height / 2)));
+            //        Point detailTopLeftInt = new Point(titleTopLeftInt.X + titleSizeInt.Width, titleTopLeftInt.Y);
+
+            //        string detailText = String.Format(", {0} Skill{1}, {2} Points",
+            //            sg.Skills.Count, sg.Skills.Count > 1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
+            //        TextRenderer.DrawText(g, sg.Name, boldf, titleTopLeftInt, Color.White);
+            //        TextRenderer.DrawText(g, detailText, lbSkills.Font, detailTopLeftInt, Color.White);
+            //    }
+            //}
+            //else if (item is Skill)
+            //{
+            //    Skill s = (Skill)item;
+
+            //    if ((e.Index % 2) == 0)
+            //        g.FillRectangle(Brushes.White, e.Bounds);
+            //    else
+            //        g.FillRectangle(Brushes.LightGray, e.Bounds);
+
+            //    using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
+            //    {
+            //        string skillName = s.Name + " " + Skill.RomanSkillLevel[s.Level];
+            //        Size skillNameSizeInt = TextRenderer.MeasureText(g, skillName, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+            //        Point skillNameTopLeftInt = new Point(e.Bounds.Left + 6,
+            //            e.Bounds.Top + ((e.Bounds.Height / 2) - (skillNameSizeInt.Height / 2)));
+            //        Point detailTopLeftInt = new Point(skillNameTopLeftInt.X + skillNameSizeInt.Width, skillNameTopLeftInt.Y);
+
+            //        TextRenderer.DrawText(g, skillName, boldf, skillNameTopLeftInt, Color.Black);
+            //        TextRenderer.DrawText(g, " (Rank " + s.Rank.ToString() + ")", lbSkills.Font, detailTopLeftInt, Color.Black);
+
+            //        string skillPoints = String.Format("{0}/{1}", s.SkillPoints.ToString("#,##0"), s.SkillLevel5.ToString("#,##0"));
+            //        Size skillPointSizeInt = TextRenderer.MeasureText(g, skillPoints, lbSkills.Font, new Size(0,0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+            //        Point skillPointTopLeftInt = new Point(e.Bounds.Right - skillPointSizeInt.Width - 6, skillNameTopLeftInt.Y);
+            //        TextRenderer.DrawText(g, skillPoints, lbSkills.Font, skillPointTopLeftInt, Color.Black);
+            //    }
+            //}
         }
 
         private void lbSkills_MeasureItem(object sender, MeasureItemEventArgs e)
@@ -608,9 +837,9 @@ namespace EveCharacterMonitor
             if (e.Index < 0)
                 return;
             object item = lbSkills.Items[e.Index];
-            if (item is SkillGroup)
+            if (item is SkillGroup || item is GrandSkillGroup)
                 e.ItemHeight = SKILL_HEADER_HEIGHT;
-            else if (item is Skill)
+            else if (item is Skill || item is GrandSkill)
                 e.ItemHeight = SKILL_DETAIL_HEIGHT;
         }
 
