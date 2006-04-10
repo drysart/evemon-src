@@ -152,6 +152,12 @@
     <Compile Include="SkillPlanner\LineDrawControl.Designer.cs">
       <DependentUpon>LineDrawControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkillPlanner\NewPlannerWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\NewPlannerWindow.Designer.cs">
+      <DependentUpon>NewPlannerWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkillPlanner\PlanInfo.cs" />
     <Compile Include="SkillPlanner\PlannerData.cs" />
     <Compile Include="SkillPlanner\PlannerWindow.cs">
@@ -165,6 +171,12 @@
     </Compile>
     <Compile Include="SkillPlanner\SkillBoxControl.Designer.cs">
       <DependentUpon>SkillBoxControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\SkillTreeDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\SkillTreeDisplay.Designer.cs">
+      <DependentUpon>SkillTreeDisplay.cs</DependentUpon>
     </Compile>
     <Compile Include="UnhandledExceptionWindow.cs">
       <SubType>Form</SubType>
@@ -190,6 +202,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>LineDrawControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\NewPlannerWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NewPlannerWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\PlannerWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PlannerWindow.cs</DependentUpon>
@@ -197,6 +213,10 @@
     <EmbeddedResource Include="SkillPlanner\SkillBoxControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SkillBoxControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\SkillTreeDisplay.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SkillTreeDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UnhandledExceptionWindow.resx">
       <SubType>Designer</SubType>
