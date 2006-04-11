@@ -29,8 +29,9 @@ namespace EveCharacterMonitor.SkillPlanner
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.button1 = new System.Windows.Forms.Button();
             this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
+            this.cbSkillFilter = new System.Windows.Forms.ComboBox();
+            this.tvSkillView = new System.Windows.Forms.TreeView();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -39,12 +40,14 @@ namespace EveCharacterMonitor.SkillPlanner
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.button1);
+            this.splitContainer1.Panel1.Controls.Add(this.tvSkillView);
+            this.splitContainer1.Panel1.Controls.Add(this.cbSkillFilter);
             // 
             // splitContainer1.Panel2
             // 
@@ -52,16 +55,6 @@ namespace EveCharacterMonitor.SkillPlanner
             this.splitContainer1.Size = new System.Drawing.Size(622, 609);
             this.splitContainer1.SplitterDistance = 207;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(73, 97);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // skillTreeDisplay1
             // 
@@ -73,6 +66,34 @@ namespace EveCharacterMonitor.SkillPlanner
             this.skillTreeDisplay1.RootSkill = null;
             this.skillTreeDisplay1.Size = new System.Drawing.Size(411, 609);
             this.skillTreeDisplay1.TabIndex = 0;
+            this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
+            // 
+            // cbSkillFilter
+            // 
+            this.cbSkillFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbSkillFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSkillFilter.FormattingEnabled = true;
+            this.cbSkillFilter.Items.AddRange(new object[] {
+            "Show All Skills",
+            "Show Known Skills",
+            "Show Planned Skills"});
+            this.cbSkillFilter.Location = new System.Drawing.Point(12, 12);
+            this.cbSkillFilter.Name = "cbSkillFilter";
+            this.cbSkillFilter.Size = new System.Drawing.Size(192, 21);
+            this.cbSkillFilter.TabIndex = 0;
+            this.cbSkillFilter.SelectedIndexChanged += new System.EventHandler(this.cbSkillFilter_SelectedIndexChanged);
+            // 
+            // tvSkillView
+            // 
+            this.tvSkillView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvSkillView.Location = new System.Drawing.Point(12, 39);
+            this.tvSkillView.Name = "tvSkillView";
+            this.tvSkillView.Size = new System.Drawing.Size(192, 558);
+            this.tvSkillView.TabIndex = 1;
+            this.tvSkillView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSkillView_AfterSelect);
             // 
             // NewPlannerWindow
             // 
@@ -94,7 +115,8 @@ namespace EveCharacterMonitor.SkillPlanner
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Button button1;
         private SkillTreeDisplay skillTreeDisplay1;
+        private System.Windows.Forms.ComboBox cbSkillFilter;
+        private System.Windows.Forms.TreeView tvSkillView;
     }
 }

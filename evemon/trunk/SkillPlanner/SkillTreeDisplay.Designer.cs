@@ -28,7 +28,14 @@ namespace EveCharacterMonitor.SkillPlanner
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.tmrSkillTick = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
+            // 
+            // tmrSkillTick
+            // 
+            this.tmrSkillTick.Interval = 1000;
+            this.tmrSkillTick.Tick += new System.EventHandler(this.tmrSkillTick_Tick);
             // 
             // SkillTreeDisplay
             // 
@@ -41,5 +48,7 @@ namespace EveCharacterMonitor.SkillPlanner
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer tmrSkillTick;
     }
 }

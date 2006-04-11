@@ -848,6 +848,14 @@ namespace EveCharacterMonitor
             return Convert.ToInt32(Math.Ceiling(points));
         }
 
+        private TimeSpan GetTimeSpanForPoints(int points)
+        {
+            double primAttr = m_owner.GetEffectiveAttribute(m_primaryAttribute);
+            double secondaryAttr = m_owner.GetEffectiveAttribute(m_secondaryAttribute);
+            double minutes = Convert.ToDouble(points) / (primAttr + (secondaryAttr / 2));
+            return TimeSpan.FromMinutes(minutes);
+        }
+
         public int GetPointsRequiredForLevel(int level)
         {
             int pointsForLevel = Convert.ToInt32(250 * m_rank * Math.Pow(32, Convert.ToDouble(level - 1) / 2));
@@ -1018,5 +1026,123 @@ namespace EveCharacterMonitor
             m_estimatedCompletion = DateTime.MaxValue;
             OnChanged();
         }
+
+        public TimeSpan GetTrainingTimeToLevel(int level)
+        {
+            int currentSp = this.CurrentSkillPoints;
+            int desiredSp = this.GetPointsRequiredForLevel(level);
+            if (desiredSp <= currentSp)
+                return TimeSpan.Zero;
+            return this.GetTimeSpanForPoints(desiredSp - currentSp);
+        }
+
+        #region GetPrerequisiteTime overloads
+
+        public TimeSpan GetPrerequisiteTime()
+        {
+            bool junk = false;
+            return GetPrerequisiteTime(new Dictionary<GrandSkill, int>(), ref junk);
+        }
+
+        public TimeSpan GetPrerequisiteTime(Dictionary<GrandSkill, int> alreadyCountedList)
+        {
+            bool junk = false;
+            return GetPrerequisiteTime(alreadyCountedList, ref junk);
+        }
+
+        public TimeSpan GetPrerequisiteTime(ref bool timeIsCurrentlyTraining)
+        {
+            return GetPrerequisiteTime(new Dictionary<GrandSkill, int>(), ref timeIsCurrentlyTraining);
+        }
+
+        public TimeSpan GetPrerequisiteTime(Dictionary<GrandSkill, int> alreadyCountedList, ref bool timeIsCurrentlyTraining)
+        {
+            TimeSpan result = TimeSpan.Zero;
+            foreach (Prereq pp in this.Prereqs)
+            {
+                GrandSkill gs = pp.Skill;
+                if (gs.InTraining)
+                    timeIsCurrentlyTraining = true;
+
+                int fromPoints = gs.CurrentSkillPoints;
+                int toPoints = gs.GetPointsRequiredForLevel(pp.RequiredLevel);
+                if (alreadyCountedList.ContainsKey(gs))
+                {
+                    fromPoints = alreadyCountedList[gs];
+                }
+                if (fromPoints < toPoints)
+                {
+                    result += gs.GetTimeSpanForPoints(toPoints - fromPoints);
+                }
+                alreadyCountedList[gs] = Math.Max(fromPoints, toPoints);
+
+                result += gs.GetPrerequisiteTime(alreadyCountedList, ref timeIsCurrentlyTraining);
+            }
+            return result;
+        }
+
+        #endregion
+
+        public bool PrerequisitesMet
+        {
+            get
+            {
+                foreach (Prereq pp in this.Prereqs)
+                {
+                    if (pp.Skill.Level < pp.RequiredLevel)
+                        return false;
+                }
+                return true;
+            }
+        }
+
+        public static string TimeSpanToDescriptiveText(TimeSpan ts, DescriptiveTextOptions dto)
+        {
+            StringBuilder sb = new StringBuilder();
+            BuildDescriptiveFragment(sb, ts.Days, dto, "days");
+            BuildDescriptiveFragment(sb, ts.Hours, dto, "hours");
+            BuildDescriptiveFragment(sb, ts.Minutes, dto, "minutes");
+            BuildDescriptiveFragment(sb, ts.Seconds, dto, "seconds");
+            if (sb.Length == 0)
+                sb.Append("(none)");
+            return sb.ToString();
+        }
+
+        private static void BuildDescriptiveFragment(StringBuilder sb, int p, DescriptiveTextOptions dto, string dstr)
+        {
+            if (((dto & DescriptiveTextOptions.IncludeZeroes) == 0) && p == 0)
+                return;
+            if ((dto & DescriptiveTextOptions.IncludeCommas) != 0)
+            {
+                if (sb.Length > 0)
+                    sb.Append(", ");
+            }
+            sb.Append(p.ToString());
+            if ((dto & DescriptiveTextOptions.SpaceText) != 0)
+                sb.Append(' ');
+            if ((dto & DescriptiveTextOptions.UppercaseText) != 0)
+                dstr = dstr.ToUpper();
+            if ((dto & DescriptiveTextOptions.FullText) != 0)
+            {
+                if (p == 1)
+                    dstr = dstr.Substring(0, dstr.Length - 1);
+                sb.Append(dstr);
+            }
+            else
+            {
+                sb.Append(dstr[0]);
+            }
+        }
+    }
+
+    [Flags]
+    public enum DescriptiveTextOptions
+    {
+        Default = 0,
+        FullText = 1,
+        UppercaseText = 2,
+        SpaceText = 4,
+        IncludeCommas = 8,
+        IncludeZeroes = 16
     }
 }

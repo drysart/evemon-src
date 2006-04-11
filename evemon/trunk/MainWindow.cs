@@ -73,8 +73,17 @@ namespace EveCharacterMonitor
 
         private void AddTab(CharLoginInfo cli)
         {
-            AGAIN:
-            if (!cli.Validate())
+        AGAIN:
+            bool result;
+            try
+            {
+                result = cli.Validate();
+            }
+            catch (NullReferenceException)
+            {
+                result = false;
+            }
+            if (!result)
             {
                 DialogResult dr = MessageBox.Show(
                     "Unable to show character monitor for " + cli.CharacterName + ", " +
@@ -84,7 +93,7 @@ namespace EveCharacterMonitor
                     MessageBoxIcon.Error);
                 if (dr == DialogResult.Retry)
                 {
-                    EveSession.GetSession(cli.Username, cli.Password).ReLogin();
+                    //EveSession.GetSession(cli.Username, cli.Password).ReLogin();
                     goto AGAIN;
                 }
                 return;
