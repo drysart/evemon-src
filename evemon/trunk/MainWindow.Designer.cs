@@ -40,6 +40,7 @@ namespace EveCharacterMonitor
             this.niMinimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.niAlertIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tmrAlertRefresh = new System.Windows.Forms.Timer(this.components);
+            this.tsbAbout = new System.Windows.Forms.ToolStripButton();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
@@ -80,10 +81,11 @@ namespace EveCharacterMonitor
             this.tsbAddChar,
             this.tsbRemoveChar,
             this.toolStripSeparator1,
-            this.tsbOptions});
+            this.tsbOptions,
+            this.tsbAbout});
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(226, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(280, 25);
             this.toolStrip1.TabIndex = 0;
             // 
             // tsbAddChar
@@ -138,6 +140,16 @@ namespace EveCharacterMonitor
             // 
             this.tmrAlertRefresh.Tick += new System.EventHandler(this.tmrAlertRefresh_Tick);
             // 
+            // tsbAbout
+            // 
+            this.tsbAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbAbout.Image = ((System.Drawing.Image)(resources.GetObject("tsbAbout.Image")));
+            this.tsbAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbAbout.Name = "tsbAbout";
+            this.tsbAbout.Size = new System.Drawing.Size(23, 22);
+            this.tsbAbout.Text = "About...";
+            this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -176,5 +188,6 @@ namespace EveCharacterMonitor
         private System.Windows.Forms.NotifyIcon niMinimizeIcon;
         private System.Windows.Forms.NotifyIcon niAlertIcon;
         private System.Windows.Forms.Timer tmrAlertRefresh;
+        private System.Windows.Forms.ToolStripButton tsbAbout;
     }
 }

@@ -312,5 +312,13 @@ namespace EveCharacterMonitor
             um.Stop();
             um.UpdateAvailable -= new UpdateAvailableHandler(um_UpdateAvailable);
         }
+
+        private void tsbAbout_Click(object sender, EventArgs e)
+        {
+            using (AboutWindow f = new AboutWindow())
+            {
+                f.ShowDialog();
+            }
+        }
     }
 }

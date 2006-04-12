@@ -37,6 +37,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutWindow.Designer.cs">
+      <DependentUpon>AboutWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="BusyDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -185,6 +191,10 @@
     <Resource Include="eve.exe_I006b_040f.ico" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AboutWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="output-html.xsl" />
     <EmbeddedResource Include="SkillPlanner\LineDrawControl.resx">
       <SubType>Designer</SubType>
