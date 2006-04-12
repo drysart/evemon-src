@@ -63,8 +63,8 @@ namespace EveCharacterMonitor
         {
             string updMessage = m_args.UpdateMessage;
             updMessage.Replace("\r", "");
-            updMessage.Replace("\n", "\r\n");
-            textBox1.Text = updMessage;
+            //textBox1.Text = updMessage;
+            textBox1.Lines = updMessage.Split('\n');
             label1.Text = String.Format(label1.Text, m_args.CurrentVersion, m_args.NewestVersion);
         }
     }
