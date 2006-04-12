@@ -459,20 +459,13 @@ namespace EveCharacterMonitor
             set { m_skillLevel[4] = value; }
         }
 
-        private static string[] s_levels = new string[6] { "(none)", "I", "II", "III", "IV", "V" };
-   
-        public static string[] RomanSkillLevel
-        {
-            get { return s_levels; }
-        }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("\t");
             sb.Append(m_name);
             sb.Append(" ");
-            sb.Append(s_levels[m_level]);
+            sb.Append(GrandSkill.GetRomanSkillNumber(m_level));
             sb.Append(" (Rank ");
             sb.Append(m_rank.ToString());
             sb.Append(") ");

@@ -164,7 +164,7 @@ namespace EveCharacterMonitor
 
                     if (gs.InTraining)
                     {
-                        m_skillTrainingName = gs.Name + " " + SerializableSkill.RomanSkillLevel[gs.TrainingToLevel];
+                        m_skillTrainingName = gs.Name + " " + GrandSkill.GetRomanSkillNumber(gs.TrainingToLevel);
                         lblTrainingSkill.Text = m_skillTrainingName;
                         m_estimatedCompletion = gs.EstimatedCompletion;
                         CalcSkillRemainText();
@@ -649,13 +649,13 @@ namespace EveCharacterMonitor
                         sg.Name, sg.Skills.Count, sg.Skills.Count>1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
                     foreach (SerializableSkill s in sg.Skills)
                     {
-                        string skillDesc = s.Name + " " + SerializableSkill.RomanSkillLevel[s.Level] + " (" + s.Rank.ToString() + ")";
+                        string skillDesc = s.Name + " " + GrandSkill.GetRomanSkillNumber(s.Level) + " (" + s.Rank.ToString() + ")";
                         sw.WriteLine(": {0} {1}/{2} Points",
                             skillDesc.PadRight(40), s.SkillPoints.ToString("#,##0"), s.SkillLevel5.ToString("#,##0"));
                         if (ci.SkillInTraining != null && ci.SkillInTraining.SkillName == s.Name)
                         {
                             sw.WriteLine(":  (Currently training to level {0}, completes {1})",
-                                SerializableSkill.RomanSkillLevel[ci.SkillInTraining.TrainingToLevel],
+                                GrandSkill.GetRomanSkillNumber(ci.SkillInTraining.TrainingToLevel),
                                 ci.SkillInTraining.EstimatedCompletion.ToString());
                         }
                     }
@@ -780,7 +780,7 @@ namespace EveCharacterMonitor
 
                 using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
                 {
-                    string skillName = s.Name + " " + SerializableSkill.RomanSkillLevel[s.Level];
+                    string skillName = s.Name + " " + GrandSkill.GetRomanSkillNumber(s.Level);
                     Size skillNameSizeInt = TextRenderer.MeasureText(g, skillName, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
                     Point skillNameTopLeftInt = new Point(e.Bounds.Left + 6,
                         e.Bounds.Top + ((e.Bounds.Height / 2) - (skillNameSizeInt.Height / 2)));
