@@ -136,23 +136,6 @@ namespace EveCharacterMonitor
             }
         }
 
-        private List<PlanInfo> m_skillPlans = new List<PlanInfo>();
-
-        public List<PlanInfo> SkillPlans
-        {
-            get { return m_skillPlans; }
-        }
-
-        public PlanInfo GetSkillPlanForCharacter(string name)
-        {
-            foreach (PlanInfo pi in m_skillPlans)
-            {
-                if (pi.CharacterName == name)
-                    return pi;
-            }
-            return null;
-        }
-
         private const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";
 
         private static string StoreFileName(string key)
