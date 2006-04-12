@@ -20,6 +20,14 @@ namespace EveCharacterMonitor.SkillPlanner
             SetStyle(ControlStyles.ResizeRedraw, true);
         }
 
+        private Plan m_plan = null;
+
+        public Plan Plan
+        {
+            get { return m_plan; }
+            set { m_plan = value; }
+        }
+
         private GrandSkill m_rootSkill = null;
 
         public GrandSkill RootSkill
@@ -216,6 +224,7 @@ namespace EveCharacterMonitor.SkillPlanner
         public Region GetSkillRegion(GrandSkill gs)
         {
             Region r = new Region();
+            r.MakeEmpty();
             try
             {
                 foreach (List<SkillInfo> lsi in m_layoutData)
@@ -682,6 +691,82 @@ namespace EveCharacterMonitor.SkillPlanner
             Size res = TextRenderer.MeasureText(g, text, f);
             TextRenderer.DrawText(g, text, f, p, c);
             return res;
+        }
+
+        public event SkillClickedHandler SkillClicked;
+
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
+            base.OnMouseClick(e);
+
+            GrandSkill clickedSkill = null;
+            using (Graphics g = this.CreateGraphics())
+            {
+                foreach (List<SkillInfo> lsi in m_layoutData)
+                {
+                    if (clickedSkill == null)
+                    {
+                        foreach (SkillInfo si in lsi)
+                        {
+                            using (Region r = this.GetSkillRegion(si.Skill))
+                            {
+                                if (r.IsVisible(e.Location))
+                                {
+                                    clickedSkill = si.Skill;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (clickedSkill != null && SkillClicked != null)
+            {
+                SkillClickedEventArgs se = new SkillClickedEventArgs(clickedSkill, e.Button, e.Location);
+                SkillClicked(this, se);
+            }
+        }
+    }
+
+    public delegate void SkillClickedHandler(object sender, SkillClickedEventArgs e);
+
+    public class SkillClickedEventArgs: EventArgs
+    {
+        private GrandSkill m_skill;
+        private MouseButtons m_button;
+        private Point m_location;
+
+        internal SkillClickedEventArgs(GrandSkill skill, MouseButtons button, Point location)
+        {
+            m_skill = skill;
+            m_button = button;
+            m_location = location;
+        }
+
+        public GrandSkill Skill
+        {
+            get { return m_skill; }
+        }
+
+        public MouseButtons Button
+        {
+            get { return m_button; }
+        }
+
+        public Point Location
+        {
+            get { return m_location; }
+        }
+
+        public int X
+        {
+            get { return m_location.X; }
+        }
+
+        public int Y
+        {
+            get { return m_location.Y; }
         }
     }
 }

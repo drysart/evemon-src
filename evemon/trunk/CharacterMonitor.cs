@@ -859,33 +859,30 @@ namespace EveCharacterMonitor
 
         private void btnPlan_Click(object sender, EventArgs e)
         {
-            SkillPlanner.NewPlannerWindow npw = new EveCharacterMonitor.SkillPlanner.NewPlannerWindow(m_grandCharacterInfo);
+            if (m_plannerWindow != null)
+            {
+                object o = m_plannerWindow.Target;
+                if (o != null && o is SkillPlanner.NewPlannerWindow)
+                {
+                    SkillPlanner.NewPlannerWindow pw = (SkillPlanner.NewPlannerWindow)o;
+                    if (pw.Visible)
+                    {
+                        pw.BringToFront();
+                        pw.Focus();
+                        return;
+                    }
+                    try
+                    {
+                        pw.Show();
+                        return;
+                    }
+                    catch (ObjectDisposedException) { }
+                }
+                m_plannerWindow = null;
+            }
+            SkillPlanner.NewPlannerWindow npw = new EveCharacterMonitor.SkillPlanner.NewPlannerWindow(m_settings, m_grandCharacterInfo);
             npw.Show();
-
-            //if (m_plannerWindow != null)
-            //{
-            //    object o = m_plannerWindow.Target;
-            //    if (o != null && o is SkillPlanner.PlannerWindow)
-            //    {
-            //        SkillPlanner.PlannerWindow pw = (SkillPlanner.PlannerWindow)o;
-            //        if (pw.Visible)
-            //        {
-            //            pw.BringToFront();
-            //            pw.Focus();
-            //            return;
-            //        }
-            //        try
-            //        {
-            //            pw.Show();
-            //            return;
-            //        }
-            //        catch (ObjectDisposedException) { }
-            //    }
-            //    m_plannerWindow = null;
-            //}
-            //SkillPlanner.PlannerWindow npw = new EveCharacterMonitor.SkillPlanner.PlannerWindow(m_settings, m_characterInfo);
-            //npw.Show();
-            //m_plannerWindow = new WeakReference(npw);
+            m_plannerWindow = new WeakReference(npw);
         }
 
         private void btnDebugError_Click(object sender, EventArgs e)

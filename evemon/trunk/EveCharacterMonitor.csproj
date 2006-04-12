@@ -159,6 +159,7 @@
     <Compile Include="SkillPlanner\NewPlannerWindow.Designer.cs">
       <DependentUpon>NewPlannerWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkillPlanner\Plan.cs" />
     <Compile Include="SkillPlanner\SkillTreeDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>

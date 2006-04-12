@@ -136,6 +136,25 @@ namespace EveCharacterMonitor
             }
         }
 
+        private List<Pair<string, Plan>> m_plans = new List<Pair<string, Plan>>();
+
+        public List<Pair<string, Plan>> Plans
+        {
+            get { return m_plans; }
+        }
+
+        public Plan GetPlanByName(string charName)
+        {
+            foreach (Pair<string, Plan> x in m_plans)
+            {
+                if (x.A == charName)
+                {
+                    return x.B;
+                }
+            }
+            return null;
+        }
+
         private const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";
 
         private static string StoreFileName(string key)

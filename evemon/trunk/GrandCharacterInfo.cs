@@ -28,7 +28,7 @@ namespace EveCharacterMonitor
             m_name = name;
 
             BuildSkillTree();
-            m_attributeBonuses.Changed += new EventHandler(m_attributeBonuses_Changed);
+            m_attributeBonuses.Changed += new EventHandler<ChangedEventArgs<GrandEveAttributeBonus>>(m_attributeBonuses_Changed);
         }
 
         private void BuildSkillTree()
@@ -611,16 +611,46 @@ namespace EveCharacterMonitor
         }
     }
 
+    public enum ChangeType
+    {
+        Added,
+        Removed,
+        Cleared
+    }
+
+    public class ChangedEventArgs<T> : EventArgs
+    {
+        private T m_item;
+        private ChangeType m_changeType;
+
+        public T Item
+        {
+            get { return m_item; }
+        }
+
+        public ChangeType ChangeType
+        {
+            get { return m_changeType; }
+        }
+
+        public ChangedEventArgs(T item, ChangeType changeType)
+        {
+            m_item = item;
+            m_changeType = changeType;
+        }
+    }
+
     public class MonitoredList<T> : IList<T>
+        where T : class
     {
         private List<T> m_inner = new List<T>();
 
-        public event EventHandler Changed;
+        public event EventHandler<ChangedEventArgs<T>> Changed;
 
-        private void OnChanged()
+        private void OnChanged(T item, ChangeType changeType)
         {
             if (Changed != null)
-                Changed(this, new EventArgs());
+                Changed(this, new ChangedEventArgs<T>(item, changeType));
         }
 
         #region IList<T> Members
@@ -633,13 +663,14 @@ namespace EveCharacterMonitor
         public void Insert(int index, T item)
         {
             m_inner.Insert(index, item);
-            OnChanged();
+            OnChanged(item, ChangeType.Added);
         }
 
         public void RemoveAt(int index)
         {
+            T rItem = m_inner[index];
             m_inner.RemoveAt(index);
-            OnChanged();
+            OnChanged(rItem, ChangeType.Removed);
         }
 
         public T this[int index]
@@ -650,7 +681,17 @@ namespace EveCharacterMonitor
             }
             set
             {
+                bool change = false;
+                if (!m_inner[index].Equals(value))
+                {
+                    OnChanged(m_inner[index], ChangeType.Removed);
+                    change = true;
+                }
                 m_inner[index] = value;
+                if (change)
+                {
+                    OnChanged(value, ChangeType.Added);
+                }
             }
         }
 
@@ -661,13 +702,13 @@ namespace EveCharacterMonitor
         public void Add(T item)
         {
             m_inner.Add(item);
-            OnChanged();
+            OnChanged(item, ChangeType.Added);
         }
 
         public void Clear()
         {
             m_inner.Clear();
-            OnChanged();
+            OnChanged(null, ChangeType.Cleared);
         }
 
         public bool Contains(T item)
@@ -693,7 +734,8 @@ namespace EveCharacterMonitor
         public bool Remove(T item)
         {
             bool result = m_inner.Remove(item);
-            OnChanged();
+            if (result)
+                OnChanged(item, ChangeType.Removed);
             return result;
         }
 
