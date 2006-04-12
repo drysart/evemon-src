@@ -274,8 +274,6 @@ namespace EveCharacterMonitor
             m_session.UpdateGrandCharacterInfoAsync(m_grandCharacterInfo);
         }
 
-        private static string[] m_skillLevelRoman = new string[6] { "(none)", "I", "II", "III", "IV", "V" };
-
         private string m_skillTrainingName;
         private DateTime m_estimatedCompletion;
         private string m_lastCompletedSkill = String.Empty;
@@ -565,6 +563,8 @@ namespace EveCharacterMonitor
             {
                 int idx = lbSkills.Items.IndexOf(trainingSkill);
                 lbSkills.Invalidate(lbSkills.GetItemRectangle(idx));
+                int sgidx = lbSkills.Items.IndexOf(trainingSkill.SkillGroup);
+                lbSkills.Invalidate(lbSkills.GetItemRectangle(sgidx));
                 UpdateSkillHeaderStats();
             }
 
