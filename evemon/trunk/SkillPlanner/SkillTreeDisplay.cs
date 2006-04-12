@@ -574,7 +574,7 @@ namespace EveCharacterMonitor.SkillPlanner
                             si.Left + ofsLeft, ttop, SKILLBOX_WIDTH, SKILLBOX_HEIGHT);
                         si.CurrentRectangle = rect;
 
-                        string currentLevelText = "Current Level: " + Skill.RomanSkillLevel[si.Skill.Level];
+                        string currentLevelText = "Current Level: " + SerializableSkill.RomanSkillLevel[si.Skill.Level];
                         Color stdTextColor = Color.Black;
                         Color reqTextColor = Color.Red;
                         string requiredLevel = null;
@@ -585,7 +585,7 @@ namespace EveCharacterMonitor.SkillPlanner
 
                         if (si.RequiredLevel > 0)
                         {
-                            requiredLevel = "Required Level: " + Skill.RomanSkillLevel[si.RequiredLevel];
+                            requiredLevel = "Required Level: " + SerializableSkill.RomanSkillLevel[si.RequiredLevel];
                             if (si.RequiredLevel > si.Skill.Level)
                             {
                                 TimeSpan ts = si.Skill.GetTrainingTimeToLevel(si.RequiredLevel);

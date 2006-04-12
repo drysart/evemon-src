@@ -164,7 +164,7 @@ namespace EveCharacterMonitor
 
                     if (gs.InTraining)
                     {
-                        m_skillTrainingName = gs.Name + " " + Skill.RomanSkillLevel[gs.TrainingToLevel];
+                        m_skillTrainingName = gs.Name + " " + SerializableSkill.RomanSkillLevel[gs.TrainingToLevel];
                         lblTrainingSkill.Text = m_skillTrainingName;
                         m_estimatedCompletion = gs.EstimatedCompletion;
                         CalcSkillRemainText();
@@ -360,13 +360,13 @@ namespace EveCharacterMonitor
         //    }));
         //}
 
-        private void SetAttributeLabel(CharacterInfo ci, Label label, EveAttribute eveAttribute)
+        private void SetAttributeLabel(SerializableCharacterInfo ci, Label label, EveAttribute eveAttribute)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(ci.Attributes.GetAttributeAdjustment(eveAttribute, EveAttributeAdjustment.AllWithLearning).ToString("#.00"));
+            sb.Append(ci.Attributes.GetAttributeAdjustment(eveAttribute, SerializableEveAttributeAdjustment.AllWithLearning).ToString("#.00"));
             sb.Append(' ');
             sb.Append(eveAttribute.ToString());
-            double implantValue = ci.Attributes.GetAttributeAdjustment(eveAttribute, EveAttributeAdjustment.Implants | EveAttributeAdjustment.Learning);
+            double implantValue = ci.Attributes.GetAttributeAdjustment(eveAttribute, SerializableEveAttributeAdjustment.Implants | SerializableEveAttributeAdjustment.Learning);
             if (implantValue > 0)
             {
                 sb.Append(" (");
@@ -606,7 +606,7 @@ namespace EveCharacterMonitor
 
         private void SaveTextFile(string fileName)
         {
-            CharacterInfo ci = m_grandCharacterInfo.ExportCharacterInfo();
+            SerializableCharacterInfo ci = m_grandCharacterInfo.ExportSerializableCharacterInfo();
             using (StreamWriter sw = new StreamWriter(fileName, false))
             {
                 MethodInvoker writeSep = new MethodInvoker(delegate
@@ -635,7 +635,7 @@ namespace EveCharacterMonitor
                 {
                     sw.WriteLine("IMPLANTS");
                     writeSep();
-                    foreach (EveAttributeBonus tb in ci.AttributeBonuses.Bonuses)
+                    foreach (SerializableEveAttributeBonus tb in ci.AttributeBonuses.Bonuses)
                     {
                         sw.WriteLine("+{0} {1} : {2}", tb.Amount, tb.EveAttribute.ToString().PadRight(13), tb.Name);
                     }
@@ -643,19 +643,19 @@ namespace EveCharacterMonitor
                 }
                 sw.WriteLine("SKILLS");
                 writeSep();
-                foreach (SkillGroup sg in ci.SkillGroups)
+                foreach (SerializableSkillGroup sg in ci.SkillGroups)
                 {
                     sw.WriteLine("{0}, {1} Skill{2}, {3} Points",
                         sg.Name, sg.Skills.Count, sg.Skills.Count>1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
-                    foreach (Skill s in sg.Skills)
+                    foreach (SerializableSkill s in sg.Skills)
                     {
-                        string skillDesc = s.Name + " " + Skill.RomanSkillLevel[s.Level] + " (" + s.Rank.ToString() + ")";
+                        string skillDesc = s.Name + " " + SerializableSkill.RomanSkillLevel[s.Level] + " (" + s.Rank.ToString() + ")";
                         sw.WriteLine(": {0} {1}/{2} Points",
                             skillDesc.PadRight(40), s.SkillPoints.ToString("#,##0"), s.SkillLevel5.ToString("#,##0"));
                         if (ci.SkillInTraining != null && ci.SkillInTraining.SkillName == s.Name)
                         {
                             sw.WriteLine(":  (Currently training to level {0}, completes {1})",
-                                Skill.RomanSkillLevel[ci.SkillInTraining.TrainingToLevel],
+                                SerializableSkill.RomanSkillLevel[ci.SkillInTraining.TrainingToLevel],
                                 ci.SkillInTraining.EstimatedCompletion.ToString());
                         }
                     }
@@ -689,11 +689,11 @@ namespace EveCharacterMonitor
                             xtw.IndentChar = '\t';
                             xtw.Formatting = Formatting.Indented;
                         }
-                        XmlSerializer xs = new XmlSerializer(typeof(CharacterInfo));
+                        XmlSerializer xs = new XmlSerializer(typeof(SerializableCharacterInfo));
                         XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                         ns.Add("", "");
                         //xs.Serialize(xtw, m_characterInfo, ns);
-                        xs.Serialize(xtw, m_grandCharacterInfo.ExportCharacterInfo(), ns);
+                        xs.Serialize(xtw, m_grandCharacterInfo.ExportSerializableCharacterInfo(), ns);
                         xtw.Flush();
 
                         if (saveFormat == SaveFormat.Xml)
@@ -780,7 +780,7 @@ namespace EveCharacterMonitor
 
                 using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
                 {
-                    string skillName = s.Name + " " + Skill.RomanSkillLevel[s.Level];
+                    string skillName = s.Name + " " + SerializableSkill.RomanSkillLevel[s.Level];
                     Size skillNameSizeInt = TextRenderer.MeasureText(g, skillName, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
                     Point skillNameTopLeftInt = new Point(e.Bounds.Left + 6,
                         e.Bounds.Top + ((e.Bounds.Height / 2) - (skillNameSizeInt.Height / 2)));
@@ -849,9 +849,9 @@ namespace EveCharacterMonitor
             if (e.Index < 0)
                 return;
             object item = lbSkills.Items[e.Index];
-            if (item is SkillGroup || item is GrandSkillGroup)
+            if (item is SerializableSkillGroup || item is GrandSkillGroup)
                 e.ItemHeight = SKILL_HEADER_HEIGHT;
-            else if (item is Skill || item is GrandSkill)
+            else if (item is SerializableSkill || item is GrandSkill)
                 e.ItemHeight = SKILL_DETAIL_HEIGHT;
         }
 

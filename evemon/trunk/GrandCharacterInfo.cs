@@ -466,7 +466,7 @@ namespace EveCharacterMonitor
             }
         }
 
-        internal void AssignFromCharacterInfo(CharacterInfo ci)
+        internal void AssignFromSerializableCharacterInfo(SerializableCharacterInfo ci)
         {
             this.SuppressEvents();
             this.Name = ci.Name;
@@ -483,16 +483,16 @@ namespace EveCharacterMonitor
             this.BaseWillpower = ci.Attributes.BaseWillpower;
 
             this.AttributeBonuses.Clear();
-            foreach (EveAttributeBonus bonus in ci.AttributeBonuses.Bonuses)
+            foreach (SerializableEveAttributeBonus bonus in ci.AttributeBonuses.Bonuses)
             {
                 GrandEveAttributeBonus geab = new GrandEveAttributeBonus(bonus.Name, bonus.EveAttribute, bonus.Amount);
                 this.AttributeBonuses.Add(geab);
             }
 
-            foreach (SkillGroup sg in ci.SkillGroups)
+            foreach (SerializableSkillGroup sg in ci.SkillGroups)
             {
                 GrandSkillGroup gsg = m_skillGroups[sg.Name];
-                foreach (Skill s in sg.Skills)
+                foreach (SerializableSkill s in sg.Skills)
                 {
                     GrandSkill gs = gsg[s.Name];
                     gs.CurrentSkillPoints = s.SkillPoints;
@@ -501,9 +501,9 @@ namespace EveCharacterMonitor
             this.ResumeEvents();
         }
 
-        internal CharacterInfo ExportCharacterInfo()
+        internal SerializableCharacterInfo ExportSerializableCharacterInfo()
         {
-            CharacterInfo ci = new CharacterInfo();
+            SerializableCharacterInfo ci = new SerializableCharacterInfo();
             ci.Name = this.Name;
             ci.Gender = this.Gender;
             ci.Race = this.Race;
@@ -519,23 +519,23 @@ namespace EveCharacterMonitor
 
             foreach (GrandEveAttributeBonus geab in this.AttributeBonuses)
             {
-                EveAttributeBonus eab = null;
+                SerializableEveAttributeBonus eab = null;
                 switch (geab.EveAttribute)
                 {
                     case EveAttribute.Intelligence:
-                        eab = new IntelligenceBonus();
+                        eab = new SerializableIntelligenceBonus();
                         break;
                     case EveAttribute.Charisma:
-                        eab = new CharismaBonus();
+                        eab = new SerializableCharismaBonus();
                         break;
                     case EveAttribute.Perception:
-                        eab = new PerceptionBonus();
+                        eab = new SerializablePerceptionBonus();
                         break;
                     case EveAttribute.Memory:
-                        eab = new MemoryBonus();
+                        eab = new SerializableMemoryBonus();
                         break;
                     case EveAttribute.Willpower:
-                        eab = new WillpowerBonus();
+                        eab = new SerializableWillpowerBonus();
                         break;
                 }
                 if (eab != null)
@@ -548,13 +548,13 @@ namespace EveCharacterMonitor
 
             foreach (GrandSkillGroup gsg in this.SkillGroups.Values)
             {
-                SkillGroup sg = new SkillGroup();
+                SerializableSkillGroup sg = new SerializableSkillGroup();
                 bool added = false;
                 foreach (GrandSkill gs in gsg)
                 {
                     if (gs.CurrentSkillPoints > 0)
                     {
-                        Skill s = new Skill();
+                        SerializableSkill s = new SerializableSkill();
                         s.Name = gs.Name;
                         s.Id = gs.Id;
                         s.Level = gs.Level;
@@ -574,7 +574,7 @@ namespace EveCharacterMonitor
             GrandSkill gsit = this.CurrentlyTrainingSkill;
             if (gsit != null)
             {
-                SkillInTraining sit = new SkillInTraining();
+                SerializableSkillInTraining sit = new SerializableSkillInTraining();
                 sit.SkillName = gsit.Name;
                 sit.TrainingToLevel = gsit.TrainingToLevel;
                 sit.CurrentPoints = gsit.CurrentSkillPoints;
