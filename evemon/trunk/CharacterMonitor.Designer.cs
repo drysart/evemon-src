@@ -268,6 +268,7 @@ namespace EveCharacterMonitor
             // btnPlan
             // 
             this.btnPlan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPlan.Enabled = false;
             this.btnPlan.Location = new System.Drawing.Point(323, 76);
             this.btnPlan.Name = "btnPlan";
             this.btnPlan.Size = new System.Drawing.Size(61, 23);

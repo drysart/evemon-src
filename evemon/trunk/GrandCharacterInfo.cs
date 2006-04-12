@@ -482,6 +482,13 @@ namespace EveCharacterMonitor
             this.BaseMemory = ci.Attributes.BaseMemory;
             this.BaseWillpower = ci.Attributes.BaseWillpower;
 
+            this.AttributeBonuses.Clear();
+            foreach (EveAttributeBonus bonus in ci.AttributeBonuses.Bonuses)
+            {
+                GrandEveAttributeBonus geab = new GrandEveAttributeBonus(bonus.Name, bonus.EveAttribute, bonus.Amount);
+                this.AttributeBonuses.Add(geab);
+            }
+
             foreach (SkillGroup sg in ci.SkillGroups)
             {
                 GrandSkillGroup gsg = m_skillGroups[sg.Name];
@@ -492,6 +499,91 @@ namespace EveCharacterMonitor
                 }
             }
             this.ResumeEvents();
+        }
+
+        internal CharacterInfo ExportCharacterInfo()
+        {
+            CharacterInfo ci = new CharacterInfo();
+            ci.Name = this.Name;
+            ci.Gender = this.Gender;
+            ci.Race = this.Race;
+            ci.BloodLine = this.Bloodline;
+            ci.CorpName = this.CorporationName;
+            ci.Balance = this.Balance;
+
+            ci.Attributes.BaseIntelligence = this.BaseIntelligence;
+            ci.Attributes.BaseCharisma = this.BaseCharisma;
+            ci.Attributes.BasePerception = this.BasePerception;
+            ci.Attributes.BaseMemory = this.BaseMemory;
+            ci.Attributes.BaseWillpower = this.BaseWillpower;
+
+            foreach (GrandEveAttributeBonus geab in this.AttributeBonuses)
+            {
+                EveAttributeBonus eab = null;
+                switch (geab.EveAttribute)
+                {
+                    case EveAttribute.Intelligence:
+                        eab = new IntelligenceBonus();
+                        break;
+                    case EveAttribute.Charisma:
+                        eab = new CharismaBonus();
+                        break;
+                    case EveAttribute.Perception:
+                        eab = new PerceptionBonus();
+                        break;
+                    case EveAttribute.Memory:
+                        eab = new MemoryBonus();
+                        break;
+                    case EveAttribute.Willpower:
+                        eab = new WillpowerBonus();
+                        break;
+                }
+                if (eab != null)
+                {
+                    eab.Name = geab.Name;
+                    eab.Amount = geab.Amount;
+                    ci.AttributeBonuses.Bonuses.Add(eab);
+                }
+            }
+
+            foreach (GrandSkillGroup gsg in this.SkillGroups.Values)
+            {
+                SkillGroup sg = new SkillGroup();
+                bool added = false;
+                foreach (GrandSkill gs in gsg)
+                {
+                    if (gs.CurrentSkillPoints > 0)
+                    {
+                        Skill s = new Skill();
+                        s.Name = gs.Name;
+                        s.Id = gs.Id;
+                        s.Level = gs.Level;
+                        s.Rank = gs.Rank;
+                        s.SkillPoints = gs.CurrentSkillPoints;
+                        sg.Skills.Add(s);
+                        added = true;
+                    }
+                }
+                if (added)
+                {
+                    sg.Name = gsg.Name;
+                    ci.SkillGroups.Add(sg);
+                }
+            }
+
+            GrandSkill gsit = this.CurrentlyTrainingSkill;
+            if (gsit != null)
+            {
+                SkillInTraining sit = new SkillInTraining();
+                sit.SkillName = gsit.Name;
+                sit.TrainingToLevel = gsit.TrainingToLevel;
+                sit.CurrentPoints = gsit.CurrentSkillPoints;
+                sit.EstimatedCompletion = gsit.EstimatedCompletion;
+                sit.NeededPoints = gsit.GetPointsRequiredForLevel(gsit.TrainingToLevel);
+                ci.SkillInTraining = sit;
+            }
+
+            return ci;
         }
     }
 

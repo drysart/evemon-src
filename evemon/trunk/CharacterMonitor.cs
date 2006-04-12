@@ -85,6 +85,7 @@ namespace EveCharacterMonitor
                 return;
             }
 
+            EnableButtons();
             lbSkills.BeginUpdate();
             try
             {
@@ -185,6 +186,12 @@ namespace EveCharacterMonitor
             UpdateSkillHeaderStats();
         }
 
+        private void EnableButtons()
+        {
+            btnSave.Enabled = true;
+            btnPlan.Enabled = true;
+        }
+
         private void UpdateSkillHeaderStats()
         {
             lblSkillHeader.Text = String.Format("{0} Known Skills ({1} Total SP):", m_grandCharacterInfo.KnownSkillCount, m_grandCharacterInfo.SkillPointTotal.ToString("#,##0"));
@@ -194,6 +201,7 @@ namespace EveCharacterMonitor
         {
             this.Invoke(new MethodInvoker(delegate
             {
+                EnableButtons();
                 SetAttributeLabel(lblIntelligence, EveAttribute.Intelligence);
                 SetAttributeLabel(lblCharisma, EveAttribute.Charisma);
                 SetAttributeLabel(lblPerception, EveAttribute.Perception);
@@ -222,6 +230,7 @@ namespace EveCharacterMonitor
         {
             this.Invoke(new MethodInvoker(delegate
             {
+                EnableButtons();
                 lblBalance.Text = "Balance: " + m_grandCharacterInfo.Balance.ToString("#,##0.00") + " ISK";
             }));
         }
@@ -230,6 +239,7 @@ namespace EveCharacterMonitor
         {
             this.Invoke(new MethodInvoker(delegate
             {
+                EnableButtons();
                 lblCharacterName.Text = m_grandCharacterInfo.Name;
                 lblBioInfo.Text = m_grandCharacterInfo.Gender + " " +
                     m_grandCharacterInfo.Race + " " +
@@ -269,86 +279,86 @@ namespace EveCharacterMonitor
         private string m_skillTrainingName;
         private DateTime m_estimatedCompletion;
         private string m_lastCompletedSkill = String.Empty;
-        private CharacterInfo m_characterInfo;
+        //private CharacterInfo m_characterInfo;
 
         private GrandCharacterInfo m_grandCharacterInfo;
 
-        private void GotCharacterInfo(EveSession sess, CharacterInfo ci)
-        {
-            this.Invoke(new MethodInvoker(delegate
-            {
-                m_characterInfo = ci;
-                lblCharacterName.Text = m_cli.CharacterName;
-                if (ci == null)
-                {
-                    btnSave.Enabled = false;
-                    btnPlan.Enabled = false;
-                    lblBioInfo.Text = String.Empty;
-                    lblCorpInfo.Text = "(cannot retrieve character info)";
-                    lblBalance.Text = String.Empty;
-                    lblIntelligence.Text = String.Empty;
-                    lblCharisma.Text = String.Empty;
-                    lblPerception.Text = String.Empty;
-                    lblMemory.Text = String.Empty;
-                    lblWillpower.Text = String.Empty;
-                    lbSkills.Items.Clear();
-                    m_skillTrainingName = String.Empty;
-                    m_estimatedCompletion = DateTime.MaxValue;
-                    pnlTraining.Visible = false;
-                }
-                else
-                {
-                    btnSave.Enabled = true;
-                    btnPlan.Enabled = true;
-                    lblBioInfo.Text = ci.Gender + " " + ci.Race + " " + ci.BloodLine;
-                    lblCorpInfo.Text = "Corporation: " + ci.CorpName;
-                    lblBalance.Text = "Balance: " + ci.Balance.ToString("#,##0.00") + " ISK";
-                    SetAttributeLabel(ci, lblIntelligence, EveAttribute.Intelligence);
-                    SetAttributeLabel(ci, lblCharisma, EveAttribute.Charisma);
-                    SetAttributeLabel(ci, lblPerception, EveAttribute.Perception);
-                    SetAttributeLabel(ci, lblMemory, EveAttribute.Memory);
-                    SetAttributeLabel(ci, lblWillpower, EveAttribute.Willpower);
-                    //lblIntelligence.Text = ci.Attributes.AdjustedIntelligence.ToString("#.00") + " Intelligence";
-                    //lblCharisma.Text = ci.Attributes.AdjustedCharisma.ToString("#.00") + " Charisma";
-                    //lblPerception.Text = ci.Attributes.AdjustedPerception.ToString("#.00") + " Perception";
-                    //lblMemory.Text = ci.Attributes.AdjustedMemory.ToString("#.00") + " Memory";
-                    //lblWillpower.Text = ci.Attributes.AdjustedWillpower.ToString("#.00") + " Willpower";
+        //private void GotCharacterInfo(EveSession sess, CharacterInfo ci)
+        //{
+        //    this.Invoke(new MethodInvoker(delegate
+        //    {
+        //        m_characterInfo = ci;
+        //        lblCharacterName.Text = m_cli.CharacterName;
+        //        if (ci == null)
+        //        {
+        //            btnSave.Enabled = false;
+        //            btnPlan.Enabled = false;
+        //            lblBioInfo.Text = String.Empty;
+        //            lblCorpInfo.Text = "(cannot retrieve character info)";
+        //            lblBalance.Text = String.Empty;
+        //            lblIntelligence.Text = String.Empty;
+        //            lblCharisma.Text = String.Empty;
+        //            lblPerception.Text = String.Empty;
+        //            lblMemory.Text = String.Empty;
+        //            lblWillpower.Text = String.Empty;
+        //            lbSkills.Items.Clear();
+        //            m_skillTrainingName = String.Empty;
+        //            m_estimatedCompletion = DateTime.MaxValue;
+        //            pnlTraining.Visible = false;
+        //        }
+        //        else
+        //        {
+        //            btnSave.Enabled = true;
+        //            btnPlan.Enabled = true;
+        //            lblBioInfo.Text = ci.Gender + " " + ci.Race + " " + ci.BloodLine;
+        //            lblCorpInfo.Text = "Corporation: " + ci.CorpName;
+        //            lblBalance.Text = "Balance: " + ci.Balance.ToString("#,##0.00") + " ISK";
+        //            SetAttributeLabel(ci, lblIntelligence, EveAttribute.Intelligence);
+        //            SetAttributeLabel(ci, lblCharisma, EveAttribute.Charisma);
+        //            SetAttributeLabel(ci, lblPerception, EveAttribute.Perception);
+        //            SetAttributeLabel(ci, lblMemory, EveAttribute.Memory);
+        //            SetAttributeLabel(ci, lblWillpower, EveAttribute.Willpower);
+        //            //lblIntelligence.Text = ci.Attributes.AdjustedIntelligence.ToString("#.00") + " Intelligence";
+        //            //lblCharisma.Text = ci.Attributes.AdjustedCharisma.ToString("#.00") + " Charisma";
+        //            //lblPerception.Text = ci.Attributes.AdjustedPerception.ToString("#.00") + " Perception";
+        //            //lblMemory.Text = ci.Attributes.AdjustedMemory.ToString("#.00") + " Memory";
+        //            //lblWillpower.Text = ci.Attributes.AdjustedWillpower.ToString("#.00") + " Willpower";
 
-                    int totalSP = 0;
-                    int totalSkills = 0;
-                    lbSkills.Items.Clear();
-                    foreach (SkillGroup sg in ci.SkillGroups)
-                    {
-                        lbSkills.Items.Add(sg);
-                        foreach (Skill s in sg.Skills)
-                        {
-                            lbSkills.Items.Add(s);
-                            totalSP += s.SkillPoints;
-                        }
-                        totalSkills += sg.Skills.Count;
-                    }
+        //            int totalSP = 0;
+        //            int totalSkills = 0;
+        //            lbSkills.Items.Clear();
+        //            foreach (SkillGroup sg in ci.SkillGroups)
+        //            {
+        //                lbSkills.Items.Add(sg);
+        //                foreach (Skill s in sg.Skills)
+        //                {
+        //                    lbSkills.Items.Add(s);
+        //                    totalSP += s.SkillPoints;
+        //                }
+        //                totalSkills += sg.Skills.Count;
+        //            }
 
-                    lblSkillHeader.Text = String.Format("{0} Known Skills ({1} Total SP):", totalSkills.ToString("#"), totalSP.ToString("#,##0"));
+        //            lblSkillHeader.Text = String.Format("{0} Known Skills ({1} Total SP):", totalSkills.ToString("#"), totalSP.ToString("#,##0"));
 
-                    if (ci.SkillInTraining == null)
-                    {
-                        m_skillTrainingName = String.Empty;
-                        m_estimatedCompletion = DateTime.MaxValue;
-                        pnlTraining.Visible = false;
-                    }
-                    else
-                    {
-                        m_skillTrainingName = ci.SkillInTraining.SkillName + " " + m_skillLevelRoman[ci.SkillInTraining.TrainingToLevel];
-                        lblTrainingSkill.Text = m_skillTrainingName;
-                        m_estimatedCompletion = ci.SkillInTraining.EstimatedCompletion;
-                        CalcSkillRemainText();
-                        pnlTraining.Visible = true;
-                    }
-                }
-                tmrUpdate.Interval = 5 * 60 * 1000;
-                tmrUpdate.Enabled = true;
-            }));
-        }
+        //            if (ci.SkillInTraining == null)
+        //            {
+        //                m_skillTrainingName = String.Empty;
+        //                m_estimatedCompletion = DateTime.MaxValue;
+        //                pnlTraining.Visible = false;
+        //            }
+        //            else
+        //            {
+        //                m_skillTrainingName = ci.SkillInTraining.SkillName + " " + m_skillLevelRoman[ci.SkillInTraining.TrainingToLevel];
+        //                lblTrainingSkill.Text = m_skillTrainingName;
+        //                m_estimatedCompletion = ci.SkillInTraining.EstimatedCompletion;
+        //                CalcSkillRemainText();
+        //                pnlTraining.Visible = true;
+        //            }
+        //        }
+        //        tmrUpdate.Interval = 5 * 60 * 1000;
+        //        tmrUpdate.Enabled = true;
+        //    }));
+        //}
 
         private void SetAttributeLabel(CharacterInfo ci, Label label, EveAttribute eveAttribute)
         {
@@ -596,6 +606,7 @@ namespace EveCharacterMonitor
 
         private void SaveTextFile(string fileName)
         {
+            CharacterInfo ci = m_grandCharacterInfo.ExportCharacterInfo();
             using (StreamWriter sw = new StreamWriter(fileName, false))
             {
                 MethodInvoker writeSep = new MethodInvoker(delegate
@@ -608,23 +619,23 @@ namespace EveCharacterMonitor
                 });
                 sw.WriteLine("BASIC INFO");
                 writeSep();
-                sw.WriteLine("     Name: {0}", m_characterInfo.Name);
-                sw.WriteLine("   Gender: {0}", m_characterInfo.Gender);
-                sw.WriteLine("     Race: {0}", m_characterInfo.Race);
-                sw.WriteLine("Bloodline: {0}", m_characterInfo.BloodLine);
-                sw.WriteLine("  Balance: {0} ISK", m_characterInfo.Balance.ToString("#,##0.00"));
+                sw.WriteLine("     Name: {0}", ci.Name);
+                sw.WriteLine("   Gender: {0}", ci.Gender);
+                sw.WriteLine("     Race: {0}", ci.Race);
+                sw.WriteLine("Bloodline: {0}", ci.BloodLine);
+                sw.WriteLine("  Balance: {0} ISK", ci.Balance.ToString("#,##0.00"));
                 sw.WriteLine();
-                sw.WriteLine("Intelligence: {0}", m_characterInfo.Attributes.AdjustedIntelligence.ToString("#0.00").PadLeft(5));
-                sw.WriteLine("    Charisma: {0}", m_characterInfo.Attributes.AdjustedCharisma.ToString("#0.00").PadLeft(5));
-                sw.WriteLine("  Perception: {0}", m_characterInfo.Attributes.AdjustedPerception.ToString("#0.00").PadLeft(5));
-                sw.WriteLine("      Memory: {0}", m_characterInfo.Attributes.AdjustedMemory.ToString("#0.00").PadLeft(5));
-                sw.WriteLine("   Willpower: {0}", m_characterInfo.Attributes.AdjustedWillpower.ToString("#0.00").PadLeft(5));
+                sw.WriteLine("Intelligence: {0}", ci.Attributes.AdjustedIntelligence.ToString("#0.00").PadLeft(5));
+                sw.WriteLine("    Charisma: {0}", ci.Attributes.AdjustedCharisma.ToString("#0.00").PadLeft(5));
+                sw.WriteLine("  Perception: {0}", ci.Attributes.AdjustedPerception.ToString("#0.00").PadLeft(5));
+                sw.WriteLine("      Memory: {0}", ci.Attributes.AdjustedMemory.ToString("#0.00").PadLeft(5));
+                sw.WriteLine("   Willpower: {0}", ci.Attributes.AdjustedWillpower.ToString("#0.00").PadLeft(5));
                 sw.WriteLine();
-                if (m_characterInfo.AttributeBonuses.Bonuses.Count > 0)
+                if (ci.AttributeBonuses.Bonuses.Count > 0)
                 {
                     sw.WriteLine("IMPLANTS");
                     writeSep();
-                    foreach (EveAttributeBonus tb in m_characterInfo.AttributeBonuses.Bonuses)
+                    foreach (EveAttributeBonus tb in ci.AttributeBonuses.Bonuses)
                     {
                         sw.WriteLine("+{0} {1} : {2}", tb.Amount, tb.EveAttribute.ToString().PadRight(13), tb.Name);
                     }
@@ -632,7 +643,7 @@ namespace EveCharacterMonitor
                 }
                 sw.WriteLine("SKILLS");
                 writeSep();
-                foreach (SkillGroup sg in m_characterInfo.SkillGroups)
+                foreach (SkillGroup sg in ci.SkillGroups)
                 {
                     sw.WriteLine("{0}, {1} Skill{2}, {3} Points",
                         sg.Name, sg.Skills.Count, sg.Skills.Count>1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
@@ -641,11 +652,11 @@ namespace EveCharacterMonitor
                         string skillDesc = s.Name + " " + Skill.RomanSkillLevel[s.Level] + " (" + s.Rank.ToString() + ")";
                         sw.WriteLine(": {0} {1}/{2} Points",
                             skillDesc.PadRight(40), s.SkillPoints.ToString("#,##0"), s.SkillLevel5.ToString("#,##0"));
-                        if (m_characterInfo.SkillInTraining != null && m_characterInfo.SkillInTraining.SkillName == s.Name)
+                        if (ci.SkillInTraining != null && ci.SkillInTraining.SkillName == s.Name)
                         {
                             sw.WriteLine(":  (Currently training to level {0}, completes {1})",
-                                Skill.RomanSkillLevel[m_characterInfo.SkillInTraining.TrainingToLevel],
-                                m_characterInfo.SkillInTraining.EstimatedCompletion.ToString());
+                                Skill.RomanSkillLevel[ci.SkillInTraining.TrainingToLevel],
+                                ci.SkillInTraining.EstimatedCompletion.ToString());
                         }
                     }
                     writeSubSep();
@@ -681,7 +692,8 @@ namespace EveCharacterMonitor
                         XmlSerializer xs = new XmlSerializer(typeof(CharacterInfo));
                         XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                         ns.Add("", "");
-                        xs.Serialize(xtw, m_characterInfo, ns);
+                        //xs.Serialize(xtw, m_characterInfo, ns);
+                        xs.Serialize(xtw, m_grandCharacterInfo.ExportCharacterInfo(), ns);
                         xtw.Flush();
 
                         if (saveFormat == SaveFormat.Xml)

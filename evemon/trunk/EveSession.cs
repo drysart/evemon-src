@@ -771,6 +771,12 @@ namespace EveCharacterMonitor
     [XmlRoot("character")]
     public class CharacterInfo
     {
+        public CharacterInfo()
+        {
+            m_attributes = new EveAttributes();
+            m_attributes.SetOwner(this);
+        }
+
         private string m_name;
 
         [XmlAttribute("name")]
@@ -843,7 +849,7 @@ namespace EveCharacterMonitor
             set { m_balance = value; }
         }
 
-        private EveAttributes m_attributes = new EveAttributes();
+        private EveAttributes m_attributes;
 
         [XmlElement("attributes")]
         public EveAttributes Attributes
