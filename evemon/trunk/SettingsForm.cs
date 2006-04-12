@@ -47,6 +47,7 @@ namespace EveCharacterMonitor
         private void ApplyToSettings(Settings s)
         {
             s.MinimizeToTray = cbMinimizeToTray.Checked;
+            s.TitleToTime = cbTitleToTime.Checked;
             s.EnableEmailAlert = cbSendEmail.Checked;
             s.EmailServer = tbMailServer.Text;
             s.EmailServerRequiresSsl = cbEmailServerRequireSsl.Checked;
@@ -69,6 +70,7 @@ namespace EveCharacterMonitor
         private void SettingsForm_Load(object sender, EventArgs e)
         {
             cbMinimizeToTray.Checked = m_settings.MinimizeToTray;
+            cbTitleToTime.Checked = m_settings.TitleToTime;
             cbSendEmail.Checked = m_settings.EnableEmailAlert;
             tbMailServer.Text = m_settings.EmailServer;
             cbEmailServerRequireSsl.Checked = m_settings.EmailServerRequiresSsl;

@@ -136,6 +136,14 @@ namespace EveCharacterMonitor
             }
         }
 
+        private bool m_titleToTime = true;
+
+        public bool TitleToTime
+        {
+            get { return m_titleToTime; }
+            set { m_titleToTime = value; }
+        }
+
         private List<Pair<string, Plan>> m_plans = new List<Pair<string, Plan>>();
 
         public List<Pair<string, Plan>> Plans

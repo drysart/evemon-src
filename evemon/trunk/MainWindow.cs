@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
@@ -145,6 +146,24 @@ namespace EveCharacterMonitor
                 if (sb.Length == 0)
                     sb.Append("EVEMon - No skills in training!");
                 niMinimizeIcon.Text = sb.ToString();
+
+                if (m_settings.TitleToTime && shortInfos.Count > 0)
+                {
+                    string s = shortInfos[shortInfos.Keys[0]];
+                    Match m = Regex.Match(s, "^(.*?): (.*)$");
+                    if (m.Success)
+                    {
+                        this.Text = m.Groups[2] + ": " + m.Groups[1] + " - EVEMon";
+                    }
+                    else
+                    {
+                        this.Text = s + " - EVEMon";
+                    }
+                }
+                else
+                {
+                    this.Text = "EVEMon";
+                }
             }));
         }
 
