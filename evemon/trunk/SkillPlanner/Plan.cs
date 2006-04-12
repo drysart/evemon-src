@@ -131,7 +131,41 @@ namespace EveCharacterMonitor.SkillPlanner
         public GrandCharacterInfo GrandCharacterInfo
         {
             get { return m_grandCharacterInfo; }
-            set { m_grandCharacterInfo = value; }
+            set {
+                if (m_grandCharacterInfo!=null)
+                    m_grandCharacterInfo.SkillChanged -= new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
+                m_grandCharacterInfo = value;
+                if (m_grandCharacterInfo != null)
+                    m_grandCharacterInfo.SkillChanged += new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
+                CheckForCompletedSkills();
+            }
+        }
+
+        private void CheckForCompletedSkills()
+        {
+            this.SuppressEvents();
+            try
+            {
+                for (int i = 0; i < m_entries.Count; i++)
+                {
+                    PlanEntry pe = m_entries[i];
+                    GrandSkill gs = m_grandCharacterInfo.GetSkill(pe.SkillName);
+                    if (gs.Level >= pe.Level)
+                    {
+                        m_entries.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+            finally
+            {
+                this.ResumeEvents();
+            }
+        }
+
+        private void m_grandCharacterInfo_SkillChanged(object sender, SkillChangedEventArgs e)
+        {
+            CheckForCompletedSkills();
         }
 
         public bool IsPlanned(GrandSkill gs)

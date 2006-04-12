@@ -1312,7 +1312,7 @@ namespace EveCharacterMonitor
 
         public bool HasAsPrerequisite(GrandSkill gs, out int neededLevel)
         {
-            foreach (Prereq pp in m_prereqs)
+            foreach (Prereq pp in this.Prereqs)
             {
                 if (pp.Skill == gs)
                 {
