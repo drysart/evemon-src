@@ -1010,6 +1010,11 @@ namespace EveCharacterMonitor
 
         private void CalculateLevel()
         {
+            if (m_inTraining)
+            {
+                m_level = this.TrainingToLevel - 1;
+                return;
+            }
             int csp = this.CurrentSkillPoints;
             m_level = 0;
             for (int i = 1; i <= 5; i++)
