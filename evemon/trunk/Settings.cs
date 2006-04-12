@@ -163,6 +163,26 @@ namespace EveCharacterMonitor
             return null;
         }
 
+        public void AddPlanFor(string charName, Plan plan)
+        {
+            Pair<string, Plan> p = new Pair<string, Plan>();
+            p.A = charName;
+            p.B = plan;
+            m_plans.Add(p);
+        }
+
+        public void RemovePlanFor(string charName)
+        {
+            for (int i = 0; i < m_plans.Count; i++)
+            {
+                if (m_plans[i].A == charName)
+                {
+                    m_plans.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
         private const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";
 
         private static string StoreFileName(string key)
@@ -241,8 +261,7 @@ namespace EveCharacterMonitor
                 using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
                 using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(StoreFileName(m_key), FileMode.Create, store))
                 {
-                    XmlSerializer xs = new XmlSerializer(typeof(Settings));
-                    xs.Serialize(s, this);
+                    SaveTo(s);
                 }
             }
         }
@@ -264,6 +283,12 @@ namespace EveCharacterMonitor
             Settings s = new Settings();
             s.SetKey(p);
             s.Save();
+        }
+
+        public void SaveTo(Stream s)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(Settings));
+            xs.Serialize(s, this);
         }
     }
 

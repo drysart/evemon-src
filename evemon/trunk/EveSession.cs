@@ -456,6 +456,7 @@ namespace EveCharacterMonitor
         }
     }
 
+    [XmlRoot("pair")]
     public class Pair<TypeA, TypeB>
     {
         private TypeA m_a;

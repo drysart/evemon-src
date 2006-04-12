@@ -211,6 +211,7 @@ namespace EveCharacterMonitor
             CharLoginInfo cli = tp.Tag as CharLoginInfo;
             tcCharacterTabs.TabPages.Remove(tp);
             m_settings.CharacterList.Remove(cli);
+            m_settings.RemovePlanFor(cli.CharacterName);
             m_settings.Save();
             SetRemoveEnable();
         }

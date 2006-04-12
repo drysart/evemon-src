@@ -41,6 +41,7 @@ namespace EveCharacterMonitor.SkillPlanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.DoubleBuffered = true;
             this.Name = "SkillTreeDisplay";
             this.ResumeLayout(false);

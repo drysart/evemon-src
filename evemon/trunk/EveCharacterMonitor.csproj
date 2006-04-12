@@ -153,6 +153,21 @@
     <Compile Include="SkillCompleteDialog.Designer.cs">
       <DependentUpon>SkillCompleteDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkillPlanner\AddPlanConfirmWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\AddPlanConfirmWindow.Designer.cs">
+      <DependentUpon>AddPlanConfirmWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\CancelChoiceWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\CancelChoiceWindow.Designer.cs">
+      <DependentUpon>CancelChoiceWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\DraggableListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SkillPlanner\LineDrawControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -166,6 +181,12 @@
       <DependentUpon>NewPlannerWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="SkillPlanner\Plan.cs" />
+    <Compile Include="SkillPlanner\PlanOrderEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanOrderEditorControl.Designer.cs">
+      <DependentUpon>PlanOrderEditorControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkillPlanner\SkillTreeDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -196,6 +217,14 @@
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="output-html.xsl" />
+    <EmbeddedResource Include="SkillPlanner\AddPlanConfirmWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddPlanConfirmWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\CancelChoiceWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CancelChoiceWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\LineDrawControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>LineDrawControl.cs</DependentUpon>
@@ -203,6 +232,10 @@
     <EmbeddedResource Include="SkillPlanner\NewPlannerWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NewPlannerWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\PlanOrderEditorControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PlanOrderEditorControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\SkillTreeDisplay.resx">
       <SubType>Designer</SubType>

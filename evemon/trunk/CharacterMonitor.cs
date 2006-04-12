@@ -887,7 +887,10 @@ namespace EveCharacterMonitor
 
         private void btnDebugError_Click(object sender, EventArgs e)
         {
-            throw new ApplicationException("OMG WTF");
+            using (FileStream s = new FileStream("c:/settings.xml", FileMode.Create))
+            {
+                m_settings.SaveTo(s);
+            }
         }
     }
 

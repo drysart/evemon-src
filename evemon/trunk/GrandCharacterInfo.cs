@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 using System.Xml;
+using System.Xml.Serialization;
 using System.IO.Compression;
 
 namespace EveCharacterMonitor
@@ -641,6 +642,7 @@ namespace EveCharacterMonitor
         }
     }
 
+    [XmlRoot("monitoredList")]
     public class MonitoredList<T> : IList<T>
         where T : class
     {
@@ -1184,6 +1186,13 @@ namespace EveCharacterMonitor
             return this.GetTimeSpanForPoints(desiredSp - currentSp);
         }
 
+        public TimeSpan GetTrainingTimeOfLevelOnly(int level)
+        {
+            int startSp = GetPointsRequiredForLevel(level - 1);
+            int endSp = GetPointsRequiredForLevel(level);
+            return this.GetTimeSpanForPoints(endSp - startSp);
+        }
+
         #region GetPrerequisiteTime overloads
 
         public TimeSpan GetPrerequisiteTime()
@@ -1299,6 +1308,22 @@ namespace EveCharacterMonitor
                 default:
                     return "(none)";
             }
+        }
+
+        public bool HasAsPrerequisite(GrandSkill gs, out int neededLevel)
+        {
+            foreach (Prereq pp in m_prereqs)
+            {
+                if (pp.Skill == gs)
+                {
+                    neededLevel = pp.RequiredLevel;
+                    return true;
+                }
+                if (pp.Skill.HasAsPrerequisite(gs, out neededLevel))
+                    return true;
+            }
+            neededLevel = 0;
+            return false;
         }
     }
 
