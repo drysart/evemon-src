@@ -93,7 +93,7 @@ namespace EveCharacterMonitor
                 {
                     GrandSkillGroup gsg = gs.SkillGroup;
 
-                    if (gs.CurrentSkillPoints > 0)
+                    if (gs.Known)
                     {
                         // Find the existing listbox item...
                         int lbIndex = -1;

@@ -496,6 +496,7 @@ namespace EveCharacterMonitor
                 {
                     GrandSkill gs = gsg[s.Name];
                     gs.CurrentSkillPoints = s.SkillPoints;
+                    gs.Known = true;
                 }
             }
             this.ResumeEvents();
@@ -855,7 +856,7 @@ namespace EveCharacterMonitor
                     m_cachedKnownCount = 0;
                     foreach (GrandSkill gs in m_skills.Values)
                     {
-                        if (gs.CurrentSkillPoints > 0)
+                        if (gs.Known)
                             m_cachedKnownCount++;
                     }
                 }
@@ -968,6 +969,14 @@ namespace EveCharacterMonitor
                 }
             }
             set { m_currentSkillPoints = value; OnChanged(); }
+        }
+
+        private bool m_known = false;
+
+        public bool Known
+        {
+            get { return m_known; }
+            set { m_known = value; OnChanged();  }
         }
 
         private int GetPointsForTimeSpan(TimeSpan span)
