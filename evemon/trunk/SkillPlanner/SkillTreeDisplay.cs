@@ -18,7 +18,6 @@ namespace EveCharacterMonitor.SkillPlanner
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.Opaque, true);
             SetStyle(ControlStyles.ResizeRedraw, true);
-            this.AutoScrollMinSize = new Size(1000, 2000);
         }
 
         private GrandSkill m_rootSkill = null;

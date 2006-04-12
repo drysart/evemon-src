@@ -28,10 +28,11 @@ namespace EveCharacterMonitor.SkillPlanner
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewPlannerWindow));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
-            this.cbSkillFilter = new System.Windows.Forms.ComboBox();
             this.tvSkillView = new System.Windows.Forms.TreeView();
+            this.cbSkillFilter = new System.Windows.Forms.ComboBox();
+            this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -56,17 +57,16 @@ namespace EveCharacterMonitor.SkillPlanner
             this.splitContainer1.SplitterDistance = 207;
             this.splitContainer1.TabIndex = 0;
             // 
-            // skillTreeDisplay1
+            // tvSkillView
             // 
-            this.skillTreeDisplay1.AutoScroll = true;
-            this.skillTreeDisplay1.AutoScrollMinSize = new System.Drawing.Size(1000, 2000);
-            this.skillTreeDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.skillTreeDisplay1.Location = new System.Drawing.Point(0, 0);
-            this.skillTreeDisplay1.Name = "skillTreeDisplay1";
-            this.skillTreeDisplay1.RootSkill = null;
-            this.skillTreeDisplay1.Size = new System.Drawing.Size(411, 609);
-            this.skillTreeDisplay1.TabIndex = 0;
-            this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
+            this.tvSkillView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvSkillView.Location = new System.Drawing.Point(12, 39);
+            this.tvSkillView.Name = "tvSkillView";
+            this.tvSkillView.Size = new System.Drawing.Size(192, 558);
+            this.tvSkillView.TabIndex = 1;
+            this.tvSkillView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSkillView_AfterSelect);
             // 
             // cbSkillFilter
             // 
@@ -84,16 +84,17 @@ namespace EveCharacterMonitor.SkillPlanner
             this.cbSkillFilter.TabIndex = 0;
             this.cbSkillFilter.SelectedIndexChanged += new System.EventHandler(this.cbSkillFilter_SelectedIndexChanged);
             // 
-            // tvSkillView
+            // skillTreeDisplay1
             // 
-            this.tvSkillView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvSkillView.Location = new System.Drawing.Point(12, 39);
-            this.tvSkillView.Name = "tvSkillView";
-            this.tvSkillView.Size = new System.Drawing.Size(192, 558);
-            this.tvSkillView.TabIndex = 1;
-            this.tvSkillView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSkillView_AfterSelect);
+            this.skillTreeDisplay1.AutoScroll = true;
+            this.skillTreeDisplay1.AutoScrollMinSize = new System.Drawing.Size(1000, 2000);
+            this.skillTreeDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.skillTreeDisplay1.Location = new System.Drawing.Point(0, 0);
+            this.skillTreeDisplay1.Name = "skillTreeDisplay1";
+            this.skillTreeDisplay1.RootSkill = null;
+            this.skillTreeDisplay1.Size = new System.Drawing.Size(411, 609);
+            this.skillTreeDisplay1.TabIndex = 0;
+            this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
             // 
             // NewPlannerWindow
             // 
@@ -102,8 +103,9 @@ namespace EveCharacterMonitor.SkillPlanner
             this.ClientSize = new System.Drawing.Size(622, 609);
             this.Controls.Add(this.splitContainer1);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "NewPlannerWindow";
-            this.Text = "NewPlannerWindow";
+            this.Text = "EVEMon Skill Planner";
             this.Load += new System.EventHandler(this.NewPlannerWindow_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
