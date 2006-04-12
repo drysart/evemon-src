@@ -124,7 +124,7 @@ namespace EveCharacterMonitor
                     if (cm != null && !String.IsNullOrEmpty(cm.ShortText))
                     {
                         TimeSpan ts = cm.ShortTimeSpan;
-                        while (shortInfos.ContainsKey[ts])
+                        while (shortInfos.ContainsKey(ts))
                             ts = ts + TimeSpan.FromMilliseconds(1);
                         shortInfos.Add(ts, cm.ShortText);
                     }
