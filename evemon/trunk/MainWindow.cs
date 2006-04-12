@@ -123,7 +123,10 @@ namespace EveCharacterMonitor
                     CharacterMonitor cm = tp.Controls[0] as CharacterMonitor;
                     if (cm != null && !String.IsNullOrEmpty(cm.ShortText))
                     {
-                        shortInfos.Add(cm.ShortTimeSpan, cm.ShortText);
+                        TimeSpan ts = cm.ShortTimeSpan;
+                        while (shortInfos.ContainsKey[ts])
+                            ts = ts + TimeSpan.FromMilliseconds(1);
+                        shortInfos.Add(ts, cm.ShortText);
                     }
                 }
                 int ttCharsLeft = 64;
