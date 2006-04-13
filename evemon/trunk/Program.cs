@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace EveCharacterMonitor
 {
@@ -12,10 +13,14 @@ namespace EveCharacterMonitor
         [STAThread]
         static void Main()
         {
-            string ca = String.Empty;
-            if (Environment.GetCommandLineArgs().Length > 1)
-                ca = Environment.GetCommandLineArgs()[1];
-            m_settingKey = ca;
+            InstanceManager im = InstanceManager.GetInstance();
+            if (!im.CreatedNew)
+            {
+                im.Signal();
+                return;
+            }
+
+            m_settingKey = String.Empty;
 
             EveSession.MainThread = System.Threading.Thread.CurrentThread;
 
@@ -24,7 +29,7 @@ namespace EveCharacterMonitor
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1(ca));
-            s_settings = Settings.LoadFromKey(ca);
+            s_settings = Settings.LoadFromKey(m_settingKey);
             Application.Run(new MainWindow(s_settings));
         }
 

@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
+using System.Runtime.InteropServices;
+
 namespace EveCharacterMonitor
 {
     public partial class MainWindow : Form
@@ -55,7 +57,25 @@ namespace EveCharacterMonitor
             UpdateManager um = UpdateManager.GetInstance();
             um.UpdateAvailable += new UpdateAvailableHandler(um_UpdateAvailable);
             um.Start();
+
+            InstanceManager im = InstanceManager.GetInstance();
+            im.Signaled += new EventHandler<EventArgs>(im_Signaled);
         }
+
+        void im_Signaled(object sender, EventArgs e)
+        {
+            if (!this.Visible)
+                niMinimizeIcon_Click(this, new EventArgs());
+            else if (this.WindowState == FormWindowState.Minimized)
+                this.WindowState = FormWindowState.Normal;
+            else
+                this.BringToFront();
+
+            FlashWindow(this.Handle, true);
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool FlashWindow(IntPtr hwnd, bool bInvert);
 
         private void um_UpdateAvailable(object sender, UpdateAvailableEventArgs e)
         {

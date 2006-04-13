@@ -64,6 +64,7 @@
     <Compile Include="Emailer.cs" />
     <Compile Include="EveSession.cs" />
     <Compile Include="GrandCharacterInfo.cs" />
+    <Compile Include="InstanceManager.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
