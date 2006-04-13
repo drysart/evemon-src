@@ -115,6 +115,7 @@ namespace EveCharacterMonitor
             this.tsbAddChar.Name = "tsbAddChar";
             this.tsbAddChar.Size = new System.Drawing.Size(109, 22);
             this.tsbAddChar.Text = "Add Character...";
+            this.tsbAddChar.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // tsbRemoveChar
             // 
@@ -125,6 +126,7 @@ namespace EveCharacterMonitor
             this.tsbRemoveChar.Name = "tsbRemoveChar";
             this.tsbRemoveChar.Size = new System.Drawing.Size(23, 22);
             this.tsbRemoveChar.Text = "Remove Character";
+            this.tsbRemoveChar.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // toolStripSeparator1
             // 
@@ -138,6 +140,7 @@ namespace EveCharacterMonitor
             this.tsbOptions.Name = "tsbOptions";
             this.tsbOptions.Size = new System.Drawing.Size(76, 22);
             this.tsbOptions.Text = "Options...";
+            this.tsbOptions.Click += new System.EventHandler(this.tsbOptions_Click);
             // 
             // tsbAbout
             // 
@@ -147,6 +150,7 @@ namespace EveCharacterMonitor
             this.tsbAbout.Name = "tsbAbout";
             this.tsbAbout.Size = new System.Drawing.Size(23, 22);
             this.tsbAbout.Text = "About...";
+            this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
             // 
             // MainWindow
             // 

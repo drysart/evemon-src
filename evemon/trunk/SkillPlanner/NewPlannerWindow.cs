@@ -24,19 +24,13 @@ namespace EveCharacterMonitor.SkillPlanner
         private GrandCharacterInfo m_grandCharacterInfo;
         private Plan m_plan;
 
-        public NewPlannerWindow(Settings s, GrandCharacterInfo gci)
+        public NewPlannerWindow(Settings s, GrandCharacterInfo gci, Plan p)
             : this()
         {
             m_settings = s;
             m_grandCharacterInfo = gci;
 
-            m_plan = m_settings.GetPlanByName(m_grandCharacterInfo.Name);
-            if (m_plan == null)
-            {
-                m_plan = new Plan();
-                m_settings.AddPlanFor(m_grandCharacterInfo.Name, m_plan);
-
-            }
+            m_plan = p;
             m_plan.GrandCharacterInfo = m_grandCharacterInfo;
             m_plan.Changed += new EventHandler<EventArgs>(m_plan_Changed);
             skillTreeDisplay1.Plan = m_plan;
@@ -56,7 +50,7 @@ namespace EveCharacterMonitor.SkillPlanner
 
         private void NewPlannerWindow_Load(object sender, EventArgs e)
         {
-            this.Text = m_grandCharacterInfo.Name + " - EVEMon Skill Planner";
+            this.Text = m_grandCharacterInfo.Name + " [" + m_plan.Name + "] - EVEMon Skill Planner";
             UpdatePlanControl();
         }
 
@@ -138,7 +132,8 @@ namespace EveCharacterMonitor.SkillPlanner
             else
                 planEditor.Plan = null;
 
-            planEditor.Location = tvSkillView.Location;
+            Point p = this.PointToClient(splitContainer1.Panel1.PointToScreen(tvSkillView.Location));
+            planEditor.Location = p;
             planEditor.Size = new Size(
                 this.ClientSize.Width - (planEditor.Location.X * 2),
                 tvSkillView.Height);
@@ -506,6 +501,19 @@ namespace EveCharacterMonitor.SkillPlanner
         private void miCancelThis_Click(object sender, EventArgs e)
         {
             CancelPlan(false);
+        }
+
+        private void tsbDeletePlan_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show(
+                "Are you sure you want to delete this plan?",
+                "Delete Plan",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            if (dr != DialogResult.Yes)
+                return;
+
+            m_settings.RemovePlanFor(m_grandCharacterInfo.Name, m_plan.Name);
         }
     }
 }

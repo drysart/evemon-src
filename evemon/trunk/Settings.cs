@@ -151,36 +151,89 @@ namespace EveCharacterMonitor
             get { return m_plans; }
         }
 
-        public Plan GetPlanByName(string charName)
+        private const string PLAN_DEFAULT = "Default Plan";
+
+        public IEnumerable<string> GetPlansForCharacter(string charName)
         {
             foreach (Pair<string, Plan> x in m_plans)
             {
                 if (x.A == charName)
+                    yield return PLAN_DEFAULT;
+                else if (x.A.StartsWith(charName + "::"))
+                    yield return x.A.Substring(charName.Length + 2);
+            }
+        }
+
+        public Plan GetPlanByName(string charName, string planName)
+        {
+            foreach (Pair<string, Plan> x in m_plans)
+            {
+                if (planName == PLAN_DEFAULT && x.A == charName)
                 {
+                    x.B.Name = PLAN_DEFAULT;
+                    return x.B;
+                }
+                else if (x.A == charName + "::" + planName)
+                {
+                    x.B.Name = planName;
                     return x.B;
                 }
             }
             return null;
         }
 
-        public void AddPlanFor(string charName, Plan plan)
+        public void AddPlanFor(string charName, Plan plan, string planName)
         {
+            if (GetPlanByName(charName, planName) != null)
+                throw new ApplicationException("That plan already exists.");
+
             Pair<string, Plan> p = new Pair<string, Plan>();
-            p.A = charName;
+            if (planName == PLAN_DEFAULT)
+                p.A = charName;
+            else
+                p.A = charName + "::" + planName;
             p.B = plan;
             m_plans.Add(p);
+
+            plan.Name = planName;
+            this.Save();
         }
 
-        public void RemovePlanFor(string charName)
+        public void RemovePlanFor(string charName, string planName)
         {
             for (int i = 0; i < m_plans.Count; i++)
             {
-                if (m_plans[i].A == charName)
+                if (planName == PLAN_DEFAULT && m_plans[i].A == charName)
                 {
+                    Plan p = m_plans[i].B;
+                    p.CloseEditor();
+                    m_plans.RemoveAt(i);
+                    i--;
+                }
+                else if (m_plans[i].A == charName + "::" + planName)
+                {
+                    Plan p = m_plans[i].B;
+                    p.CloseEditor();
                     m_plans.RemoveAt(i);
                     i--;
                 }
             }
+            this.Save();
+        }
+
+        public void RemoveAllPlansFor(string charName)
+        {
+            for (int i = 0; i < m_plans.Count; i++)
+            {
+                if (m_plans[i].A.StartsWith(charName + "::") || m_plans[i].A == charName)
+                {
+                    Plan p = m_plans[i].B;
+                    p.CloseEditor();
+                    m_plans.RemoveAt(i);
+                    i--;
+                }
+            }
+            this.Save();
         }
 
         private const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";

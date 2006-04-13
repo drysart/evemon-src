@@ -181,12 +181,24 @@
     <Compile Include="SkillPlanner\NewPlannerWindow.Designer.cs">
       <DependentUpon>NewPlannerWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkillPlanner\NewPlanWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\NewPlanWindow.Designer.cs">
+      <DependentUpon>NewPlanWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkillPlanner\Plan.cs" />
     <Compile Include="SkillPlanner\PlanOrderEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SkillPlanner\PlanOrderEditorControl.Designer.cs">
       <DependentUpon>PlanOrderEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanSelectWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanSelectWindow.Designer.cs">
+      <DependentUpon>PlanSelectWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="SkillPlanner\SkillTreeDisplay.cs">
       <SubType>UserControl</SubType>
@@ -235,9 +247,17 @@
       <SubType>Designer</SubType>
       <DependentUpon>NewPlannerWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\NewPlanWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NewPlanWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\PlanOrderEditorControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PlanOrderEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\PlanSelectWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PlanSelectWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\SkillTreeDisplay.resx">
       <SubType>Designer</SubType>

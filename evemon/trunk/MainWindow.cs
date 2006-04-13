@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using System.Globalization;
 
 using System.Runtime.InteropServices;
 
@@ -243,7 +244,7 @@ namespace EveCharacterMonitor
             CharLoginInfo cli = tp.Tag as CharLoginInfo;
             tcCharacterTabs.TabPages.Remove(tp);
             m_settings.CharacterList.Remove(cli);
-            m_settings.RemovePlanFor(cli.CharacterName);
+            m_settings.RemoveAllPlansFor(cli.CharacterName);
             m_settings.Save();
             SetRemoveEnable();
         }
@@ -358,7 +359,8 @@ namespace EveCharacterMonitor
         {
             tmrClock.Enabled = false;
             DateTime now = DateTime.Now.ToUniversalTime();
-            lblStatus.Text = "Current EVE Time: " + now.ToString("hh:mm");
+            DateTimeFormatInfo fi = CultureInfo.CurrentCulture.DateTimeFormat;
+            lblStatus.Text = "Current EVE Time: " + now.ToString(fi.ShortDatePattern+" hh:mm");
             tmrClock.Interval = ((60-now.Minute) * 1000) + (1000-now.Millisecond);
             tmrClock.Enabled = true;
         }

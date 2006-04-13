@@ -13,6 +13,8 @@ using System.Xml.XPath;
 using System.Xml.Xsl;
 using System.Xml.Serialization;
 
+using EveCharacterMonitor.SkillPlanner;
+
 namespace EveCharacterMonitor
 {
     public partial class CharacterMonitor : UserControl
@@ -855,33 +857,71 @@ namespace EveCharacterMonitor
                 e.ItemHeight = SKILL_DETAIL_HEIGHT;
         }
 
-        private WeakReference<SkillPlanner.NewPlannerWindow> m_plannerWindow;
+        //private WeakReference<SkillPlanner.NewPlannerWindow> m_plannerWindow;
 
         private void btnPlan_Click(object sender, EventArgs e)
         {
-            if (m_plannerWindow != null)
+            Plan p = null;
+            using (PlanSelectWindow psw = new PlanSelectWindow(m_settings, m_grandCharacterInfo))
             {
-                SkillPlanner.NewPlannerWindow pw = m_plannerWindow.Target;
-                if (pw != null)
+                DialogResult dr = psw.ShowDialog();
+                if (dr == DialogResult.Cancel)
+                    return;
+                p = psw.ResultPlan;
+            }
+            if (p == null)
+            {
+            AGAIN:
+                bool doAgain = true;
+                using (NewPlanWindow npw = new NewPlanWindow())
                 {
-                    if (pw.Visible)
-                    {
-                        pw.BringToFront();
-                        pw.Focus();
+                    DialogResult dr = npw.ShowDialog();
+                    if (dr == DialogResult.Cancel)
                         return;
-                    }
+                    string planName = npw.Result;
+
+                    p = new Plan();
                     try
                     {
-                        pw.Show();
-                        return;
+                        m_settings.AddPlanFor(m_grandCharacterInfo.Name, p, planName);
+                        doAgain = false;
                     }
-                    catch (ObjectDisposedException) { }
+                    catch (ApplicationException err)
+                    {
+                        DialogResult xdr = MessageBox.Show(err.Message, "Failed to Add Plan", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                        if (xdr == DialogResult.Cancel)
+                            return;
+                    }
                 }
-                m_plannerWindow = null;
+                if (doAgain)
+                    goto AGAIN;
             }
-            SkillPlanner.NewPlannerWindow npw = new EveCharacterMonitor.SkillPlanner.NewPlannerWindow(m_settings, m_grandCharacterInfo);
-            npw.Show();
-            m_plannerWindow = new WeakReference<SkillPlanner.NewPlannerWindow>(npw);
+
+            p.ShowEditor(m_settings, m_grandCharacterInfo);
+
+            //if (m_plannerWindow != null)
+            //{
+            //    SkillPlanner.NewPlannerWindow pw = m_plannerWindow.Target;
+            //    if (pw != null)
+            //    {
+            //        if (pw.Visible)
+            //        {
+            //            pw.BringToFront();
+            //            pw.Focus();
+            //            return;
+            //        }
+            //        try
+            //        {
+            //            pw.Show();
+            //            return;
+            //        }
+            //        catch (ObjectDisposedException) { }
+            //    }
+            //    m_plannerWindow = null;
+            //}
+            //SkillPlanner.NewPlannerWindow npw = new EveCharacterMonitor.SkillPlanner.NewPlannerWindow(m_settings, m_grandCharacterInfo);
+            //npw.Show();
+            //m_plannerWindow = new WeakReference<SkillPlanner.NewPlannerWindow>(npw);
         }
 
         private void btnDebugError_Click(object sender, EventArgs e)

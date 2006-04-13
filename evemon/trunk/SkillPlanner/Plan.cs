@@ -141,6 +141,15 @@ namespace EveCharacterMonitor.SkillPlanner
             }
         }
 
+        private string m_planName;
+
+        [XmlIgnore]
+        public string Name
+        {
+            get { return m_planName; }
+            set { m_planName = value; }
+        }
+
         private void CheckForCompletedSkills()
         {
             this.SuppressEvents();
@@ -273,6 +282,59 @@ namespace EveCharacterMonitor.SkillPlanner
                     return pe;
             }
             return null;
+        }
+
+        private WeakReference<NewPlannerWindow> m_plannerWindow;
+
+        public void ShowEditor(Settings s, GrandCharacterInfo gci)
+        {
+            if (m_plannerWindow != null)
+            {
+                NewPlannerWindow npw = m_plannerWindow.Target;
+                if (npw != null)
+                {
+                    try
+                    {
+                        if (npw.Visible)
+                        {
+                            npw.BringToFront();
+                            return;
+                        }
+                        else
+                        {
+                            npw.Show();
+                            return;
+                        }
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                    }
+                }
+                m_plannerWindow = null;
+            }
+
+            NewPlannerWindow newWin = new NewPlannerWindow(s, gci, this);
+            newWin.Show();
+            m_plannerWindow = new WeakReference<NewPlannerWindow>(newWin);
+        }
+
+        public void CloseEditor()
+        {
+            if (m_plannerWindow != null)
+            {
+                NewPlannerWindow npw = m_plannerWindow.Target;
+                if (npw != null)
+                {
+                    try
+                    {
+                        npw.Close();
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                    }
+                }
+                m_plannerWindow = null;
+            }
         }
     }
 
