@@ -207,6 +207,7 @@
     <Compile Include="UpdateNotifyForm.Designer.cs">
       <DependentUpon>UpdateNotifyForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="WeakReferenceOfT.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="bee.jpg" />

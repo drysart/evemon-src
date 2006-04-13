@@ -32,6 +32,7 @@ namespace EveCharacterMonitor.SkillPlanner
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlanOrderEditorControl));
             this.tsToolStrip = new System.Windows.Forms.ToolStrip();
             this.tsbSave = new System.Windows.Forms.ToolStripButton();
+            this.tsbCopyForum = new System.Windows.Forms.ToolStripButton();
             this.cmsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miRemoveFromPlan = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdSave = new System.Windows.Forms.SaveFileDialog();
@@ -40,7 +41,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.colTrainingTime = new System.Windows.Forms.ColumnHeader();
             this.colEarliestStart = new System.Windows.Forms.ColumnHeader();
             this.colEarliestFinish = new System.Windows.Forms.ColumnHeader();
-            this.tsbCopyForum = new System.Windows.Forms.ToolStripButton();
+            this.tmrTick = new System.Windows.Forms.Timer(this.components);
             this.tsToolStrip.SuspendLayout();
             this.cmsContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -65,6 +66,16 @@ namespace EveCharacterMonitor.SkillPlanner
             this.tsbSave.Size = new System.Drawing.Size(23, 22);
             this.tsbSave.Text = "Save to File...";
             this.tsbSave.Click += new System.EventHandler(this.tsbSave_Click);
+            // 
+            // tsbCopyForum
+            // 
+            this.tsbCopyForum.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbCopyForum.Image = ((System.Drawing.Image)(resources.GetObject("tsbCopyForum.Image")));
+            this.tsbCopyForum.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCopyForum.Name = "tsbCopyForum";
+            this.tsbCopyForum.Size = new System.Drawing.Size(23, 22);
+            this.tsbCopyForum.Text = "Copy in Forum Format";
+            this.tsbCopyForum.Click += new System.EventHandler(this.tsbCopyForum_Click);
             // 
             // cmsContextMenu
             // 
@@ -127,15 +138,10 @@ namespace EveCharacterMonitor.SkillPlanner
             this.colEarliestFinish.Text = "Earliest Finish";
             this.colEarliestFinish.Width = 136;
             // 
-            // tsbCopyForum
+            // tmrTick
             // 
-            this.tsbCopyForum.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbCopyForum.Image = ((System.Drawing.Image)(resources.GetObject("tsbCopyForum.Image")));
-            this.tsbCopyForum.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCopyForum.Name = "tsbCopyForum";
-            this.tsbCopyForum.Size = new System.Drawing.Size(23, 22);
-            this.tsbCopyForum.Text = "Copy in Forum Format";
-            this.tsbCopyForum.Click += new System.EventHandler(this.tsbCopyForum_Click);
+            this.tmrTick.Interval = 30000;
+            this.tmrTick.Tick += new System.EventHandler(this.tmrTick_Tick);
             // 
             // PlanOrderEditorControl
             // 
@@ -167,5 +173,6 @@ namespace EveCharacterMonitor.SkillPlanner
         private System.Windows.Forms.ToolStripMenuItem miRemoveFromPlan;
         private System.Windows.Forms.SaveFileDialog sfdSave;
         private System.Windows.Forms.ToolStripButton tsbCopyForum;
+        private System.Windows.Forms.Timer tmrTick;
     }
 }

@@ -855,16 +855,15 @@ namespace EveCharacterMonitor
                 e.ItemHeight = SKILL_DETAIL_HEIGHT;
         }
 
-        private WeakReference m_plannerWindow;
+        private WeakReference<SkillPlanner.NewPlannerWindow> m_plannerWindow;
 
         private void btnPlan_Click(object sender, EventArgs e)
         {
             if (m_plannerWindow != null)
             {
-                object o = m_plannerWindow.Target;
-                if (o != null && o is SkillPlanner.NewPlannerWindow)
+                SkillPlanner.NewPlannerWindow pw = m_plannerWindow.Target;
+                if (pw != null)
                 {
-                    SkillPlanner.NewPlannerWindow pw = (SkillPlanner.NewPlannerWindow)o;
                     if (pw.Visible)
                     {
                         pw.BringToFront();
@@ -882,7 +881,7 @@ namespace EveCharacterMonitor
             }
             SkillPlanner.NewPlannerWindow npw = new EveCharacterMonitor.SkillPlanner.NewPlannerWindow(m_settings, m_grandCharacterInfo);
             npw.Show();
-            m_plannerWindow = new WeakReference(npw);
+            m_plannerWindow = new WeakReference<SkillPlanner.NewPlannerWindow>(npw);
         }
 
         private void btnDebugError_Click(object sender, EventArgs e)

@@ -1188,10 +1188,20 @@ namespace EveCharacterMonitor
 
         public TimeSpan GetTrainingTimeOfLevelOnly(int level)
         {
+            return GetTrainingTimeOfLevelOnly(level, false);
+        }
+
+        public TimeSpan GetTrainingTimeOfLevelOnly(int level, bool includeCurrentSP)
+        {
             int startSp = GetPointsRequiredForLevel(level - 1);
             int endSp = GetPointsRequiredForLevel(level);
+            if (includeCurrentSP)
+                startSp = Math.Max(startSp, this.CurrentSkillPoints);
+            if (endSp <= startSp)
+                return TimeSpan.Zero;
             return this.GetTimeSpanForPoints(endSp - startSp);
         }
+
 
         #region GetPrerequisiteTime overloads
 

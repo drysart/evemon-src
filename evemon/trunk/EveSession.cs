@@ -305,7 +305,7 @@ namespace EveCharacterMonitor
             return false;
         }
 
-        private static Dictionary<string, WeakReference> m_sessions = new Dictionary<string, WeakReference>();
+        private static Dictionary<string, WeakReference<EveSession>> m_sessions = new Dictionary<string, WeakReference<EveSession>>();
 
         public static EveSession GetSession(string username, string password)
         {
@@ -315,14 +315,14 @@ namespace EveCharacterMonitor
                 EveSession result = null;
                 if (m_sessions.ContainsKey(hkey))
                 {
-                    result = m_sessions[hkey].Target as EveSession;
+                    result = m_sessions[hkey].Target;
                 }
                 if (result == null)
                 {
                     try
                     {
                         EveSession s = new EveSession(username, password);
-                        m_sessions[hkey] = new WeakReference(s);
+                        m_sessions[hkey] = new WeakReference<EveSession>(s);
                         result = s;
                     }
                     catch (ApplicationException) { }

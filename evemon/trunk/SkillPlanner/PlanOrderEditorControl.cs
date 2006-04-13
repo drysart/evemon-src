@@ -43,35 +43,85 @@ namespace EveCharacterMonitor.SkillPlanner
 
         private void PlanChanged()
         {
+            tmrTick.Enabled = false;
             if (m_plan == null)
             {
+                if (m_grandCharacterInfo != null)
+                {
+                    m_grandCharacterInfo.SkillChanged -= new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
+                }
                 m_grandCharacterInfo = null;
                 lvSkills.Items.Clear();
             }
             else
             {
                 m_grandCharacterInfo = m_plan.GrandCharacterInfo;
+                m_grandCharacterInfo.SkillChanged += new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
                 lvSkills.Items.Clear();
                 DateTime lastEnd = DateTime.MinValue;
                 foreach (PlanEntry pe in m_plan.Entries)
                 {
-                    GrandSkill gs = pe.Skill;
-                    string[] data = new string[6];
-                    data[0] = pe.SkillName + " " + GrandSkill.GetRomanSkillNumber(pe.Level);
-                    data[1] = GrandSkill.TimeSpanToDescriptiveText(gs.GetTrainingTimeOfLevelOnly(pe.Level), DescriptiveTextOptions.IncludeCommas);
-                    if (lastEnd == DateTime.MinValue)
-                    {
-                        lastEnd = DateTime.Now + gs.GetPrerequisiteTime() + gs.GetTrainingTimeToLevel(pe.Level - 1);
-                    }
-                    data[2] = lastEnd.ToString();
-                    lastEnd += gs.GetTrainingTimeOfLevelOnly(pe.Level);
-                    data[3] = lastEnd.ToString();
-                    data[4] = pe.EntryType.ToString();
-                    data[5] = pe.Level.ToString();
-                    ListViewItem lvi = new ListViewItem(data);
+                    ListViewItem lvi = new ListViewItem();
                     lvi.Tag = pe;
                     lvSkills.Items.Add(lvi);
+
+                    GrandSkill gs = pe.Skill;
+                    if (gs.InTraining)
+                        tmrTick.Enabled = true;
+
                 }
+                UpdateListViewItems();
+            }
+        }
+
+        void m_grandCharacterInfo_SkillChanged(object sender, SkillChangedEventArgs e)
+        {
+            UpdateListViewItems();
+        }
+
+        private void tmrTick_Tick(object sender, EventArgs e)
+        {
+            UpdateListViewItems();
+        }
+
+        private const int SUBITEM_SKILLNAME = 0;
+        private const int SUBITEM_TRAININGTIME = 1;
+        private const int SUBITEM_EARLIESTSTART = 2;
+        private const int SUBITEM_EARLIESTEND = 3;
+        private const int SUBITEM_ENTRYTYPE = 4;
+        private const int SUBITEM_LEVELNUMERIC = 5;
+        private const int SUBITEM_MAX = 6;
+
+        private void UpdateListViewItems()
+        {
+            lvSkills.BeginUpdate();
+            try
+            {
+                DateTime start = DateTime.Now;
+                for (int i = 0; i < lvSkills.Items.Count; i++)
+                {
+                    ListViewItem lvi = lvSkills.Items[i];
+                    PlanEntry pe = (PlanEntry)lvi.Tag;
+                    GrandSkill gs = pe.Skill;
+
+                    while (lvi.SubItems.Count < SUBITEM_MAX)
+                        lvi.SubItems.Add(String.Empty);
+
+                    lvi.SubItems[SUBITEM_SKILLNAME].Text = gs.Name + " " +
+                        GrandSkill.GetRomanSkillNumber(pe.Level);
+                    TimeSpan trainTime = gs.GetTrainingTimeOfLevelOnly(pe.Level, true);
+                    lvi.SubItems[SUBITEM_TRAININGTIME].Text =
+                        GrandSkill.TimeSpanToDescriptiveText(trainTime, DescriptiveTextOptions.IncludeCommas);
+                    lvi.SubItems[SUBITEM_EARLIESTSTART].Text = start.ToString();
+                    start += trainTime;
+                    lvi.SubItems[SUBITEM_EARLIESTEND].Text = start.ToString();
+                    lvi.SubItems[SUBITEM_ENTRYTYPE].Text = pe.EntryType.ToString();
+                    lvi.SubItems[SUBITEM_LEVELNUMERIC].Text = pe.Level.ToString();
+                }
+            }
+            finally
+            {
+                lvSkills.EndUpdate();
             }
         }
 
@@ -302,12 +352,11 @@ namespace EveCharacterMonitor.SkillPlanner
                 GrandSkill gs = pe.Skill;
                 sb.AppendLine(String.Format("{0}: [b]{1} {2}[/b] ({3})", 
                     i, pe.SkillName, GrandSkill.GetRomanSkillNumber(pe.Level), 
-                    GrandSkill.TimeSpanToDescriptiveText(gs.GetTrainingTimeOfLevelOnly(pe.Level), DescriptiveTextOptions.FullText | DescriptiveTextOptions.IncludeCommas | DescriptiveTextOptions.SpaceText)));
+                    GrandSkill.TimeSpanToDescriptiveText(gs.GetTrainingTimeOfLevelOnly(pe.Level, true), DescriptiveTextOptions.FullText | DescriptiveTextOptions.IncludeCommas | DescriptiveTextOptions.SpaceText)));
             }
             Clipboard.SetText(sb.ToString());
             MessageBox.Show("The skill plan has been copied to the clipboard in a " +
                 "format suitable for forum posting.", "Plan Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
     }
 }
