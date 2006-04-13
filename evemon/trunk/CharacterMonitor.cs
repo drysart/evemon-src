@@ -896,7 +896,11 @@ namespace EveCharacterMonitor
         private void lbSkills_MouseMove(object sender, MouseEventArgs e)
         {
             int index = lbSkills.IndexFromPoint(e.X, e.Y);
-            object item = lbSkills.Items[index];
+            object item;
+            if (index < 0 || index >= lbSkills.Items.Count)
+                item = null;
+            else
+                item = lbSkills.Items[index];
 
             if (item is GrandSkillGroup)
             {
@@ -913,6 +917,10 @@ namespace EveCharacterMonitor
 
                 ttToolTip.Active = true;
                 ttToolTip.SetToolTip(lbSkills, s.Description.ToString());
+            }
+            else
+            {
+                ttToolTip.Active = false;
             }
         }       
     }
