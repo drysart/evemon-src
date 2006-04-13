@@ -27,10 +27,6 @@ namespace EveCharacterMonitor
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            UpdateManager um = UpdateManager.GetInstance();
-            um.UpdateAvailable += new UpdateAvailableHandler(um_UpdateAvailable);
-            um.Start();
-
             if (!String.IsNullOrEmpty(m_settings.Username) &&
                 !String.IsNullOrEmpty(m_settings.Password) &&
                 !String.IsNullOrEmpty(m_settings.Character))
@@ -52,6 +48,13 @@ namespace EveCharacterMonitor
                 if (cli!=null)
                     AddTab(cli);
             }
+        }
+
+        private void MainWindow_Shown(object sender, EventArgs e)
+        {
+            UpdateManager um = UpdateManager.GetInstance();
+            um.UpdateAvailable += new UpdateAvailableHandler(um_UpdateAvailable);
+            um.Start();
         }
 
         private void um_UpdateAvailable(object sender, UpdateAvailableEventArgs e)
