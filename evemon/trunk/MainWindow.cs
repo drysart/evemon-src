@@ -64,6 +64,15 @@ namespace EveCharacterMonitor
 
         void im_Signaled(object sender, EventArgs e)
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    im_Signaled(sender, e);
+                }));
+                return;
+            }
+
             if (!this.Visible)
                 niMinimizeIcon_Click(this, new EventArgs());
             else if (this.WindowState == FormWindowState.Minimized)
@@ -343,6 +352,15 @@ namespace EveCharacterMonitor
             {
                 f.ShowDialog();
             }
+        }
+
+        private void tmrClock_Tick(object sender, EventArgs e)
+        {
+            tmrClock.Enabled = false;
+            DateTime now = DateTime.Now.ToUniversalTime();
+            lblStatus.Text = "Current EVE Time: " + now.ToString("hh:mm");
+            tmrClock.Interval = ((60-now.Minute) * 1000) + (1000-now.Millisecond);
+            tmrClock.Enabled = true;
         }
     }
 }
