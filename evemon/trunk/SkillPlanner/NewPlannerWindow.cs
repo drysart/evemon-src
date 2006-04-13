@@ -210,11 +210,18 @@ namespace EveCharacterMonitor.SkillPlanner
 
         private void UpdateStatusBar()
         {
-            slblStatusText.Text = String.Format("{0} Skill{1} Planned ({2} Unique Skill{3})",
+            TimeSpan res = TimeSpan.Zero;
+            foreach (PlanEntry pe in m_plan.Entries)
+            {
+                GrandSkill gs = pe.Skill;
+                res += gs.GetTrainingTimeOfLevelOnly(pe.Level);
+            }
+            slblStatusText.Text = String.Format("{0} Skill{1} Planned ({2} Unique Skill{3}). Total training time: {4}",
                 m_plan.Entries.Count,
                 m_plan.Entries.Count == 1 ? "" : "s",
                 m_plan.UniqueSkillCount,
-                m_plan.UniqueSkillCount == 1 ? "" : "s");
+                m_plan.UniqueSkillCount == 1 ? "" : "s",
+                GrandSkill.TimeSpanToDescriptiveText(res, DescriptiveTextOptions.FullText|DescriptiveTextOptions.IncludeCommas|DescriptiveTextOptions.SpaceText));
         }
 
         private bool SetPlanLabel(Label label, Button button, int level)
