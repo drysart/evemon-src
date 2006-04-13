@@ -360,7 +360,7 @@ namespace EveCharacterMonitor
             tmrClock.Enabled = false;
             DateTime now = DateTime.Now.ToUniversalTime();
             DateTimeFormatInfo fi = CultureInfo.CurrentCulture.DateTimeFormat;
-            lblStatus.Text = "Current EVE Time: " + now.ToString(fi.ShortDatePattern+" hh:mm");
+            lblStatus.Text = "Current EVE Time: " + now.ToString(fi.ShortDatePattern+" HH:mm");
             tmrClock.Interval = ((60-now.Minute) * 1000) + (1000-now.Millisecond);
             tmrClock.Enabled = true;
         }
