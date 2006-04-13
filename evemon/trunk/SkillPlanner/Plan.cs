@@ -315,6 +315,25 @@ namespace EveCharacterMonitor.SkillPlanner
             set { m_entryType = value; }
         }
 
+        /*
+         *  This needs to support multiple targets.
+         * 
+        private string m_prerequisiteForName;
+        private int m_prerequisiteForLevel;
+
+        public string PrerequisiteForName
+        {
+            get { return m_prerequisiteForName; }
+            set { m_prerequisiteForName = value; }
+        }
+
+        public int PrerequisiteForLevel
+        {
+            get { return m_prerequisiteForLevel; }
+            set { m_prerequisiteForLevel = value; }
+        }
+         */
+
         [XmlIgnore]
         public GrandSkill Skill
         {

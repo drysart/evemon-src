@@ -33,6 +33,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tvSkillView = new System.Windows.Forms.TreeView();
             this.cbSkillFilter = new System.Windows.Forms.ComboBox();
+            this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
             this.pnlPlanControl = new System.Windows.Forms.Panel();
             this.lblPlanDescription = new System.Windows.Forms.Label();
             this.btnCancelPlan = new System.Windows.Forms.Button();
@@ -61,7 +62,6 @@ namespace EveCharacterMonitor.SkillPlanner
             this.tmrSkillTick = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.slblStatusText = new System.Windows.Forms.ToolStripStatusLabel();
-            this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
             this.planEditor = new EveCharacterMonitor.SkillPlanner.PlanOrderEditorControl();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -112,12 +112,26 @@ namespace EveCharacterMonitor.SkillPlanner
             "Show All Skills",
             "Show Known Skills",
             "Show Planned Skills",
+            "Show Available, Untrained Skills",
             "View Plan"});
             this.cbSkillFilter.Location = new System.Drawing.Point(12, 12);
             this.cbSkillFilter.Name = "cbSkillFilter";
             this.cbSkillFilter.Size = new System.Drawing.Size(192, 21);
             this.cbSkillFilter.TabIndex = 0;
             this.cbSkillFilter.SelectedIndexChanged += new System.EventHandler(this.cbSkillFilter_SelectedIndexChanged);
+            // 
+            // skillTreeDisplay1
+            // 
+            this.skillTreeDisplay1.AutoScroll = true;
+            this.skillTreeDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.skillTreeDisplay1.Location = new System.Drawing.Point(0, 92);
+            this.skillTreeDisplay1.Name = "skillTreeDisplay1";
+            this.skillTreeDisplay1.Plan = null;
+            this.skillTreeDisplay1.RootSkill = null;
+            this.skillTreeDisplay1.Size = new System.Drawing.Size(540, 495);
+            this.skillTreeDisplay1.TabIndex = 0;
+            this.skillTreeDisplay1.SkillClicked += new EveCharacterMonitor.SkillPlanner.SkillClickedHandler(this.skillTreeDisplay1_SkillClicked);
+            this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
             // 
             // pnlPlanControl
             // 
@@ -381,24 +395,12 @@ namespace EveCharacterMonitor.SkillPlanner
             this.slblStatusText.Size = new System.Drawing.Size(79, 17);
             this.slblStatusText.Text = "0 Skills Planned";
             // 
-            // skillTreeDisplay1
-            // 
-            this.skillTreeDisplay1.AutoScroll = true;
-            this.skillTreeDisplay1.AutoScrollMinSize = new System.Drawing.Size(1000, 2000);
-            this.skillTreeDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.skillTreeDisplay1.Location = new System.Drawing.Point(0, 92);
-            this.skillTreeDisplay1.Name = "skillTreeDisplay1";
-            this.skillTreeDisplay1.Plan = null;
-            this.skillTreeDisplay1.RootSkill = null;
-            this.skillTreeDisplay1.Size = new System.Drawing.Size(540, 495);
-            this.skillTreeDisplay1.TabIndex = 0;
-            this.skillTreeDisplay1.SkillClicked += new EveCharacterMonitor.SkillPlanner.SkillClickedHandler(this.skillTreeDisplay1_SkillClicked);
-            this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
-            // 
             // planEditor
             // 
+            this.planEditor.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.planEditor.Location = new System.Drawing.Point(74, 81);
             this.planEditor.Name = "planEditor";
+            this.planEditor.Plan = null;
             this.planEditor.Size = new System.Drawing.Size(176, 150);
             this.planEditor.TabIndex = 2;
             this.planEditor.Visible = false;

@@ -35,22 +35,11 @@ namespace EveCharacterMonitor.SkillPlanner
             {
                 m_plan = new Plan();
                 m_settings.AddPlanFor(m_grandCharacterInfo.Name, m_plan);
-                //Pair<string,Plan> np = new Pair<string,Plan>();
-                //np.A = m_grandCharacterInfo.Name;
-                //np.B = m_plan;
-                //m_settings.Plans.Add(np);
+
             }
             m_plan.GrandCharacterInfo = m_grandCharacterInfo;
             m_plan.Changed += new EventHandler<EventArgs>(m_plan_Changed);
             skillTreeDisplay1.Plan = m_plan;
-
-#if DEBUG
-            using (FileStream fs = new FileStream("c:/plan.xml", FileMode.Create))
-            {
-                XmlSerializer xs = new XmlSerializer(typeof(Plan));
-                xs.Serialize(fs, m_plan);
-            }
-#endif
         }
 
         private void NewPlannerWindow_FormClosed(object sender, FormClosedEventArgs e)
@@ -62,6 +51,7 @@ namespace EveCharacterMonitor.SkillPlanner
         {
             //MessageBox.Show("saving");
             m_settings.Save();
+            UpdateStatusBar();
         }
 
         private void NewPlannerWindow_Load(object sender, EventArgs e)
@@ -82,7 +72,7 @@ namespace EveCharacterMonitor.SkillPlanner
             SkillFilter sf;
             switch (cbSkillFilter.SelectedIndex)
             {
-                case 3: // View Plan
+                case 4: // View Plan
                     SwitchToPlanEditor(true);
                     return;
                 case 1: // Show Known Skills
@@ -95,6 +85,12 @@ namespace EveCharacterMonitor.SkillPlanner
                     sf = delegate(GrandSkill xx)
                     {
                         return m_plan.IsPlanned(xx);
+                    };
+                    break;
+                case 3: // Show Available, Untrained Skills
+                    sf = delegate(GrandSkill xx)
+                    {
+                        return (xx.PrerequisitesMet && !xx.Known);
                     };
                     break;
                 case 0:
@@ -209,6 +205,11 @@ namespace EveCharacterMonitor.SkillPlanner
                 pnlPlanControl.Visible = true;
             }
 
+            UpdateStatusBar();
+        }
+
+        private void UpdateStatusBar()
+        {
             slblStatusText.Text = String.Format("{0} Skill{1} Planned ({2} Unique Skill{3})",
                 m_plan.Entries.Count,
                 m_plan.Entries.Count == 1 ? "" : "s",
@@ -380,7 +381,18 @@ namespace EveCharacterMonitor.SkillPlanner
                 {
                     PlanEntry pe = new PlanEntry();
                     pe.SkillName = m_selectedSkill.Name;
-                    pe.EntryType = (i == level) ? PlanEntryType.Planned : PlanEntryType.Prerequisite;
+                    if (i == level)
+                    {
+                        pe.EntryType = PlanEntryType.Planned;
+                        //pe.PrerequisiteForName = String.Empty;
+                        //pe.PrerequisiteForLevel = -1;
+                    }
+                    else
+                    {
+                        pe.EntryType = PlanEntryType.Prerequisite;
+                        //pe.PrerequisiteForName = m_selectedSkill.Name;
+                        //pe.PrerequisiteForLevel = level + 1;
+                    }
                     pe.Level = i;
                     planEntries.Add(pe);
                 }
@@ -408,8 +420,10 @@ namespace EveCharacterMonitor.SkillPlanner
                     {
                         PlanEntry pe = new PlanEntry();
                         pe.SkillName = pgs.Name;
-                        pe.EntryType = PlanEntryType.Prerequisite;
                         pe.Level = i;
+                        pe.EntryType = PlanEntryType.Prerequisite;
+                        //pe.PrerequisiteForName = gs.Name;
+                        //pe.PrerequisiteForLevel = 1;
                         planEntries.Add(pe);
                     }
                 }

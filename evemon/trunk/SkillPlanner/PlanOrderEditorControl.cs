@@ -7,6 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
+using System.IO;
+using System.Xml.Serialization;
+
 namespace EveCharacterMonitor.SkillPlanner
 {
     public partial class PlanOrderEditorControl : UserControl
@@ -66,6 +69,7 @@ namespace EveCharacterMonitor.SkillPlanner
                     data[4] = pe.EntryType.ToString();
                     data[5] = pe.Level.ToString();
                     ListViewItem lvi = new ListViewItem(data);
+                    lvi.Tag = pe;
                     lvSkills.Items.Add(lvi);
                 }
             }
@@ -186,5 +190,124 @@ namespace EveCharacterMonitor.SkillPlanner
                 m_plan.ResumeEvents();
             }
         }
+
+        private void cmsContextMenu_Opening(object sender, CancelEventArgs e)
+        {
+            miRemoveFromPlan.Enabled = (lvSkills.SelectedItems.Count == 1);
+        }
+
+        private void miRemoveFromPlan_Click(object sender, EventArgs e)
+        {
+            if (lvSkills.SelectedItems.Count != 1)
+                return;
+
+            using (CancelChoiceWindow f = new CancelChoiceWindow())
+            {
+                DialogResult dr = f.ShowDialog();
+                if (dr == DialogResult.Cancel)
+                    return;
+                if (dr == DialogResult.Yes)
+                    RemoveFromPlan(GetPlanEntryForListViewItem(lvSkills.SelectedItems[0]), true);
+                if (dr == DialogResult.No)
+                    RemoveFromPlan(GetPlanEntryForListViewItem(lvSkills.SelectedItems[0]), false);
+            }
+        }
+
+        private PlanEntry GetPlanEntryForListViewItem(ListViewItem lvi)
+        {
+            if (lvi == null)
+                return null;
+            return lvi.Tag as PlanEntry;
+        }
+
+        private void RemoveFromPlan(PlanEntry pe, bool includePrerequisites)
+        {
+            bool result = m_plan.RemoveEntry(pe.Skill, includePrerequisites, false);
+            if (!result)
+            {
+                MessageBox.Show(this,
+                    "The plan for this skill could not be cancelled because this skill is " +
+                    "required for another skill you have planned.",
+                    "Skill Needed", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+        }
+
+        private enum SaveType
+        {
+            None = 0,
+            Xml = 1,
+            Text = 2
+        }
+
+        private void tsbSave_Click(object sender, EventArgs e)
+        {
+            sfdSave.FileName = m_plan.GrandCharacterInfo.Name + " Skill Plan";
+            sfdSave.FilterIndex = (int)SaveType.Xml;
+            DialogResult dr = sfdSave.ShowDialog();
+            if (dr == DialogResult.Cancel)
+                return;
+
+            string fileName = sfdSave.FileName;
+            try
+            {
+                using (FileStream fs = new FileStream(fileName, FileMode.Create))
+                {
+                    switch ((SaveType)sfdSave.FilterIndex)
+                    {
+                        case SaveType.Xml:
+                            XmlSerializer xs = new XmlSerializer(typeof(Plan));
+                            xs.Serialize(fs, m_plan);
+                            break;
+                        case SaveType.Text:
+                            SaveAsText(fs);
+                            break;
+                        default:
+                            return;
+                    }
+                }
+            }
+            catch (IOException err)
+            {
+                MessageBox.Show("There was an error writing out the file:\n\n" + err.Message,
+                    "Save Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void SaveAsText(Stream fs)
+        {
+            using (StreamWriter sw = new StreamWriter(fs))
+            {
+                sw.WriteLine("Skill Plan for {0}:", m_plan.GrandCharacterInfo.Name);
+                sw.WriteLine();
+                int i = 0;
+                foreach (PlanEntry pe in m_plan.Entries)
+                {
+                    i++;
+                    sw.WriteLine("{0:D3}: {1} {2}", i, pe.SkillName, GrandSkill.GetRomanSkillNumber(pe.Level));
+                }
+            }
+        }
+
+        private void tsbCopyForum_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[b]Skill Plan for ");
+            sb.Append(m_plan.GrandCharacterInfo.Name);
+            sb.AppendLine("[/b]");
+            sb.AppendLine();
+            int i = 0;
+            foreach (PlanEntry pe in m_plan.Entries)
+            {
+                i++;
+                GrandSkill gs = pe.Skill;
+                sb.AppendLine(String.Format("{0}: [b]{1} {2}[/b] ({3})", 
+                    i, pe.SkillName, GrandSkill.GetRomanSkillNumber(pe.Level), 
+                    GrandSkill.TimeSpanToDescriptiveText(gs.GetTrainingTimeOfLevelOnly(pe.Level), DescriptiveTextOptions.FullText | DescriptiveTextOptions.IncludeCommas | DescriptiveTextOptions.SpaceText)));
+            }
+            Clipboard.SetText(sb.ToString());
+            MessageBox.Show("The skill plan has been copied to the clipboard in a " +
+                "format suitable for forum posting.", "Plan Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
     }
 }
