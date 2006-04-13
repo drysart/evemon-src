@@ -80,6 +80,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.colTrainingTime,
             this.colEarliestStart,
             this.colEarliestFinish});
+            this.lvSkills.FullRowSelect = true;
             this.lvSkills.Location = new System.Drawing.Point(0, 0);
             this.lvSkills.Name = "lvSkills";
             this.lvSkills.Size = new System.Drawing.Size(683, 558);

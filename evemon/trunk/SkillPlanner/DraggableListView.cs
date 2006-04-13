@@ -46,9 +46,13 @@ namespace EveCharacterMonitor.SkillPlanner
         public event EventHandler<ListViewDragEventArgs> ListViewItemsDragging;
         public event EventHandler<EventArgs> ListViewItemsDragged;
 
+        private bool m_dragging = false;
+
         protected override void OnDragDrop(DragEventArgs e)
         {
             base.OnDragDrop(e);
+            m_dragging = false;
+            ClearDropMarker();
             if (!this.AllowRowReorder)
             {
                 return;
@@ -101,16 +105,74 @@ namespace EveCharacterMonitor.SkillPlanner
             }
         }
 
+        private int m_dropMarkerOn = -1;
+        private bool m_dropMarkerBelow = false;
+
+        private void ClearDropMarker()
+        {
+            if (m_dropMarkerOn != -1)
+            {
+                //Rectangle rr = this.GetItemRect(m_dropMarkerOn);
+                //this.Invalidate(rr);
+                this.RestrictedPaint();
+            }
+            m_dropMarkerOn = -1;
+        }
+
+        private void DrawDropMarker(int index, bool below)
+        {
+            if (m_dropMarkerOn != -1 && m_dropMarkerOn != index)
+                ClearDropMarker();
+            if (m_dropMarkerOn != index)
+            {
+                m_dropMarkerOn = index;
+                m_dropMarkerBelow = below;
+                //Rectangle rr = this.GetItemRect(m_dropMarkerOn);
+                //this.Invalidate(rr);
+                this.RestrictedPaint();
+            }
+        }
+
+        private void RestrictedPaint()
+        {
+            Rectangle itemRect = base.GetItemRect(m_dropMarkerOn);
+            Point start;
+            Point end;
+            if (m_dropMarkerBelow)
+            {
+                start = new Point(itemRect.Left, itemRect.Bottom);
+                end = new Point(itemRect.Right, itemRect.Bottom);
+            }
+            else
+            {
+                start = new Point(itemRect.Left, itemRect.Top);
+                end = new Point(itemRect.Right, itemRect.Top);
+            }
+            start = this.PointToScreen(start);
+            end = this.PointToScreen(end);
+            ControlPaint.DrawReversibleLine(start, end, SystemColors.Window);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            if (m_dragging)
+                RestrictedPaint();
+        }
+
         protected override void OnDragOver(DragEventArgs e)
         {
             if (!this.AllowRowReorder)
             {
                 e.Effect = DragDropEffects.None;
+                ClearDropMarker();
                 return;
             }
             if (!e.Data.GetDataPresent(DataFormats.Text))
             {
                 e.Effect = DragDropEffects.None;
+                ClearDropMarker();
                 return;
             }
             Point cp = base.PointToClient(new Point(e.X, e.Y));
@@ -118,6 +180,7 @@ namespace EveCharacterMonitor.SkillPlanner
             if (hoverItem == null)
             {
                 e.Effect = DragDropEffects.None;
+                ClearDropMarker();
                 return;
             }
             foreach (ListViewItem moveItem in base.SelectedItems)
@@ -126,6 +189,7 @@ namespace EveCharacterMonitor.SkillPlanner
                 {
                     e.Effect = DragDropEffects.None;
                     hoverItem.EnsureVisible();
+                    ClearDropMarker();
                     return;
                 }
             }
@@ -135,10 +199,13 @@ namespace EveCharacterMonitor.SkillPlanner
             {
                 e.Effect = DragDropEffects.Move;
                 hoverItem.EnsureVisible();
+
+                DrawDropMarker(hoverItem.Index, hoverItem.Index > this.SelectedIndices[0]);
             }
             else
             {
                 e.Effect = DragDropEffects.None;
+                ClearDropMarker();
             }
         }
 
@@ -148,11 +215,13 @@ namespace EveCharacterMonitor.SkillPlanner
             if (!this.AllowRowReorder)
             {
                 e.Effect = DragDropEffects.None;
+                ClearDropMarker();
                 return;
             }
             if (!e.Data.GetDataPresent(DataFormats.Text))
             {
                 e.Effect = DragDropEffects.None;
+                ClearDropMarker();
                 return;
             }
             base.OnDragEnter(e);
@@ -164,6 +233,7 @@ namespace EveCharacterMonitor.SkillPlanner
             else
             {
                 e.Effect = DragDropEffects.None;
+                ClearDropMarker();
             }
         }
 
@@ -175,6 +245,7 @@ namespace EveCharacterMonitor.SkillPlanner
                 return;
             }
             base.DoDragDrop(REORDER, DragDropEffects.Move);
+            m_dragging = true;
         }
     }
 
