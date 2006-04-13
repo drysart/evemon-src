@@ -28,11 +28,14 @@ namespace EveCharacterMonitor
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutWindow));
             this.label1 = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -56,8 +59,9 @@ namespace EveCharacterMonitor
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 59);
+            this.label3.Location = new System.Drawing.Point(12, 277);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(169, 13);
             this.label3.TabIndex = 2;
@@ -65,8 +69,9 @@ namespace EveCharacterMonitor
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 72);
+            this.label4.Location = new System.Drawing.Point(12, 290);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(217, 13);
             this.label4.TabIndex = 3;
@@ -75,7 +80,7 @@ namespace EveCharacterMonitor
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(214, 104);
+            this.btnOk.Location = new System.Drawing.Point(302, 282);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 4;
@@ -83,13 +88,32 @@ namespace EveCharacterMonitor
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 39);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(164, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Copyright © 2006  Timothy Fries";
+            // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(12, 61);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(362, 215);
+            this.label5.TabIndex = 6;
+            this.label5.Text = resources.GetString("label5.Text");
+            // 
             // AboutWindow
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(301, 139);
+            this.ClientSize = new System.Drawing.Size(389, 317);
             this.ControlBox = false;
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -115,5 +139,7 @@ namespace EveCharacterMonitor
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnOk;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label5;
     }
 }
