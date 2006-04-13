@@ -892,6 +892,29 @@ namespace EveCharacterMonitor
                 m_settings.SaveTo(s);
             }
         }
+
+        private void lbSkills_MouseMove(object sender, MouseEventArgs e)
+        {
+            int index = lbSkills.IndexFromPoint(e.X, e.Y);
+            object item = lbSkills.Items[index];
+
+            if (item is GrandSkillGroup)
+            {
+                //GrandSkillGroup sg = (GrandSkillGroup)item;
+                //SkillGroup description is not in the skills.xml
+                //They do exist though, see: http://www.eve-online.com/itemdatabase/skillsaccessories/skills/default.asp
+                
+                //nothing to display in the tooltip, turn it off
+                ttToolTip.Active = false;
+            }
+            else if (item is GrandSkill)
+            {
+                GrandSkill s = (GrandSkill)item;
+
+                ttToolTip.Active = true;
+                ttToolTip.SetToolTip(lbSkills, s.Description.ToString());
+            }
+        }       
     }
 
     public delegate void SkillTrainingCompletedHandler(object sender, SkillTrainingCompletedEventArgs e);

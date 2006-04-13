@@ -53,6 +53,7 @@ namespace EveCharacterMonitor
             this.btnSave = new System.Windows.Forms.Button();
             this.tmrTick = new System.Windows.Forms.Timer(this.components);
             this.sfdSaveDialog = new System.Windows.Forms.SaveFileDialog();
+            this.ttToolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbCharImage)).BeginInit();
             this.pnlTraining.SuspendLayout();
             this.pnlCharData.SuspendLayout();
@@ -162,6 +163,7 @@ namespace EveCharacterMonitor
             this.lbSkills.TabIndex = 12;
             this.lbSkills.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbSkills_DrawItem);
             this.lbSkills.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.lbSkills_MeasureItem);
+            this.lbSkills.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseMove);
             // 
             // pnlTraining
             // 
@@ -345,5 +347,6 @@ namespace EveCharacterMonitor
         private System.Windows.Forms.Button btnPlan;
         private System.Windows.Forms.Label lblSkillHeader;
         private System.Windows.Forms.Button btnDebugError;
+        private System.Windows.Forms.ToolTip ttToolTip;
     }
 }
