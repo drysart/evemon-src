@@ -166,6 +166,7 @@ namespace EveCharacterMonitor.SkillPlanner
             else
             {
                 lblSkillName.Text = m_selectedSkill.Name;
+                ttToolTip.SetToolTip(lblSkillName, m_selectedSkill.Description);
                 int plannedTo = 0;
                 bool anyPlan = false;
                 bool tPlan;

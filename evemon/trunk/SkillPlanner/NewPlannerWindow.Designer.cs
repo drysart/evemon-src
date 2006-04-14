@@ -66,6 +66,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbDeletePlan = new System.Windows.Forms.ToolStripButton();
             this.planEditor = new EveCharacterMonitor.SkillPlanner.PlanOrderEditorControl();
+            this.ttToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -441,6 +442,12 @@ namespace EveCharacterMonitor.SkillPlanner
             this.planEditor.TabIndex = 2;
             this.planEditor.Visible = false;
             // 
+            // ttToolTip
+            // 
+            this.ttToolTip.AutoPopDelay = 5000000;
+            this.ttToolTip.InitialDelay = 500;
+            this.ttToolTip.ReshowDelay = 100;
+            // 
             // NewPlannerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -511,5 +518,6 @@ namespace EveCharacterMonitor.SkillPlanner
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsbDeletePlan;
         private System.Windows.Forms.ToolStripStatusLabel tslSuggestion;
+        private System.Windows.Forms.ToolTip ttToolTip;
     }
 }
