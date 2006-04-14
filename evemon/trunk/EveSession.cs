@@ -670,6 +670,8 @@ namespace EveCharacterMonitor
         [XmlEnum("memory")]
         Memory,
         [XmlEnum("willpower")]
-        Willpower
+        Willpower,
+        [XmlEnum("none")]
+        None
     }
 }

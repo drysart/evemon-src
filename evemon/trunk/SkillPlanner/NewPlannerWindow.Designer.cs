@@ -33,6 +33,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tvSkillView = new System.Windows.Forms.TreeView();
             this.cbSkillFilter = new System.Windows.Forms.ComboBox();
+            this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
             this.pnlPlanControl = new System.Windows.Forms.Panel();
             this.lblPlanDescription = new System.Windows.Forms.Label();
             this.btnCancelPlan = new System.Windows.Forms.Button();
@@ -61,10 +62,10 @@ namespace EveCharacterMonitor.SkillPlanner
             this.tmrSkillTick = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.slblStatusText = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tslSuggestion = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbDeletePlan = new System.Windows.Forms.ToolStripButton();
             this.planEditor = new EveCharacterMonitor.SkillPlanner.PlanOrderEditorControl();
-            this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -122,6 +123,19 @@ namespace EveCharacterMonitor.SkillPlanner
             this.cbSkillFilter.Size = new System.Drawing.Size(192, 21);
             this.cbSkillFilter.TabIndex = 0;
             this.cbSkillFilter.SelectedIndexChanged += new System.EventHandler(this.cbSkillFilter_SelectedIndexChanged);
+            // 
+            // skillTreeDisplay1
+            // 
+            this.skillTreeDisplay1.AutoScroll = true;
+            this.skillTreeDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.skillTreeDisplay1.Location = new System.Drawing.Point(0, 92);
+            this.skillTreeDisplay1.Name = "skillTreeDisplay1";
+            this.skillTreeDisplay1.Plan = null;
+            this.skillTreeDisplay1.RootSkill = null;
+            this.skillTreeDisplay1.Size = new System.Drawing.Size(540, 470);
+            this.skillTreeDisplay1.TabIndex = 0;
+            this.skillTreeDisplay1.SkillClicked += new EveCharacterMonitor.SkillPlanner.SkillClickedHandler(this.skillTreeDisplay1_SkillClicked);
+            this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
             // 
             // pnlPlanControl
             // 
@@ -372,7 +386,8 @@ namespace EveCharacterMonitor.SkillPlanner
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.slblStatusText});
+            this.slblStatusText,
+            this.tslSuggestion});
             this.statusStrip1.Location = new System.Drawing.Point(0, 587);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(751, 22);
@@ -384,6 +399,18 @@ namespace EveCharacterMonitor.SkillPlanner
             this.slblStatusText.Name = "slblStatusText";
             this.slblStatusText.Size = new System.Drawing.Size(79, 17);
             this.slblStatusText.Text = "0 Skills Planned";
+            // 
+            // tslSuggestion
+            // 
+            this.tslSuggestion.Image = ((System.Drawing.Image)(resources.GetObject("tslSuggestion.Image")));
+            this.tslSuggestion.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tslSuggestion.IsLink = true;
+            this.tslSuggestion.Margin = new System.Windows.Forms.Padding(10, 3, 0, 2);
+            this.tslSuggestion.Name = "tslSuggestion";
+            this.tslSuggestion.Size = new System.Drawing.Size(88, 17);
+            this.tslSuggestion.Text = "Suggestion...";
+            this.tslSuggestion.Visible = false;
+            this.tslSuggestion.Click += new System.EventHandler(this.tslSuggestion_Click);
             // 
             // toolStrip1
             // 
@@ -413,19 +440,6 @@ namespace EveCharacterMonitor.SkillPlanner
             this.planEditor.Size = new System.Drawing.Size(176, 150);
             this.planEditor.TabIndex = 2;
             this.planEditor.Visible = false;
-            // 
-            // skillTreeDisplay1
-            // 
-            this.skillTreeDisplay1.AutoScroll = true;
-            this.skillTreeDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.skillTreeDisplay1.Location = new System.Drawing.Point(0, 92);
-            this.skillTreeDisplay1.Name = "skillTreeDisplay1";
-            this.skillTreeDisplay1.Plan = null;
-            this.skillTreeDisplay1.RootSkill = null;
-            this.skillTreeDisplay1.Size = new System.Drawing.Size(540, 470);
-            this.skillTreeDisplay1.TabIndex = 0;
-            this.skillTreeDisplay1.SkillClicked += new EveCharacterMonitor.SkillPlanner.SkillClickedHandler(this.skillTreeDisplay1_SkillClicked);
-            this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
             // 
             // NewPlannerWindow
             // 
@@ -496,5 +510,6 @@ namespace EveCharacterMonitor.SkillPlanner
         private PlanOrderEditorControl planEditor;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsbDeletePlan;
+        private System.Windows.Forms.ToolStripStatusLabel tslSuggestion;
     }
 }

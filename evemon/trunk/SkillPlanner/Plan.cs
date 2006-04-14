@@ -19,6 +19,7 @@ namespace EveCharacterMonitor.SkillPlanner
         void m_entries_Changed(object sender, ChangedEventArgs<PlanEntry> e)
         {
             m_uniqueSkillCount = -1;
+            m_attributeSuggestion = null;
             switch (e.ChangeType)
             {
                 case ChangeType.Added:
@@ -98,6 +99,160 @@ namespace EveCharacterMonitor.SkillPlanner
             get { return m_entries; }
         }
 
+        private bool? m_attributeSuggestion = null;
+
+        [XmlIgnore]
+        public bool HasAttributeSuggestion
+        {
+            get
+            {
+                if (m_attributeSuggestion == null)
+                    CheckForAttributeSuggestion();
+                return m_attributeSuggestion.Value;
+            }
+        }
+
+        public IEnumerable<PlanEntry> GetSuggestions()
+        {
+            List<PlanEntry> result = new List<PlanEntry>();
+
+            TimeSpan baseTime = GetTotalTime(null);
+            CheckForTimeBenefit("Instant Recall", "Eidetic Memory", baseTime, result);
+            CheckForTimeBenefit("Analytical Mind", "Logic", baseTime, result);
+            CheckForTimeBenefit("Spatial Awareness", "Clarity", baseTime, result);
+            CheckForTimeBenefit("Iron Will", "Focus", baseTime, result);
+            CheckForTimeBenefit("Empathy", "Presence", baseTime, result);
+
+            return result;
+        }
+
+        private void CheckForAttributeSuggestion()
+        {
+            if (m_grandCharacterInfo == null)
+            {
+                m_attributeSuggestion = false;
+                return;
+            }
+
+            TimeSpan baseTime = GetTotalTime(null);
+
+            m_attributeSuggestion = CheckForTimeBenefit("Analytical Mind", "Logic", baseTime);
+            if (m_attributeSuggestion==true)
+                return;
+            m_attributeSuggestion = CheckForTimeBenefit("Spatial Awareness", "Clarity", baseTime);
+            if (m_attributeSuggestion == true)
+                return;
+            m_attributeSuggestion = CheckForTimeBenefit("Iron Will", "Focus", baseTime);
+            if (m_attributeSuggestion == true)
+                return;
+            m_attributeSuggestion = CheckForTimeBenefit("Instant Recall", "Eidetic Memory", baseTime);
+            if (m_attributeSuggestion == true)
+                return;
+            m_attributeSuggestion = CheckForTimeBenefit("Empathy", "Presence", baseTime);
+        }
+
+        private bool CheckForTimeBenefit(string skillA, string skillB, TimeSpan baseTime)
+        {
+            return CheckForTimeBenefit(skillA, skillB, baseTime, null);
+        }
+
+        private bool CheckForTimeBenefit(string skillA, string skillB, TimeSpan baseTime, List<PlanEntry> entries)
+        {
+            GrandSkill gsa = m_grandCharacterInfo.SkillGroups["Learning"][skillA];
+            GrandSkill gsb = m_grandCharacterInfo.SkillGroups["Learning"][skillB];
+
+            TimeSpan bestTime = baseTime;
+            TimeSpan addedTrainingTime = TimeSpan.Zero;
+            GrandSkill bestGs = null;
+            int bestLevel = -1;
+            int added = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                int level;
+                GrandSkill gs;
+                if (i < 5)
+                {
+                    gs = gsa;
+                    level = i + 1;
+                }
+                else
+                {
+                    gs = gsb;
+                    level = i - 4;
+                }
+
+                if (gs.Level < level && !this.IsPlanned(gs, level))
+                {
+                    EveAttributeScratchpad scratchpad = new EveAttributeScratchpad();
+                    scratchpad.AdjustAttributeBonus(gs.AttributeModified, added++);
+                    addedTrainingTime += gs.GetTrainingTimeOfLevelOnly(level, true, scratchpad);
+                    scratchpad.AdjustAttributeBonus(gs.AttributeModified, 1);
+
+                    TimeSpan thisTime = GetTotalTime(scratchpad) + addedTrainingTime;
+                    if (thisTime < bestTime)
+                    {
+                        bestTime = thisTime;
+                        bestGs = gs;
+                        bestLevel = level;
+                    }
+                }
+            }
+
+            if (entries != null)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    int level;
+                    GrandSkill gs;
+                    if (i < 5)
+                    {
+                        gs = gsa;
+                        level = i + 1;
+                    }
+                    else
+                    {
+                        gs = gsb;
+                        level = i - 4;
+                    }
+                    if (gs.Level < level && !this.IsPlanned(gs, level))
+                    {
+                        if ((level <= bestLevel && gs == bestGs) || (bestGs == gsb && gs == gsa))
+                        {
+                            PlanEntry pe = new PlanEntry();
+                            pe.SkillName = gs.Name;
+                            pe.Level = level;
+                            pe.EntryType = PlanEntryType.Planned;
+                            entries.Add(pe);
+                        }
+                    }
+                }
+            }
+
+            return (bestGs != null);
+        }
+
+        [XmlIgnore]
+        public TimeSpan TotalTrainingTime
+        {
+            get { return GetTotalTime(null); }
+        }
+
+        public TimeSpan GetTotalTime(EveAttributeScratchpad scratchpad)
+        {
+            TimeSpan ts = TimeSpan.Zero;
+            if (scratchpad==null)
+                scratchpad = new EveAttributeScratchpad();
+            foreach (PlanEntry pe in m_entries)
+            {
+                ts += pe.Skill.GetTrainingTimeOfLevelOnly(pe.Level, true, scratchpad);
+                if (pe.Skill.Name == "Learning")
+                    scratchpad.AdjustLearningLevelBonus(1);
+                else if (pe.Skill.IsLearningSkill)
+                    scratchpad.AdjustAttributeBonus(pe.Skill.AttributeModified, 1);
+            }
+            return ts;
+        }
+
         private int m_uniqueSkillCount = -1;
 
         [XmlIgnore]
@@ -132,6 +287,7 @@ namespace EveCharacterMonitor.SkillPlanner
         {
             get { return m_grandCharacterInfo; }
             set {
+                m_attributeSuggestion = null;
                 if (m_grandCharacterInfo!=null)
                     m_grandCharacterInfo.SkillChanged -= new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
                 m_grandCharacterInfo = value;
@@ -334,6 +490,20 @@ namespace EveCharacterMonitor.SkillPlanner
                     }
                 }
                 m_plannerWindow = null;
+            }
+        }
+
+        internal void ClearEntries()
+        {
+            this.SuppressEvents();
+            try
+            {
+                while (m_entries.Count > 0)
+                    m_entries.RemoveAt(m_entries.Count - 1);
+            }
+            finally
+            {
+                this.ResumeEvents();
             }
         }
     }

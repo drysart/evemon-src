@@ -94,6 +94,8 @@ namespace EveCharacterMonitor.SkillPlanner
 
         private void UpdateListViewItems()
         {
+            EveAttributeScratchpad scratchpad = new EveAttributeScratchpad();
+
             lvSkills.BeginUpdate();
             try
             {
@@ -109,7 +111,7 @@ namespace EveCharacterMonitor.SkillPlanner
 
                     lvi.SubItems[SUBITEM_SKILLNAME].Text = gs.Name + " " +
                         GrandSkill.GetRomanSkillNumber(pe.Level);
-                    TimeSpan trainTime = gs.GetTrainingTimeOfLevelOnly(pe.Level, true);
+                    TimeSpan trainTime = gs.GetTrainingTimeOfLevelOnly(pe.Level, true, scratchpad);
                     lvi.SubItems[SUBITEM_TRAININGTIME].Text =
                         GrandSkill.TimeSpanToDescriptiveText(trainTime, DescriptiveTextOptions.IncludeCommas);
                     lvi.SubItems[SUBITEM_EARLIESTSTART].Text = start.ToString();
@@ -117,6 +119,11 @@ namespace EveCharacterMonitor.SkillPlanner
                     lvi.SubItems[SUBITEM_EARLIESTEND].Text = start.ToString();
                     lvi.SubItems[SUBITEM_ENTRYTYPE].Text = pe.EntryType.ToString();
                     lvi.SubItems[SUBITEM_LEVELNUMERIC].Text = pe.Level.ToString();
+
+                    if (pe.SkillName == "Learning")
+                        scratchpad.AdjustLearningLevelBonus(1);
+                    else if (gs.IsLearningSkill)
+                        scratchpad.AdjustAttributeBonus(gs.AttributeModified, 1);
                 }
             }
             finally

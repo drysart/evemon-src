@@ -154,7 +154,10 @@ namespace EveCharacterMonitor.SkillPlanner
         private void UpdatePlanControl()
         {
             if (planEditor.Visible)
+            {
+                UpdateStatusBar();
                 return;
+            }
 
             if (m_selectedSkill == null)
             {
@@ -205,11 +208,16 @@ namespace EveCharacterMonitor.SkillPlanner
 
         private void UpdateStatusBar()
         {
+            EveAttributeScratchpad scratchpad = new EveAttributeScratchpad();
             TimeSpan res = TimeSpan.Zero;
             foreach (PlanEntry pe in m_plan.Entries)
             {
                 GrandSkill gs = pe.Skill;
-                res += gs.GetTrainingTimeOfLevelOnly(pe.Level, true);
+                res += gs.GetTrainingTimeOfLevelOnly(pe.Level, true, scratchpad);
+                if (gs.Name == "Learning")
+                    scratchpad.AdjustLearningLevelBonus(1);
+                if (gs.IsLearningSkill)
+                    scratchpad.AdjustAttributeBonus(gs.AttributeModified, 1);
             }
             slblStatusText.Text = String.Format("{0} Skill{1} Planned ({2} Unique Skill{3}). Total training time: {4}",
                 m_plan.Entries.Count,
@@ -217,6 +225,8 @@ namespace EveCharacterMonitor.SkillPlanner
                 m_plan.UniqueSkillCount,
                 m_plan.UniqueSkillCount == 1 ? "" : "s",
                 GrandSkill.TimeSpanToDescriptiveText(res, DescriptiveTextOptions.FullText|DescriptiveTextOptions.IncludeCommas|DescriptiveTextOptions.SpaceText));
+
+            tslSuggestion.Visible = m_plan.HasAttributeSuggestion;
         }
 
         private bool SetPlanLabel(Label label, Button button, int level)
@@ -514,6 +524,45 @@ namespace EveCharacterMonitor.SkillPlanner
                 return;
 
             m_settings.RemovePlanFor(m_grandCharacterInfo.Name, m_plan.Name);
+        }
+
+        private void tslSuggestion_Click(object sender, EventArgs e)
+        {
+            using (SuggestionWindow f = new SuggestionWindow(m_plan))
+            {
+                DialogResult dr = f.ShowDialog();
+                if (dr == DialogResult.Cancel)
+                    return;
+            }
+            // XXX: apply plan change
+
+            List<PlanEntry> nonLearningEntries = new List<PlanEntry>();
+            m_plan.SuppressEvents();
+            try
+            {
+                foreach (PlanEntry pe in m_plan.Entries)
+                {
+                    GrandSkill gs = pe.Skill;
+                    if (!gs.IsLearningSkill && gs.Name != "Learning")
+                        nonLearningEntries.Add(pe);
+                }
+                m_plan.ClearEntries();
+                foreach (PlanEntry pe in nonLearningEntries)
+                {
+                    m_plan.Entries.Add(pe);
+                }
+                IEnumerable<PlanEntry> entries = m_plan.GetSuggestions();
+                int i = 0;
+                foreach (PlanEntry pe in entries)
+                {
+                    m_plan.Entries.Insert(i, pe);
+                    i++;
+                }
+            }
+            finally
+            {
+                m_plan.ResumeEvents();
+            }
         }
     }
 }

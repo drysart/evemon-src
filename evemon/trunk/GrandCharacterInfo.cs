@@ -265,6 +265,11 @@ namespace EveCharacterMonitor
 
         public double GetEffectiveAttribute(EveAttribute attribute)
         {
+            return GetEffectiveAttribute(attribute, null);
+        }
+
+        public double GetEffectiveAttribute(EveAttribute attribute, EveAttributeScratchpad scratchpad)
+        {
             double result = Convert.ToDouble(m_attributes[attribute]);
             double learningBonus = 1.0F;
 
@@ -273,6 +278,7 @@ namespace EveCharacterMonitor
                 if (geab.EveAttribute == attribute)
                     result += geab.Amount;
             }
+            // XXX: include implants on scratchpad?
             GrandSkillGroup learningSg = m_skillGroups["Learning"];
             switch (attribute)
             {
@@ -297,7 +303,14 @@ namespace EveCharacterMonitor
                     result += learningSg["Clarity"].Level;
                     break;
             }
-            learningBonus = 1.0 + (0.02 * learningSg["Learning"].Level);
+            if (scratchpad != null)
+                result += scratchpad.GetAttributeBonus(attribute);
+
+            int learningLevel = learningSg["Learning"].Level;
+            if (scratchpad != null)
+                learningLevel += scratchpad.LearningLevelBonus;
+
+            learningBonus = 1.0 + (0.02 * learningLevel);
 
             return (result * learningBonus);
         }
@@ -973,6 +986,32 @@ namespace EveCharacterMonitor
             set { m_currentSkillPoints = value; OnChanged(); }
         }
 
+        public bool IsLearningSkill
+        {
+            get
+            {
+                return (this.AttributeModified != EveAttribute.None);
+            }
+        }
+
+        public EveAttribute AttributeModified
+        {
+            get
+            {
+                if (m_name == "Analytical Mind" || m_name == "Logic")
+                    return EveAttribute.Intelligence;
+                else if (m_name == "Empathy" || m_name == "Presence")
+                    return EveAttribute.Charisma;
+                else if (m_name == "Instant Recall" || m_name == "Eidetic Memory")
+                    return EveAttribute.Memory;
+                else if (m_name == "Iron Will" || m_name == "Focus")
+                    return EveAttribute.Willpower;
+                else if (m_name == "Spatial Awareness" || m_name == "Clarity")
+                    return EveAttribute.Perception;
+                return EveAttribute.None;
+            }
+        }
+
         private bool m_known = false;
 
         public bool Known
@@ -995,8 +1034,13 @@ namespace EveCharacterMonitor
 
         private TimeSpan GetTimeSpanForPoints(int points)
         {
-            double primAttr = m_owner.GetEffectiveAttribute(m_primaryAttribute);
-            double secondaryAttr = m_owner.GetEffectiveAttribute(m_secondaryAttribute);
+            return GetTimeSpanForPoints(points, null);
+        }
+
+        private TimeSpan GetTimeSpanForPoints(int points, EveAttributeScratchpad scratchpad)
+        {
+            double primAttr = m_owner.GetEffectiveAttribute(m_primaryAttribute, scratchpad);
+            double secondaryAttr = m_owner.GetEffectiveAttribute(m_secondaryAttribute, scratchpad);
             double minutes = Convert.ToDouble(points) / (primAttr + (secondaryAttr / 2));
             return TimeSpan.FromMinutes(minutes);
         }
@@ -1193,15 +1237,19 @@ namespace EveCharacterMonitor
 
         public TimeSpan GetTrainingTimeOfLevelOnly(int level, bool includeCurrentSP)
         {
+            return GetTrainingTimeOfLevelOnly(level, includeCurrentSP, null);
+        }
+
+        public TimeSpan GetTrainingTimeOfLevelOnly(int level, bool includeCurrentSP, EveAttributeScratchpad scratchpad)
+        {
             int startSp = GetPointsRequiredForLevel(level - 1);
             int endSp = GetPointsRequiredForLevel(level);
             if (includeCurrentSP)
                 startSp = Math.Max(startSp, this.CurrentSkillPoints);
             if (endSp <= startSp)
                 return TimeSpan.Zero;
-            return this.GetTimeSpanForPoints(endSp - startSp);
+            return this.GetTimeSpanForPoints(endSp - startSp, scratchpad);
         }
-
 
         #region GetPrerequisiteTime overloads
 
@@ -1346,5 +1394,36 @@ namespace EveCharacterMonitor
         SpaceText = 4,
         IncludeCommas = 8,
         IncludeZeroes = 16
+    }
+
+    public class EveAttributeScratchpad
+    {
+        private int m_learningLevelBonus = 0;
+        private int[] m_attributeBonuses = new int[5] { 0, 0, 0, 0, 0 };
+
+        public int LearningLevelBonus
+        {
+            get { return m_learningLevelBonus; }
+            set { m_learningLevelBonus = value; }
+        }
+
+        public void AdjustLearningLevelBonus(int adjustmentAmount)
+        {
+            m_learningLevelBonus += adjustmentAmount;
+        }
+
+        public int GetAttributeBonus(EveAttribute attribute)
+        {
+            return m_attributeBonuses[(int)attribute];
+        }
+
+        public void AdjustAttributeBonus(EveAttribute attribute, int adjustmentAmount)
+        {
+            m_attributeBonuses[(int)attribute] += adjustmentAmount;
+        }
+
+        public EveAttributeScratchpad()
+        {
+        }
     }
 }
