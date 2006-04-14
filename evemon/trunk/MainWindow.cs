@@ -85,8 +85,10 @@ namespace EveCharacterMonitor
             um.UpdateAvailable += new UpdateAvailableHandler(um_UpdateAvailable);
             um.Start();
 
+#if !DEBUG
             InstanceManager im = InstanceManager.GetInstance();
             im.Signaled += new EventHandler<EventArgs>(im_Signaled);
+#endif
         }
 
         void im_Signaled(object sender, EventArgs e)

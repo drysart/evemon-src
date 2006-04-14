@@ -113,8 +113,6 @@ namespace EveCharacterMonitor
                         bool found = false;
                         for (int i = 0; i < lbSkills.Items.Count; i++)
                         {
-                            //string s;
-                            //s.CompareTo();
                             object o = lbSkills.Items[i];
                             if (o == gs)
                             {
@@ -282,8 +280,10 @@ namespace EveCharacterMonitor
 
         private void tmrUpdate_Tick(object sender, EventArgs e)
         {
+            if (m_throbberRunning)
+                return;
+
             tmrUpdate.Enabled = false;
-            //m_session.GetCharacterInfoAsync(m_charId, new GetCharacterInfoCallback(GotCharacterInfo));
             StartThrobber();
             m_session.UpdateGrandCharacterInfoAsync(m_grandCharacterInfo,
                 new UpdateGrandCharacterInfoCallback(delegate (EveSession s, int timeLeftInCache)
@@ -303,86 +303,8 @@ namespace EveCharacterMonitor
         private string m_skillTrainingName;
         private DateTime m_estimatedCompletion;
         private string m_lastCompletedSkill = String.Empty;
-        //private CharacterInfo m_characterInfo;
 
         private GrandCharacterInfo m_grandCharacterInfo;
-
-        //private void GotCharacterInfo(EveSession sess, CharacterInfo ci)
-        //{
-        //    this.Invoke(new MethodInvoker(delegate
-        //    {
-        //        m_characterInfo = ci;
-        //        lblCharacterName.Text = m_cli.CharacterName;
-        //        if (ci == null)
-        //        {
-        //            btnSave.Enabled = false;
-        //            btnPlan.Enabled = false;
-        //            lblBioInfo.Text = String.Empty;
-        //            lblCorpInfo.Text = "(cannot retrieve character info)";
-        //            lblBalance.Text = String.Empty;
-        //            lblIntelligence.Text = String.Empty;
-        //            lblCharisma.Text = String.Empty;
-        //            lblPerception.Text = String.Empty;
-        //            lblMemory.Text = String.Empty;
-        //            lblWillpower.Text = String.Empty;
-        //            lbSkills.Items.Clear();
-        //            m_skillTrainingName = String.Empty;
-        //            m_estimatedCompletion = DateTime.MaxValue;
-        //            pnlTraining.Visible = false;
-        //        }
-        //        else
-        //        {
-        //            btnSave.Enabled = true;
-        //            btnPlan.Enabled = true;
-        //            lblBioInfo.Text = ci.Gender + " " + ci.Race + " " + ci.BloodLine;
-        //            lblCorpInfo.Text = "Corporation: " + ci.CorpName;
-        //            lblBalance.Text = "Balance: " + ci.Balance.ToString("#,##0.00") + " ISK";
-        //            SetAttributeLabel(ci, lblIntelligence, EveAttribute.Intelligence);
-        //            SetAttributeLabel(ci, lblCharisma, EveAttribute.Charisma);
-        //            SetAttributeLabel(ci, lblPerception, EveAttribute.Perception);
-        //            SetAttributeLabel(ci, lblMemory, EveAttribute.Memory);
-        //            SetAttributeLabel(ci, lblWillpower, EveAttribute.Willpower);
-        //            //lblIntelligence.Text = ci.Attributes.AdjustedIntelligence.ToString("#.00") + " Intelligence";
-        //            //lblCharisma.Text = ci.Attributes.AdjustedCharisma.ToString("#.00") + " Charisma";
-        //            //lblPerception.Text = ci.Attributes.AdjustedPerception.ToString("#.00") + " Perception";
-        //            //lblMemory.Text = ci.Attributes.AdjustedMemory.ToString("#.00") + " Memory";
-        //            //lblWillpower.Text = ci.Attributes.AdjustedWillpower.ToString("#.00") + " Willpower";
-
-        //            int totalSP = 0;
-        //            int totalSkills = 0;
-        //            lbSkills.Items.Clear();
-        //            foreach (SkillGroup sg in ci.SkillGroups)
-        //            {
-        //                lbSkills.Items.Add(sg);
-        //                foreach (Skill s in sg.Skills)
-        //                {
-        //                    lbSkills.Items.Add(s);
-        //                    totalSP += s.SkillPoints;
-        //                }
-        //                totalSkills += sg.Skills.Count;
-        //            }
-
-        //            lblSkillHeader.Text = String.Format("{0} Known Skills ({1} Total SP):", totalSkills.ToString("#"), totalSP.ToString("#,##0"));
-
-        //            if (ci.SkillInTraining == null)
-        //            {
-        //                m_skillTrainingName = String.Empty;
-        //                m_estimatedCompletion = DateTime.MaxValue;
-        //                pnlTraining.Visible = false;
-        //            }
-        //            else
-        //            {
-        //                m_skillTrainingName = ci.SkillInTraining.SkillName + " " + m_skillLevelRoman[ci.SkillInTraining.TrainingToLevel];
-        //                lblTrainingSkill.Text = m_skillTrainingName;
-        //                m_estimatedCompletion = ci.SkillInTraining.EstimatedCompletion;
-        //                CalcSkillRemainText();
-        //                pnlTraining.Visible = true;
-        //            }
-        //        }
-        //        tmrUpdate.Interval = 5 * 60 * 1000;
-        //        tmrUpdate.Enabled = true;
-        //    }));
-        //}
 
         private void SetAttributeLabel(SerializableCharacterInfo ci, Label label, EveAttribute eveAttribute)
         {
@@ -718,7 +640,6 @@ namespace EveCharacterMonitor
                         XmlSerializer xs = new XmlSerializer(typeof(SerializableCharacterInfo));
                         XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                         ns.Add("", "");
-                        //xs.Serialize(xtw, m_characterInfo, ns);
                         xs.Serialize(xtw, m_grandCharacterInfo.ExportSerializableCharacterInfo(), ns);
                         xtw.Flush();
 
@@ -739,11 +660,9 @@ namespace EveCharacterMonitor
                 }
 
                 XslCompiledTransform xstDoc2 = new XslCompiledTransform();
-                //System.Xml.Xsl.XslTransform xstDoc = new System.Xml.Xsl.XslTransform();
                 using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("EveCharacterMonitor.output-" + saveFormat.ToString().ToLower() + ".xsl"))
                 using (XmlTextReader xtr = new XmlTextReader(s))
                 {
-                    //xstDoc.Load(xtr);
                     xstDoc2.Load(xtr);
                 }
 
@@ -753,7 +672,6 @@ namespace EveCharacterMonitor
                     xtw.Indentation = 1;
                     xtw.IndentChar = '\t';
                     xtw.Formatting = Formatting.Indented;
-                    //xstDoc.Transform(xpdoc, null, xtw);
                     xstDoc2.Transform(xpdoc, null, xtw);
                 }
             }
@@ -821,53 +739,6 @@ namespace EveCharacterMonitor
                     TextRenderer.DrawText(g, skillPoints, lbSkills.Font, skillPointTopLeftInt, Color.Black);
                 }
             }
-            //if (item is SkillGroup)
-            //{
-            //    SkillGroup sg = (SkillGroup)item;
-
-            //    using (Brush b = new SolidBrush(Color.FromArgb(75, 75, 75)))
-            //    {
-            //        g.FillRectangle(b, e.Bounds);
-            //    }
-            //    using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
-            //    {
-            //        Size titleSizeInt = TextRenderer.MeasureText(g, sg.Name, boldf, new Size(0, 0), TextFormatFlags.NoPadding|TextFormatFlags.NoClipping);
-            //        Point titleTopLeftInt = new Point(e.Bounds.Left + 3,
-            //            e.Bounds.Top + ((e.Bounds.Height / 2) - (titleSizeInt.Height / 2)));
-            //        Point detailTopLeftInt = new Point(titleTopLeftInt.X + titleSizeInt.Width, titleTopLeftInt.Y);
-
-            //        string detailText = String.Format(", {0} Skill{1}, {2} Points",
-            //            sg.Skills.Count, sg.Skills.Count > 1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
-            //        TextRenderer.DrawText(g, sg.Name, boldf, titleTopLeftInt, Color.White);
-            //        TextRenderer.DrawText(g, detailText, lbSkills.Font, detailTopLeftInt, Color.White);
-            //    }
-            //}
-            //else if (item is Skill)
-            //{
-            //    Skill s = (Skill)item;
-
-            //    if ((e.Index % 2) == 0)
-            //        g.FillRectangle(Brushes.White, e.Bounds);
-            //    else
-            //        g.FillRectangle(Brushes.LightGray, e.Bounds);
-
-            //    using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
-            //    {
-            //        string skillName = s.Name + " " + Skill.RomanSkillLevel[s.Level];
-            //        Size skillNameSizeInt = TextRenderer.MeasureText(g, skillName, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
-            //        Point skillNameTopLeftInt = new Point(e.Bounds.Left + 6,
-            //            e.Bounds.Top + ((e.Bounds.Height / 2) - (skillNameSizeInt.Height / 2)));
-            //        Point detailTopLeftInt = new Point(skillNameTopLeftInt.X + skillNameSizeInt.Width, skillNameTopLeftInt.Y);
-
-            //        TextRenderer.DrawText(g, skillName, boldf, skillNameTopLeftInt, Color.Black);
-            //        TextRenderer.DrawText(g, " (Rank " + s.Rank.ToString() + ")", lbSkills.Font, detailTopLeftInt, Color.Black);
-
-            //        string skillPoints = String.Format("{0}/{1}", s.SkillPoints.ToString("#,##0"), s.SkillLevel5.ToString("#,##0"));
-            //        Size skillPointSizeInt = TextRenderer.MeasureText(g, skillPoints, lbSkills.Font, new Size(0,0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
-            //        Point skillPointTopLeftInt = new Point(e.Bounds.Right - skillPointSizeInt.Width - 6, skillNameTopLeftInt.Y);
-            //        TextRenderer.DrawText(g, skillPoints, lbSkills.Font, skillPointTopLeftInt, Color.Black);
-            //    }
-            //}
         }
 
         private void lbSkills_MeasureItem(object sender, MeasureItemEventArgs e)
@@ -880,8 +751,6 @@ namespace EveCharacterMonitor
             else if (item is SerializableSkill || item is GrandSkill)
                 e.ItemHeight = SKILL_DETAIL_HEIGHT;
         }
-
-        //private WeakReference<SkillPlanner.NewPlannerWindow> m_plannerWindow;
 
         private void btnPlan_Click(object sender, EventArgs e)
         {
@@ -922,39 +791,14 @@ namespace EveCharacterMonitor
             }
 
             p.ShowEditor(m_settings, m_grandCharacterInfo);
-
-            //if (m_plannerWindow != null)
-            //{
-            //    SkillPlanner.NewPlannerWindow pw = m_plannerWindow.Target;
-            //    if (pw != null)
-            //    {
-            //        if (pw.Visible)
-            //        {
-            //            pw.BringToFront();
-            //            pw.Focus();
-            //            return;
-            //        }
-            //        try
-            //        {
-            //            pw.Show();
-            //            return;
-            //        }
-            //        catch (ObjectDisposedException) { }
-            //    }
-            //    m_plannerWindow = null;
-            //}
-            //SkillPlanner.NewPlannerWindow npw = new EveCharacterMonitor.SkillPlanner.NewPlannerWindow(m_settings, m_grandCharacterInfo);
-            //npw.Show();
-            //m_plannerWindow = new WeakReference<SkillPlanner.NewPlannerWindow>(npw);
         }
 
         private void btnDebugError_Click(object sender, EventArgs e)
         {
-            //using (FileStream s = new FileStream("c:/settings.xml", FileMode.Create))
+            //System.Threading.ThreadPool.QueueUserWorkItem(delegate
             //{
-            //    m_settings.SaveTo(s);
-            //}
-            tmrUpdate_Tick(null, null);
+                throw new ApplicationException("unhandled");
+//            });
         }
 
         private void lbSkills_MouseMove(object sender, MouseEventArgs e)

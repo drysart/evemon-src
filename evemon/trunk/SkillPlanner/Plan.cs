@@ -287,14 +287,106 @@ namespace EveCharacterMonitor.SkillPlanner
         {
             get { return m_grandCharacterInfo; }
             set {
-                m_attributeSuggestion = null;
-                if (m_grandCharacterInfo!=null)
-                    m_grandCharacterInfo.SkillChanged -= new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
-                m_grandCharacterInfo = value;
-                if (m_grandCharacterInfo != null)
-                    m_grandCharacterInfo.SkillChanged += new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
-                CheckForCompletedSkills();
+                this.SuppressEvents();
+                try
+                {
+                    m_attributeSuggestion = null;
+                    if (m_grandCharacterInfo != null)
+                        m_grandCharacterInfo.SkillChanged -= new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
+                    m_grandCharacterInfo = value;
+                    if (m_grandCharacterInfo != null)
+                        m_grandCharacterInfo.SkillChanged += new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
+                    CheckForCompletedSkills();
+                    CheckForMissingPrerequisites();
+                }
+                finally
+                {
+                    this.ResumeEvents();
+                }
             }
+        }
+
+        private void CheckForMissingPrerequisites()
+        {
+            this.SuppressEvents();
+            try
+            {
+                for (int i = 0; i < m_entries.Count; i++)
+                {
+                    bool jumpBack = false;
+                    PlanEntry pe = m_entries[i];
+                    GrandSkill gs = pe.Skill;
+                    foreach (GrandSkill.Prereq pp in gs.Prereqs)
+                    {
+                        GrandSkill pgs = pp.Skill;
+                        int prIndex = GetIndexOf(pgs.Name, pp.RequiredLevel);
+                        if (prIndex == -1 && pgs.Level < pp.RequiredLevel)
+                        {
+                            // Not in the plan, and needs to be trained...
+                            PlanEntry npe = new PlanEntry();
+                            npe.SkillName = pgs.Name;
+                            npe.Level = pp.RequiredLevel;
+                            npe.EntryType = PlanEntryType.Prerequisite;
+                            m_entries.Insert(i, npe);
+                            jumpBack = true;
+                            i -= 1;
+                            break;
+                        }
+                        else if (prIndex > i)
+                        {
+                            // In the plan, but in invalid order...
+                            PlanEntry mve = m_entries[prIndex];
+                            m_entries.RemoveAt(prIndex);
+                            m_entries.Insert(i, mve);
+                            jumpBack = true;
+                            i -= 1;
+                            break;
+                        }
+                    }
+                    if (!jumpBack)
+                    {
+                        if (pe.Level-1 > gs.Level)
+                        {
+                            // The previous level is needed in the plan...
+                            int prIndex = GetIndexOf(gs.Name, pe.Level - 1);
+                            if (prIndex == -1)
+                            {
+                                // ...it's not in the plan.
+                                PlanEntry ppe = new PlanEntry();
+                                ppe.SkillName = gs.Name;
+                                ppe.Level = pe.Level - 1;
+                                m_entries.Insert(i, ppe);
+                                jumpBack = true;
+                                i -= 1;
+                            }
+                            else if (prIndex > i)
+                            {
+                                // ..it's in the plan, but it's after this.
+                                PlanEntry mve = m_entries[prIndex];
+                                m_entries.RemoveAt(prIndex);
+                                m_entries.Insert(i, mve);
+                                jumpBack = true;
+                                i -= 1;
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                this.ResumeEvents();
+            }
+        }
+
+        private int GetIndexOf(string skillName, int level)
+        {
+            for (int i = 0; i < m_entries.Count; i++)
+            {
+                PlanEntry pe = m_entries[i];
+                if (pe.SkillName == skillName && pe.Level == level)
+                    return i;
+            }
+            return -1;
         }
 
         private string m_planName;
@@ -315,6 +407,8 @@ namespace EveCharacterMonitor.SkillPlanner
                 {
                     PlanEntry pe = m_entries[i];
                     GrandSkill gs = m_grandCharacterInfo.GetSkill(pe.SkillName);
+                    if (gs == null || pe.Level>5 || pe.Level<1)
+                        throw new ApplicationException("The plan contains invalid skills.");
                     if (gs.Level >= pe.Level)
                     {
                         m_entries.RemoveAt(i);
@@ -505,6 +599,17 @@ namespace EveCharacterMonitor.SkillPlanner
             {
                 this.ResumeEvents();
             }
+        }
+
+        public bool VerifySkills()
+        {
+            foreach (PlanEntry pe in m_entries)
+            {
+                GrandSkill gs = pe.Skill;
+                if (gs == null)
+                    return false;
+            }
+            return true;
         }
     }
 

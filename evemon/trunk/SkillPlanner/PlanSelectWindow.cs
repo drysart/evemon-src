@@ -104,7 +104,7 @@ namespace EveCharacterMonitor.SkillPlanner
                         return;
                     string planName = npw.Result;
                     loadedPlan.GrandCharacterInfo = m_grandCharacterInfo;
-                    // TODO: verify skills and such
+                    
                     m_settings.AddPlanFor(m_grandCharacterInfo.Name, loadedPlan, planName);
                 }
                 
