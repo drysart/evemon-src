@@ -213,14 +213,19 @@ namespace EveCharacterMonitor
                 mi.Invoke();
             else
             {
-                using (BusyDialog f = new BusyDialog())
+                //using (BusyDialog f = new BusyDialog())
+                //{
+                //    ThreadPool.QueueUserWorkItem(new WaitCallback(delegate(object o)
+                //    {
+                //        mi.Invoke();
+                //        f.Complete();
+                //    }));
+                //    f.ShowDialog();
+                //}
+
+                using (IDisposable d = BusyDialog.GetScope())
                 {
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(delegate(object o)
-                    {
-                        mi.Invoke();
-                        f.Complete();
-                    }));
-                    f.ShowDialog();
+                    mi.Invoke();
                 }
             }
 
