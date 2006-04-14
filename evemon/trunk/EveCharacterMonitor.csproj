@@ -230,6 +230,7 @@
   <ItemGroup>
     <EmbeddedResource Include="bee.jpg" />
     <Resource Include="eve.exe_I006b_040f.ico" />
+    <EmbeddedResource Include="throbber.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutWindow.resx">

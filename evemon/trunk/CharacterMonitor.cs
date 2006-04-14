@@ -40,6 +40,14 @@ namespace EveCharacterMonitor
             m_cli = cli;
         }
 
+        private Image[] m_throbberImages;
+
+        public Image[] ThrobberImages
+        {
+            get { return m_throbberImages; }
+            set { m_throbberImages = value; }
+        }
+
         public event SkillTrainingCompletedHandler SkillTrainingCompleted;
 
         private void OnSkillTrainingComplete(string charName, string skillName)
@@ -269,11 +277,27 @@ namespace EveCharacterMonitor
                 m_tryImageAgainTime = DateTime.MaxValue;
         }
 
+        private DateTime m_lastUpdate = DateTime.MinValue;
+        private DateTime m_nextScheduledUpdateAt = DateTime.MinValue;
+
         private void tmrUpdate_Tick(object sender, EventArgs e)
         {
             tmrUpdate.Enabled = false;
             //m_session.GetCharacterInfoAsync(m_charId, new GetCharacterInfoCallback(GotCharacterInfo));
-            m_session.UpdateGrandCharacterInfoAsync(m_grandCharacterInfo);
+            StartThrobber();
+            m_session.UpdateGrandCharacterInfoAsync(m_grandCharacterInfo,
+                new UpdateGrandCharacterInfoCallback(delegate (EveSession s, int timeLeftInCache)
+                {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        m_lastUpdate = DateTime.Now;
+                        m_nextScheduledUpdateAt = DateTime.Now + TimeSpan.FromMilliseconds(timeLeftInCache);
+                        ttToolTip.SetToolTip(pbThrobber, "Click to update now.");
+                        tmrUpdate.Interval = timeLeftInCache;
+                        tmrUpdate.Enabled = true;
+                        StopThrobber();
+                    }));
+                }));
         }
 
         private string m_skillTrainingName;
@@ -926,10 +950,11 @@ namespace EveCharacterMonitor
 
         private void btnDebugError_Click(object sender, EventArgs e)
         {
-            using (FileStream s = new FileStream("c:/settings.xml", FileMode.Create))
-            {
-                m_settings.SaveTo(s);
-            }
+            //using (FileStream s = new FileStream("c:/settings.xml", FileMode.Create))
+            //{
+            //    m_settings.SaveTo(s);
+            //}
+            tmrUpdate_Tick(null, null);
         }
 
         private void lbSkills_MouseMove(object sender, MouseEventArgs e)
@@ -960,6 +985,57 @@ namespace EveCharacterMonitor
             else
             {
                 ttToolTip.Active = false;
+            }
+        }
+
+        private bool m_throbberRunning = false;
+        private int m_throbberFrame = 0;
+
+        private void StartThrobber()
+        {
+            m_throbberRunning = true;
+            tmrThrobber.Enabled = true;
+            ttToolTip.SetToolTip(pbThrobber, "Retrieving data from EVE Online...");
+        }
+
+        private void StopThrobber()
+        {
+            m_throbberRunning = false;
+        }
+
+        private void tmrThrobber_Tick(object sender, EventArgs e)
+        {
+            tmrThrobber.Enabled = false;
+            if (m_throbberRunning)
+            {
+                m_throbberFrame = ((m_throbberFrame + 1) % 8);
+                pbThrobber.Image = m_throbberImages[m_throbberFrame + 1];
+                tmrThrobber.Enabled = true;
+            }
+            else
+            {
+                pbThrobber.Image = m_throbberImages[0];
+                m_throbberFrame = 0;
+            }
+        }
+
+        private void pbThrobber_Click(object sender, EventArgs e)
+        {
+            tmrUpdate_Tick(null, null);
+        }
+
+        private void ttToolTip_Popup(object sender, PopupEventArgs e)
+        {
+            if (e.AssociatedControl == pbThrobber)
+            {
+                if (!m_throbberRunning)
+                {
+                    ttToolTip.SetToolTip(pbThrobber,
+                        String.Format("Last update: {0}\nNext update in: {1}\nClick to update now.",
+                        m_lastUpdate.ToString(),
+                        GrandSkill.TimeSpanToDescriptiveText(m_nextScheduledUpdateAt - DateTime.Now, DescriptiveTextOptions.Default)
+                    ));
+                }
             }
         }       
     }

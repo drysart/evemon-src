@@ -10,6 +10,8 @@ using System.Windows.Forms.VisualStyles;
 using System.Globalization;
 
 using System.Runtime.InteropServices;
+using System.IO;
+using System.Reflection;
 
 namespace EveCharacterMonitor
 {
@@ -28,8 +30,29 @@ namespace EveCharacterMonitor
             m_settings = s;
         }
 
+        private Image[] m_throbberImages;
+        private const int THROBBERIMG_WIDTH = 24;
+        private const int THROBBERIMG_HEIGHT = 24;
+
         private void MainWindow_Load(object sender, EventArgs e)
         {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            using (Stream s = asm.GetManifestResourceStream("EveCharacterMonitor.throbber.png"))
+            using (Image b = Image.FromStream(s, true, true))
+            {
+                m_throbberImages = new Image[9];
+                for (int i = 0; i < 9; i++)
+                {
+                    Bitmap ib = new Bitmap(THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT);
+                    using (Graphics g = Graphics.FromImage(ib))
+                    {
+                        g.DrawImage(b, new Rectangle(0, 0, THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT),
+                            new Rectangle(i * THROBBERIMG_WIDTH, 0, THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT), GraphicsUnit.Pixel);
+                    }
+                    m_throbberImages[i] = ib;
+                }
+            }
+
             if (!String.IsNullOrEmpty(m_settings.Username) &&
                 !String.IsNullOrEmpty(m_settings.Password) &&
                 !String.IsNullOrEmpty(m_settings.Character))
@@ -142,6 +165,7 @@ namespace EveCharacterMonitor
             cm.Dock = DockStyle.Fill;
             cm.SkillTrainingCompleted += new SkillTrainingCompletedHandler(cm_SkillTrainingCompleted);
             cm.ShortInfoChanged += new EventHandler(cm_ShortInfoChanged);
+            cm.ThrobberImages = m_throbberImages;
             cm.Start();
             tcCharacterTabs.TabPages.Add(tp);
             SetRemoveEnable();
@@ -345,6 +369,11 @@ namespace EveCharacterMonitor
             UpdateManager um = UpdateManager.GetInstance();
             um.Stop();
             um.UpdateAvailable -= new UpdateAvailableHandler(um_UpdateAvailable);
+
+            foreach (Image i in m_throbberImages)
+            {
+                i.Dispose();
+            }
         }
 
         private void tsbAbout_Click(object sender, EventArgs e)

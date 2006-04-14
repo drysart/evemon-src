@@ -47,6 +47,7 @@ namespace EveCharacterMonitor
             this.label1 = new System.Windows.Forms.Label();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             this.pnlCharData = new System.Windows.Forms.Panel();
+            this.pbThrobber = new System.Windows.Forms.PictureBox();
             this.btnDebugError = new System.Windows.Forms.Button();
             this.lblSkillHeader = new System.Windows.Forms.Label();
             this.btnPlan = new System.Windows.Forms.Button();
@@ -54,9 +55,11 @@ namespace EveCharacterMonitor
             this.tmrTick = new System.Windows.Forms.Timer(this.components);
             this.sfdSaveDialog = new System.Windows.Forms.SaveFileDialog();
             this.ttToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.tmrThrobber = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbCharImage)).BeginInit();
             this.pnlTraining.SuspendLayout();
             this.pnlCharData.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbThrobber)).BeginInit();
             this.SuspendLayout();
             // 
             // pbCharImage
@@ -225,6 +228,7 @@ namespace EveCharacterMonitor
             // 
             // pnlCharData
             // 
+            this.pnlCharData.Controls.Add(this.pbThrobber);
             this.pnlCharData.Controls.Add(this.btnDebugError);
             this.pnlCharData.Controls.Add(this.lblSkillHeader);
             this.pnlCharData.Controls.Add(this.btnPlan);
@@ -245,12 +249,23 @@ namespace EveCharacterMonitor
             this.pnlCharData.Size = new System.Drawing.Size(384, 148);
             this.pnlCharData.TabIndex = 14;
             // 
+            // pbThrobber
+            // 
+            this.pbThrobber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbThrobber.Location = new System.Drawing.Point(360, 0);
+            this.pbThrobber.Name = "pbThrobber";
+            this.pbThrobber.Size = new System.Drawing.Size(24, 24);
+            this.pbThrobber.TabIndex = 16;
+            this.pbThrobber.TabStop = false;
+            this.ttToolTip.SetToolTip(this.pbThrobber, "Click to update now.");
+            this.pbThrobber.Click += new System.EventHandler(this.pbThrobber_Click);
+            // 
             // btnDebugError
             // 
             this.btnDebugError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDebugError.Location = new System.Drawing.Point(323, 47);
             this.btnDebugError.Name = "btnDebugError";
-            this.btnDebugError.Size = new System.Drawing.Size(58, 23);
+            this.btnDebugError.Size = new System.Drawing.Size(61, 23);
             this.btnDebugError.TabIndex = 15;
             this.btnDebugError.Text = "ERROR";
             this.btnDebugError.UseVisualStyleBackColor = true;
@@ -301,6 +316,17 @@ namespace EveCharacterMonitor
             this.sfdSaveDialog.Filter = "Text Format|*.txt|HTML Format|*.html|XML Format|*.xml";
             this.sfdSaveDialog.Title = "Save Character Info";
             // 
+            // ttToolTip
+            // 
+            this.ttToolTip.AutoPopDelay = 5000000;
+            this.ttToolTip.InitialDelay = 500;
+            this.ttToolTip.ReshowDelay = 100;
+            this.ttToolTip.Popup += new System.Windows.Forms.PopupEventHandler(this.ttToolTip_Popup);
+            // 
+            // tmrThrobber
+            // 
+            this.tmrThrobber.Tick += new System.EventHandler(this.tmrThrobber_Tick);
+            // 
             // CharacterMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -317,6 +343,7 @@ namespace EveCharacterMonitor
             this.pnlTraining.PerformLayout();
             this.pnlCharData.ResumeLayout(false);
             this.pnlCharData.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbThrobber)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -348,5 +375,7 @@ namespace EveCharacterMonitor
         private System.Windows.Forms.Label lblSkillHeader;
         private System.Windows.Forms.Button btnDebugError;
         private System.Windows.Forms.ToolTip ttToolTip;
+        private System.Windows.Forms.PictureBox pbThrobber;
+        private System.Windows.Forms.Timer tmrThrobber;
     }
 }

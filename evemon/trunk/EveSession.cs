@@ -144,8 +144,16 @@ namespace EveCharacterMonitor
 
         private SerializableCharacterInfo ProcessCharacterXml(XmlDocument xdoc, int characterId)
         {
+            int junk;
+            return ProcessCharacterXml(xdoc, characterId, out junk);
+        }
+
+        private SerializableCharacterInfo ProcessCharacterXml(XmlDocument xdoc, int characterId, out int cacheExpires)
+        {
             XmlSerializer xs = new XmlSerializer(typeof(SerializableCharacterInfo));
             XmlElement charRoot = xdoc.DocumentElement.SelectSingleNode("/charactersheet/characters/character[@characterID='" + characterId.ToString() + "']") as XmlElement;
+
+            cacheExpires = Convert.ToInt32(charRoot.GetAttribute("timeLeftInCache"));
 
             using (XmlNodeReader xnr = new XmlNodeReader(charRoot))
             {
@@ -369,15 +377,18 @@ namespace EveCharacterMonitor
             }
         }
 
-        public void UpdateGrandCharacterInfoAsync(GrandCharacterInfo grandCharacterInfo)
+        public void UpdateGrandCharacterInfoAsync(GrandCharacterInfo grandCharacterInfo, UpdateGrandCharacterInfoCallback callback)
         {
             ThreadPool.QueueUserWorkItem(new WaitCallback(delegate
             {
-                this.UpdateGrandCharacterInfo(grandCharacterInfo);
+                int timeLeftInCache = this.UpdateGrandCharacterInfo(grandCharacterInfo);
+                callback(this, timeLeftInCache);
             }));
         }
 
-        public void UpdateGrandCharacterInfo(GrandCharacterInfo grandCharacterInfo)
+        private const int DEFAULT_RETRY_INTERVAL = 60 * 5;
+
+        public int UpdateGrandCharacterInfo(GrandCharacterInfo grandCharacterInfo)
         {
             GrandSkill newTrainingSkill = null;
             int trainingToLevel = -1;
@@ -392,7 +403,7 @@ namespace EveCharacterMonitor
                 if (!WebLogin() || !firstAttempt)
                 {
 //                    callback(this, null);
-                    return;
+                    return DEFAULT_RETRY_INTERVAL;
                 }
                 firstAttempt = false;
                 goto AGAIN;
@@ -408,16 +419,9 @@ namespace EveCharacterMonitor
                 trainingToLevel = Convert.ToInt32(Regex.Match(fsubstr, @"Currently training to: <\/font><strong>level (\d) </st").Groups[1].Value);
                 string timeLeft = Regex.Match(fsubstr, @"Time left: <\/font><strong>(.+?)<\/strong>").Groups[1].Value;
                 estimatedCompletion = DateTime.Now + ConvertTimeStringToTimeSpan(timeLeft);
-                //sit.CurrentPoints = Convert.ToInt32(Regex.Match(fsubstr, @"SP done: </font><strong>(\d+) of \d+</strong>").Groups[1].Value);
-                //sit.NeededPoints = Convert.ToInt32(Regex.Match(fsubstr, @"SP done: </font><strong>\d+ of (\d+)</strong>").Groups[1].Value);
 
                 newTrainingSkill = grandCharacterInfo.GetSkill(skillName);
             }
-            //else
-            //{
-            //    //sit = null;
-            //    grandCharacterInfo.CancelCurrentSkillTraining();
-            //}
 
             firstAttempt = true;
         BAGAIN:
@@ -428,7 +432,7 @@ namespace EveCharacterMonitor
                 if (!WebLogin() || !firstAttempt)
                 {
 //                    callback(this, null);
-                    return;
+                    return DEFAULT_RETRY_INTERVAL;
                 }
                 firstAttempt = false;
                 goto BAGAIN;
@@ -436,16 +440,8 @@ namespace EveCharacterMonitor
             XmlDocument xdoc = new XmlDocument();
             xdoc.LoadXml(data);
 
-            SerializableCharacterInfo result = ProcessCharacterXml(xdoc, grandCharacterInfo.CharacterId);
-//            result.SkillInTraining = sit;
-//#if DEBUG
-//            IntelligenceBonus ib = new IntelligenceBonus();
-//            ib.Name = "woof woof";
-//            ib.Amount = 3;
-//            result.AttributeBonuses.Bonuses.Add(ib);
-//#endif
-//            callback(this, result);
-
+            int timeLeftInCache;
+            SerializableCharacterInfo result = ProcessCharacterXml(xdoc, grandCharacterInfo.CharacterId, out timeLeftInCache);
             grandCharacterInfo.AssignFromSerializableCharacterInfo(result);
 
             grandCharacterInfo.CancelCurrentSkillTraining();
@@ -453,6 +449,8 @@ namespace EveCharacterMonitor
             {
                 newTrainingSkill.SetTrainingInfo(trainingToLevel, estimatedCompletion);
             }
+
+            return timeLeftInCache;
         }
     }
 
@@ -474,6 +472,8 @@ namespace EveCharacterMonitor
             set { m_b = value; }
         }
     }
+
+    public delegate void UpdateGrandCharacterInfoCallback(EveSession sender, int timeLeftInCache);
 
     public delegate void GetCharacterImageCallback(EveSession sender, Image i);
 
