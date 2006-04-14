@@ -306,21 +306,21 @@ namespace EveCharacterMonitor
 
         private GrandCharacterInfo m_grandCharacterInfo;
 
-        private void SetAttributeLabel(SerializableCharacterInfo ci, Label label, EveAttribute eveAttribute)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(ci.Attributes.GetAttributeAdjustment(eveAttribute, SerializableEveAttributeAdjustment.AllWithLearning).ToString("#.00"));
-            sb.Append(' ');
-            sb.Append(eveAttribute.ToString());
-            double implantValue = ci.Attributes.GetAttributeAdjustment(eveAttribute, SerializableEveAttributeAdjustment.Implants | SerializableEveAttributeAdjustment.Learning);
-            if (implantValue > 0)
-            {
-                sb.Append(" (");
-                sb.Append(implantValue.ToString("#.##"));
-                sb.Append(" from implants)");
-            }
-            label.Text = sb.ToString();
-        }
+        //private void SetAttributeLabel(SerializableCharacterInfo ci, Label label, EveAttribute eveAttribute)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    sb.Append(ci.Attributes.GetAttributeAdjustment(eveAttribute, SerializableEveAttributeAdjustment.AllWithLearning).ToString("#.00"));
+        //    sb.Append(' ');
+        //    sb.Append(eveAttribute.ToString());
+        //    double implantValue = ci.Attributes.GetAttributeAdjustment(eveAttribute, SerializableEveAttributeAdjustment.Implants | SerializableEveAttributeAdjustment.Learning);
+        //    if (implantValue > 0)
+        //    {
+        //        sb.Append(" (");
+        //        sb.Append(implantValue.ToString("#.##"));
+        //        sb.Append(" from implants)");
+        //    }
+        //    label.Text = sb.ToString();
+        //}
 
         private string m_shortText = String.Empty;
         private TimeSpan m_shortTimeSpan = TimeSpan.Zero;

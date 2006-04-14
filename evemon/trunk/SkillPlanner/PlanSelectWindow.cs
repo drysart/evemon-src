@@ -93,7 +93,25 @@ namespace EveCharacterMonitor.SkillPlanner
                 using (Stream s = new FileStream(ofdOpenDialog.FileName, FileMode.Open, FileAccess.Read))
                 {
                     XmlSerializer xs = new XmlSerializer(typeof(Plan));
-                    loadedPlan = (Plan)xs.Deserialize(s);
+                    try
+                    {
+                        loadedPlan = (Plan)xs.Deserialize(s);
+                    }
+                    catch
+                    {
+                        s.Seek(0, SeekOrigin.Begin);
+                        using (System.IO.Compression.GZipStream gzs = new System.IO.Compression.GZipStream(s, System.IO.Compression.CompressionMode.Decompress))
+                        {
+                            try
+                            {
+                                loadedPlan = (Plan)xs.Deserialize(gzs);
+                            }
+                            catch
+                            {
+                                throw new ApplicationException("Could not determine input file format.");
+                            }
+                        }
+                    }
                 }
 
                 using (NewPlanWindow npw = new NewPlanWindow())

@@ -292,14 +292,15 @@ namespace EveCharacterMonitor.SkillPlanner
         private enum SaveType
         {
             None = 0,
-            Xml = 1,
-            Text = 2
+            Emp = 1,
+            Xml = 2,
+            Text = 3
         }
 
         private void tsbSave_Click(object sender, EventArgs e)
         {
             sfdSave.FileName = m_plan.GrandCharacterInfo.Name + " Skill Plan";
-            sfdSave.FilterIndex = (int)SaveType.Xml;
+            sfdSave.FilterIndex = (int)SaveType.Emp;
             DialogResult dr = sfdSave.ShowDialog();
             if (dr == DialogResult.Cancel)
                 return;
@@ -311,9 +312,14 @@ namespace EveCharacterMonitor.SkillPlanner
                 {
                     switch ((SaveType)sfdSave.FilterIndex)
                     {
+                        case SaveType.Emp:
+                            using (System.IO.Compression.GZipStream gzs = new System.IO.Compression.GZipStream(fs, System.IO.Compression.CompressionMode.Compress))
+                            {
+                                SerializePlanTo(gzs);
+                            }
+                            break;
                         case SaveType.Xml:
-                            XmlSerializer xs = new XmlSerializer(typeof(Plan));
-                            xs.Serialize(fs, m_plan);
+                            SerializePlanTo(fs);
                             break;
                         case SaveType.Text:
                             SaveAsText(fs);
@@ -328,6 +334,12 @@ namespace EveCharacterMonitor.SkillPlanner
                 MessageBox.Show("There was an error writing out the file:\n\n" + err.Message,
                     "Save Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void SerializePlanTo(Stream s)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(Plan));
+            xs.Serialize(s, m_plan);
         }
 
         private void SaveAsText(Stream fs)

@@ -94,7 +94,8 @@ namespace EveCharacterMonitor.SkillPlanner
             // 
             // sfdSave
             // 
-            this.sfdSave.Filter = "XML Format|*.xml|Text Format|*.txt";
+            this.sfdSave.Filter = "EVEMon Plan Format (*.emp)|*.emp|XML Format (*.xml)|*.xml|Text Format (*.txt)|*.t" +
+                "xt";
             this.sfdSave.Title = "Save Plan As...";
             // 
             // lvSkills

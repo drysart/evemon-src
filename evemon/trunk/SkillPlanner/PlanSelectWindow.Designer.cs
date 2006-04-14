@@ -96,7 +96,7 @@ namespace EveCharacterMonitor.SkillPlanner
             // 
             // ofdOpenDialog
             // 
-            this.ofdOpenDialog.Filter = "XML Plan Files|*.xml|All Files|*.*";
+            this.ofdOpenDialog.Filter = "Plan Files (*.emp, *.xml)|*.xml;*.emp|All Files (*.*)|*.*";
             this.ofdOpenDialog.Title = "Open XML Plan File";
             // 
             // PlanSelectWindow
