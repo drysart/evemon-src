@@ -33,13 +33,15 @@ namespace EveCharacterMonitor.SkillPlanner
             this.label1 = new System.Windows.Forms.Label();
             this.lbPlanList = new System.Windows.Forms.ListBox();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnLoadFromFile = new System.Windows.Forms.Button();
+            this.ofdOpenDialog = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // btnOpen
             // 
             this.btnOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOpen.Enabled = false;
-            this.btnOpen.Location = new System.Drawing.Point(205, 231);
+            this.btnOpen.Location = new System.Drawing.Point(239, 231);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 0;
@@ -65,7 +67,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.lbPlanList.IntegralHeight = false;
             this.lbPlanList.Location = new System.Drawing.Point(12, 25);
             this.lbPlanList.Name = "lbPlanList";
-            this.lbPlanList.Size = new System.Drawing.Size(268, 200);
+            this.lbPlanList.Size = new System.Drawing.Size(302, 200);
             this.lbPlanList.TabIndex = 2;
             this.lbPlanList.DoubleClick += new System.EventHandler(this.lbPlanList_DoubleClick);
             this.lbPlanList.SelectedIndexChanged += new System.EventHandler(this.lbPlanList_SelectedIndexChanged);
@@ -74,7 +76,7 @@ namespace EveCharacterMonitor.SkillPlanner
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(124, 231);
+            this.btnCancel.Location = new System.Drawing.Point(158, 231);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -82,13 +84,29 @@ namespace EveCharacterMonitor.SkillPlanner
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // btnLoadFromFile
+            // 
+            this.btnLoadFromFile.Location = new System.Drawing.Point(12, 231);
+            this.btnLoadFromFile.Name = "btnLoadFromFile";
+            this.btnLoadFromFile.Size = new System.Drawing.Size(106, 23);
+            this.btnLoadFromFile.TabIndex = 4;
+            this.btnLoadFromFile.Text = "Load From File...";
+            this.btnLoadFromFile.UseVisualStyleBackColor = true;
+            this.btnLoadFromFile.Click += new System.EventHandler(this.btnLoadFromFile_Click);
+            // 
+            // ofdOpenDialog
+            // 
+            this.ofdOpenDialog.Filter = "XML Plan Files|*.xml|All Files|*.*";
+            this.ofdOpenDialog.Title = "Open XML Plan File";
+            // 
             // PlanSelectWindow
             // 
             this.AcceptButton = this.btnOpen;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(292, 266);
+            this.ClientSize = new System.Drawing.Size(326, 266);
+            this.Controls.Add(this.btnLoadFromFile);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.lbPlanList);
             this.Controls.Add(this.label1);
@@ -113,5 +131,7 @@ namespace EveCharacterMonitor.SkillPlanner
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox lbPlanList;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnLoadFromFile;
+        private System.Windows.Forms.OpenFileDialog ofdOpenDialog;
     }
 }

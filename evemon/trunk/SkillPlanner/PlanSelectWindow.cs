@@ -5,6 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace EveCharacterMonitor.SkillPlanner
 {
@@ -32,6 +35,11 @@ namespace EveCharacterMonitor.SkillPlanner
         }
 
         private void PlanSelectWindow_Load(object sender, EventArgs e)
+        {
+            PopulatePlanList();
+        }
+
+        private void PopulatePlanList()
         {
             lbPlanList.Items.Clear();
             lbPlanList.Items.Add("<New Plan>");
@@ -71,6 +79,43 @@ namespace EveCharacterMonitor.SkillPlanner
         {
             if (lbPlanList.SelectedItems.Count > 0)
                 btnOpen_Click(this, new EventArgs());
+        }
+
+        private void btnLoadFromFile_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = ofdOpenDialog.ShowDialog();
+            if (dr == DialogResult.Cancel)
+                return;
+
+            try
+            {
+                Plan loadedPlan = null;
+                using (Stream s = new FileStream(ofdOpenDialog.FileName, FileMode.Open, FileAccess.Read))
+                {
+                    XmlSerializer xs = new XmlSerializer(typeof(Plan));
+                    loadedPlan = (Plan)xs.Deserialize(s);
+                }
+
+                using (NewPlanWindow npw = new NewPlanWindow())
+                {
+                    npw.Text = "Load Plan";
+                    DialogResult xdr = npw.ShowDialog();
+                    if (xdr == DialogResult.Cancel)
+                        return;
+                    string planName = npw.Result;
+                    loadedPlan.GrandCharacterInfo = m_grandCharacterInfo;
+                    // TODO: verify skills and such
+                    m_settings.AddPlanFor(m_grandCharacterInfo.Name, loadedPlan, planName);
+                }
+                
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show("There was an error loading the saved plan:\n" + err.Message,
+                    "Could Not Load Plan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            PopulatePlanList();
         }
     }
 }
