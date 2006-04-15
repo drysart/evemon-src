@@ -38,6 +38,12 @@ namespace EveCharacterMonitor.SkillPlanner
         private void NewPlannerWindow_Shown(object sender, EventArgs e)
         {
             m_plan.Changed += new EventHandler<EventArgs>(m_plan_Changed);
+
+            TipWindow.ShowTip("planner",
+                "Welcome to the Skill Planner",
+                "Select skills to add to your plan using the list on the left. To " +
+                "view the list of skills you've added to your plan, choose " +
+                "\"View Plan\" from the dropdown in the upper left.");
         }
 
         private void NewPlannerWindow_FormClosed(object sender, FormClosedEventArgs e)
@@ -134,6 +140,7 @@ namespace EveCharacterMonitor.SkillPlanner
             skillTreeDisplay1.Visible = !switchOn;
             pbSearchImage.Visible = !switchOn;
             tbSkillFilter.Visible = !switchOn;
+            lblSearchNote.Visible = (!switchOn && String.IsNullOrEmpty(tbSkillFilter.Text));
             lbFilteredSkills.Visible = false;
 
             if (switchOn)
@@ -843,6 +850,21 @@ namespace EveCharacterMonitor.SkillPlanner
                 GrandSkill gs = m_grandCharacterInfo.GetSkill((string)lbFilteredSkills.SelectedItem);
                 SelectSkill(gs);
             }
+        }
+
+        private void lblSearchNote_Click(object sender, EventArgs e)
+        {
+            tbSkillFilter.Focus();
+        }
+
+        private void tbSkillFilter_Enter(object sender, EventArgs e)
+        {
+            lblSearchNote.Visible = false;
+        }
+
+        private void tbSkillFilter_Leave(object sender, EventArgs e)
+        {
+            lblSearchNote.Visible = String.IsNullOrEmpty(tbSkillFilter.Text);
         }
     }
 }

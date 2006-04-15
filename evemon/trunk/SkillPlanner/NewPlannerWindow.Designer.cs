@@ -37,7 +37,6 @@ namespace EveCharacterMonitor.SkillPlanner
             this.tbSkillFilter = new System.Windows.Forms.TextBox();
             this.tvSkillView = new System.Windows.Forms.TreeView();
             this.cbSkillFilter = new System.Windows.Forms.ComboBox();
-            this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
             this.pnlPlanControl = new System.Windows.Forms.Panel();
             this.lblDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -70,7 +69,9 @@ namespace EveCharacterMonitor.SkillPlanner
             this.tsbDeletePlan = new System.Windows.Forms.ToolStripButton();
             this.ttToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.sfdSave = new System.Windows.Forms.SaveFileDialog();
+            this.lblSearchNote = new System.Windows.Forms.Label();
             this.planEditor = new EveCharacterMonitor.SkillPlanner.PlanOrderEditorControl();
+            this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -90,6 +91,7 @@ namespace EveCharacterMonitor.SkillPlanner
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.lblSearchNote);
             this.splitContainer1.Panel1.Controls.Add(this.lblNoResults);
             this.splitContainer1.Panel1.Controls.Add(this.lbFilteredSkills);
             this.splitContainer1.Panel1.Controls.Add(this.pbSearchImage);
@@ -150,6 +152,8 @@ namespace EveCharacterMonitor.SkillPlanner
             this.tbSkillFilter.Name = "tbSkillFilter";
             this.tbSkillFilter.Size = new System.Drawing.Size(170, 21);
             this.tbSkillFilter.TabIndex = 2;
+            this.tbSkillFilter.Enter += new System.EventHandler(this.tbSkillFilter_Enter);
+            this.tbSkillFilter.Leave += new System.EventHandler(this.tbSkillFilter_Leave);
             this.tbSkillFilter.TextChanged += new System.EventHandler(this.tbSkillFilter_TextChanged);
             // 
             // tvSkillView
@@ -180,19 +184,6 @@ namespace EveCharacterMonitor.SkillPlanner
             this.cbSkillFilter.Size = new System.Drawing.Size(192, 21);
             this.cbSkillFilter.TabIndex = 0;
             this.cbSkillFilter.SelectedIndexChanged += new System.EventHandler(this.cbSkillFilter_SelectedIndexChanged);
-            // 
-            // skillTreeDisplay1
-            // 
-            this.skillTreeDisplay1.AutoScroll = true;
-            this.skillTreeDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.skillTreeDisplay1.Location = new System.Drawing.Point(0, 92);
-            this.skillTreeDisplay1.Name = "skillTreeDisplay1";
-            this.skillTreeDisplay1.Plan = null;
-            this.skillTreeDisplay1.RootSkill = null;
-            this.skillTreeDisplay1.Size = new System.Drawing.Size(540, 470);
-            this.skillTreeDisplay1.TabIndex = 0;
-            this.skillTreeDisplay1.SkillClicked += new EveCharacterMonitor.SkillPlanner.SkillClickedHandler(this.skillTreeDisplay1_SkillClicked);
-            this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
             // 
             // pnlPlanControl
             // 
@@ -485,6 +476,20 @@ namespace EveCharacterMonitor.SkillPlanner
                 "xt";
             this.sfdSave.Title = "Save to File";
             // 
+            // lblSearchNote
+            // 
+            this.lblSearchNote.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSearchNote.BackColor = System.Drawing.SystemColors.Window;
+            this.lblSearchNote.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.lblSearchNote.Location = new System.Drawing.Point(36, 32);
+            this.lblSearchNote.Name = "lblSearchNote";
+            this.lblSearchNote.Size = new System.Drawing.Size(166, 17);
+            this.lblSearchNote.TabIndex = 21;
+            this.lblSearchNote.Text = "Search Filter";
+            this.lblSearchNote.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblSearchNote.Click += new System.EventHandler(this.lblSearchNote_Click);
+            // 
             // planEditor
             // 
             this.planEditor.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -494,6 +499,19 @@ namespace EveCharacterMonitor.SkillPlanner
             this.planEditor.Size = new System.Drawing.Size(176, 150);
             this.planEditor.TabIndex = 2;
             this.planEditor.Visible = false;
+            // 
+            // skillTreeDisplay1
+            // 
+            this.skillTreeDisplay1.AutoScroll = true;
+            this.skillTreeDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.skillTreeDisplay1.Location = new System.Drawing.Point(0, 92);
+            this.skillTreeDisplay1.Name = "skillTreeDisplay1";
+            this.skillTreeDisplay1.Plan = null;
+            this.skillTreeDisplay1.RootSkill = null;
+            this.skillTreeDisplay1.Size = new System.Drawing.Size(540, 470);
+            this.skillTreeDisplay1.TabIndex = 0;
+            this.skillTreeDisplay1.SkillClicked += new EveCharacterMonitor.SkillPlanner.SkillClickedHandler(this.skillTreeDisplay1_SkillClicked);
+            this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
             // 
             // NewPlannerWindow
             // 
@@ -573,5 +591,6 @@ namespace EveCharacterMonitor.SkillPlanner
         private System.Windows.Forms.TextBox tbSkillFilter;
         private System.Windows.Forms.ListBox lbFilteredSkills;
         private System.Windows.Forms.Label lblNoResults;
+        private System.Windows.Forms.Label lblSearchNote;
     }
 }

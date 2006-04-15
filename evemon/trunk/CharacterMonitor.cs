@@ -858,10 +858,10 @@ namespace EveCharacterMonitor
 
         private void btnDebugError_Click(object sender, EventArgs e)
         {
-            //System.Threading.ThreadPool.QueueUserWorkItem(delegate
-            //{
-                throw new ApplicationException("unhandled");
-//            });
+            TipWindow.ShowTip("debugtip", "Sample Tip",
+                "This is some example tip text. If you check the box you won't see " +
+                "this window again. It's pretty amazing what you can do with technology " +
+                "these days.");
         }
 
         private void lbSkills_MouseMove(object sender, MouseEventArgs e)

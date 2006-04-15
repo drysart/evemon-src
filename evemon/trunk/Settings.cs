@@ -269,6 +269,13 @@ namespace EveCharacterMonitor
             m_cachedCharacterInfo.Add(sci);
         }
 
+        private List<string> m_confirmedTips = new List<string>();
+
+        public List<string> ConfirmedTips
+        {
+            get { return m_confirmedTips; }
+        }
+
         private const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";
 
         private static string StoreFileName(string key)

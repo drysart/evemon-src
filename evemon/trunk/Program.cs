@@ -51,6 +51,11 @@ namespace EveCharacterMonitor
             get { return m_settingKey; }
         }
 
+        public static Settings Settings
+        {
+            get { return s_settings; }
+        }
+
         private static string m_settingKey;
         private static Settings s_settings;
         private static bool m_showWindowOnError = true;

@@ -89,6 +89,12 @@ namespace EveCharacterMonitor
             InstanceManager im = InstanceManager.GetInstance();
             im.Signaled += new EventHandler<EventArgs>(im_Signaled);
 #endif
+
+            TipWindow.ShowTip("startup",
+                "Getting Started",
+                "To begin using EVEMon, click the \"Add Character\" button in " +
+                "the upper left corner of the window, enter your login information " +
+                "and choose a character to monitor.");
         }
 
         void im_Signaled(object sender, EventArgs e)

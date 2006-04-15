@@ -212,6 +212,12 @@
     <Compile Include="SkillPlanner\SuggestionWindow.Designer.cs">
       <DependentUpon>SuggestionWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="TipWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TipWindow.Designer.cs">
+      <DependentUpon>TipWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="UnhandledExceptionWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -273,6 +279,10 @@
     <EmbeddedResource Include="SkillPlanner\SuggestionWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SuggestionWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TipWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TipWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UnhandledExceptionWindow.resx">
       <SubType>Designer</SubType>
