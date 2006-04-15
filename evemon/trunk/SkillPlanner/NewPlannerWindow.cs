@@ -63,6 +63,9 @@ namespace EveCharacterMonitor.SkillPlanner
 
         private void cbSkillFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
+            tbSkillFilter.Text = String.Empty;
+            lbFilteredSkills.Visible = false;
+
             SkillFilter sf;
             switch (cbSkillFilter.SelectedIndex)
             {
@@ -116,6 +119,8 @@ namespace EveCharacterMonitor.SkillPlanner
                     tvSkillView.Nodes.Add(gtn);
                 }
             }
+
+            UpdatePlanControl();
         }
 
         private void SwitchToPlanEditor(bool switchOn)
@@ -123,6 +128,9 @@ namespace EveCharacterMonitor.SkillPlanner
             planEditor.Visible = switchOn;
             tvSkillView.Visible = !switchOn;
             skillTreeDisplay1.Visible = !switchOn;
+            pbSearchImage.Visible = !switchOn;
+            tbSkillFilter.Visible = !switchOn;
+            lbFilteredSkills.Visible = false;
 
             if (switchOn)
             {
@@ -132,11 +140,12 @@ namespace EveCharacterMonitor.SkillPlanner
             else
                 planEditor.Plan = null;
 
-            Point p = this.PointToClient(splitContainer1.Panel1.PointToScreen(tvSkillView.Location));
+            //Point p = this.PointToClient(splitContainer1.Panel1.PointToScreen(tvSkillView.Location));
+            Point p = this.PointToClient(splitContainer1.Panel1.PointToScreen(pbSearchImage.Location));
             planEditor.Location = p;
             planEditor.Size = new Size(
                 this.ClientSize.Width - (planEditor.Location.X * 2),
-                tvSkillView.Height);
+                tvSkillView.Height + tbSkillFilter.Height + (tvSkillView.Top - tbSkillFilter.Bottom));
             planEditor.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         }
 
@@ -145,7 +154,13 @@ namespace EveCharacterMonitor.SkillPlanner
         private void tvSkillView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             TreeNode tn = tvSkillView.SelectedNode;
-            m_selectedSkill = tn.Tag as GrandSkill;
+            GrandSkill gs = tn.Tag as GrandSkill;
+            SelectSkill(gs);
+        }
+
+        private void SelectSkill(GrandSkill gs)
+        {
+            m_selectedSkill = gs;
             skillTreeDisplay1.RootSkill = m_selectedSkill;
 
             UpdatePlanControl();
@@ -778,6 +793,51 @@ namespace EveCharacterMonitor.SkillPlanner
                     i++;
                     sw.WriteLine("{0:D3}: {1} {2}", i, pe.SkillName, GrandSkill.GetRomanSkillNumber(pe.Level));
                 }
+            }
+        }
+
+        private void tbSkillFilter_TextChanged(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(tbSkillFilter.Text) || tbSkillFilter.Text.Trim().Length==0)
+            {
+                tvSkillView.Visible = true;
+                lbFilteredSkills.Visible = false;
+                lblNoResults.Visible = false;
+                return;
+            }
+
+            string searchStr = tbSkillFilter.Text.ToLower().Trim();
+
+            List<string> filterResults = new List<string>();
+            foreach (TreeNode tn in tvSkillView.Nodes)
+            {
+                foreach (TreeNode stn in tn.Nodes)
+                {
+                    if (stn.Text.ToLower().Contains(searchStr))
+                        filterResults.Add(stn.Text);
+                }
+            }
+
+            filterResults.Sort();
+            lbFilteredSkills.Items.Clear();
+            foreach (string s in filterResults)
+            {
+                lbFilteredSkills.Items.Add(s);
+            }
+
+            lbFilteredSkills.Location = tvSkillView.Location;
+            lbFilteredSkills.Size = tvSkillView.Size;
+            tvSkillView.Visible = false;
+            lbFilteredSkills.Visible = true;
+            lblNoResults.Visible = (filterResults.Count==0);
+        }
+
+        private void lbFilteredSkills_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lbFilteredSkills.SelectedItems.Count > 0)
+            {
+                GrandSkill gs = m_grandCharacterInfo.GetSkill((string)lbFilteredSkills.SelectedItem);
+                SelectSkill(gs);
             }
         }
 

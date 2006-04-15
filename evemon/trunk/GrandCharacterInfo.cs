@@ -480,13 +480,19 @@ namespace EveCharacterMonitor
             }
         }
 
+        private bool m_isCached = false;
+
+        public bool IsCached
+        {
+            get { return m_isCached; }
+            set { if (m_isCached != value) { m_isCached = value; OnBioInfoChanged(); } }
+        }
+
         internal void AssignFromSerializableCharacterInfo(SerializableCharacterInfo ci)
         {
             this.SuppressEvents();
-            if (ci.IsCached)
-                this.Name = ci.Name + " (cached)";
-            else
-                this.Name = ci.Name;
+            this.Name = ci.Name;
+            this.IsCached = ci.IsCached;
             this.Gender = ci.Gender;
             this.Race = ci.Race;
             this.Bloodline = ci.BloodLine;

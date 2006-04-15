@@ -277,7 +277,10 @@ namespace EveCharacterMonitor
             }
 
             EnableButtons();
-            lblCharacterName.Text = m_grandCharacterInfo.Name;
+            if (m_grandCharacterInfo.IsCached)
+                lblCharacterName.Text = m_grandCharacterInfo.Name + " (cached)";
+            else
+                lblCharacterName.Text = m_grandCharacterInfo.Name;
             lblBioInfo.Text = m_grandCharacterInfo.Gender + " " +
                 m_grandCharacterInfo.Race + " " +
                 m_grandCharacterInfo.Bloodline;
