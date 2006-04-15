@@ -17,6 +17,7 @@ namespace EveCharacterMonitor.SkillPlanner
             {
                 components.Dispose();
             }
+            this.MyDispose(disposing);
             base.Dispose(disposing);
         }
 

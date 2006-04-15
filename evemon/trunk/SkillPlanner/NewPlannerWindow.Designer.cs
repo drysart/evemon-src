@@ -31,17 +31,18 @@ namespace EveCharacterMonitor.SkillPlanner
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewPlannerWindow));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.lblNoResults = new System.Windows.Forms.Label();
+            this.lbFilteredSkills = new System.Windows.Forms.ListBox();
+            this.pbSearchImage = new System.Windows.Forms.PictureBox();
+            this.tbSkillFilter = new System.Windows.Forms.TextBox();
             this.tvSkillView = new System.Windows.Forms.TreeView();
             this.cbSkillFilter = new System.Windows.Forms.ComboBox();
+            this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
             this.pnlPlanControl = new System.Windows.Forms.Panel();
-            this.lblPlanDescription = new System.Windows.Forms.Label();
-            this.btnCancelPlan = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.btnPlanTo1 = new System.Windows.Forms.Button();
-            this.btnPlanTo2 = new System.Windows.Forms.Button();
-            this.btnPlanTo3 = new System.Windows.Forms.Button();
-            this.btnPlanTo4 = new System.Windows.Forms.Button();
-            this.btnPlanTo5 = new System.Windows.Forms.Button();
+            this.lblDescription = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cbPlanSelect = new System.Windows.Forms.ComboBox();
+            this.lblAttributes = new System.Windows.Forms.Label();
             this.lblLevel5Time = new System.Windows.Forms.Label();
             this.lblLevel4Time = new System.Windows.Forms.Label();
             this.lblLevel3Time = new System.Windows.Forms.Label();
@@ -63,30 +64,21 @@ namespace EveCharacterMonitor.SkillPlanner
             this.slblStatusText = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslSuggestion = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.tsbDeletePlan = new System.Windows.Forms.ToolStripButton();
-            this.ttToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tsbSaveAs = new System.Windows.Forms.ToolStripButton();
             this.tsbCopyForum = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.lblAttributes = new System.Windows.Forms.Label();
+            this.tsbDeletePlan = new System.Windows.Forms.ToolStripButton();
+            this.ttToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.sfdSave = new System.Windows.Forms.SaveFileDialog();
-            this.cbPlanSelect = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblDescription = new System.Windows.Forms.Label();
-            this.pbSearchImage = new System.Windows.Forms.PictureBox();
-            this.tbSkillFilter = new System.Windows.Forms.TextBox();
-            this.lbFilteredSkills = new System.Windows.Forms.ListBox();
-            this.lblNoResults = new System.Windows.Forms.Label();
             this.planEditor = new EveCharacterMonitor.SkillPlanner.PlanOrderEditorControl();
-            this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSearchImage)).BeginInit();
             this.pnlPlanControl.SuspendLayout();
             this.cmsSkillContext.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSearchImage)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -112,6 +104,53 @@ namespace EveCharacterMonitor.SkillPlanner
             this.splitContainer1.Size = new System.Drawing.Size(751, 562);
             this.splitContainer1.SplitterDistance = 207;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // lblNoResults
+            // 
+            this.lblNoResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblNoResults.BackColor = System.Drawing.SystemColors.Window;
+            this.lblNoResults.Location = new System.Drawing.Point(22, 72);
+            this.lblNoResults.Name = "lblNoResults";
+            this.lblNoResults.Size = new System.Drawing.Size(169, 46);
+            this.lblNoResults.TabIndex = 20;
+            this.lblNoResults.Text = "No skills match your search.";
+            this.lblNoResults.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblNoResults.Visible = false;
+            // 
+            // lbFilteredSkills
+            // 
+            this.lbFilteredSkills.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbFilteredSkills.FormattingEnabled = true;
+            this.lbFilteredSkills.IntegralHeight = false;
+            this.lbFilteredSkills.Location = new System.Drawing.Point(34, 183);
+            this.lbFilteredSkills.Name = "lbFilteredSkills";
+            this.lbFilteredSkills.Size = new System.Drawing.Size(120, 96);
+            this.lbFilteredSkills.TabIndex = 19;
+            this.lbFilteredSkills.SelectedIndexChanged += new System.EventHandler(this.lbFilteredSkills_SelectedIndexChanged);
+            // 
+            // pbSearchImage
+            // 
+            this.pbSearchImage.Image = ((System.Drawing.Image)(resources.GetObject("pbSearchImage.Image")));
+            this.pbSearchImage.InitialImage = null;
+            this.pbSearchImage.Location = new System.Drawing.Point(12, 30);
+            this.pbSearchImage.Name = "pbSearchImage";
+            this.pbSearchImage.Size = new System.Drawing.Size(16, 21);
+            this.pbSearchImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbSearchImage.TabIndex = 18;
+            this.pbSearchImage.TabStop = false;
+            // 
+            // tbSkillFilter
+            // 
+            this.tbSkillFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbSkillFilter.Location = new System.Drawing.Point(34, 30);
+            this.tbSkillFilter.Name = "tbSkillFilter";
+            this.tbSkillFilter.Size = new System.Drawing.Size(170, 21);
+            this.tbSkillFilter.TabIndex = 2;
+            this.tbSkillFilter.TextChanged += new System.EventHandler(this.tbSkillFilter_TextChanged);
             // 
             // tvSkillView
             // 
@@ -142,20 +181,25 @@ namespace EveCharacterMonitor.SkillPlanner
             this.cbSkillFilter.TabIndex = 0;
             this.cbSkillFilter.SelectedIndexChanged += new System.EventHandler(this.cbSkillFilter_SelectedIndexChanged);
             // 
+            // skillTreeDisplay1
+            // 
+            this.skillTreeDisplay1.AutoScroll = true;
+            this.skillTreeDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.skillTreeDisplay1.Location = new System.Drawing.Point(0, 92);
+            this.skillTreeDisplay1.Name = "skillTreeDisplay1";
+            this.skillTreeDisplay1.Plan = null;
+            this.skillTreeDisplay1.RootSkill = null;
+            this.skillTreeDisplay1.Size = new System.Drawing.Size(540, 470);
+            this.skillTreeDisplay1.TabIndex = 0;
+            this.skillTreeDisplay1.SkillClicked += new EveCharacterMonitor.SkillPlanner.SkillClickedHandler(this.skillTreeDisplay1_SkillClicked);
+            this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
+            // 
             // pnlPlanControl
             // 
             this.pnlPlanControl.Controls.Add(this.lblDescription);
             this.pnlPlanControl.Controls.Add(this.label1);
             this.pnlPlanControl.Controls.Add(this.cbPlanSelect);
             this.pnlPlanControl.Controls.Add(this.lblAttributes);
-            this.pnlPlanControl.Controls.Add(this.lblPlanDescription);
-            this.pnlPlanControl.Controls.Add(this.btnCancelPlan);
-            this.pnlPlanControl.Controls.Add(this.label5);
-            this.pnlPlanControl.Controls.Add(this.btnPlanTo1);
-            this.pnlPlanControl.Controls.Add(this.btnPlanTo2);
-            this.pnlPlanControl.Controls.Add(this.btnPlanTo3);
-            this.pnlPlanControl.Controls.Add(this.btnPlanTo4);
-            this.pnlPlanControl.Controls.Add(this.btnPlanTo5);
             this.pnlPlanControl.Controls.Add(this.lblLevel5Time);
             this.pnlPlanControl.Controls.Add(this.lblLevel4Time);
             this.pnlPlanControl.Controls.Add(this.lblLevel3Time);
@@ -169,99 +213,54 @@ namespace EveCharacterMonitor.SkillPlanner
             this.pnlPlanControl.TabIndex = 1;
             this.pnlPlanControl.Visible = false;
             // 
-            // lblPlanDescription
+            // lblDescription
             // 
-            this.lblPlanDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblPlanDescription.Location = new System.Drawing.Point(197, 17);
-            this.lblPlanDescription.Name = "lblPlanDescription";
-            this.lblPlanDescription.Size = new System.Drawing.Size(165, 16);
-            this.lblPlanDescription.TabIndex = 13;
-            this.lblPlanDescription.Text = "Not currently planned.";
-            this.lblPlanDescription.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.lblPlanDescription.Visible = false;
+            this.lblDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblDescription.Location = new System.Drawing.Point(305, 19);
+            this.lblDescription.Name = "lblDescription";
+            this.lblDescription.Size = new System.Drawing.Size(232, 43);
+            this.lblDescription.TabIndex = 17;
+            this.lblDescription.Text = "label2";
+            this.lblDescription.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // btnCancelPlan
+            // label1
             // 
-            this.btnCancelPlan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancelPlan.Location = new System.Drawing.Point(281, 65);
-            this.btnCancelPlan.Name = "btnCancelPlan";
-            this.btnCancelPlan.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelPlan.TabIndex = 12;
-            this.btnCancelPlan.Text = "Cancel Plan";
-            this.btnCancelPlan.UseVisualStyleBackColor = true;
-            this.btnCancelPlan.Visible = false;
-            this.btnCancelPlan.Click += new System.EventHandler(this.btnCancelPlan_Click);
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(391, 68);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(31, 13);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "Plan:";
             // 
-            // label5
+            // cbPlanSelect
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(140, 41);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(46, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Plan To:";
-            this.label5.Visible = false;
+            this.cbPlanSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbPlanSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPlanSelect.FormattingEnabled = true;
+            this.cbPlanSelect.Items.AddRange(new object[] {
+            "Not Planned",
+            "Level I",
+            "Level II",
+            "Level III",
+            "Level IV",
+            "Level V"});
+            this.cbPlanSelect.Location = new System.Drawing.Point(428, 65);
+            this.cbPlanSelect.Name = "cbPlanSelect";
+            this.cbPlanSelect.Size = new System.Drawing.Size(100, 21);
+            this.cbPlanSelect.TabIndex = 15;
             // 
-            // btnPlanTo1
+            // lblAttributes
             // 
-            this.btnPlanTo1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPlanTo1.Location = new System.Drawing.Point(192, 36);
-            this.btnPlanTo1.Name = "btnPlanTo1";
-            this.btnPlanTo1.Size = new System.Drawing.Size(28, 23);
-            this.btnPlanTo1.TabIndex = 10;
-            this.btnPlanTo1.Text = "I";
-            this.btnPlanTo1.UseVisualStyleBackColor = true;
-            this.btnPlanTo1.Visible = false;
-            this.btnPlanTo1.Click += new System.EventHandler(this.btnPlanTo1_Click);
-            // 
-            // btnPlanTo2
-            // 
-            this.btnPlanTo2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPlanTo2.Location = new System.Drawing.Point(226, 36);
-            this.btnPlanTo2.Name = "btnPlanTo2";
-            this.btnPlanTo2.Size = new System.Drawing.Size(28, 23);
-            this.btnPlanTo2.TabIndex = 9;
-            this.btnPlanTo2.Text = "II";
-            this.btnPlanTo2.UseVisualStyleBackColor = true;
-            this.btnPlanTo2.Visible = false;
-            this.btnPlanTo2.Click += new System.EventHandler(this.btnPlanTo2_Click);
-            // 
-            // btnPlanTo3
-            // 
-            this.btnPlanTo3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPlanTo3.Location = new System.Drawing.Point(260, 36);
-            this.btnPlanTo3.Name = "btnPlanTo3";
-            this.btnPlanTo3.Size = new System.Drawing.Size(28, 23);
-            this.btnPlanTo3.TabIndex = 8;
-            this.btnPlanTo3.Text = "III";
-            this.btnPlanTo3.UseVisualStyleBackColor = true;
-            this.btnPlanTo3.Visible = false;
-            this.btnPlanTo3.Click += new System.EventHandler(this.btnPlanTo3_Click);
-            // 
-            // btnPlanTo4
-            // 
-            this.btnPlanTo4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPlanTo4.Location = new System.Drawing.Point(294, 36);
-            this.btnPlanTo4.Name = "btnPlanTo4";
-            this.btnPlanTo4.Size = new System.Drawing.Size(28, 23);
-            this.btnPlanTo4.TabIndex = 7;
-            this.btnPlanTo4.Text = "IV";
-            this.btnPlanTo4.UseVisualStyleBackColor = true;
-            this.btnPlanTo4.Visible = false;
-            this.btnPlanTo4.Click += new System.EventHandler(this.btnPlanTo4_Click);
-            // 
-            // btnPlanTo5
-            // 
-            this.btnPlanTo5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPlanTo5.Location = new System.Drawing.Point(328, 36);
-            this.btnPlanTo5.Name = "btnPlanTo5";
-            this.btnPlanTo5.Size = new System.Drawing.Size(28, 23);
-            this.btnPlanTo5.TabIndex = 6;
-            this.btnPlanTo5.Text = "V";
-            this.btnPlanTo5.UseVisualStyleBackColor = true;
-            this.btnPlanTo5.Visible = false;
-            this.btnPlanTo5.Click += new System.EventHandler(this.btnPlanTo5_Click);
+            this.lblAttributes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblAttributes.Location = new System.Drawing.Point(302, 4);
+            this.lblAttributes.Name = "lblAttributes";
+            this.lblAttributes.Size = new System.Drawing.Size(235, 13);
+            this.lblAttributes.TabIndex = 14;
+            this.lblAttributes.Text = "Primary: Intelligence, Secondary: Willpower";
+            this.lblAttributes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblLevel5Time
             // 
@@ -442,21 +441,6 @@ namespace EveCharacterMonitor.SkillPlanner
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // tsbDeletePlan
-            // 
-            this.tsbDeletePlan.Image = ((System.Drawing.Image)(resources.GetObject("tsbDeletePlan.Image")));
-            this.tsbDeletePlan.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbDeletePlan.Name = "tsbDeletePlan";
-            this.tsbDeletePlan.Size = new System.Drawing.Size(81, 22);
-            this.tsbDeletePlan.Text = "Delete Plan";
-            this.tsbDeletePlan.Click += new System.EventHandler(this.tsbDeletePlan_Click);
-            // 
-            // ttToolTip
-            // 
-            this.ttToolTip.AutoPopDelay = 5000000;
-            this.ttToolTip.InitialDelay = 500;
-            this.ttToolTip.ReshowDelay = 100;
-            // 
             // tsbSaveAs
             // 
             this.tsbSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("tsbSaveAs.Image")));
@@ -480,107 +464,26 @@ namespace EveCharacterMonitor.SkillPlanner
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // lblAttributes
+            // tsbDeletePlan
             // 
-            this.lblAttributes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblAttributes.Location = new System.Drawing.Point(302, 4);
-            this.lblAttributes.Name = "lblAttributes";
-            this.lblAttributes.Size = new System.Drawing.Size(235, 13);
-            this.lblAttributes.TabIndex = 14;
-            this.lblAttributes.Text = "Primary: Intelligence, Secondary: Willpower";
-            this.lblAttributes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.tsbDeletePlan.Image = ((System.Drawing.Image)(resources.GetObject("tsbDeletePlan.Image")));
+            this.tsbDeletePlan.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDeletePlan.Name = "tsbDeletePlan";
+            this.tsbDeletePlan.Size = new System.Drawing.Size(81, 22);
+            this.tsbDeletePlan.Text = "Delete Plan";
+            this.tsbDeletePlan.Click += new System.EventHandler(this.tsbDeletePlan_Click);
+            // 
+            // ttToolTip
+            // 
+            this.ttToolTip.AutoPopDelay = 5000000;
+            this.ttToolTip.InitialDelay = 500;
+            this.ttToolTip.ReshowDelay = 100;
             // 
             // sfdSave
             // 
             this.sfdSave.Filter = "EVEMon Plan Format (*.emp)|*.emp|XML Format (*.xml)|*.xml|Text Format (*.txt)|*.t" +
                 "xt";
             this.sfdSave.Title = "Save to File";
-            // 
-            // cbPlanSelect
-            // 
-            this.cbPlanSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbPlanSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPlanSelect.FormattingEnabled = true;
-            this.cbPlanSelect.Items.AddRange(new object[] {
-            "Not Planned",
-            "Level I",
-            "Level II",
-            "Level III",
-            "Level IV",
-            "Level V"});
-            this.cbPlanSelect.Location = new System.Drawing.Point(428, 65);
-            this.cbPlanSelect.Name = "cbPlanSelect";
-            this.cbPlanSelect.Size = new System.Drawing.Size(100, 21);
-            this.cbPlanSelect.TabIndex = 15;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(391, 68);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(31, 13);
-            this.label1.TabIndex = 16;
-            this.label1.Text = "Plan:";
-            // 
-            // lblDescription
-            // 
-            this.lblDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDescription.Location = new System.Drawing.Point(305, 19);
-            this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(232, 43);
-            this.lblDescription.TabIndex = 17;
-            this.lblDescription.Text = "label2";
-            this.lblDescription.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // pbSearchImage
-            // 
-            this.pbSearchImage.Image = ((System.Drawing.Image)(resources.GetObject("pbSearchImage.Image")));
-            this.pbSearchImage.InitialImage = null;
-            this.pbSearchImage.Location = new System.Drawing.Point(12, 30);
-            this.pbSearchImage.Name = "pbSearchImage";
-            this.pbSearchImage.Size = new System.Drawing.Size(16, 21);
-            this.pbSearchImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pbSearchImage.TabIndex = 18;
-            this.pbSearchImage.TabStop = false;
-            // 
-            // tbSkillFilter
-            // 
-            this.tbSkillFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSkillFilter.Location = new System.Drawing.Point(34, 30);
-            this.tbSkillFilter.Name = "tbSkillFilter";
-            this.tbSkillFilter.Size = new System.Drawing.Size(170, 21);
-            this.tbSkillFilter.TabIndex = 2;
-            this.tbSkillFilter.TextChanged += new System.EventHandler(this.tbSkillFilter_TextChanged);
-            // 
-            // lbFilteredSkills
-            // 
-            this.lbFilteredSkills.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbFilteredSkills.FormattingEnabled = true;
-            this.lbFilteredSkills.IntegralHeight = false;
-            this.lbFilteredSkills.Location = new System.Drawing.Point(34, 183);
-            this.lbFilteredSkills.Name = "lbFilteredSkills";
-            this.lbFilteredSkills.Size = new System.Drawing.Size(120, 96);
-            this.lbFilteredSkills.TabIndex = 19;
-            this.lbFilteredSkills.SelectedIndexChanged += new System.EventHandler(this.lbFilteredSkills_SelectedIndexChanged);
-            // 
-            // lblNoResults
-            // 
-            this.lblNoResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblNoResults.BackColor = System.Drawing.SystemColors.Window;
-            this.lblNoResults.Location = new System.Drawing.Point(22, 72);
-            this.lblNoResults.Name = "lblNoResults";
-            this.lblNoResults.Size = new System.Drawing.Size(169, 46);
-            this.lblNoResults.TabIndex = 20;
-            this.lblNoResults.Text = "No skills match your search.";
-            this.lblNoResults.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblNoResults.Visible = false;
             // 
             // planEditor
             // 
@@ -591,19 +494,6 @@ namespace EveCharacterMonitor.SkillPlanner
             this.planEditor.Size = new System.Drawing.Size(176, 150);
             this.planEditor.TabIndex = 2;
             this.planEditor.Visible = false;
-            // 
-            // skillTreeDisplay1
-            // 
-            this.skillTreeDisplay1.AutoScroll = true;
-            this.skillTreeDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.skillTreeDisplay1.Location = new System.Drawing.Point(0, 92);
-            this.skillTreeDisplay1.Name = "skillTreeDisplay1";
-            this.skillTreeDisplay1.Plan = null;
-            this.skillTreeDisplay1.RootSkill = null;
-            this.skillTreeDisplay1.Size = new System.Drawing.Size(540, 470);
-            this.skillTreeDisplay1.TabIndex = 0;
-            this.skillTreeDisplay1.SkillClicked += new EveCharacterMonitor.SkillPlanner.SkillClickedHandler(this.skillTreeDisplay1_SkillClicked);
-            this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
             // 
             // NewPlannerWindow
             // 
@@ -621,11 +511,13 @@ namespace EveCharacterMonitor.SkillPlanner
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EVEMon Skill Planner";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.NewPlannerWindow_FormClosed);
+            this.Shown += new System.EventHandler(this.NewPlannerWindow_Shown);
             this.Load += new System.EventHandler(this.NewPlannerWindow_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbSearchImage)).EndInit();
             this.pnlPlanControl.ResumeLayout(false);
             this.pnlPlanControl.PerformLayout();
             this.cmsSkillContext.ResumeLayout(false);
@@ -633,7 +525,6 @@ namespace EveCharacterMonitor.SkillPlanner
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSearchImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -656,20 +547,12 @@ namespace EveCharacterMonitor.SkillPlanner
         private System.Windows.Forms.ToolStripMenuItem miCancelAll;
         private System.Windows.Forms.ToolStripMenuItem miCancelThis;
         private System.Windows.Forms.Panel pnlPlanControl;
-        private System.Windows.Forms.Button btnCancelPlan;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button btnPlanTo1;
-        private System.Windows.Forms.Button btnPlanTo2;
-        private System.Windows.Forms.Button btnPlanTo3;
-        private System.Windows.Forms.Button btnPlanTo4;
-        private System.Windows.Forms.Button btnPlanTo5;
         private System.Windows.Forms.Label lblLevel5Time;
         private System.Windows.Forms.Label lblLevel4Time;
         private System.Windows.Forms.Label lblLevel3Time;
         private System.Windows.Forms.Label lblLevel2Time;
         private System.Windows.Forms.Label lblLevel1Time;
         private System.Windows.Forms.Label lblSkillName;
-        private System.Windows.Forms.Label lblPlanDescription;
         private System.Windows.Forms.Timer tmrSkillTick;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel slblStatusText;

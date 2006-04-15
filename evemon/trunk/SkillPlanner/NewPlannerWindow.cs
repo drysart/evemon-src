@@ -32,8 +32,12 @@ namespace EveCharacterMonitor.SkillPlanner
 
             m_plan = p;
             m_plan.GrandCharacterInfo = m_grandCharacterInfo;
-            m_plan.Changed += new EventHandler<EventArgs>(m_plan_Changed);
             skillTreeDisplay1.Plan = m_plan;
+        }
+
+        private void NewPlannerWindow_Shown(object sender, EventArgs e)
+        {
+            m_plan.Changed += new EventHandler<EventArgs>(m_plan_Changed);
         }
 
         private void NewPlannerWindow_FormClosed(object sender, FormClosedEventArgs e)
@@ -277,27 +281,27 @@ namespace EveCharacterMonitor.SkillPlanner
                 int plannedTo = 0;
                 bool anyPlan = false;
                 bool tPlan;
-                tPlan = SetPlanLabel(lblLevel1Time, btnPlanTo1, 1);
+                tPlan = SetPlanLabel(lblLevel1Time, 1);
                 if (tPlan)
                     plannedTo = 1;
                 anyPlan = anyPlan || tPlan;
-                tPlan = SetPlanLabel(lblLevel2Time, btnPlanTo2, 2);
+                tPlan = SetPlanLabel(lblLevel2Time, 2);
                 if (tPlan)
                     plannedTo = 2;
                 anyPlan = anyPlan || tPlan;
-                tPlan = SetPlanLabel(lblLevel3Time, btnPlanTo3, 3);
+                tPlan = SetPlanLabel(lblLevel3Time, 3);
                 if (tPlan)
                     plannedTo = 3;
                 anyPlan = anyPlan || tPlan;
-                tPlan = SetPlanLabel(lblLevel4Time, btnPlanTo4, 4);
+                tPlan = SetPlanLabel(lblLevel4Time, 4);
                 if (tPlan)
                     plannedTo = 4;
                 anyPlan = anyPlan || tPlan;
-                tPlan = SetPlanLabel(lblLevel5Time, btnPlanTo5, 5);
+                tPlan = SetPlanLabel(lblLevel5Time, 5);
                 if (tPlan)
                     plannedTo = 5;
                 anyPlan = anyPlan || tPlan;
-                btnCancelPlan.Enabled = anyPlan;
+                //btnCancelPlan.Enabled = anyPlan;
 
                 UpdatePlanSelect();
 
@@ -339,7 +343,7 @@ namespace EveCharacterMonitor.SkillPlanner
             tslSuggestion.Visible = m_plan.HasAttributeSuggestion;
         }
 
-        private bool SetPlanLabel(Label label, Button button, int level)
+        private bool SetPlanLabel(Label label, int level)
         {
             bool isPlanned = m_plan.IsPlanned(m_selectedSkill, level);
             StringBuilder sb = new StringBuilder();
@@ -349,7 +353,7 @@ namespace EveCharacterMonitor.SkillPlanner
             if (m_selectedSkill.Level >= level)
             {
                 sb.Append("Already known");
-                button.Enabled = false;
+                //button.Enabled = false;
             }
             else
             {
@@ -365,7 +369,7 @@ namespace EveCharacterMonitor.SkillPlanner
                     sb.Append(GrandSkill.TimeSpanToDescriptiveText(prts, DescriptiveTextOptions.IncludeCommas));
                     sb.Append(")");
                 }
-                button.Enabled = !isPlanned;
+                //button.Enabled = !isPlanned;
                 //if (m_selectedSkill.InTraining && m_selectedSkill.TrainingToLevel == level)
                 //    button.Enabled = false;
             }
@@ -840,6 +844,5 @@ namespace EveCharacterMonitor.SkillPlanner
                 SelectSkill(gs);
             }
         }
-
     }
 }

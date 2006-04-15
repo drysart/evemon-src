@@ -20,6 +20,15 @@ namespace EveCharacterMonitor.SkillPlanner
             SetStyle(ControlStyles.ResizeRedraw, true);
         }
 
+        private void MyDispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // This detaches changed handlers...
+                ResetLayoutData();
+            }
+        }
+
         private Plan m_plan = null;
 
         public Plan Plan
