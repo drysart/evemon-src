@@ -698,7 +698,13 @@ namespace EveCharacterMonitor.SkillPlanner
         private Size MeasureAndDrawText(Graphics g, string text, Font f, Point p, Color c)
         {
             Size res = TextRenderer.MeasureText(g, text, f);
-            TextRenderer.DrawText(g, text, f, p, c);
+
+            // This line fails on Win2K for some reason
+            //TextRenderer.DrawText(g, text, f, p, c);
+
+            // ...but this one doesn't.  Freaky.
+            TextRenderer.DrawText(g, text, f,
+                new Rectangle(p.X, p.Y, res.Width, res.Height), c, Color.Transparent, TextFormatFlags.Default);
             return res;
         }
 

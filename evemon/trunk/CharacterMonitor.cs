@@ -959,17 +959,17 @@ namespace EveCharacterMonitor
 
         private void ttToolTip_Popup(object sender, PopupEventArgs e)
         {
-            if (e.AssociatedControl == pbThrobber)
-            {
-                if (!m_throbberRunning && !m_throbberError)
-                {
-                    ttToolTip.SetToolTip(pbThrobber,
-                        String.Format("Last update: {0}\nNext update in: {1}\nClick to update now.",
-                        m_lastUpdate.ToString(),
-                        GrandSkill.TimeSpanToDescriptiveText(m_nextScheduledUpdateAt - DateTime.Now, DescriptiveTextOptions.Default)
-                    ));
-                }
-            }
+            //if (e.AssociatedControl == pbThrobber)
+            //{
+            //    if (!m_throbberRunning && !m_throbberError)
+            //    {
+            //        ttToolTip.SetToolTip(pbThrobber,
+            //            String.Format("Last update: {0}\nNext update in: {1}\nClick to update now.",
+            //            m_lastUpdate.ToString(),
+            //            GrandSkill.TimeSpanToDescriptiveText(m_nextScheduledUpdateAt - DateTime.Now, DescriptiveTextOptions.Default)
+            //        ));
+            //    }
+            //}
         }       
     }
 
