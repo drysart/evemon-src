@@ -236,6 +236,39 @@ namespace EveCharacterMonitor
             this.Save();
         }
 
+        private List<SerializableCharacterInfo> m_cachedCharacterInfo = new List<SerializableCharacterInfo>();
+
+        public List<SerializableCharacterInfo> CachedCharacterInfo
+        {
+            get { return m_cachedCharacterInfo; }
+        }
+
+        public SerializableCharacterInfo GetCharacterInfo(string charName)
+        {
+            foreach (SerializableCharacterInfo sci in m_cachedCharacterInfo)
+            {
+                if (sci.Name == charName)
+                    return sci;
+            }
+            return null;
+        }
+
+        public void RemoveCharacterCache(string charName)
+        {
+            for (int i = 0; i < m_cachedCharacterInfo.Count; i++)
+            {
+                if (m_cachedCharacterInfo[i].Name == charName)
+                    m_cachedCharacterInfo.RemoveAt(i);
+            }
+        }
+
+        public void SetCharacterCache(SerializableCharacterInfo sci)
+        {
+            RemoveCharacterCache(sci.Name);
+            sci.IsCached = true;
+            m_cachedCharacterInfo.Add(sci);
+        }
+
         private const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";
 
         private static string StoreFileName(string key)

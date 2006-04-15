@@ -36,8 +36,8 @@ namespace EveCharacterMonitor
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            using (IDisposable scope = BusyDialog.GetScope())
-            {
+            //using (IDisposable scope = BusyDialog.GetScope())
+            //{
                 Assembly asm = Assembly.GetExecutingAssembly();
                 using (Stream s = asm.GetManifestResourceStream("EveCharacterMonitor.throbber.png"))
                 using (Image b = Image.FromStream(s, true, true))
@@ -76,7 +76,7 @@ namespace EveCharacterMonitor
                     if (cli != null)
                         AddTab(cli);
                 }
-            }
+            //}
         }
 
         private void MainWindow_Shown(object sender, EventArgs e)
@@ -135,31 +135,30 @@ namespace EveCharacterMonitor
 
         private void AddTab(CharLoginInfo cli)
         {
-        AGAIN:
-            bool result;
-            try
-            {
-                result = cli.Validate();
-            }
-            catch (NullReferenceException)
-            {
-                result = false;
-            }
-            if (!result)
-            {
-                DialogResult dr = MessageBox.Show(
-                    "Unable to show character monitor for " + cli.CharacterName + ", " +
-                    "could not validate username/password/character combination.",
-                    "Could Not Validate Character",
-                    MessageBoxButtons.RetryCancel,
-                    MessageBoxIcon.Error);
-                if (dr == DialogResult.Retry)
-                {
-                    //EveSession.GetSession(cli.Username, cli.Password).ReLogin();
-                    goto AGAIN;
-                }
-                return;
-            }
+        //AGAIN:
+        //    bool result;
+        //    try
+        //    {
+        //        result = cli.Validate();
+        //    }
+        //    catch (NullReferenceException)
+        //    {
+        //        result = false;
+        //    }
+        //    if (!result)
+        //    {
+        //        DialogResult dr = MessageBox.Show(
+        //            "Unable to show character monitor for " + cli.CharacterName + ", " +
+        //            "could not validate username/password/character combination.",
+        //            "Could Not Validate Character",
+        //            MessageBoxButtons.RetryCancel,
+        //            MessageBoxIcon.Error);
+        //        if (dr == DialogResult.Retry)
+        //        {
+        //            goto AGAIN;
+        //        }
+        //        return;
+        //    }
 
             TabPage tp = new TabPage(cli.CharacterName);
             tp.UseVisualStyleBackColor = true;

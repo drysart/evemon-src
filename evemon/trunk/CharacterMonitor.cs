@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
@@ -64,13 +65,14 @@ namespace EveCharacterMonitor
 
         public void Start()
         {
-            m_session = EveSession.GetSession(m_cli.Username, m_cli.Password);
-            m_charId = m_session.GetCharacterId(m_cli.CharacterName);
-            if (m_charId < 0)
-            {
-                m_session = null;
-                throw new ApplicationException("Could not start character monitor");
-            }
+            m_session = null;
+            m_charId = -1;
+            //m_charId = m_session.GetCharacterId(m_cli.CharacterName);
+            //if (m_charId < 0)
+            //{
+            //    m_session = null;
+            //    throw new ApplicationException("Could not start character monitor");
+            //}
 
             m_grandCharacterInfo = new GrandCharacterInfo(m_charId, m_cli.CharacterName);
             m_grandCharacterInfo.BioInfoChanged += new EventHandler(m_grandCharacterInfo_BioInfoChanged);
@@ -78,10 +80,13 @@ namespace EveCharacterMonitor
             m_grandCharacterInfo.AttributeChanged += new EventHandler(m_grandCharacterInfo_AttributeChanged);
             m_grandCharacterInfo.SkillChanged += new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
 
+            SerializableCharacterInfo sci = m_settings.GetCharacterInfo(m_cli.CharacterName);
+            if (sci != null)
+                m_grandCharacterInfo.AssignFromSerializableCharacterInfo(sci);
+
             tmrUpdate.Interval = 10;
             tmrUpdate.Enabled = true;
             tmrTick.Enabled = true;
-            GetCharacterImage();
         }
 
         void m_grandCharacterInfo_SkillChanged(object sender, SkillChangedEventArgs e)
@@ -192,6 +197,7 @@ namespace EveCharacterMonitor
             }
 
             UpdateSkillHeaderStats();
+            UpdateCachedCopy();
         }
 
         private void EnableButtons()
@@ -207,15 +213,23 @@ namespace EveCharacterMonitor
 
         void m_grandCharacterInfo_AttributeChanged(object sender, EventArgs e)
         {
-            this.Invoke(new MethodInvoker(delegate
+            if (this.InvokeRequired)
             {
-                EnableButtons();
-                SetAttributeLabel(lblIntelligence, EveAttribute.Intelligence);
-                SetAttributeLabel(lblCharisma, EveAttribute.Charisma);
-                SetAttributeLabel(lblPerception, EveAttribute.Perception);
-                SetAttributeLabel(lblMemory, EveAttribute.Memory);
-                SetAttributeLabel(lblWillpower, EveAttribute.Willpower);
-            }));
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    m_grandCharacterInfo_AttributeChanged(sender, e);
+                }));
+                return;
+            }
+
+            EnableButtons();
+            SetAttributeLabel(lblIntelligence, EveAttribute.Intelligence);
+            SetAttributeLabel(lblCharisma, EveAttribute.Charisma);
+            SetAttributeLabel(lblPerception, EveAttribute.Perception);
+            SetAttributeLabel(lblMemory, EveAttribute.Memory);
+            SetAttributeLabel(lblWillpower, EveAttribute.Willpower);
+
+            UpdateCachedCopy();
         }
 
         private void SetAttributeLabel(Label lblWillpower, EveAttribute eveAttribute)
@@ -236,24 +250,47 @@ namespace EveCharacterMonitor
 
         private void m_grandCharacterInfo_BalanceChanged(object sender, EventArgs e)
         {
-            this.Invoke(new MethodInvoker(delegate
+            if (this.InvokeRequired)
             {
-                EnableButtons();
-                lblBalance.Text = "Balance: " + m_grandCharacterInfo.Balance.ToString("#,##0.00") + " ISK";
-            }));
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    m_grandCharacterInfo_BalanceChanged(sender, e);
+                }));
+                return;
+            }
+
+            EnableButtons();
+            lblBalance.Text = "Balance: " + m_grandCharacterInfo.Balance.ToString("#,##0.00") + " ISK";
+
+            UpdateCachedCopy();
         }
 
         private void m_grandCharacterInfo_BioInfoChanged(object sender, EventArgs e)
         {
-            this.Invoke(new MethodInvoker(delegate
+            if (this.InvokeRequired)
             {
-                EnableButtons();
-                lblCharacterName.Text = m_grandCharacterInfo.Name;
-                lblBioInfo.Text = m_grandCharacterInfo.Gender + " " +
-                    m_grandCharacterInfo.Race + " " +
-                    m_grandCharacterInfo.Bloodline;
-                lblCorpInfo.Text = "Corporation: " + m_grandCharacterInfo.CorporationName;
-            }));
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    m_grandCharacterInfo_BioInfoChanged(sender, e);
+                }));
+                return;
+            }
+
+            EnableButtons();
+            lblCharacterName.Text = m_grandCharacterInfo.Name;
+            lblBioInfo.Text = m_grandCharacterInfo.Gender + " " +
+                m_grandCharacterInfo.Race + " " +
+                m_grandCharacterInfo.Bloodline;
+            lblCorpInfo.Text = "Corporation: " + m_grandCharacterInfo.CorporationName;
+
+            UpdateCachedCopy();
+        }
+
+        private void UpdateCachedCopy()
+        {
+            SerializableCharacterInfo sci = m_grandCharacterInfo.ExportSerializableCharacterInfo();
+            m_settings.SetCharacterCache(sci);
+            m_settings.Save();
         }
 
         public void Stop()
@@ -285,6 +322,45 @@ namespace EveCharacterMonitor
 
             tmrUpdate.Enabled = false;
             StartThrobber();
+            if (m_charId < 0)
+                GetCharIdAndUpdate();
+            else
+                UpdateGrandCharacterInfo();
+        }
+
+        private void GetCharIdAndUpdate()
+        {
+            ThreadPool.QueueUserWorkItem(delegate
+            {
+                int gotCharId = -1;
+                try
+                {
+                    m_session = EveSession.GetSession(m_cli.Username, m_cli.Password);
+                    gotCharId = m_session.GetCharacterId(m_cli.CharacterName);
+                }
+                catch { }
+                if (gotCharId < 0)
+                {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        ttToolTip.SetToolTip(pbThrobber, "Could not get character data!\nClick to try again.");
+                        tmrUpdate.Interval = 1000 * 60 * 30;
+                        tmrUpdate.Enabled = true;
+                        SetErrorThrobber();
+                    }));
+                    return;
+                }
+
+                m_charId = gotCharId;
+                m_grandCharacterInfo.CharacterId = gotCharId;
+                GetCharacterImage();
+
+                UpdateGrandCharacterInfo();
+            });
+        }
+
+        private void UpdateGrandCharacterInfo()
+        {
             m_session.UpdateGrandCharacterInfoAsync(m_grandCharacterInfo,
                 new UpdateGrandCharacterInfoCallback(delegate (EveSession s, int timeLeftInCache)
                 {
@@ -305,22 +381,6 @@ namespace EveCharacterMonitor
         private string m_lastCompletedSkill = String.Empty;
 
         private GrandCharacterInfo m_grandCharacterInfo;
-
-        //private void SetAttributeLabel(SerializableCharacterInfo ci, Label label, EveAttribute eveAttribute)
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.Append(ci.Attributes.GetAttributeAdjustment(eveAttribute, SerializableEveAttributeAdjustment.AllWithLearning).ToString("#.00"));
-        //    sb.Append(' ');
-        //    sb.Append(eveAttribute.ToString());
-        //    double implantValue = ci.Attributes.GetAttributeAdjustment(eveAttribute, SerializableEveAttributeAdjustment.Implants | SerializableEveAttributeAdjustment.Learning);
-        //    if (implantValue > 0)
-        //    {
-        //        sb.Append(" (");
-        //        sb.Append(implantValue.ToString("#.##"));
-        //        sb.Append(" from implants)");
-        //    }
-        //    label.Text = sb.ToString();
-        //}
 
         private string m_shortText = String.Empty;
         private TimeSpan m_shortTimeSpan = TimeSpan.Zero;
@@ -833,6 +893,7 @@ namespace EveCharacterMonitor
         }
 
         private bool m_throbberRunning = false;
+        private bool m_throbberError = true;
         private int m_throbberFrame = 0;
 
         private void StartThrobber()
@@ -845,6 +906,22 @@ namespace EveCharacterMonitor
         private void StopThrobber()
         {
             m_throbberRunning = false;
+            m_throbberError = false;
+        }
+
+        private void SetErrorThrobber()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    SetErrorThrobber();
+                }));
+                return;
+            }
+
+            m_throbberRunning = false;
+            m_throbberError = true;
         }
 
         private void tmrThrobber_Tick(object sender, EventArgs e)
@@ -854,6 +931,15 @@ namespace EveCharacterMonitor
             {
                 m_throbberFrame = ((m_throbberFrame + 1) % 8);
                 pbThrobber.Image = m_throbberImages[m_throbberFrame + 1];
+                tmrThrobber.Enabled = true;
+            }
+            else if (m_throbberError)
+            {
+                bool blinkState = (DateTime.Now.Millisecond > 500);
+                if (!blinkState)
+                    pbThrobber.Image = null;
+                else
+                    pbThrobber.Image = m_throbberImages[0];
                 tmrThrobber.Enabled = true;
             }
             else
@@ -872,7 +958,7 @@ namespace EveCharacterMonitor
         {
             if (e.AssociatedControl == pbThrobber)
             {
-                if (!m_throbberRunning)
+                if (!m_throbberRunning && !m_throbberError)
                 {
                     ttToolTip.SetToolTip(pbThrobber,
                         String.Format("Last update: {0}\nNext update in: {1}\nClick to update now.",

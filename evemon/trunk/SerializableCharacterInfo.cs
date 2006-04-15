@@ -136,6 +136,15 @@ namespace EveCharacterMonitor
             set { m_characterId = value; }
         }
 
+        private bool m_isCached = false;
+
+        [XmlAttribute("fromCache")]
+        public bool IsCached
+        {
+            get { return m_isCached; }
+            set { m_isCached = value; }
+        }
+
         private SerializableSkillInTraining m_skillInTraining;
 
         [XmlElement("skillInTraining")]

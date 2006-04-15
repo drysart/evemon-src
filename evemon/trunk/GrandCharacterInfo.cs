@@ -483,7 +483,10 @@ namespace EveCharacterMonitor
         internal void AssignFromSerializableCharacterInfo(SerializableCharacterInfo ci)
         {
             this.SuppressEvents();
-            this.Name = ci.Name;
+            if (ci.IsCached)
+                this.Name = ci.Name + " (cached)";
+            else
+                this.Name = ci.Name;
             this.Gender = ci.Gender;
             this.Race = ci.Race;
             this.Bloodline = ci.BloodLine;
