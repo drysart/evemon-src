@@ -463,6 +463,34 @@ namespace EveCharacterMonitor.SkillPlanner
             }
         }
 
+        public bool RemoveEntry(PlanEntry pe)
+        {
+            this.SuppressEvents();
+            try
+            {
+                foreach (PlanEntry tpe in m_entries)
+                {
+                    GrandSkill tSkill = tpe.Skill;
+                    int thisMinNeeded;
+                    if (pe.Skill == tpe.Skill && tpe.Level > pe.Level)
+                    {
+                        return false;
+                    }
+                    if (tSkill.HasAsPrerequisite(pe.Skill, out thisMinNeeded))
+                    {
+                        if (thisMinNeeded >= pe.Level)
+                            return false;
+                    }
+                }
+                m_entries.Remove(pe);
+                return true;
+            }
+            finally
+            {
+                this.ResumeEvents();
+            }
+        }
+
         public bool RemoveEntry(GrandSkill gs, bool removePrerequisites, bool nonPlannedOnly)
         {
             this.SuppressEvents();
@@ -513,6 +541,16 @@ namespace EveCharacterMonitor.SkillPlanner
             }
         }
 
+        public PlanEntry GetEntry(string name, int level)
+        {
+            foreach (PlanEntry pe in m_entries)
+            {
+                if (pe.SkillName == name && pe.Level == level)
+                    return pe;
+            }
+            return null;
+        }
+
         public PlanEntry GetEntryWithRoman(string name)
         {
             int level = 0;
@@ -526,12 +564,7 @@ namespace EveCharacterMonitor.SkillPlanner
                     break;
                 }
             }
-            foreach (PlanEntry pe in m_entries)
-            {
-                if (pe.SkillName == name && pe.Level == level)
-                    return pe;
-            }
-            return null;
+            return GetEntry(name, level);
         }
 
         private WeakReference<NewPlannerWindow> m_plannerWindow;

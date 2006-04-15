@@ -1386,6 +1386,21 @@ namespace EveCharacterMonitor
             neededLevel = 0;
             return false;
         }
+
+        public static int GetIntForRoman(string r)
+        {
+            if (r == "I")
+                return 1;
+            else if (r == "II")
+                return 2;
+            else if (r == "III")
+                return 3;
+            else if (r == "IV")
+                return 4;
+            else if (r == "V")
+                return 5;
+            return 0;
+        }
     }
 
     [Flags]

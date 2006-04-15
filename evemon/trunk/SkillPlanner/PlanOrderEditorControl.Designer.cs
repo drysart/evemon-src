@@ -29,53 +29,18 @@ namespace EveCharacterMonitor.SkillPlanner
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlanOrderEditorControl));
-            this.tsToolStrip = new System.Windows.Forms.ToolStrip();
-            this.tsbSave = new System.Windows.Forms.ToolStripButton();
-            this.tsbCopyForum = new System.Windows.Forms.ToolStripButton();
             this.cmsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miRemoveFromPlan = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdSave = new System.Windows.Forms.SaveFileDialog();
+            this.tmrTick = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             this.lvSkills = new EveCharacterMonitor.SkillPlanner.DraggableListView();
             this.colSkill = new System.Windows.Forms.ColumnHeader();
             this.colTrainingTime = new System.Windows.Forms.ColumnHeader();
             this.colEarliestStart = new System.Windows.Forms.ColumnHeader();
             this.colEarliestFinish = new System.Windows.Forms.ColumnHeader();
-            this.tmrTick = new System.Windows.Forms.Timer(this.components);
-            this.tsToolStrip.SuspendLayout();
             this.cmsContextMenu.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tsToolStrip
-            // 
-            this.tsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbSave,
-            this.tsbCopyForum});
-            this.tsToolStrip.Location = new System.Drawing.Point(0, 0);
-            this.tsToolStrip.Name = "tsToolStrip";
-            this.tsToolStrip.Size = new System.Drawing.Size(683, 25);
-            this.tsToolStrip.TabIndex = 7;
-            this.tsToolStrip.Text = "toolStrip1";
-            // 
-            // tsbSave
-            // 
-            this.tsbSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSave.Image = ((System.Drawing.Image)(resources.GetObject("tsbSave.Image")));
-            this.tsbSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSave.Name = "tsbSave";
-            this.tsbSave.Size = new System.Drawing.Size(23, 22);
-            this.tsbSave.Text = "Save to File...";
-            this.tsbSave.Click += new System.EventHandler(this.tsbSave_Click);
-            // 
-            // tsbCopyForum
-            // 
-            this.tsbCopyForum.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbCopyForum.Image = ((System.Drawing.Image)(resources.GetObject("tsbCopyForum.Image")));
-            this.tsbCopyForum.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCopyForum.Name = "tsbCopyForum";
-            this.tsbCopyForum.Size = new System.Drawing.Size(23, 22);
-            this.tsbCopyForum.Text = "Copy in Forum Format";
-            this.tsbCopyForum.Click += new System.EventHandler(this.tsbCopyForum_Click);
             // 
             // cmsContextMenu
             // 
@@ -98,21 +63,38 @@ namespace EveCharacterMonitor.SkillPlanner
                 "xt";
             this.sfdSave.Title = "Save Plan As...";
             // 
+            // tmrTick
+            // 
+            this.tmrTick.Interval = 30000;
+            this.tmrTick.Tick += new System.EventHandler(this.tmrTick_Tick);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 545);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(350, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Tip: You can drag and drop skills to change their planned training order.";
+            // 
             // lvSkills
             // 
             this.lvSkills.AllowDrop = true;
             this.lvSkills.AllowRowReorder = true;
+            this.lvSkills.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lvSkills.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colSkill,
             this.colTrainingTime,
             this.colEarliestStart,
             this.colEarliestFinish});
             this.lvSkills.ContextMenuStrip = this.cmsContextMenu;
-            this.lvSkills.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvSkills.FullRowSelect = true;
-            this.lvSkills.Location = new System.Drawing.Point(0, 25);
+            this.lvSkills.Location = new System.Drawing.Point(0, 0);
             this.lvSkills.Name = "lvSkills";
-            this.lvSkills.Size = new System.Drawing.Size(683, 533);
+            this.lvSkills.Size = new System.Drawing.Size(683, 542);
             this.lvSkills.TabIndex = 3;
             this.lvSkills.UseCompatibleStateImageBehavior = false;
             this.lvSkills.View = System.Windows.Forms.View.Details;
@@ -139,22 +121,15 @@ namespace EveCharacterMonitor.SkillPlanner
             this.colEarliestFinish.Text = "Earliest Finish";
             this.colEarliestFinish.Width = 136;
             // 
-            // tmrTick
-            // 
-            this.tmrTick.Interval = 30000;
-            this.tmrTick.Tick += new System.EventHandler(this.tmrTick_Tick);
-            // 
             // PlanOrderEditorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.lvSkills);
-            this.Controls.Add(this.tsToolStrip);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "PlanOrderEditorControl";
             this.Size = new System.Drawing.Size(683, 558);
-            this.tsToolStrip.ResumeLayout(false);
-            this.tsToolStrip.PerformLayout();
             this.cmsContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -168,12 +143,10 @@ namespace EveCharacterMonitor.SkillPlanner
         private System.Windows.Forms.ColumnHeader colTrainingTime;
         private System.Windows.Forms.ColumnHeader colEarliestStart;
         private System.Windows.Forms.ColumnHeader colEarliestFinish;
-        private System.Windows.Forms.ToolStrip tsToolStrip;
-        private System.Windows.Forms.ToolStripButton tsbSave;
         private System.Windows.Forms.ContextMenuStrip cmsContextMenu;
         private System.Windows.Forms.ToolStripMenuItem miRemoveFromPlan;
         private System.Windows.Forms.SaveFileDialog sfdSave;
-        private System.Windows.Forms.ToolStripButton tsbCopyForum;
         private System.Windows.Forms.Timer tmrTick;
+        private System.Windows.Forms.Label label1;
     }
 }

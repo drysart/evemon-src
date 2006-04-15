@@ -151,6 +151,95 @@ namespace EveCharacterMonitor.SkillPlanner
             UpdatePlanControl();
         }
 
+        [Flags]
+        private enum PlanSelectShowing
+        {
+            None = 1,
+            One = 2,
+            Two = 4,
+            Three = 8,
+            Four = 16,
+            Five = 32
+        }
+
+        private PlanSelectShowing m_planSelectShowing;
+        private int m_planSelectSelected;
+
+        private void UpdatePlanSelect()
+        {
+            PlanSelectShowing thisPss = PlanSelectShowing.None;
+            int plannedTo = 0;
+            for (int i = 1; i <= 5; i++)
+            {
+                if (m_selectedSkill.Level < i)
+                {
+                    int x = 1 << i;
+                    thisPss = (PlanSelectShowing)((int)thisPss + x);
+                }
+                if (m_plan.IsPlanned(m_selectedSkill, i))
+                    plannedTo = i;
+            }
+            if (thisPss != m_planSelectShowing || plannedTo != m_planSelectSelected)
+            {
+                cbPlanSelect.SelectedIndexChanged -= new EventHandler(cbPlanSelect_SelectedIndexChanged);
+
+                cbPlanSelect.Items.Clear();
+                if ((thisPss & PlanSelectShowing.None) != 0)
+                {
+                    cbPlanSelect.Items.Add("Not Planned");
+                    if (plannedTo == 0)
+                        cbPlanSelect.SelectedIndex = cbPlanSelect.Items.Count - 1;
+                }
+                if ((thisPss & PlanSelectShowing.One) != 0)
+                {
+                    cbPlanSelect.Items.Add("Level I");
+                    if (plannedTo == 1)
+                        cbPlanSelect.SelectedIndex = cbPlanSelect.Items.Count - 1;
+                }
+                if ((thisPss & PlanSelectShowing.Two) != 0)
+                {
+                    cbPlanSelect.Items.Add("Level II");
+                    if (plannedTo == 2)
+                        cbPlanSelect.SelectedIndex = cbPlanSelect.Items.Count - 1;
+                }
+                if ((thisPss & PlanSelectShowing.Three) != 0)
+                {
+                    cbPlanSelect.Items.Add("Level III");
+                    if (plannedTo == 3)
+                        cbPlanSelect.SelectedIndex = cbPlanSelect.Items.Count - 1;
+                }
+                if ((thisPss & PlanSelectShowing.Four) != 0)
+                {
+                    cbPlanSelect.Items.Add("Level IV");
+                    if (plannedTo == 4)
+                        cbPlanSelect.SelectedIndex = cbPlanSelect.Items.Count - 1;
+                }
+                if ((thisPss & PlanSelectShowing.Five) != 0)
+                {
+                    cbPlanSelect.Items.Add("Level V");
+                    if (plannedTo == 5)
+                        cbPlanSelect.SelectedIndex = cbPlanSelect.Items.Count - 1;
+                }
+
+                m_planSelectShowing = thisPss;
+                m_planSelectSelected = plannedTo;
+                cbPlanSelect.SelectedIndexChanged += new EventHandler(cbPlanSelect_SelectedIndexChanged);
+            }
+        }
+
+        private void cbPlanSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string s = (string)cbPlanSelect.Items[cbPlanSelect.SelectedIndex];
+            int setLevel = 0;
+            if (s.StartsWith("Level "))
+            {
+                string r = s.Substring(6);
+                setLevel = GrandSkill.GetIntForRoman(r);
+            }
+            m_planSelectSelected = setLevel;
+            PlanTo(setLevel);
+        }
+
         private void UpdatePlanControl()
         {
             if (planEditor.Visible)
@@ -166,7 +255,10 @@ namespace EveCharacterMonitor.SkillPlanner
             else
             {
                 lblSkillName.Text = m_selectedSkill.Name;
-                ttToolTip.SetToolTip(lblSkillName, m_selectedSkill.Description);
+                lblDescription.Text = m_selectedSkill.Description;
+                lblAttributes.Text = "Primary: " + m_selectedSkill.PrimaryAttribute.ToString() + ", " +
+                    "Secondary: " + m_selectedSkill.SecondaryAttribute.ToString();
+
                 int plannedTo = 0;
                 bool anyPlan = false;
                 bool tPlan;
@@ -192,15 +284,17 @@ namespace EveCharacterMonitor.SkillPlanner
                 anyPlan = anyPlan || tPlan;
                 btnCancelPlan.Enabled = anyPlan;
 
-                if (plannedTo > 0)
-                {
-                    lblPlanDescription.Text = "Currently planned to level " +
-                        GrandSkill.GetRomanSkillNumber(plannedTo);
-                }
-                else
-                {
-                    lblPlanDescription.Text = "Not currently planned.";
-                }
+                UpdatePlanSelect();
+
+                //if (plannedTo > 0)
+                //{
+                //    lblPlanDescription.Text = "Currently planned to level " +
+                //        GrandSkill.GetRomanSkillNumber(plannedTo);
+                //}
+                //else
+                //{
+                //    lblPlanDescription.Text = "Not currently planned.";
+                //}
                 pnlPlanControl.Visible = true;
             }
 
@@ -385,6 +479,12 @@ namespace EveCharacterMonitor.SkillPlanner
 
         private void PlanTo(int level)
         {
+            if (level == 0)
+            {
+                CancelPlan();
+                return;
+            }
+
             //MessageBox.Show(this, "Planning not yet implemented.", "Not Yet Implemented", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             List<PlanEntry> planEntries = new List<PlanEntry>();
             AddPrerequisiteEntries(m_selectedSkill, planEntries);
@@ -410,12 +510,34 @@ namespace EveCharacterMonitor.SkillPlanner
                     planEntries.Add(pe);
                 }
             }
-            using (AddPlanConfirmWindow f = new AddPlanConfirmWindow(planEntries))
+            if (planEntries.Count > 0)
             {
-                DialogResult dr = f.ShowDialog();
-                if (dr == DialogResult.OK)
+                using (AddPlanConfirmWindow f = new AddPlanConfirmWindow(planEntries))
                 {
-                    m_plan.AddList(planEntries);
+                    DialogResult dr = f.ShowDialog();
+                    if (dr == DialogResult.OK)
+                    {
+                        m_plan.AddList(planEntries);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 5; i > level; i--)
+                {
+                    PlanEntry pe = m_plan.GetEntry(m_selectedSkill.Name, i);
+                    if (pe != null)
+                    {
+                        if (!m_plan.RemoveEntry(pe))
+                        {
+                            MessageBox.Show(this,
+                                "The plan for this skill could not be set below level " +
+                                GrandSkill.GetRomanSkillNumber(i) + " because this skill is " +
+                                "required at that level for another skill you have planned.",
+                                "Skill Needed", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                            break;
+                        }
+                    }
                 }
             }
             UpdatePlanControl();
@@ -502,6 +624,10 @@ namespace EveCharacterMonitor.SkillPlanner
                     "required for another skill you have planned.",
                     "Skill Needed", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
+            else
+            {
+                UpdatePlanControl();
+            }
         }
 
         private void miCancelAll_Click(object sender, EventArgs e)
@@ -565,5 +691,95 @@ namespace EveCharacterMonitor.SkillPlanner
                 m_plan.ResumeEvents();
             }
         }
+
+        private void tsbCopyForum_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[b]Skill Plan for ");
+            sb.Append(m_plan.GrandCharacterInfo.Name);
+            sb.AppendLine("[/b]");
+            sb.AppendLine();
+            int i = 0;
+            foreach (PlanEntry pe in m_plan.Entries)
+            {
+                i++;
+                GrandSkill gs = pe.Skill;
+                sb.AppendLine(String.Format("{0}: [b]{1} {2}[/b] ({3})",
+                    i, pe.SkillName, GrandSkill.GetRomanSkillNumber(pe.Level),
+                    GrandSkill.TimeSpanToDescriptiveText(gs.GetTrainingTimeOfLevelOnly(pe.Level, true), DescriptiveTextOptions.FullText | DescriptiveTextOptions.IncludeCommas | DescriptiveTextOptions.SpaceText)));
+            }
+            Clipboard.SetText(sb.ToString());
+            MessageBox.Show("The skill plan has been copied to the clipboard in a " +
+                "format suitable for forum posting.", "Plan Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private enum SaveType
+        {
+            None = 0,
+            Emp = 1,
+            Xml = 2,
+            Text = 3
+        }
+
+        private void tsbSaveAs_Click(object sender, EventArgs e)
+        {
+            sfdSave.FileName = m_plan.GrandCharacterInfo.Name + " Skill Plan";
+            sfdSave.FilterIndex = (int)SaveType.Emp;
+            DialogResult dr = sfdSave.ShowDialog();
+            if (dr == DialogResult.Cancel)
+                return;
+
+            string fileName = sfdSave.FileName;
+            try
+            {
+                using (FileStream fs = new FileStream(fileName, FileMode.Create))
+                {
+                    switch ((SaveType)sfdSave.FilterIndex)
+                    {
+                        case SaveType.Emp:
+                            using (System.IO.Compression.GZipStream gzs = new System.IO.Compression.GZipStream(fs, System.IO.Compression.CompressionMode.Compress))
+                            {
+                                SerializePlanTo(gzs);
+                            }
+                            break;
+                        case SaveType.Xml:
+                            SerializePlanTo(fs);
+                            break;
+                        case SaveType.Text:
+                            SaveAsText(fs);
+                            break;
+                        default:
+                            return;
+                    }
+                }
+            }
+            catch (IOException err)
+            {
+                MessageBox.Show("There was an error writing out the file:\n\n" + err.Message,
+                    "Save Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void SerializePlanTo(Stream s)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(Plan));
+            xs.Serialize(s, m_plan);
+        }
+
+        private void SaveAsText(Stream fs)
+        {
+            using (StreamWriter sw = new StreamWriter(fs))
+            {
+                sw.WriteLine("Skill Plan for {0}:", m_plan.GrandCharacterInfo.Name);
+                sw.WriteLine();
+                int i = 0;
+                foreach (PlanEntry pe in m_plan.Entries)
+                {
+                    i++;
+                    sw.WriteLine("{0:D3}: {1} {2}", i, pe.SkillName, GrandSkill.GetRomanSkillNumber(pe.Level));
+                }
+            }
+        }
+
     }
 }
