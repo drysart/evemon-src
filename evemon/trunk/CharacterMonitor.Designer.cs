@@ -164,9 +164,12 @@ namespace EveCharacterMonitor
             this.lbSkills.Name = "lbSkills";
             this.lbSkills.Size = new System.Drawing.Size(384, 209);
             this.lbSkills.TabIndex = 12;
+            this.lbSkills.MouseEnter += new System.EventHandler(this.lbSkills_MouseEnter);
+            this.lbSkills.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseClick);
             this.lbSkills.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbSkills_DrawItem);
             this.lbSkills.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.lbSkills_MeasureItem);
             this.lbSkills.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseMove);
+            this.lbSkills.MouseLeave += new System.EventHandler(this.lbSkills_MouseLeave);
             // 
             // pnlTraining
             // 
@@ -259,6 +262,7 @@ namespace EveCharacterMonitor
             this.pbThrobber.TabStop = false;
             this.ttToolTip.SetToolTip(this.pbThrobber, "Click to update now.");
             this.pbThrobber.Click += new System.EventHandler(this.pbThrobber_Click);
+            this.pbThrobber.MouseEnter += new System.EventHandler(this.pbThrobber_MouseEnter);
             // 
             // btnDebugError
             // 
