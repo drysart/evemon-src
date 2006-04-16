@@ -158,6 +158,7 @@ namespace EveCharacterMonitor.SkillPlanner
             // 
             // lvSkills
             // 
+            this.lvSkills.AllowColumnReorder = true;
             this.lvSkills.AllowDrop = true;
             this.lvSkills.AllowRowReorder = true;
             this.lvSkills.ContextMenuStrip = this.cmsContextMenu;
@@ -171,6 +172,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.lvSkills.View = System.Windows.Forms.View.Details;
             this.lvSkills.ListViewItemsDragged += new System.EventHandler<System.EventArgs>(this.lvSkills_ListViewItemsDragged);
             this.lvSkills.ListViewItemsDragging += new System.EventHandler<EveCharacterMonitor.SkillPlanner.ListViewDragEventArgs>(this.lvSkills_ListViewItemsDragging);
+            this.lvSkills.ColumnReordered += new System.Windows.Forms.ColumnReorderedEventHandler(this.lvSkills_ColumnReordered);
             // 
             // PlanOrderEditorControl
             // 

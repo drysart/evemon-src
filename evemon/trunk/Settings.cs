@@ -287,6 +287,24 @@ namespace EveCharacterMonitor
         {
             try
             {
+                using (FileStream fs = new FileStream(Settings.SettingsFileName, FileMode.Open, FileAccess.Read))
+                {
+                    XmlSerializer xs = new XmlSerializer(typeof(Settings));
+                    Settings result = (Settings)xs.Deserialize(fs);
+                    result.SetKey(key);
+                    return result;
+                }
+            }
+            catch
+            {
+                return LoadFromKeyFromIsoStorage(key);
+            }
+        }
+
+        private static Settings LoadFromKeyFromIsoStorage(string key)
+        {
+            try
+            {
                 using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
                 using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(StoreFileName(key), FileMode.Open))
                 {
@@ -347,12 +365,29 @@ namespace EveCharacterMonitor
             m_neverSave = true;
         }
 
+        [XmlIgnore]
+        public static string SettingsFileName
+        {
+            get
+            {
+                string appDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                        + "/EVEMon";
+                if (!Directory.Exists(appDataDir))
+                    Directory.CreateDirectory(appDataDir);
+                string fn = appDataDir + "/settings.xml";
+                return fn;
+            }
+        }
+
         public void Save()
         {
             if (!m_neverSave)
             {
-                using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
-                using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(StoreFileName(m_key), FileMode.Create, store))
+                string fn = Settings.SettingsFileName;
+
+                //using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
+                //using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(StoreFileName(m_key), FileMode.Create, store))
+                using (FileStream s = new FileStream(fn, FileMode.Create, FileAccess.Write))
                 {
                     SaveTo(s);
                 }

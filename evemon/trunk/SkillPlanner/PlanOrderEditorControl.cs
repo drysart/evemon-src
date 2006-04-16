@@ -33,8 +33,8 @@ namespace EveCharacterMonitor.SkillPlanner
                 m_plan = value;
                 if (m_plan != null)
                     m_plan.Changed += new EventHandler<EventArgs>(m_plan_Changed);
-                PlanChanged();
                 UpdateListColumns();
+                PlanChanged();
             }
         }
 
@@ -114,10 +114,16 @@ namespace EveCharacterMonitor.SkillPlanner
                 for (int i = 0; i < lvSkills.Items.Count; i++)
                 {
                     ListViewItem lvi = lvSkills.Items[i];
+                    //ListViewItem olvi = lvSkills.Items[i];
+                    //ListViewItem lvi = new ListViewItem();
+                    //lvi.Tag = olvi.Tag;
+                    //lvSkills.Items.Insert(lvSkills.Items.IndexOf(olvi), lvi);
+                    //lvSkills.Items.Remove(olvi);
+
                     PlanEntry pe = (PlanEntry)lvi.Tag;
                     GrandSkill gs = pe.Skill;
 
-                    while (lvi.SubItems.Count < ColumnPreference.ColumnCount+1)
+                    while (lvi.SubItems.Count < lvSkills.Columns.Count+1)
                         lvi.SubItems.Add(String.Empty);
 
                     TimeSpan trainTime = gs.GetTrainingTimeOfLevelOnly(pe.Level, true, scratchpad);
@@ -130,16 +136,36 @@ namespace EveCharacterMonitor.SkillPlanner
                     double deltaPointsOfLevel = Convert.ToDouble(reqToThisLevel - reqBeforeThisLevel);
                     double pctComplete = pointsInThisLevel / deltaPointsOfLevel;
 
-                    lvi.SubItems[(int)ColumnPreference.ColumnType.SkillName].Text =
-                        gs.Name + " " + GrandSkill.GetRomanSkillNumber(pe.Level);
-                    lvi.SubItems[(int)ColumnPreference.ColumnType.TrainingTime].Text =
-                        GrandSkill.TimeSpanToDescriptiveText(trainTime, DescriptiveTextOptions.IncludeCommas);
-                    lvi.SubItems[(int)ColumnPreference.ColumnType.EarliestStart].Text = start.ToString();
+                    DateTime thisStart = start;
                     start += trainTime;
-                    lvi.SubItems[(int)ColumnPreference.ColumnType.EarliestEnd].Text = start.ToString();
-                    lvi.SubItems[(int)ColumnPreference.ColumnType.PercentComplete].Text =
-                        pctComplete.ToString("0%");
-                    lvi.SubItems[ColumnPreference.ColumnCount].Text = pe.EntryType.ToString();
+                    DateTime thisEnd = start;
+
+                    for (int x = 0; x < lvSkills.Columns.Count; x++)
+                    {
+                        ColumnPreference.ColumnType ct = (ColumnPreference.ColumnType)lvSkills.Columns[x].Tag;
+                        string res = String.Empty;
+                        switch (ct)
+                        {
+                            case ColumnPreference.ColumnType.SkillName:
+                                res = gs.Name + " " + GrandSkill.GetRomanSkillNumber(pe.Level);
+                                break;
+                            case ColumnPreference.ColumnType.TrainingTime:
+                                res = GrandSkill.TimeSpanToDescriptiveText(trainTime, DescriptiveTextOptions.IncludeCommas);
+                                break;
+                            case ColumnPreference.ColumnType.EarliestStart:
+                                res = thisStart.ToString();
+                                break;
+                            case ColumnPreference.ColumnType.EarliestEnd:
+                                res = thisEnd.ToString();
+                                break;
+                            case ColumnPreference.ColumnType.PercentComplete:
+                                res = pctComplete.ToString("0%");
+                                break;
+                        }
+                        lvi.SubItems[x].Text = res;
+                    }
+
+                    lvi.SubItems[lvSkills.Columns.Count].Text = pe.EntryType.ToString();
 
                     if (pe.SkillName == "Learning")
                         scratchpad.AdjustLearningLevelBonus(1);
@@ -260,7 +286,7 @@ namespace EveCharacterMonitor.SkillPlanner
                     Match m = Regex.Match(lvi.Text, "^(.*) ([IV]+)$");
                     pe.SkillName = m.Groups[1].Value;
                     pe.Level = GrandSkill.GetIntForRoman(m.Groups[2].Value);
-                    pe.EntryType = (PlanEntryType)Enum.Parse(typeof(PlanEntryType), lvi.SubItems[ColumnPreference.ColumnCount].Text, true);
+                    pe.EntryType = (PlanEntryType)Enum.Parse(typeof(PlanEntryType), lvi.SubItems[lvSkills.Columns.Count].Text, true);
                     m_plan.Entries.Add(pe);
                 }
             }
@@ -318,7 +344,10 @@ namespace EveCharacterMonitor.SkillPlanner
             {
                 DialogResult dr = f.ShowDialog();
                 if (dr == DialogResult.OK)
+                {
                     UpdateListColumns();
+                    Program.Settings.Save();
+                }
             }
         }
 
@@ -330,20 +359,55 @@ namespace EveCharacterMonitor.SkillPlanner
                 try
                 {
                     lvSkills.Columns.Clear();
-                    for (int i = 0; i < ColumnPreference.ColumnCount; i++)
-                    {
-                        ColumnHeaderEx ch = new ColumnHeaderEx();
-                        lvSkills.Columns.Add(ch);
-                    }
-                    for (int i = 0; i < ColumnPreference.ColumnCount; i++)
-                    {
-                        ColumnHeaderEx ch = lvSkills.Columns[i];
-                        ColumnPreference.ColumnDisplayAttribute cda = ColumnPreference.GetAttribute((ColumnPreference.ColumnType)i);
+                    List<ColumnPreference.ColumnType> alreadyAdded = new List<ColumnPreference.ColumnType>();
 
-                        ch.Text = cda.Header;
-                        ch.Visible = m_plan.ColumnPreference[i];
-                        if (ch.Visible)
-                            ch.Width = cda.Width;
+                    foreach (string ts in m_plan.ColumnPreference.Order.Split(','))
+                    {
+                        try
+                        {
+                            ColumnPreference.ColumnType ct = (ColumnPreference.ColumnType)Enum.Parse(
+                                typeof(ColumnPreference.ColumnType), ts, true);
+                            if (m_plan.ColumnPreference[ct] && !alreadyAdded.Contains(ct))
+                            {
+                                ColumnHeader ch = new ColumnHeader();
+                                ColumnPreference.ColumnDisplayAttribute cda = ColumnPreference.GetAttribute(ct);
+                                ch.Text = cda.Header;
+                                ch.Tag = ct;
+                                lvSkills.Columns.Add(ch);
+                                alreadyAdded.Add(ct);
+                            }
+                        }
+                        catch { }
+                    }
+
+                    for (int i = 0; i < ColumnPreference.ColumnCount; i++)
+                    {
+                        ColumnPreference.ColumnType ct = (ColumnPreference.ColumnType)i;
+                        if (m_plan.ColumnPreference[i] && !alreadyAdded.Contains(ct))
+                        {
+                            ColumnHeader ch = new ColumnHeader();
+                            ColumnPreference.ColumnDisplayAttribute cda = ColumnPreference.GetAttribute(ct);
+                            ch.Text = cda.Header;
+                            ch.Tag = ct;
+                            lvSkills.Columns.Add(ch);
+                            alreadyAdded.Add(ct);
+                        }
+                    }
+                //}
+                //finally
+                //{
+                //    lvSkills.EndUpdate();
+                //}
+                UpdateListViewItems();
+                //lvSkills.BeginUpdate();
+                //try
+                //{
+                    for (int i = 0; i < lvSkills.Columns.Count; i++)
+                    {
+                        ColumnHeader ch = lvSkills.Columns[i];
+                        ColumnPreference.ColumnDisplayAttribute cda = 
+                            ColumnPreference.GetAttribute((ColumnPreference.ColumnType)ch.Tag);
+                        ch.Width = cda.Width;
                     }
                 }
                 finally
@@ -351,6 +415,34 @@ namespace EveCharacterMonitor.SkillPlanner
                     lvSkills.EndUpdate();
                 }
             }
+        }
+
+        private void lvSkills_ColumnReordered(object sender, ColumnReorderedEventArgs e)
+        {
+            // Because this occurs before the reordering happens, we have to delay the
+            // Order update a bit...
+            System.Threading.ThreadPool.QueueUserWorkItem(delegate
+            {
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    StringBuilder sb = new StringBuilder();
+                    SortedDictionary<int, ColumnPreference.ColumnType> order = new SortedDictionary<int, ColumnPreference.ColumnType>();
+                    for (int i = 0; i < lvSkills.Columns.Count; i++)
+                    {
+                        ColumnHeader ch = lvSkills.Columns[i];
+                        order.Add(ch.DisplayIndex, (ColumnPreference.ColumnType)ch.Tag);
+                    }
+                    foreach (KeyValuePair<int, ColumnPreference.ColumnType> pair in order)
+                    {
+                        if (sb.Length != 0)
+                            sb.Append(',');
+                        sb.Append(pair.Value.ToString());
+                    }
+
+                    m_plan.ColumnPreference.Order = sb.ToString();
+                    Program.Settings.Save();
+                }));
+            });
         }
     }
 
@@ -420,6 +512,15 @@ namespace EveCharacterMonitor.SkillPlanner
             this.TrainingTime = true;
             this.EarliestStart = true;
             this.EarliestEnd = true;
+        }
+
+        private string m_order = String.Empty;
+
+        [XmlAttribute("column_order")]
+        public string Order
+        {
+            get { return m_order; }
+            set { m_order = value; }
         }
 
         public static string GetDescription(int index)
