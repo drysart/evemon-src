@@ -188,6 +188,12 @@
       <DependentUpon>NewPlanWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="SkillPlanner\Plan.cs" />
+    <Compile Include="SkillPlanner\PlanOrderEditorColumnSelectWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanOrderEditorColumnSelectWindow.Designer.cs">
+      <DependentUpon>PlanOrderEditorColumnSelectWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkillPlanner\PlanOrderEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -199,6 +205,12 @@
     </Compile>
     <Compile Include="SkillPlanner\PlanSelectWindow.Designer.cs">
       <DependentUpon>PlanSelectWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\SkillSelectControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\SkillSelectControl.Designer.cs">
+      <DependentUpon>SkillSelectControl.cs</DependentUpon>
     </Compile>
     <Compile Include="SkillPlanner\SkillTreeDisplay.cs">
       <SubType>UserControl</SubType>
@@ -264,6 +276,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>NewPlanWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\PlanOrderEditorColumnSelectWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PlanOrderEditorColumnSelectWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\PlanOrderEditorControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PlanOrderEditorControl.cs</DependentUpon>
@@ -271,6 +287,10 @@
     <EmbeddedResource Include="SkillPlanner\PlanSelectWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PlanSelectWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\SkillSelectControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SkillSelectControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\SkillTreeDisplay.resx">
       <SubType>Designer</SubType>

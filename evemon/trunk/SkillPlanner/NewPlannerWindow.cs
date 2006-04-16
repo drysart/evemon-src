@@ -33,6 +33,10 @@ namespace EveCharacterMonitor.SkillPlanner
             m_plan = p;
             m_plan.GrandCharacterInfo = m_grandCharacterInfo;
             skillTreeDisplay1.Plan = m_plan;
+
+            skillSelectControl1.GrandCharacterInfo = m_grandCharacterInfo;
+            skillSelectControl1.Plan = m_plan;
+            planEditor.Plan = m_plan;
         }
 
         private void NewPlannerWindow_Shown(object sender, EventArgs e)
@@ -66,108 +70,108 @@ namespace EveCharacterMonitor.SkillPlanner
 
         private void skillTreeDisplay1_Load(object sender, EventArgs e)
         {
-            cbSkillFilter.SelectedIndex = 0;
+            //cbSkillFilter.SelectedIndex = 0;
         }
 
-        private delegate bool SkillFilter(GrandSkill gs);
+        //private delegate bool SkillFilter(GrandSkill gs);
 
-        private void cbSkillFilter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            tbSkillFilter.Text = String.Empty;
-            lbFilteredSkills.Visible = false;
+        //private void cbSkillFilter_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    tbSkillFilter.Text = String.Empty;
+        //    lbFilteredSkills.Visible = false;
 
-            SkillFilter sf;
-            switch (cbSkillFilter.SelectedIndex)
-            {
-                case 4: // View Plan
-                    SwitchToPlanEditor(true);
-                    return;
-                case 1: // Show Known Skills
-                    sf = delegate(GrandSkill xx)
-                    {
-                        return xx.Known;
-                    };
-                    break;
-                case 2: // Show Planned Skills
-                    sf = delegate(GrandSkill xx)
-                    {
-                        return m_plan.IsPlanned(xx);
-                    };
-                    break;
-                case 3: // Show Available, Untrained Skills
-                    sf = delegate(GrandSkill xx)
-                    {
-                        return (xx.PrerequisitesMet && !xx.Known);
-                    };
-                    break;
-                case 0:
-                default:
-                    sf = delegate(GrandSkill xx)
-                    {
-                        return true;
-                    };
-                    break;
-            }
+        //    SkillFilter sf;
+        //    switch (cbSkillFilter.SelectedIndex)
+        //    {
+        //        case 4: // View Plan
+        //            SwitchToPlanEditor(true);
+        //            return;
+        //        case 1: // Show Known Skills
+        //            sf = delegate(GrandSkill xx)
+        //            {
+        //                return xx.Known;
+        //            };
+        //            break;
+        //        case 2: // Show Planned Skills
+        //            sf = delegate(GrandSkill xx)
+        //            {
+        //                return m_plan.IsPlanned(xx);
+        //            };
+        //            break;
+        //        case 3: // Show Available, Untrained Skills
+        //            sf = delegate(GrandSkill xx)
+        //            {
+        //                return (xx.PrerequisitesMet && !xx.Known);
+        //            };
+        //            break;
+        //        case 0:
+        //        default:
+        //            sf = delegate(GrandSkill xx)
+        //            {
+        //                return true;
+        //            };
+        //            break;
+        //    }
 
-            SwitchToPlanEditor(false);
+        //    SwitchToPlanEditor(false);
 
-            tvSkillView.Nodes.Clear();
-            foreach (GrandSkillGroup gsg in m_grandCharacterInfo.SkillGroups.Values)
-            {
-                TreeNode gtn = new TreeNode(gsg.Name);
-                foreach (GrandSkill gs in gsg)
-                {
-                    if (sf(gs))
-                    {
-                        TreeNode stn = new TreeNode(gs.Name);
-                        stn.Tag = gs;
-                        gtn.Nodes.Add(stn);
-                    }
-                }
-                if (gtn.Nodes.Count > 0)
-                {
-                    tvSkillView.Nodes.Add(gtn);
-                }
-            }
+        //    tvSkillView.Nodes.Clear();
+        //    foreach (GrandSkillGroup gsg in m_grandCharacterInfo.SkillGroups.Values)
+        //    {
+        //        TreeNode gtn = new TreeNode(gsg.Name);
+        //        foreach (GrandSkill gs in gsg)
+        //        {
+        //            if (sf(gs))
+        //            {
+        //                TreeNode stn = new TreeNode(gs.Name);
+        //                stn.Tag = gs;
+        //                gtn.Nodes.Add(stn);
+        //            }
+        //        }
+        //        if (gtn.Nodes.Count > 0)
+        //        {
+        //            tvSkillView.Nodes.Add(gtn);
+        //        }
+        //    }
 
-            UpdatePlanControl();
-        }
+        //    UpdatePlanControl();
+        //}
 
-        private void SwitchToPlanEditor(bool switchOn)
-        {
-            planEditor.Visible = switchOn;
-            tvSkillView.Visible = !switchOn;
-            skillTreeDisplay1.Visible = !switchOn;
-            pbSearchImage.Visible = !switchOn;
-            tbSkillFilter.Visible = !switchOn;
-            lblSearchNote.Visible = (!switchOn && String.IsNullOrEmpty(tbSkillFilter.Text));
-            lbFilteredSkills.Visible = false;
+        //private void SwitchToPlanEditor(bool switchOn)
+        //{
+        //    planEditor.Visible = switchOn;
+        //    tvSkillView.Visible = !switchOn;
+        //    skillTreeDisplay1.Visible = !switchOn;
+        //    pbSearchImage.Visible = !switchOn;
+        //    tbSkillFilter.Visible = !switchOn;
+        //    lblSearchNote.Visible = (!switchOn && String.IsNullOrEmpty(tbSkillFilter.Text));
+        //    lbFilteredSkills.Visible = false;
 
-            if (switchOn)
-            {
-                pnlPlanControl.Visible = false;
-                planEditor.Plan = m_plan;
-            }
-            else
-                planEditor.Plan = null;
+        //    if (switchOn)
+        //    {
+        //        pnlPlanControl.Visible = false;
+        //        planEditor.Plan = m_plan;
+        //    }
+        //    else
+        //        planEditor.Plan = null;
 
-            //Point p = this.PointToClient(splitContainer1.Panel1.PointToScreen(tvSkillView.Location));
-            Point p = this.PointToClient(splitContainer1.Panel1.PointToScreen(pbSearchImage.Location));
-            planEditor.Location = p;
-            planEditor.Size = new Size(
-                this.ClientSize.Width - (planEditor.Location.X * 2),
-                tvSkillView.Height + tbSkillFilter.Height + (tvSkillView.Top - tbSkillFilter.Bottom));
-            planEditor.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-        }
+        //    //Point p = this.PointToClient(splitContainer1.Panel1.PointToScreen(tvSkillView.Location));
+        //    Point p = this.PointToClient(splitContainer1.Panel1.PointToScreen(pbSearchImage.Location));
+        //    planEditor.Location = p;
+        //    planEditor.Size = new Size(
+        //        this.ClientSize.Width - (planEditor.Location.X * 2),
+        //        tvSkillView.Height + tbSkillFilter.Height + (tvSkillView.Top - tbSkillFilter.Bottom));
+        //    planEditor.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+        //}
 
         private GrandSkill m_selectedSkill = null;
 
-        private void tvSkillView_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            TreeNode tn = tvSkillView.SelectedNode;
-            GrandSkill gs = tn.Tag as GrandSkill;
-            SelectSkill(gs);
-        }
+        //private void tvSkillView_AfterSelect(object sender, TreeViewEventArgs e)
+        //{
+        //    TreeNode tn = tvSkillView.SelectedNode;
+        //    GrandSkill gs = tn.Tag as GrandSkill;
+        //    SelectSkill(gs);
+        //}
 
         private void SelectSkill(GrandSkill gs)
         {
@@ -807,64 +811,74 @@ namespace EveCharacterMonitor.SkillPlanner
             }
         }
 
-        private void tbSkillFilter_TextChanged(object sender, EventArgs e)
+        //private void tbSkillFilter_TextChanged(object sender, EventArgs e)
+        //{
+        //    if (String.IsNullOrEmpty(tbSkillFilter.Text) || tbSkillFilter.Text.Trim().Length==0)
+        //    {
+        //        tvSkillView.Visible = true;
+        //        lbFilteredSkills.Visible = false;
+        //        lblNoResults.Visible = false;
+        //        return;
+        //    }
+
+        //    string searchStr = tbSkillFilter.Text.ToLower().Trim();
+
+        //    List<string> filterResults = new List<string>();
+        //    foreach (TreeNode tn in tvSkillView.Nodes)
+        //    {
+        //        foreach (TreeNode stn in tn.Nodes)
+        //        {
+        //            if (stn.Text.ToLower().Contains(searchStr))
+        //                filterResults.Add(stn.Text);
+        //        }
+        //    }
+
+        //    filterResults.Sort();
+        //    lbFilteredSkills.Items.Clear();
+        //    foreach (string s in filterResults)
+        //    {
+        //        lbFilteredSkills.Items.Add(s);
+        //    }
+
+        //    lbFilteredSkills.Location = tvSkillView.Location;
+        //    lbFilteredSkills.Size = tvSkillView.Size;
+        //    tvSkillView.Visible = false;
+        //    lbFilteredSkills.Visible = true;
+        //    lblNoResults.Visible = (filterResults.Count==0);
+        //}
+
+        //private void lbFilteredSkills_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (lbFilteredSkills.SelectedItems.Count > 0)
+        //    {
+        //        GrandSkill gs = m_grandCharacterInfo.GetSkill((string)lbFilteredSkills.SelectedItem);
+        //        SelectSkill(gs);
+        //    }
+        //}
+
+        //private void lblSearchNote_Click(object sender, EventArgs e)
+        //{
+        //    tbSkillFilter.Focus();
+        //}
+
+        //private void tbSkillFilter_Enter(object sender, EventArgs e)
+        //{
+        //    lblSearchNote.Visible = false;
+        //}
+
+        //private void tbSkillFilter_Leave(object sender, EventArgs e)
+        //{
+        //    lblSearchNote.Visible = String.IsNullOrEmpty(tbSkillFilter.Text);
+        //}
+
+        private void skillSelectControl1_Load(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(tbSkillFilter.Text) || tbSkillFilter.Text.Trim().Length==0)
-            {
-                tvSkillView.Visible = true;
-                lbFilteredSkills.Visible = false;
-                lblNoResults.Visible = false;
-                return;
-            }
 
-            string searchStr = tbSkillFilter.Text.ToLower().Trim();
-
-            List<string> filterResults = new List<string>();
-            foreach (TreeNode tn in tvSkillView.Nodes)
-            {
-                foreach (TreeNode stn in tn.Nodes)
-                {
-                    if (stn.Text.ToLower().Contains(searchStr))
-                        filterResults.Add(stn.Text);
-                }
-            }
-
-            filterResults.Sort();
-            lbFilteredSkills.Items.Clear();
-            foreach (string s in filterResults)
-            {
-                lbFilteredSkills.Items.Add(s);
-            }
-
-            lbFilteredSkills.Location = tvSkillView.Location;
-            lbFilteredSkills.Size = tvSkillView.Size;
-            tvSkillView.Visible = false;
-            lbFilteredSkills.Visible = true;
-            lblNoResults.Visible = (filterResults.Count==0);
         }
 
-        private void lbFilteredSkills_SelectedIndexChanged(object sender, EventArgs e)
+        private void skillSelectControl1_SelectedSkillChanged(object sender, EventArgs e)
         {
-            if (lbFilteredSkills.SelectedItems.Count > 0)
-            {
-                GrandSkill gs = m_grandCharacterInfo.GetSkill((string)lbFilteredSkills.SelectedItem);
-                SelectSkill(gs);
-            }
-        }
-
-        private void lblSearchNote_Click(object sender, EventArgs e)
-        {
-            tbSkillFilter.Focus();
-        }
-
-        private void tbSkillFilter_Enter(object sender, EventArgs e)
-        {
-            lblSearchNote.Visible = false;
-        }
-
-        private void tbSkillFilter_Leave(object sender, EventArgs e)
-        {
-            lblSearchNote.Visible = String.IsNullOrEmpty(tbSkillFilter.Text);
+            SelectSkill(skillSelectControl1.SelectedSkill);
         }
     }
 }

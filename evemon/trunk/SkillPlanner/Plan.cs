@@ -29,6 +29,14 @@ namespace EveCharacterMonitor.SkillPlanner
             OnChange();
         }
 
+        private ColumnPreference m_columnPreference = new ColumnPreference();
+
+        public ColumnPreference ColumnPreference
+        {
+            get { return m_columnPreference; }
+            set { m_columnPreference = value; }
+        }
+
         public event EventHandler<EventArgs> Changed;
 
         private delegate void FireEventInvoker();
