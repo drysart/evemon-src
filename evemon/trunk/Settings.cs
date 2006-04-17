@@ -287,12 +287,19 @@ namespace EveCharacterMonitor
         {
             try
             {
-                using (FileStream fs = new FileStream(Settings.SettingsFileName, FileMode.Open, FileAccess.Read))
+                if (File.Exists(Settings.SettingsFileName))
                 {
-                    XmlSerializer xs = new XmlSerializer(typeof(Settings));
-                    Settings result = (Settings)xs.Deserialize(fs);
-                    result.SetKey(key);
-                    return result;
+                    using (FileStream fs = new FileStream(Settings.SettingsFileName, FileMode.Open, FileAccess.Read))
+                    {
+                        XmlSerializer xs = new XmlSerializer(typeof(Settings));
+                        Settings result = (Settings)xs.Deserialize(fs);
+                        result.SetKey(key);
+                        return result;
+                    }
+                }
+                else
+                {
+                    return LoadFromKeyFromIsoStorage(key);
                 }
             }
             catch
