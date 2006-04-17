@@ -34,49 +34,51 @@ namespace EveCharacterMonitor
         private const int THROBBERIMG_WIDTH = 24;
         private const int THROBBERIMG_HEIGHT = 24;
 
+        private IGBService.IGBServer m_igbServer;
+
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            //using (IDisposable scope = BusyDialog.GetScope())
-            //{
-                Assembly asm = Assembly.GetExecutingAssembly();
-                using (Stream s = asm.GetManifestResourceStream("EveCharacterMonitor.throbber.png"))
-                using (Image b = Image.FromStream(s, true, true))
+            m_igbServer = new EveCharacterMonitor.IGBService.IGBServer();
+            m_igbServer.Start();
+
+            Assembly asm = Assembly.GetExecutingAssembly();
+            using (Stream s = asm.GetManifestResourceStream("EveCharacterMonitor.throbber.png"))
+            using (Image b = Image.FromStream(s, true, true))
+            {
+                m_throbberImages = new Image[9];
+                for (int i = 0; i < 9; i++)
                 {
-                    m_throbberImages = new Image[9];
-                    for (int i = 0; i < 9; i++)
+                    Bitmap ib = new Bitmap(THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT);
+                    using (Graphics g = Graphics.FromImage(ib))
                     {
-                        Bitmap ib = new Bitmap(THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT);
-                        using (Graphics g = Graphics.FromImage(ib))
-                        {
-                            g.DrawImage(b, new Rectangle(0, 0, THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT),
-                                new Rectangle(i * THROBBERIMG_WIDTH, 0, THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT), GraphicsUnit.Pixel);
-                        }
-                        m_throbberImages[i] = ib;
+                        g.DrawImage(b, new Rectangle(0, 0, THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT),
+                            new Rectangle(i * THROBBERIMG_WIDTH, 0, THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT), GraphicsUnit.Pixel);
                     }
+                    m_throbberImages[i] = ib;
                 }
+            }
 
-                if (!String.IsNullOrEmpty(m_settings.Username) &&
-                    !String.IsNullOrEmpty(m_settings.Password) &&
-                    !String.IsNullOrEmpty(m_settings.Character))
-                {
-                    CharLoginInfo cli = new CharLoginInfo();
-                    cli.Username = m_settings.Username;
-                    cli.Password = m_settings.Password;
-                    cli.CharacterName = m_settings.Character;
-                    m_settings.AddCharacter(cli);
-                    //m_settings.CharacterList.Add(cli);
-                    m_settings.Username = String.Empty;
-                    m_settings.Password = String.Empty;
-                    m_settings.Character = String.Empty;
-                    m_settings.Save();
-                }
+            if (!String.IsNullOrEmpty(m_settings.Username) &&
+                !String.IsNullOrEmpty(m_settings.Password) &&
+                !String.IsNullOrEmpty(m_settings.Character))
+            {
+                CharLoginInfo cli = new CharLoginInfo();
+                cli.Username = m_settings.Username;
+                cli.Password = m_settings.Password;
+                cli.CharacterName = m_settings.Character;
+                m_settings.AddCharacter(cli);
+                //m_settings.CharacterList.Add(cli);
+                m_settings.Username = String.Empty;
+                m_settings.Password = String.Empty;
+                m_settings.Character = String.Empty;
+                m_settings.Save();
+            }
 
-                foreach (CharLoginInfo cli in m_settings.CharacterList)
-                {
-                    if (cli != null)
-                        AddTab(cli);
-                }
-            //}
+            foreach (CharLoginInfo cli in m_settings.CharacterList)
+            {
+                if (cli != null)
+                    AddTab(cli);
+            }
         }
 
         private void MainWindow_Shown(object sender, EventArgs e)
@@ -384,6 +386,8 @@ namespace EveCharacterMonitor
             {
                 i.Dispose();
             }
+
+            m_igbServer.Stop();
         }
 
         private void tsbAbout_Click(object sender, EventArgs e)

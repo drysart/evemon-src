@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="EveSession.cs" />
     <Compile Include="GrandCharacterInfo.cs" />
+    <Compile Include="IGBService\IGBServer.cs" />
     <Compile Include="InstanceManager.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
