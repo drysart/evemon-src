@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace EveCharacterMonitor
 {
-    public partial class TipWindow : Form
+    public partial class TipWindow : EVEMonForm
     {
         public TipWindow()
         {

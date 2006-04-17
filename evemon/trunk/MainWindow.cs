@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace EveCharacterMonitor
 {
-    public partial class MainWindow : Form
+    public partial class MainWindow : EVEMonForm
     {
         public MainWindow()
         {

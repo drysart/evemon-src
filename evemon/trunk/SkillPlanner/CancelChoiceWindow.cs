@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace EveCharacterMonitor.SkillPlanner
 {
-    public partial class CancelChoiceWindow : Form
+    public partial class CancelChoiceWindow : EVEMonForm
     {
         public CancelChoiceWindow()
         {

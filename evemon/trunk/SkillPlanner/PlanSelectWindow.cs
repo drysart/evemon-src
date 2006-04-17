@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace EveCharacterMonitor.SkillPlanner
 {
-    public partial class PlanSelectWindow : Form
+    public partial class PlanSelectWindow : EVEMonForm
     {
         public PlanSelectWindow()
         {

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace EveCharacterMonitor
 {
-    public partial class CharSelect : Form
+    public partial class CharSelect : EVEMonForm
     {
         public CharSelect()
         {

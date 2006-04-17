@@ -28,7 +28,6 @@ namespace EveCharacterMonitor
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateNotifyForm));
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnLater = new System.Windows.Forms.Button();
             this.btnIgnore = new System.Windows.Forms.Button();
@@ -94,7 +93,7 @@ namespace EveCharacterMonitor
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(226, 78);
+            this.label1.Size = new System.Drawing.Size(231, 78);
             this.label1.TabIndex = 0;
             this.label1.Text = "An EVEMon update is available.\r\n\r\nCurrent version: {0}\r\nNewest version: {1}\r\n\r\nTh" +
                 "e newest version has the following updates:";
@@ -122,8 +121,8 @@ namespace EveCharacterMonitor
             this.Controls.Add(this.btnIgnore);
             this.Controls.Add(this.btnLater);
             this.Controls.Add(this.btnUpdate);
+            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "UpdateNotifyForm";

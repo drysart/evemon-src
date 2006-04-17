@@ -9,7 +9,7 @@ using System.Windows.Forms.VisualStyles;
 
 namespace EveCharacterMonitor
 {
-    public partial class SettingsForm : Form
+    public partial class SettingsForm : EVEMonForm
     {
         public SettingsForm()
         {

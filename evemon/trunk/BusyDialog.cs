@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace EveCharacterMonitor
 {
-    public partial class BusyDialog : Form
+    public partial class BusyDialog : EVEMonForm
     {
         public BusyDialog()
         {

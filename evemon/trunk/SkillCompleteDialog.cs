@@ -9,7 +9,7 @@ using System.Windows.Forms.VisualStyles;
 
 namespace EveCharacterMonitor
 {
-    public partial class SkillCompleteDialog : Form
+    public partial class SkillCompleteDialog : EVEMonForm
     {
         public SkillCompleteDialog()
         {

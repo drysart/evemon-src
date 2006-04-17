@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace EveCharacterMonitor
 {
-    public partial class UpdateNotifyForm : Form
+    public partial class UpdateNotifyForm : EVEMonForm
     {
         public UpdateNotifyForm()
         {

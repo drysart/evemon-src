@@ -11,7 +11,7 @@ using System.IO;
 
 namespace EveCharacterMonitor
 {
-    public partial class UnhandledExceptionWindow : Form
+    public partial class UnhandledExceptionWindow : EVEMonForm
     {
         public UnhandledExceptionWindow()
         {

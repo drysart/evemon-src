@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace EveCharacterMonitor
 {
-    public partial class AboutWindow : Form
+    public partial class AboutWindow : EVEMonForm
     {
         public AboutWindow()
         {

@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EveCharacterMonitor</RootNamespace>
-    <AssemblyName>EveCharacterMonitor</AssemblyName>
+    <AssemblyName>EVEMon</AssemblyName>
     <ApplicationIcon>eve.exe_I006b_040f.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -62,6 +62,12 @@
       <DependentUpon>CharSelect.cs</DependentUpon>
     </Compile>
     <Compile Include="Emailer.cs" />
+    <Compile Include="EVEMonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVEMonForm.Designer.cs">
+      <DependentUpon>EVEMonForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EveSession.cs" />
     <Compile Include="GrandCharacterInfo.cs" />
     <Compile Include="InstanceManager.cs" />
@@ -254,6 +260,10 @@
     <EmbeddedResource Include="AboutWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EVEMonForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EVEMonForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="output-html.xsl" />
     <EmbeddedResource Include="SkillPlanner\AddPlanConfirmWindow.resx">

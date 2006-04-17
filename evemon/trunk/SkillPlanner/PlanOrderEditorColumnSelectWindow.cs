@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace EveCharacterMonitor.SkillPlanner
 {
-    public partial class PlanOrderEditorColumnSelectWindow : Form
+    public partial class PlanOrderEditorColumnSelectWindow : EVEMonForm
     {
         public PlanOrderEditorColumnSelectWindow()
         {

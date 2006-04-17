@@ -13,7 +13,7 @@ using EveCharacterMonitor;
 
 namespace EveCharacterMonitor.SkillPlanner
 {
-    public partial class NewPlannerWindow : Form
+    public partial class NewPlannerWindow : EVEMonForm
     {
         public NewPlannerWindow()
         {

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace EveCharacterMonitor.SkillPlanner
 {
-    public partial class SuggestionWindow : Form
+    public partial class SuggestionWindow : EVEMonForm
     {
         public SuggestionWindow()
         {
