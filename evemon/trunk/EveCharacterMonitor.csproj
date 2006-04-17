@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EveCharacterMonitor</RootNamespace>
-    <AssemblyName>EVEMon</AssemblyName>
+    <AssemblyName>EveCharacterMonitor</AssemblyName>
     <ApplicationIcon>eve.exe_I006b_040f.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
