@@ -15,8 +15,8 @@ namespace EveCharacterMonitor
         {
             InitializeComponent();
 
-            if (Application.RenderWithVisualStyles)
-                m_renderer = new VisualStyleRenderer(VisualStyleElement.Window.Dialog.Normal);
+            //if (Application.RenderWithVisualStyles)
+            //    m_renderer = new VisualStyleRenderer(VisualStyleElement.Window.Dialog.Normal);
         }
 
         public SettingsForm(Settings s)
@@ -25,16 +25,16 @@ namespace EveCharacterMonitor
             m_settings = s;
         }
 
-        private VisualStyleRenderer m_renderer;
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
+        //private VisualStyleRenderer m_renderer;
+        //protected override void OnPaint(PaintEventArgs e)
+        //{
+        //    base.OnPaint(e);
 
-            if (!Application.RenderWithVisualStyles)
-                return;
+        //    if (!Application.RenderWithVisualStyles)
+        //        return;
 
-            m_renderer.DrawBackground(e.Graphics, this.ClientRectangle);
-        }
+        //    m_renderer.DrawBackground(e.Graphics, this.ClientRectangle);
+        //}
 
         private Settings m_settings;
 
