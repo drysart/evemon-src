@@ -90,6 +90,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.toolStrip1.Size = new System.Drawing.Size(38, 558);
             this.toolStrip1.TabIndex = 10;
             this.toolStrip1.Text = "toolStrip1";
+            this.toolStrip1.Visible = false;
             // 
             // toolStripLabel1
             // 
