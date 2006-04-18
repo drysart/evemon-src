@@ -16,28 +16,28 @@ namespace EveCharacterMonitor
             InitializeComponent();
         }
 
-        private VisualStyleRenderer m_renderer;
+        //private VisualStyleRenderer m_renderer;
 
-        protected override void OnLoad(EventArgs e)
-        {
-            if (Application.RenderWithVisualStyles)
-            {
-                m_renderer = new VisualStyleRenderer(VisualStyleElement.Window.Dialog.Normal);
-                SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-                BackColor = Color.Transparent;
-            }
+        //protected override void OnLoad(EventArgs e)
+        //{
+        //    if (Application.RenderWithVisualStyles)
+        //    {
+        //        m_renderer = new VisualStyleRenderer(VisualStyleElement.Window.Dialog.Normal);
+        //        SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+        //        BackColor = Color.Transparent;
+        //    }
 
-            base.OnLoad(e);
-        }
+        //    base.OnLoad(e);
+        //}
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
+        //protected override void OnPaint(PaintEventArgs e)
+        //{
+        //    base.OnPaint(e);
 
-            if (!Application.RenderWithVisualStyles)
-                return;
+        //    if (!Application.RenderWithVisualStyles)
+        //        return;
 
-            m_renderer.DrawBackground(e.Graphics, this.ClientRectangle);
-        }
+        //    m_renderer.DrawBackground(e.Graphics, this.ClientRectangle);
+        //}
     }
 }
