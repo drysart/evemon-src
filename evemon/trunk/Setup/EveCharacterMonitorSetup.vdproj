@@ -207,14 +207,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EVE Character Monitor"
-        "ProductCode" = "8:{A2A534D3-A818-48D7-9DED-797ECCF73EBD}"
-        "PackageCode" = "8:{6BF43ED7-3F88-4E71-99B0-4D7D043AD548}"
+        "ProductCode" = "8:{09584F9B-43A3-4101-A331-5C77FCA22277}"
+        "PackageCode" = "8:{E33E12A7-4075-41CB-B555-BE159E8B074C}"
         "UpgradeCode" = "8:{58326FBE-234A-4DE0-92CF-41A957A8CE23}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.15"
+        "ProductVersion" = "8:1.0.16"
         "Manufacturer" = "8:Evercrest.com"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -756,7 +756,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D4F185BBCBC1440FB790B216C660C12D"
             {
-            "SourcePath" = "8:..\\obj\\Release\\EveCharacterMonitor.exe"
+            "SourcePath" = "8:..\\obj\\Debug\\EveCharacterMonitor.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E9502C7349DE4726ADB58FA4215ADC61"
