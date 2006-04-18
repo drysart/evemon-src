@@ -176,6 +176,12 @@
     <Compile Include="SkillPlanner\DraggableListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SkillPlanner\ImplantCalculator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\ImplantCalculator.Designer.cs">
+      <DependentUpon>ImplantCalculator.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkillPlanner\LineDrawControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -274,6 +280,10 @@
     <EmbeddedResource Include="SkillPlanner\CancelChoiceWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CancelChoiceWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\ImplantCalculator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImplantCalculator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\LineDrawControl.resx">
       <SubType>Designer</SubType>

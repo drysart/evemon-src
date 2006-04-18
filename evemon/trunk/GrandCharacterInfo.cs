@@ -270,14 +270,23 @@ namespace EveCharacterMonitor
 
         public double GetEffectiveAttribute(EveAttribute attribute, EveAttributeScratchpad scratchpad)
         {
+            return GetEffectiveAttribute(attribute, scratchpad, true, true);
+        }
+
+        public double GetEffectiveAttribute(EveAttribute attribute, EveAttributeScratchpad scratchpad, bool includeLearning, bool includeImplants)
+        {
             double result = Convert.ToDouble(m_attributes[attribute]);
             double learningBonus = 1.0F;
 
-            foreach (GrandEveAttributeBonus geab in m_attributeBonuses)
+            if (includeImplants)
             {
-                if (geab.EveAttribute == attribute)
-                    result += geab.Amount;
+                foreach (GrandEveAttributeBonus geab in m_attributeBonuses)
+                {
+                    if (geab.EveAttribute == attribute)
+                        result += geab.Amount;
+                }
             }
+
             // XXX: include implants on scratchpad?
             GrandSkillGroup learningSg = m_skillGroups["Learning"];
             switch (attribute)
@@ -306,13 +315,20 @@ namespace EveCharacterMonitor
             if (scratchpad != null)
                 result += scratchpad.GetAttributeBonus(attribute);
 
-            int learningLevel = learningSg["Learning"].Level;
-            if (scratchpad != null)
-                learningLevel += scratchpad.LearningLevelBonus;
+            if (includeLearning)
+            {
+                int learningLevel = learningSg["Learning"].Level;
+                if (scratchpad != null)
+                    learningLevel += scratchpad.LearningLevelBonus;
 
-            learningBonus = 1.0 + (0.02 * learningLevel);
+                learningBonus = 1.0 + (0.02 * learningLevel);
 
-            return (result * learningBonus);
+                return (result * learningBonus);
+            }
+            else
+            {
+                return result;
+            }
         }
 
         public double EffectiveIntelligence

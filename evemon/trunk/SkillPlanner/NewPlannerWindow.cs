@@ -53,6 +53,14 @@ namespace EveCharacterMonitor.SkillPlanner
         private void NewPlannerWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
             m_plan.Changed -= new EventHandler<EventArgs>(m_plan_Changed);
+
+            foreach (WeakReference<ImplantCalculator> ric in m_calcWindows)
+            {
+                ImplantCalculator ic = ric.Target;
+                if (ic != null && ic.Visible)
+                    ic.Close();
+            }
+            m_calcWindows.Clear();
         }
 
         void m_plan_Changed(object sender, EventArgs e)
@@ -883,6 +891,32 @@ namespace EveCharacterMonitor.SkillPlanner
         private void skillSelectControl1_SelectedSkillChanged(object sender, EventArgs e)
         {
             SelectSkill(skillSelectControl1.SelectedSkill);
+        }
+
+        private List<WeakReference<ImplantCalculator>> m_calcWindows = new List<WeakReference<ImplantCalculator>>();
+
+        private void tsbImplantCalculator_Click(object sender, EventArgs e)
+        {
+            // Remove closed windows
+            for (int i = 0; i < m_calcWindows.Count; i++)
+            {
+                bool needRemove = true;
+                ImplantCalculator thisIc = m_calcWindows[i].Target;
+                if (thisIc != null)
+                {
+                    needRemove = !thisIc.Visible;
+                }
+                if (needRemove)
+                {
+                    m_calcWindows.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            ImplantCalculator ic = new ImplantCalculator(m_grandCharacterInfo, m_plan);
+            m_calcWindows.Add(new WeakReference<ImplantCalculator>(ic));
+
+            ic.Show();
         }
     }
 }

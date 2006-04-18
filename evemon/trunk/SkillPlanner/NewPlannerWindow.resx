@@ -117,16 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="cmsSkillContext.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="cmsSkillContext.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
-  </data>
-  <data name="tmrSkillTick.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  </metadata>
+  <metadata name="tmrSkillTick.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>146, 17</value>
-  </data>
-  <data name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  </metadata>
+  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>254, 17</value>
-  </data>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="tslSuggestion.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -148,9 +148,9 @@
         dW7fNQohNe8LoR2OGexwSOddt0ycQkrIrxlibnH1JfgfOA6JCs8mwcUAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>463, 17</value>
-  </data>
+  </metadata>
   <data name="tsbSaveAs.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -182,6 +182,23 @@
         AAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="tsbImplantCalculator.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAlVJREFUOE+Fk/1L
+        E3Ecx/VP2A/7L4KgX4RKql/sgfxBRIsiE5YpJZZhS8NymouhbUQmQf1Q4QZBgWSFDbMiaiTzoT24y9F2
+        e6Cde2i3291u2+3h3e5LbrGx+sAb7nt3n9fn8dvYUGWBQADV74rFYkOhUCBSKBQNSqWysfqf8lkG1DOX
+        ywWTyYRoNFoTpAzw+Xx1AXa7HcFg8N8Qr9dbF2Cz2YjzjmrKGJk2QnVVj+5LWnT2jtaASj0g6Qf+ZFED
+        KDULHV39ONjWS5zl847Jz7lcDul0GjRNw2g0Vvogk8PRX5h//QFqjQHnLo+hUzWE71s/IJWcZMvn88hk
+        MhAEAR6PpwKQpBzM7y14Y/4ILikgKWQQYSWsUWEM33qAkXEDslkJkiRBFEVwHAe3210BhLYjeLHwthxF
+        o7sPls/CSYswW1mcvngbq+s2kjrP82BZFhRFVQDzr5bAJjgCkGs8cKQD65s0nL40FlcSeLbMoOv8IJLJ
+        JBKJBGKxGJxOZwUw+9BE0iOAUp279uzF1MxjUP4UFq08ZhbiaGnrJpHj8TjC4TAcDkcFMHRzulQ7TwAy
+        aHfTITQfPYmewXEYnrzDpInB8RN9+BkKkREyDAN5ocpTGBjWYsvDgONzRH5GwCoVw8vP23hkFnHtngVN
+        LacgL9HfKgM8tB/91+/gky2OL5sCVigRSxspPF1OYdQYw/5WFSa0OhKxWmSR5PlOTM2iT62HYe4b9M9D
+        0MxFoL5rQXNrD9Q3dGQH6t4++UMqJWJtw44LV8bQfnYAh9tV2HfsDCxfrf91/g3R3ZIO3VNHiQAAAABJ
+        RU5ErkJggg==
+</value>
+  </data>
   <data name="tsbDeletePlan.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -196,10 +213,10 @@
         rgqZE45L6o975eQUH6NRFAoFyLL8z7A6nc49d4bm4sGK/gAS1iNapXMNYAAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="ttToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="ttToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>562, 17</value>
-  </data>
-  <data name="sfdSave.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  </metadata>
+  <metadata name="sfdSave.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>658, 17</value>
-  </data>
+  </metadata>
 </root>

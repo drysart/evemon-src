@@ -382,6 +382,9 @@ namespace EveCharacterMonitor
                 if (!Directory.Exists(appDataDir))
                     Directory.CreateDirectory(appDataDir);
                 string fn = appDataDir + "/settings.xml";
+#if DEBUG
+                fn = appDataDir + "/settings-debug.xml";
+#endif
                 return fn;
             }
         }

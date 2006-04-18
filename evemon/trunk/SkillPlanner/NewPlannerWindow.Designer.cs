@@ -69,6 +69,8 @@ namespace EveCharacterMonitor.SkillPlanner
             this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
             this.tpPlanQueue = new System.Windows.Forms.TabPage();
             this.planEditor = new EveCharacterMonitor.SkillPlanner.PlanOrderEditorControl();
+            this.tsbImplantCalculator = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.pnlPlanControl.SuspendLayout();
             this.cmsSkillContext.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -320,6 +322,8 @@ namespace EveCharacterMonitor.SkillPlanner
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbSaveAs,
             this.tsbCopyForum,
+            this.toolStripSeparator2,
+            this.tsbImplantCalculator,
             this.toolStripSeparator1,
             this.tsbDeletePlan});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -460,6 +464,21 @@ namespace EveCharacterMonitor.SkillPlanner
             this.planEditor.Size = new System.Drawing.Size(737, 530);
             this.planEditor.TabIndex = 2;
             // 
+            // tsbImplantCalculator
+            // 
+            this.tsbImplantCalculator.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbImplantCalculator.Image = ((System.Drawing.Image)(resources.GetObject("tsbImplantCalculator.Image")));
+            this.tsbImplantCalculator.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbImplantCalculator.Name = "tsbImplantCalculator";
+            this.tsbImplantCalculator.Size = new System.Drawing.Size(23, 22);
+            this.tsbImplantCalculator.Text = "Implant Calculator";
+            this.tsbImplantCalculator.Click += new System.EventHandler(this.tsbImplantCalculator_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
             // NewPlannerWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -468,7 +487,6 @@ namespace EveCharacterMonitor.SkillPlanner
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
-            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimumSize = new System.Drawing.Size(759, 350);
             this.Name = "NewPlannerWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -535,5 +553,7 @@ namespace EveCharacterMonitor.SkillPlanner
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.TabPage tpPlanQueue;
         private SkillSelectControl skillSelectControl1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton tsbImplantCalculator;
     }
 }
