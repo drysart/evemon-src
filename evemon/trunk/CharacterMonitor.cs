@@ -411,7 +411,7 @@ namespace EveCharacterMonitor
                     lblTrainingEst.Text = m_estimatedCompletion.ToString();
                     SetShortData(m_cli.CharacterName + ": " +
                         TimeSpanDescriptiveShort(m_estimatedCompletion),
-                        now - m_estimatedCompletion);
+                        m_estimatedCompletion - now);
                 }
                 else
                 {

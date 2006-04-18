@@ -201,8 +201,7 @@ namespace EveCharacterMonitor
                 }
                 int ttCharsLeft = 64;
                 StringBuilder sb = new StringBuilder();
-                //for (int i = 0; i < shortInfos.Count; i++)
-                for (int i = shortInfos.Count - 1; i >= 0; i--)
+                for (int i = 0; i < shortInfos.Count; i++)
                 {
                     string tKey = shortInfos[shortInfos.Keys[i]];
                     if (sb.Length > 0)
@@ -219,7 +218,7 @@ namespace EveCharacterMonitor
 
                 if (m_settings.TitleToTime && shortInfos.Count > 0)
                 {
-                    string s = shortInfos[shortInfos.Keys[shortInfos.Count-1]];
+                    string s = shortInfos[shortInfos.Keys[0]];
                     Match m = Regex.Match(s, "^(.*?): (.*)$");
                     if (m.Success)
                     {
