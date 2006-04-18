@@ -70,13 +70,19 @@ namespace EveCharacterMonitor.SkillPlanner
                         return gs.Known;
                     };
                     break;
-                case 2: // Planned Skills
+                case 2: // Not Known Skills
+                    sf = delegate(GrandSkill gs)
+                    {
+                        return !gs.Known;
+                    };
+                    break;
+                case 3: // Planned Skills
                     sf = delegate(GrandSkill gs)
                     {
                         return m_plan.IsPlanned(gs);
                     };
                     break;
-                case 3: // Level I Ready Skills
+                case 4: // Level I Ready Skills
                     sf = delegate(GrandSkill gs)
                     {
                         return (gs.Level == 0 && gs.PrerequisitesMet);

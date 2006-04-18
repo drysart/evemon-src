@@ -48,6 +48,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.cbFilter.Items.AddRange(new object[] {
             "All Skills",
             "Known Skills",
+            "Not Known Skills",
             "Planned Skills",
             "Level I Ready Skills"});
             this.cbFilter.Location = new System.Drawing.Point(0, 0);
