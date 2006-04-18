@@ -492,6 +492,7 @@ namespace EveCharacterMonitor
         {
             this.SuppressEvents();
             this.Name = ci.Name;
+            this.CharacterId = ci.CharacterId;
             this.IsCached = ci.IsCached;
             this.Gender = ci.Gender;
             this.Race = ci.Race;
@@ -529,6 +530,7 @@ namespace EveCharacterMonitor
         {
             SerializableCharacterInfo ci = new SerializableCharacterInfo();
             ci.Name = this.Name;
+            ci.CharacterId = this.CharacterId;
             ci.Gender = this.Gender;
             ci.Race = this.Race;
             ci.BloodLine = this.Bloodline;
