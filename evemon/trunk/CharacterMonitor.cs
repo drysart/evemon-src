@@ -960,17 +960,24 @@ namespace EveCharacterMonitor
                     GrandSkill s = (GrandSkill)item;
                     double percentDone = 0.0;
                     int NextLevel = 0;
+                    int CurrentSP = s.CurrentSkillPoints;
+                    int reqToThisLevel = s.GetPointsRequiredForLevel(s.Level);
+                    int reqToNextLevel = 0;
+                    int pointsInThisLevel = 0;
+                    double deltaPointsOfLevel = 0.0;
                     int PointsRemain = 0;
 
-                    if (s.CurrentSkillPoints > s.GetPointsRequiredForLevel(s.Level))
+                    if (CurrentSP > s.GetPointsRequiredForLevel(s.Level))
                     { //We must have completed some, but not all, of level II, III or IV
                         NextLevel = s.Level+1;
                         
 
                         if (NextLevel != 5) //There ain't no Level six Boss Hogg.
                         {
-                            //god I love C#
-                            percentDone = Convert.ToDouble(s.CurrentSkillPoints) / Convert.ToDouble(s.GetPointsRequiredForLevel(NextLevel));
+                            pointsInThisLevel = CurrentSP - reqToThisLevel;
+                            reqToNextLevel = s.GetPointsRequiredForLevel(NextLevel);
+                            deltaPointsOfLevel = Convert.ToDouble(reqToNextLevel - reqToThisLevel);
+                            percentDone = pointsInThisLevel / deltaPointsOfLevel;
                             PointsRemain = s.GetPointsRequiredForLevel(NextLevel) - s.CurrentSkillPoints;
                             string CurrentlyDone = String.Format("Partially Completed lvl {0}: {1}/{2} ({3})", GrandSkill.GetRomanSkillNumber(NextLevel), s.CurrentSkillPoints.ToString("#,##0"), s.GetPointsRequiredForLevel(NextLevel).ToString("#,##0"), percentDone.ToString("P0"));
                             string ToNextLevel = String.Format("To Level {0}: {1} Skill Points remaining", GrandSkill.GetRomanSkillNumber(NextLevel), PointsRemain.ToString("#,##0"));
@@ -979,7 +986,10 @@ namespace EveCharacterMonitor
                         }
                         else if (NextLevel == 5) //We must have completed some, but not all, of level V
                         {
-                            percentDone = Convert.ToDouble(s.GetPointsRequiredForLevel(5)) / Convert.ToDouble(s.CurrentSkillPoints);
+                            pointsInThisLevel = CurrentSP - s.GetPointsRequiredForLevel(5);
+                            reqToNextLevel = s.GetPointsRequiredForLevel(5);
+                            deltaPointsOfLevel = Convert.ToDouble(reqToNextLevel - reqToThisLevel);
+                            percentDone = pointsInThisLevel / deltaPointsOfLevel;
                             PointsRemain = s.GetPointsRequiredForLevel(5) - s.CurrentSkillPoints;
                             string CurrentlyDone = String.Format("Partially Completed lvl {0}: {1}/{2} ({3})", GrandSkill.GetRomanSkillNumber(5), s.CurrentSkillPoints.ToString("#,##0"), s.GetPointsRequiredForLevel(5).ToString("#,##0"), percentDone.ToString("P0"));
                             string ToNextLevel = String.Format("To Level {0}: {1} Skill Points remaining", GrandSkill.GetRomanSkillNumber(5), PointsRemain.ToString("#,##0"));
@@ -997,7 +1007,10 @@ namespace EveCharacterMonitor
                         if (s.Level != 5)
                         {
                             NextLevel = s.Level + 1;
-                            percentDone = Convert.ToDouble(s.CurrentSkillPoints) / Convert.ToDouble(s.GetPointsRequiredForLevel(s.Level));
+                            pointsInThisLevel = CurrentSP - reqToThisLevel;
+                            reqToNextLevel = s.GetPointsRequiredForLevel(NextLevel);
+                            deltaPointsOfLevel = Convert.ToDouble(reqToNextLevel - reqToThisLevel);
+                            percentDone = pointsInThisLevel / deltaPointsOfLevel;
                             PointsRemain = s.GetPointsRequiredForLevel(NextLevel) - s.CurrentSkillPoints;
                             string CurrentlyDone = String.Format("Completed lvl {0}: {1}/{2} ({3})", GrandSkill.GetRomanSkillNumber(s.Level), s.CurrentSkillPoints.ToString("#,##0"), s.GetPointsRequiredForLevel(s.Level).ToString("#,##0"), percentDone.ToString("P0"));
                             string ToNextLevel = String.Format("To Level {0}: {1} Skill Points required", GrandSkill.GetRomanSkillNumber(NextLevel), PointsRemain.ToString("#,##0"));
