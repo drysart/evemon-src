@@ -15,20 +15,30 @@ namespace EveCharacterMonitor
             InitializeComponent();
         }
 
-        public CharSelect(IEnumerable<string> charEnum, string preferChar)
+        //public CharSelect(IEnumerable<string> charEnum, string preferChar)
+        //    : this()
+        //{
+        //    int c = 0;
+        //    lbChars.Items.Clear();
+        //    foreach (string s in charEnum)
+        //    {
+        //        c++;
+        //        lbChars.Items.Add(s);
+        //    }
+        //    if (c == 1)
+        //        m_result = lbChars.Items[0] as string;
+        //    if (lbChars.Items.Contains(preferChar))
+        //        m_result = preferChar;
+        //}
+
+        public CharSelect(EveSession sess)
             : this()
         {
-            int c = 0;
             lbChars.Items.Clear();
-            foreach (string s in charEnum)
+            foreach (Pair<string, int> p in sess.GetCharacterList())
             {
-                c++;
-                lbChars.Items.Add(s);
+                lbChars.Items.Add(p.A);
             }
-            if (c == 1)
-                m_result = lbChars.Items[0] as string;
-            if (lbChars.Items.Contains(preferChar))
-                m_result = preferChar;
         }
 
         private void lbChars_DoubleClick(object sender, EventArgs e)

@@ -15,62 +15,64 @@ namespace EveCharacterMonitor
             InitializeComponent();
         }
 
-        private List<Pair<string, int>> m_chars = null;
+        //private List<Pair<string, int>> m_chars = null;
 
-        private void cbCharacter_DropDown(object sender, EventArgs e)
-        {
-            if (String.IsNullOrEmpty(tbUsername.Text) || String.IsNullOrEmpty(tbPassword.Text))
-            {
-                cbCharacter.Items.Clear();
-                cbCharacter.Items.Add("<enter login first>");
-                return;
-            }
+        //private void cbCharacter_DropDown(object sender, EventArgs e)
+        //{
+        //    if (String.IsNullOrEmpty(tbUsername.Text) || String.IsNullOrEmpty(tbPassword.Text))
+        //    {
+        //        cbCharacter.Items.Clear();
+        //        cbCharacter.Items.Add("<enter login first>");
+        //        return;
+        //    }
 
-            EveSession s = EveSession.GetSession(tbUsername.Text, tbPassword.Text);
-            if (s == null)
-            {
-                cbCharacter.Items.Clear();
-                cbCharacter.Items.Add("<invalid login>");
-                return;
-            }
+        //    EveSession s = EveSession.GetSession(tbUsername.Text, tbPassword.Text);
+        //    if (s == null)
+        //    {
+        //        cbCharacter.Items.Clear();
+        //        cbCharacter.Items.Add("<invalid login>");
+        //        return;
+        //    }
 
-            cbCharacter.Items.Clear();
-            if (m_chars==null)
-                m_chars = s.GetCharacterList();
-            foreach (Pair<string, int> p in m_chars)
-            {
-                cbCharacter.Items.Add(p.A);
-            }
-        }
+        //    cbCharacter.Items.Clear();
+        //    if (m_chars==null)
+        //        m_chars = s.GetCharacterList();
+        //    foreach (Pair<string, int> p in m_chars)
+        //    {
+        //        cbCharacter.Items.Add(p.A);
+        //    }
+        //}
 
         private void tbUsername_TextChanged(object sender, EventArgs e)
         {
-            cbCharacter.SelectedIndex = -1;
-            cbCharacter.Items.Clear();
-            m_chars = null;
+            SetNoCharacter();
+        }
+
+        private void SetNoCharacter()
+        {
+            tbCharName.Text = "(None)";
+            btnOk.Enabled = false;
         }
 
         private void tbPassword_TextChanged(object sender, EventArgs e)
         {
-            cbCharacter.SelectedIndex = -1;
-            cbCharacter.Items.Clear();
-            m_chars = null;
+            SetNoCharacter();
         }
 
-        private void cbCharacter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbCharacter.SelectedIndex == -1)
-            {
-                btnOk.Enabled = false;
-                return;
-            }
-            string sv = cbCharacter.Items[cbCharacter.SelectedIndex] as string;
-            if (String.IsNullOrEmpty(sv) || sv.StartsWith("<"))
-            {
-                cbCharacter.SelectedIndex = -1;
-            }
-            btnOk.Enabled = (cbCharacter.SelectedIndex >= 0);
-        }
+        //private void cbCharacter_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (cbCharacter.SelectedIndex == -1)
+        //    {
+        //        btnOk.Enabled = false;
+        //        return;
+        //    }
+        //    string sv = cbCharacter.Items[cbCharacter.SelectedIndex] as string;
+        //    if (String.IsNullOrEmpty(sv) || sv.StartsWith("<"))
+        //    {
+        //        cbCharacter.SelectedIndex = -1;
+        //    }
+        //    btnOk.Enabled = (cbCharacter.SelectedIndex >= 0);
+        //}
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -82,7 +84,7 @@ namespace EveCharacterMonitor
         {
             m_username = tbUsername.Text;
             m_password = tbPassword.Text;
-            m_characterName = cbCharacter.Items[cbCharacter.SelectedIndex] as string;
+            m_characterName = tbCharName.Text;
 
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -105,6 +107,44 @@ namespace EveCharacterMonitor
         public string CharacterName
         {
             get { return m_characterName; }
+        }
+
+        private void btnCharSelect_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(tbUsername.Text) || String.IsNullOrEmpty(tbPassword.Text))
+            {
+                SetNoCharacter();
+                MessageBox.Show("Enter your login information first.",
+                    "Login Required", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
+
+            EveSession s = EveSession.GetSession(tbUsername.Text, tbPassword.Text);
+            if (s == null)
+            {
+                SetNoCharacter();
+                MessageBox.Show("Your login information could not be verified. Please " +
+                    "ensure it is entered correctly.", "Unable to Log In",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
+
+            List<Pair<string, int>> chars = s.GetCharacterList();
+            if (chars.Count == 0)
+            {
+                SetNoCharacter();
+                MessageBox.Show("No characters were found on that account.",
+                    "No Characters Found",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
+
+            using (CharSelect f = new CharSelect(s))
+            {
+                f.ShowDialog();
+                tbCharName.Text = f.Result;
+                btnOk.Enabled = true;
+            }
         }
     }
 }
