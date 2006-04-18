@@ -697,17 +697,17 @@ namespace EveCharacterMonitor.SkillPlanner
             m_plan.SuppressEvents();
             try
             {
-                foreach (PlanEntry pe in m_plan.Entries)
-                {
-                    GrandSkill gs = pe.Skill;
-                    if (!gs.IsLearningSkill && gs.Name != "Learning")
-                        nonLearningEntries.Add(pe);
-                }
-                m_plan.ClearEntries();
-                foreach (PlanEntry pe in nonLearningEntries)
-                {
-                    m_plan.Entries.Add(pe);
-                }
+                //foreach (PlanEntry pe in m_plan.Entries)
+                //{
+                //    GrandSkill gs = pe.Skill;
+                //    if (!gs.IsLearningSkill && gs.Name != "Learning")
+                //        nonLearningEntries.Add(pe);
+                //}
+                //m_plan.ClearEntries();
+                //foreach (PlanEntry pe in nonLearningEntries)
+                //{
+                //    m_plan.Entries.Add(pe);
+                //}
                 IEnumerable<PlanEntry> entries = m_plan.GetSuggestions();
                 int i = 0;
                 foreach (PlanEntry pe in entries)
@@ -715,6 +715,10 @@ namespace EveCharacterMonitor.SkillPlanner
                     m_plan.Entries.Insert(i, pe);
                     i++;
                 }
+
+                //Ensures any existing learning skills in the plan get moved to
+                //account for higher levels being inserted at the front...
+                m_plan.CheckForMissingPrerequisites();
             }
             finally
             {

@@ -314,7 +314,7 @@ namespace EveCharacterMonitor.SkillPlanner
             }
         }
 
-        private void CheckForMissingPrerequisites()
+        public void CheckForMissingPrerequisites()
         {
             this.SuppressEvents();
             try
