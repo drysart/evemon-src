@@ -57,22 +57,42 @@ namespace EveCharacterMonitor.SkillPlanner
             }
             else
             {
-                m_grandCharacterInfo = m_plan.GrandCharacterInfo;
-                m_grandCharacterInfo.SkillChanged += new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
-                lvSkills.Items.Clear();
-                DateTime lastEnd = DateTime.MinValue;
-                foreach (PlanEntry pe in m_plan.Entries)
+                if (m_grandCharacterInfo != m_plan.GrandCharacterInfo)
                 {
-                    ListViewItem lvi = new ListViewItem();
-                    lvi.Tag = pe;
-                    lvSkills.Items.Add(lvi);
-
-                    GrandSkill gs = pe.Skill;
-                    if (gs.InTraining)
-                        tmrTick.Enabled = true;
-
+                    m_grandCharacterInfo = m_plan.GrandCharacterInfo;
+                    m_grandCharacterInfo.SkillChanged += new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
                 }
-                UpdateListViewItems();
+                lvSkills.BeginUpdate();
+                try
+                {
+                    //lvSkills.Items.Clear();
+                    int itemIndex = 0;
+                    DateTime lastEnd = DateTime.MinValue;
+                    foreach (PlanEntry pe in m_plan.Entries)
+                    {
+                        ListViewItem lvi = new ListViewItem();
+                        lvi.Tag = pe;
+                        if (lvSkills.Items.Count <= itemIndex)
+                            lvSkills.Items.Add(lvi);
+                        else
+                            lvSkills.Items[itemIndex] = lvi;
+                        itemIndex++;
+
+                        GrandSkill gs = pe.Skill;
+                        if (gs.InTraining)
+                            tmrTick.Enabled = true;
+
+                    }
+                    while (itemIndex < lvSkills.Items.Count)
+                    {
+                        lvSkills.Items.RemoveAt(itemIndex);
+                    }
+                    UpdateListViewItems();
+                }
+                finally
+                {
+                    lvSkills.EndUpdate();
+                }
             }
         }
 
