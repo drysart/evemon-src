@@ -276,6 +276,21 @@ namespace EveCharacterMonitor
             get { return m_confirmedTips; }
         }
 
+        private PlanTextOptions m_defaultCopyOptions = new PlanTextOptions();
+        private PlanTextOptions m_defaultSaveOptions = new PlanTextOptions();
+
+        public PlanTextOptions DefaultCopyOptions
+        {
+            get { return m_defaultCopyOptions; }
+            set { m_defaultCopyOptions = value; }
+        }
+
+        public PlanTextOptions DefaultSaveOptions
+        {
+            get { return m_defaultSaveOptions; }
+            set { m_defaultSaveOptions = value; }
+        }
+
         private const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";
 
         private static string StoreFileName(string key)

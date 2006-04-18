@@ -736,21 +736,28 @@ namespace EveCharacterMonitor.SkillPlanner
 
         private void tsbCopyForum_Click(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("[b]Skill Plan for ");
-            sb.Append(m_plan.GrandCharacterInfo.Name);
-            sb.AppendLine("[/b]");
-            sb.AppendLine();
-            int i = 0;
-            foreach (PlanEntry pe in m_plan.Entries)
+            PlanTextOptions pto = (PlanTextOptions)m_settings.DefaultCopyOptions.Clone();
+            using (CopySaveOptionsWindow f = new CopySaveOptionsWindow(pto, m_plan, true))
             {
-                i++;
-                GrandSkill gs = pe.Skill;
-                sb.AppendLine(String.Format("{0}: [b]{1} {2}[/b] ({3})",
-                    i, pe.SkillName, GrandSkill.GetRomanSkillNumber(pe.Level),
-                    GrandSkill.TimeSpanToDescriptiveText(gs.GetTrainingTimeOfLevelOnly(pe.Level, true), DescriptiveTextOptions.FullText | DescriptiveTextOptions.IncludeCommas | DescriptiveTextOptions.SpaceText)));
+                f.ShowDialog();
+                if (f.DialogResult == DialogResult.Cancel)
+                    return;
+                if (f.SetAsDefault)
+                {
+                    m_settings.DefaultCopyOptions = pto;
+                    m_settings.Save();
+                }
             }
-            Clipboard.SetText(sb.ToString());
+
+            using (MemoryStream ms = new MemoryStream())
+            using (StreamWriter sw = new StreamWriter(ms))
+            {
+                m_plan.SaveAsText(sw, pto, true);
+                sw.Flush();
+                string s = System.Text.Encoding.Default.GetString(ms.ToArray());
+                Clipboard.SetText(s);
+            }
+
             MessageBox.Show("The skill plan has been copied to the clipboard in a " +
                 "format suitable for forum posting.", "Plan Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -774,6 +781,23 @@ namespace EveCharacterMonitor.SkillPlanner
             string fileName = sfdSave.FileName;
             try
             {
+                PlanTextOptions pto = null;
+                if ((SaveType)sfdSave.FilterIndex == SaveType.Text)
+                {
+                    pto = (PlanTextOptions)m_settings.DefaultSaveOptions.Clone();
+                    using (CopySaveOptionsWindow f = new CopySaveOptionsWindow(pto, m_plan, false))
+                    {
+                        f.ShowDialog();
+                        if (f.DialogResult == DialogResult.Cancel)
+                            return;
+                        if (f.SetAsDefault)
+                        {
+                            m_settings.DefaultSaveOptions = pto;
+                            m_settings.Save();
+                        }
+                    }
+                }
+
                 using (FileStream fs = new FileStream(fileName, FileMode.Create))
                 {
                     switch ((SaveType)sfdSave.FilterIndex)
@@ -788,7 +812,7 @@ namespace EveCharacterMonitor.SkillPlanner
                             SerializePlanTo(fs);
                             break;
                         case SaveType.Text:
-                            SaveAsText(fs);
+                            SaveAsText(fs, pto);
                             break;
                         default:
                             return;
@@ -808,18 +832,11 @@ namespace EveCharacterMonitor.SkillPlanner
             xs.Serialize(s, m_plan);
         }
 
-        private void SaveAsText(Stream fs)
+        private void SaveAsText(Stream fs, PlanTextOptions pto)
         {
             using (StreamWriter sw = new StreamWriter(fs))
             {
-                sw.WriteLine("Skill Plan for {0}:", m_plan.GrandCharacterInfo.Name);
-                sw.WriteLine();
-                int i = 0;
-                foreach (PlanEntry pe in m_plan.Entries)
-                {
-                    i++;
-                    sw.WriteLine("{0:D3}: {1} {2}", i, pe.SkillName, GrandSkill.GetRomanSkillNumber(pe.Level));
-                }
+                m_plan.SaveAsText(sw, pto, false);
             }
         }
 

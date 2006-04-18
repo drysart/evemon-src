@@ -173,6 +173,12 @@
     <Compile Include="SkillPlanner\CancelChoiceWindow.Designer.cs">
       <DependentUpon>CancelChoiceWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkillPlanner\CopySaveOptionsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\CopySaveOptionsWindow.Designer.cs">
+      <DependentUpon>CopySaveOptionsWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkillPlanner\DraggableListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -280,6 +286,10 @@
     <EmbeddedResource Include="SkillPlanner\CancelChoiceWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CancelChoiceWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\CopySaveOptionsWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CopySaveOptionsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\ImplantCalculator.resx">
       <SubType>Designer</SubType>

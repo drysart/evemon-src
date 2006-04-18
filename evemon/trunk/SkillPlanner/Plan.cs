@@ -652,6 +652,119 @@ namespace EveCharacterMonitor.SkillPlanner
             }
             return true;
         }
+
+        public void SaveAsText(System.IO.StreamWriter sw, PlanTextOptions pto, bool includeForumMarkup)
+        {
+            if (pto.IncludeHeader)
+            {
+                if (includeForumMarkup)
+                    sw.Write("[b]");
+                sw.Write("Skill Plan for {0}", this.GrandCharacterInfo.Name);
+                if (includeForumMarkup)
+                    sw.Write("[/b]");
+                sw.WriteLine();
+                sw.WriteLine();
+            }
+
+            EveAttributeScratchpad scratchpad = new EveAttributeScratchpad();
+            TimeSpan totalTrainingTime = TimeSpan.Zero;
+            DateTime curDt = DateTime.Now;
+            int num = 0;
+            foreach (PlanEntry pe in this.Entries)
+            {
+                num++;
+                if (pto.EntryNumber)
+                {
+                    sw.Write("{0}: ", num);
+                }
+                if (includeForumMarkup)
+                    sw.Write("[b]");
+                sw.Write(pe.SkillName);
+                sw.Write(' ');
+                sw.Write(GrandSkill.GetRomanSkillNumber(pe.Level));
+                if (includeForumMarkup)
+                    sw.Write("[/b]");
+
+                TimeSpan trainingTime = pe.Skill.GetTrainingTimeOfLevelOnly(pe.Level, true);
+                DateTime startDate = curDt;
+                curDt += trainingTime;
+                DateTime finishDate = curDt;
+                totalTrainingTime += trainingTime;
+
+                if (pto.EntryTrainingTimes || pto.EntryStartDate || pto.EntryFinishDate)
+                {
+                    sw.Write(" (");
+                    bool needComma = false;
+                    if (pto.EntryTrainingTimes)
+                    {
+                        sw.Write(GrandSkill.TimeSpanToDescriptiveText(trainingTime,
+                            DescriptiveTextOptions.FullText|DescriptiveTextOptions.IncludeCommas|DescriptiveTextOptions.SpaceText));
+                        needComma = true;
+                    }
+                    if (pto.EntryStartDate)
+                    {
+                        if (needComma)
+                            sw.Write("; ");
+                        sw.Write("Start: ");
+                        sw.Write(startDate.ToString());
+                        needComma = true;
+                    }
+                    if (pto.EntryFinishDate)
+                    {
+                        if (needComma)
+                            sw.Write("; ");
+                        sw.Write("Finish: ");
+                        sw.Write(finishDate.ToString());
+                        needComma = true;
+                    }
+                    sw.Write(')');
+                }
+                sw.WriteLine();
+            }
+            if (pto.FooterCount || pto.FooterTotalTime || pto.FooterDate)
+            {
+                sw.WriteLine();
+                bool needComma = false;
+                if (pto.FooterCount)
+                {
+                    if (includeForumMarkup)
+                        sw.Write("[b]");
+                    sw.Write(num.ToString());
+                    if (includeForumMarkup)
+                        sw.Write("[/b]");
+                    sw.Write(" skill");
+                    if (num != 1)
+                        sw.Write('s');
+                    needComma = true;
+                }
+                if (pto.FooterTotalTime)
+                {
+                    if (needComma)
+                        sw.Write("; ");
+                    sw.Write("Total time: ");
+                    if (includeForumMarkup)
+                        sw.Write("[b]");
+                    sw.Write(GrandSkill.TimeSpanToDescriptiveText(totalTrainingTime,
+                            DescriptiveTextOptions.FullText | DescriptiveTextOptions.IncludeCommas | DescriptiveTextOptions.SpaceText));
+                    if (includeForumMarkup)
+                        sw.Write("[/b]");
+                    needComma = true;
+                }
+                if (pto.FooterDate)
+                {
+                    if (needComma)
+                        sw.Write("; ");
+                    sw.Write("Completion: ");
+                    if (includeForumMarkup)
+                        sw.Write("[b]");
+                    sw.Write(curDt.ToString());
+                    if (includeForumMarkup)
+                        sw.Write("[/b]");
+                    needComma = true;
+                }
+                sw.WriteLine();
+            }
+        }
     }
 
     public enum PlanEntryType
