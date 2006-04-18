@@ -191,7 +191,7 @@ namespace EveCharacterMonitor
                 foreach (TabPage tp in tcCharacterTabs.TabPages)
                 {
                     CharacterMonitor cm = tp.Controls[0] as CharacterMonitor;
-                    if (cm != null && !String.IsNullOrEmpty(cm.ShortText))
+                    if (cm != null && !String.IsNullOrEmpty(cm.ShortText) && cm.ShortTimeSpan > TimeSpan.Zero)
                     {
                         TimeSpan ts = cm.ShortTimeSpan;
                         while (shortInfos.ContainsKey(ts))
@@ -201,7 +201,8 @@ namespace EveCharacterMonitor
                 }
                 int ttCharsLeft = 64;
                 StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < shortInfos.Count; i++)
+                //for (int i = 0; i < shortInfos.Count; i++)
+                for (int i = shortInfos.Count - 1; i >= 0; i--)
                 {
                     string tKey = shortInfos[shortInfos.Keys[i]];
                     if (sb.Length > 0)
@@ -218,7 +219,7 @@ namespace EveCharacterMonitor
 
                 if (m_settings.TitleToTime && shortInfos.Count > 0)
                 {
-                    string s = shortInfos[shortInfos.Keys[0]];
+                    string s = shortInfos[shortInfos.Keys[shortInfos.Count-1]];
                     Match m = Regex.Match(s, "^(.*?): (.*)$");
                     if (m.Success)
                     {
