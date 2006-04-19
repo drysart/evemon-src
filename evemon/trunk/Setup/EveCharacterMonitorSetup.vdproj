@@ -155,7 +155,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:EVEMon.NetworkLogger, Version=1.0.2299.39284, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:EVEMon.NetworkLogger, Version=1.0.2300.26706, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_52001816600D788AF1E5E83A28AE2737"
@@ -310,14 +310,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EVE Character Monitor"
-        "ProductCode" = "8:{09584F9B-43A3-4101-A331-5C77FCA22277}"
-        "PackageCode" = "8:{25957EE9-413F-4CF3-BFBB-AFC2255855C1}"
+        "ProductCode" = "8:{335DE168-F070-41C2-B841-EB8BCDEB1874}"
+        "PackageCode" = "8:{E8C3D1F3-6A5E-4E80-BB0B-1C450806CD2C}"
         "UpgradeCode" = "8:{58326FBE-234A-4DE0-92CF-41A957A8CE23}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.16"
+        "ProductVersion" = "8:1.0.17"
         "Manufacturer" = "8:Evercrest.com"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
