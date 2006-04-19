@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
+using EVEMon.Common;
+
 namespace EVEMon
 {
     public partial class SkillCompleteDialog : EVEMonForm

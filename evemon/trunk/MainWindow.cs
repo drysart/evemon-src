@@ -8,10 +8,11 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Globalization;
-
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
+
+using EVEMon.Common;
 
 namespace EVEMon
 {
@@ -42,7 +43,7 @@ namespace EVEMon
             m_igbServer.Start();
 
             Assembly asm = Assembly.GetExecutingAssembly();
-            using (Stream s = asm.GetManifestResourceStream("EveCharacterMonitor.throbber.png"))
+            using (Stream s = asm.GetManifestResourceStream("EVEMon.throbber.png"))
             using (Image b = Image.FromStream(s, true, true))
             {
                 m_throbberImages = new Image[9];

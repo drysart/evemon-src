@@ -6,6 +6,8 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 
+using EVEMon.Common;
+
 namespace EVEMon.SkillPlanner
 {
     public partial class SkillSelectControl : UserControl

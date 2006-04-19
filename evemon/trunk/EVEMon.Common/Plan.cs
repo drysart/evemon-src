@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Windows.Forms;
 using System.Xml.Serialization;
 using EVEMon;
 
-namespace EVEMon.SkillPlanner
+namespace EVEMon.Common
 {
     [XmlRoot("plan")]
     public class Plan
@@ -575,13 +575,22 @@ namespace EVEMon.SkillPlanner
             return GetEntry(name, level);
         }
 
-        private WeakReference<NewPlannerWindow> m_plannerWindow;
+        private static IPlannerWindowFactory m_plannerWindowFactory;
+
+        [XmlIgnore]
+        public static IPlannerWindowFactory PlannerWindowFactory
+        {
+            get { return m_plannerWindowFactory; }
+            set { m_plannerWindowFactory = value; }
+        }
+
+        private WeakReference<Form> m_plannerWindow;
 
         public void ShowEditor(Settings s, GrandCharacterInfo gci)
         {
             if (m_plannerWindow != null)
             {
-                NewPlannerWindow npw = m_plannerWindow.Target;
+                Form npw = m_plannerWindow.Target;
                 if (npw != null)
                 {
                     try
@@ -604,16 +613,17 @@ namespace EVEMon.SkillPlanner
                 m_plannerWindow = null;
             }
 
-            NewPlannerWindow newWin = new NewPlannerWindow(s, gci, this);
+            Form newWin = m_plannerWindowFactory.CreateWindow(s, gci, this);
+            //NewPlannerWindow newWin = new NewPlannerWindow(s, gci, this);
             newWin.Show();
-            m_plannerWindow = new WeakReference<NewPlannerWindow>(newWin);
+            m_plannerWindow = new WeakReference<Form>(newWin);
         }
 
         public void CloseEditor()
         {
             if (m_plannerWindow != null)
             {
-                NewPlannerWindow npw = m_plannerWindow.Target;
+                Form npw = m_plannerWindow.Target;
                 if (npw != null)
                 {
                     try
@@ -835,5 +845,10 @@ namespace EVEMon.SkillPlanner
                 return m_owner.GrandCharacterInfo.GetSkill(m_skillName);
             }
         }
+    }
+
+    public interface IPlannerWindowFactory
+    {
+        Form CreateWindow(Settings s, GrandCharacterInfo gci, Plan p);
     }
 }

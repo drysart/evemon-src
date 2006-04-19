@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Xml;
 using System.Xml.Serialization;
-using EVEMon.SkillPlanner;
 
-namespace EVEMon
+namespace EVEMon.Common
 {
     [XmlRoot("logindata2")]
     public class Settings
@@ -291,7 +289,7 @@ namespace EVEMon
             set { m_defaultSaveOptions = value; }
         }
 
-        private const string STORE_FILE_NAME = "evecharactermonitor-logindata{0}.xml";
+        private const string STORE_FILE_NAME = "evemon-logindata{0}.xml";
 
         private static string StoreFileName(string key)
         {
@@ -419,7 +417,7 @@ namespace EVEMon
             }
         }
 
-        internal bool AddCharacter(CharLoginInfo cli)
+        public bool AddCharacter(CharLoginInfo cli)
         {
             foreach (CharLoginInfo tx in m_characterList)
             {
@@ -431,7 +429,7 @@ namespace EVEMon
             return true;
         }
 
-        internal static void ResetKey(string p)
+        public static void ResetKey(string p)
         {
             Settings s = new Settings();
             s.SetKey(p);

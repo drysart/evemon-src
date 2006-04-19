@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using EVEMon.Common;
+
 namespace EVEMon
 {
     public partial class UpdateNotifyForm : EVEMonForm

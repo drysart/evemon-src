@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
+using EVEMon.Common;
+
 namespace EVEMon
 {
     public class InstanceManager

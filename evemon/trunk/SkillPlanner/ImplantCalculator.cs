@@ -6,9 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using EVEMon.Common;
+
 namespace EVEMon.SkillPlanner
 {
-    public partial class ImplantCalculator : EVEMon.EVEMonForm
+    public partial class ImplantCalculator : EVEMonForm
     {
         public ImplantCalculator()
         {

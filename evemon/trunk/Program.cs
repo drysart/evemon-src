@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading;
+using EVEMon.Common;
 
 namespace EVEMon
 {
@@ -24,6 +25,7 @@ namespace EVEMon
 
             m_settingKey = String.Empty;
 
+            Plan.PlannerWindowFactory = new SkillPlanner.PlannerWindowFactory();
             EveSession.MainThread = System.Threading.Thread.CurrentThread;
 
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);

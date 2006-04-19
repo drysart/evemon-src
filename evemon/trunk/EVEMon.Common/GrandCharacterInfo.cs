@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO.Compression;
 
-namespace EVEMon
+namespace EVEMon.Common
 {
     public class GrandCharacterInfo
     {
@@ -35,7 +35,7 @@ namespace EVEMon
         private void BuildSkillTree()
         {
             Assembly asm = Assembly.GetExecutingAssembly();
-            using (Stream s = asm.GetManifestResourceStream("EveCharacterMonitor.SkillPlanner.eve-skills2.xml.gz"))
+            using (Stream s = asm.GetManifestResourceStream("EVEMon.Common.eve-skills2.xml.gz"))
             using (GZipStream zs = new GZipStream(s, CompressionMode.Decompress))
             {
                 XmlDocument xdoc = new XmlDocument();
@@ -504,7 +504,7 @@ namespace EVEMon
             set { if (m_isCached != value) { m_isCached = value; OnBioInfoChanged(); } }
         }
 
-        internal void AssignFromSerializableCharacterInfo(SerializableCharacterInfo ci)
+        public void AssignFromSerializableCharacterInfo(SerializableCharacterInfo ci)
         {
             this.SuppressEvents();
             this.Name = ci.Name;
@@ -542,7 +542,7 @@ namespace EVEMon
             this.ResumeEvents();
         }
 
-        internal SerializableCharacterInfo ExportSerializableCharacterInfo()
+        public SerializableCharacterInfo ExportSerializableCharacterInfo()
         {
             SerializableCharacterInfo ci = new SerializableCharacterInfo();
             ci.Name = this.Name;

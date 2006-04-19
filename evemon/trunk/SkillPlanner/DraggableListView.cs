@@ -5,6 +5,8 @@ using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
 
+using EVEMon.Common;
+
 namespace EVEMon.SkillPlanner
 {
     public class DraggableListView: ListView

@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -14,6 +13,7 @@ using System.Xml.XPath;
 using System.Xml.Xsl;
 using System.Xml.Serialization;
 
+using EVEMon.Common;
 using EVEMon.SkillPlanner;
 
 namespace EVEMon
@@ -729,7 +729,7 @@ namespace EVEMon
                 }
 
                 XslCompiledTransform xstDoc2 = new XslCompiledTransform();
-                using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("EveCharacterMonitor.output-" + saveFormat.ToString().ToLower() + ".xsl"))
+                using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("EVEMon.output-" + saveFormat.ToString().ToLower() + ".xsl"))
                 using (XmlTextReader xtr = new XmlTextReader(s))
                 {
                     xstDoc2.Load(xtr);

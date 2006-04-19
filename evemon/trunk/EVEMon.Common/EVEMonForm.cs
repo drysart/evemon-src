@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
-namespace EVEMon
+namespace EVEMon.Common
 {
     public partial class EVEMonForm : Form
     {

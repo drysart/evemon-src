@@ -1,4 +1,4 @@
-namespace EVEMon
+namespace EVEMon.Common
 {
     partial class EVEMonForm
     {

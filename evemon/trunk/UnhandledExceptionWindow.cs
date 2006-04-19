@@ -5,9 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-
 using System.Reflection;
 using System.IO;
+
+using EVEMon.Common;
 
 namespace EVEMon
 {
@@ -31,7 +32,7 @@ namespace EVEMon
             try
             {
                 Assembly casm = Assembly.GetExecutingAssembly();
-                using (Stream s = casm.GetManifestResourceStream("EveCharacterMonitor.bee.jpg"))
+                using (Stream s = casm.GetManifestResourceStream("EVEMon.bee.jpg"))
                 using (Image i = Image.FromStream(s))
                 {
                     int oHeight = i.Height;

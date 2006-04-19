@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Sockets;
 
 using EVEMon;
+using EVEMon.Common;
 using EVEMon.SkillPlanner;
 
 namespace EVEMon.IGBService

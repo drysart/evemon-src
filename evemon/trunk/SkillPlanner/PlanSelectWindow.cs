@@ -9,6 +9,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
+using EVEMon.Common;
+
 namespace EVEMon.SkillPlanner
 {
     public partial class PlanSelectWindow : EVEMonForm

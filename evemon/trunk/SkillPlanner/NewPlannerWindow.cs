@@ -936,4 +936,16 @@ namespace EVEMon.SkillPlanner
             ic.Show();
         }
     }
+
+    public class PlannerWindowFactory : IPlannerWindowFactory
+    {
+        #region IPlannerWindowFactory Members
+
+        public Form CreateWindow(Settings s, GrandCharacterInfo gci, Plan p)
+        {
+            return new NewPlannerWindow(s, gci, p);
+        }
+
+        #endregion
+    }
 }

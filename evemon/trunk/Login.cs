@@ -5,10 +5,11 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Xml;
+
+using EVEMon.Common;
 
 namespace EVEMon
 {
