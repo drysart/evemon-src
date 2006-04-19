@@ -890,7 +890,12 @@ namespace EVEMon
                 using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
                 {
                     double percentComplete = 1.0f;
-                    if (s.Level < 5)
+                    if (s.Level == 0)
+                    {
+                        int NextLevel = s.Level+1;
+                        percentComplete = Convert.ToDouble(s.CurrentSkillPoints) / Convert.ToDouble(s.GetPointsRequiredForLevel(NextLevel));
+                    }
+                    else if (s.Level < 5)
                     {
                         int pointsToNextLevel = s.GetPointsRequiredForLevel(Math.Min(s.Level + 1, 5));
                         int pointsToThisLevel = s.GetPointsRequiredForLevel(s.Level);
@@ -1177,7 +1182,7 @@ namespace EVEMon
                         ttToolTip.Active = true;
                         ttToolTip.SetToolTip(lbSkills, CurrentlyDone + "\n" + ToNextLevel + "\nTraining Time remaining: " + GrandSkill.TimeSpanToDescriptiveText(s.GetTrainingTimeToLevel(NextLevel), DescriptiveTextOptions.IncludeCommas | DescriptiveTextOptions.UppercaseText) + "\n" + s.Description.ToString() + "\nPrimary: " + s.PrimaryAttribute.ToString() + ", Secondary: " + s.SecondaryAttribute.ToString());
                     }
-                    else// We've completed all the skill points for the current level
+                    else if (CurrentSP == s.GetPointsRequiredForLevel(s.Level))// We've completed all the skill points for the current level
                     {
                         if (s.Level != 5)
                         {
@@ -1200,9 +1205,23 @@ namespace EVEMon
                                 String.Format("Level V Complete: {0}/{1} (100%)\nNo further training required\n{2}\nPrimary: {3}, Secondary: {4}",
                                 s.CurrentSkillPoints.ToString("#,##0"),
                                 s.GetPointsRequiredForLevel(5).ToString("#,##0"),
-                                s.Description.ToString(),s.PrimaryAttribute.ToString(),s.SecondaryAttribute.ToString()));
+                                s.Description.ToString(), s.PrimaryAttribute.ToString(), s.SecondaryAttribute.ToString()));
                         }
-                    }                    
+                    }
+                    else// training hasn't got past level 1 yet
+                    {
+                        NextLevel = s.Level + 1;//thus should always be 1
+
+                        //pointsInThisLevel = reqToThisLevel - CurrentSP;
+                        //reqToNextLevel = s.GetPointsRequiredForLevel(NextLevel);
+                        //deltaPointsOfLevel = Convert.ToDouble(reqToNextLevel - reqToThisLevel);
+                        percentDone = Convert.ToDouble(CurrentSP) / Convert.ToDouble(s.GetPointsRequiredForLevel(NextLevel));
+                        PointsRemain = s.GetPointsRequiredForLevel(NextLevel) - s.CurrentSkillPoints;
+                        string CurrentlyDone = String.Format("Partially Completed lvl {0}: {1}/{2} ({3})", GrandSkill.GetRomanSkillNumber(NextLevel), s.CurrentSkillPoints.ToString("#,##0"), s.GetPointsRequiredForLevel(NextLevel).ToString("#,##0"), percentDone.ToString("P0"));
+                        string ToNextLevel = String.Format("To Level {0}: {1} Skill Points remaining", GrandSkill.GetRomanSkillNumber(NextLevel), PointsRemain.ToString("#,##0"));
+                        ttToolTip.Active = true;
+                        ttToolTip.SetToolTip(lbSkills, CurrentlyDone + "\n" + ToNextLevel + "\nTraining Time remaining: " + GrandSkill.TimeSpanToDescriptiveText(s.GetTrainingTimeToLevel(NextLevel), DescriptiveTextOptions.IncludeCommas | DescriptiveTextOptions.UppercaseText) + "\n" + s.Description.ToString() + "\nPrimary: " + s.PrimaryAttribute.ToString() + ", Secondary: " + s.SecondaryAttribute.ToString());
+                    }
                 }
             }
         }
