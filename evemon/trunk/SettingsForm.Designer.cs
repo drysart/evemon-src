@@ -32,6 +32,7 @@ namespace EVEMon
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbWorksafeMode = new System.Windows.Forms.CheckBox();
             this.cbTitleToTime = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -55,7 +56,7 @@ namespace EVEMon
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.cbWorksafeMode = new System.Windows.Forms.CheckBox();
+            this.cbPlaySoundOnSkillComplete = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -77,7 +78,7 @@ namespace EVEMon
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(287, 391);
+            this.btnOk.Location = new System.Drawing.Point(287, 431);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 1;
@@ -89,7 +90,7 @@ namespace EVEMon
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(206, 391);
+            this.btnCancel.Location = new System.Drawing.Point(206, 431);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 2;
@@ -110,6 +111,16 @@ namespace EVEMon
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Window Settings";
             // 
+            // cbWorksafeMode
+            // 
+            this.cbWorksafeMode.AutoSize = true;
+            this.cbWorksafeMode.Location = new System.Drawing.Point(16, 66);
+            this.cbWorksafeMode.Name = "cbWorksafeMode";
+            this.cbWorksafeMode.Size = new System.Drawing.Size(271, 17);
+            this.cbWorksafeMode.TabIndex = 2;
+            this.cbWorksafeMode.Text = "Run in \"safe for work\" mode (no portraits or colors)";
+            this.cbWorksafeMode.UseVisualStyleBackColor = true;
+            // 
             // cbTitleToTime
             // 
             this.cbTitleToTime.AutoSize = true;
@@ -123,12 +134,13 @@ namespace EVEMon
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox2.Controls.Add(this.cbPlaySoundOnSkillComplete);
             this.groupBox2.Controls.Add(this.tableLayoutPanel2);
             this.groupBox2.Controls.Add(this.btnTestEmail);
             this.groupBox2.Controls.Add(this.cbSendEmail);
-            this.groupBox2.Location = new System.Drawing.Point(12, 109);
+            this.groupBox2.Location = new System.Drawing.Point(12, 129);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(350, 272);
+            this.groupBox2.Size = new System.Drawing.Size(350, 292);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Alert Settings";
@@ -141,7 +153,7 @@ namespace EVEMon
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.tlpEmailSettings, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 42);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 66);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -318,7 +330,7 @@ namespace EVEMon
             // btnTestEmail
             // 
             this.btnTestEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTestEmail.Location = new System.Drawing.Point(234, 243);
+            this.btnTestEmail.Location = new System.Drawing.Point(234, 263);
             this.btnTestEmail.Name = "btnTestEmail";
             this.btnTestEmail.Size = new System.Drawing.Size(110, 23);
             this.btnTestEmail.TabIndex = 3;
@@ -329,7 +341,7 @@ namespace EVEMon
             // cbSendEmail
             // 
             this.cbSendEmail.AutoSize = true;
-            this.cbSendEmail.Location = new System.Drawing.Point(16, 19);
+            this.cbSendEmail.Location = new System.Drawing.Point(16, 43);
             this.cbSendEmail.Name = "cbSendEmail";
             this.cbSendEmail.Size = new System.Drawing.Size(215, 17);
             this.cbSendEmail.TabIndex = 0;
@@ -392,21 +404,21 @@ namespace EVEMon
             this.label8.Text = "From address:";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // cbWorksafeMode
+            // cbPlaySoundOnSkillComplete
             // 
-            this.cbWorksafeMode.AutoSize = true;
-            this.cbWorksafeMode.Location = new System.Drawing.Point(16, 66);
-            this.cbWorksafeMode.Name = "cbWorksafeMode";
-            this.cbWorksafeMode.Size = new System.Drawing.Size(271, 17);
-            this.cbWorksafeMode.TabIndex = 2;
-            this.cbWorksafeMode.Text = "Run in \"safe for work\" mode (no portraits or colors)";
-            this.cbWorksafeMode.UseVisualStyleBackColor = true;
+            this.cbPlaySoundOnSkillComplete.AutoSize = true;
+            this.cbPlaySoundOnSkillComplete.Location = new System.Drawing.Point(16, 20);
+            this.cbPlaySoundOnSkillComplete.Name = "cbPlaySoundOnSkillComplete";
+            this.cbPlaySoundOnSkillComplete.Size = new System.Drawing.Size(216, 17);
+            this.cbPlaySoundOnSkillComplete.TabIndex = 5;
+            this.cbPlaySoundOnSkillComplete.Text = "Play sound when skill training completes";
+            this.cbPlaySoundOnSkillComplete.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(374, 426);
+            this.ClientSize = new System.Drawing.Size(374, 466);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
@@ -464,5 +476,6 @@ namespace EVEMon
         private System.Windows.Forms.TableLayoutPanel tlpEmailAuthTable;
         private System.Windows.Forms.CheckBox cbTitleToTime;
         private System.Windows.Forms.CheckBox cbWorksafeMode;
+        private System.Windows.Forms.CheckBox cbPlaySoundOnSkillComplete;
     }
 }

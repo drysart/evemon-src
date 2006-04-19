@@ -251,6 +251,9 @@ namespace EVEMon
         {
             this.Invoke(new MethodInvoker(delegate
             {
+                if (m_settings.PlaySoundOnSkillComplete)
+                    MP3Player.Play("SkillTrained.mp3", true);
+
                 string sa = e.CharacterName + " has finished learning " + e.SkillName + ".";
                 m_completedSkills.Add(sa);
 

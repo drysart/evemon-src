@@ -77,6 +77,7 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="MP3Player.cs" />
     <Compile Include="NoFlickerListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -322,6 +323,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="gpl.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SkillTrained.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1029,10 +1029,8 @@ namespace EVEMon
 
         private void btnDebugError_Click(object sender, EventArgs e)
         {
-            TipWindow.ShowTip("debugtip", "Sample Tip",
-                "This is some example tip text. If you check the box you won't see " +
-                "this window again. It's pretty amazing what you can do with technology " +
-                "these days.");
+            MP3Player.Play("SkillTragined.mp3", true);
+            //MessageBox.Show("done");
         }
 
        private void lbSkills_MouseMove(object sender, MouseEventArgs e)

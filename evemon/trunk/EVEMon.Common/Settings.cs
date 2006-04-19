@@ -384,6 +384,14 @@ namespace EVEMon.Common
 
         public event EventHandler<EventArgs> WorksafeChanged;
 
+        private bool m_playSoundOnSkillComplete = true;
+
+        public bool PlaySoundOnSkillComplete
+        {
+            get { return m_playSoundOnSkillComplete; }
+            set { m_playSoundOnSkillComplete = value; }
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////
 
         private const string STORE_FILE_NAME = "evemon-logindata{0}.xml";
