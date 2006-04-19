@@ -383,7 +383,10 @@ namespace EVEMon.Common
 
         private bool WebLogin()
         {
-            GetUrl("https://myeve.eve-online.com/login.asp?username=" + m_username + "&password=" + m_password +
+            GetUrl("https://myeve.eve-online.com/login.asp?username=" +
+                System.Web.HttpUtility.UrlEncode(m_username) +
+                "&password=" +
+                System.Web.HttpUtility.UrlEncode(m_password) +
                 "&login=Login&Check=OK&r=&t=", null);
             string s = GetUrl("http://myeve.eve-online.com/character/skilltree.asp", null);
             Regex re = new Regex(@"<a href=""/character/skilltree.asp\?characterID=(\d+)"".*?<br>([^<>]+?)<\/td>", RegexOptions.IgnoreCase);
