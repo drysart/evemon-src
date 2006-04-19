@@ -121,13 +121,13 @@ namespace EVEMon
             this.Controls.Add(this.btnIgnore);
             this.Controls.Add(this.btnLater);
             this.Controls.Add(this.btnUpdate);
-            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "UpdateNotifyForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Update Available";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UpdateNotifyForm_FormClosed);
             this.Shown += new System.EventHandler(this.UpdateNotifyForm_Shown);
             this.Load += new System.EventHandler(this.UpdateNotifyForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);

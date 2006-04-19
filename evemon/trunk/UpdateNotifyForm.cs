@@ -63,11 +63,32 @@ namespace EVEMon
 
         private void UpdateNotifyForm_Shown(object sender, EventArgs e)
         {
+            UpdateInformation();
+            UpdateManager.GetInstance().UpdateAvailable += new UpdateAvailableHandler(UpdateNotifyForm_UpdateAvailable);
+        }
+
+        void UpdateNotifyForm_UpdateAvailable(object sender, UpdateAvailableEventArgs e)
+        {
+            m_args = e;
+            UpdateInformation();
+        }
+
+        private void UpdateInformation()
+        {
             string updMessage = m_args.UpdateMessage;
             updMessage.Replace("\r", "");
-            //textBox1.Text = updMessage;
             textBox1.Lines = updMessage.Split('\n');
-            label1.Text = String.Format(label1.Text, m_args.CurrentVersion, m_args.NewestVersion);
+            label1.Text = String.Format(@"An EVEMon update is available.
+
+Current version: {0}
+Newest version: {1}
+
+The newest version has the following updates:", m_args.CurrentVersion, m_args.NewestVersion);
+        }
+
+        private void UpdateNotifyForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            UpdateManager.GetInstance().UpdateAvailable -= new UpdateAvailableHandler(UpdateNotifyForm_UpdateAvailable);
         }
     }
 }

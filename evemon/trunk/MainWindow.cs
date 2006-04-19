@@ -124,6 +124,8 @@ namespace EVEMon
         [DllImport("user32.dll")]
         private static extern bool FlashWindow(IntPtr hwnd, bool bInvert);
 
+        private bool m_updateShowing = false;
+
         private void um_UpdateAvailable(object sender, UpdateAvailableEventArgs e)
         {
             if (e.NewestVersion <= new Version(m_settings.IgnoreUpdateVersion))
@@ -131,13 +133,18 @@ namespace EVEMon
 
             this.Invoke(new MethodInvoker(delegate
             {
-                using (UpdateNotifyForm f = new UpdateNotifyForm(m_settings, e))
+                if (!m_updateShowing)
                 {
-                    f.ShowDialog();
-                    if (f.DialogResult == DialogResult.OK)
+                    m_updateShowing = true;
+                    using (UpdateNotifyForm f = new UpdateNotifyForm(m_settings, e))
                     {
-                        this.Close();
+                        f.ShowDialog();
+                        if (f.DialogResult == DialogResult.OK)
+                        {
+                            this.Close();
+                        }
                     }
+                    m_updateShowing = false;
                 }
             }));
         }
