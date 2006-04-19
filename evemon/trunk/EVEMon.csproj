@@ -324,6 +324,10 @@
       <Project>{C0665275-3E0B-4117-81B0-751206ED03CD}</Project>
       <Name>EVEMon.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="EVEMon.NetworkLogger\EVEMon.NetworkLogger.csproj">
+      <Project>{45877BAD-6688-42DF-A110-DBE9839F99D0}</Project>
+      <Name>EVEMon.NetworkLogger</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

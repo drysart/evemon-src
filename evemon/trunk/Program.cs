@@ -22,6 +22,18 @@ namespace EVEMon
                 return;
             }
 #endif
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            
+            foreach (string targ in Environment.GetCommandLineArgs())
+            {
+                if (targ == "-netlog")
+                {
+                    StartNetlog();
+                    if (m_logger == null)
+                        return;
+                }
+            }
 
             m_settingKey = String.Empty;
 
@@ -31,11 +43,19 @@ namespace EVEMon
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1(ca));
             s_settings = Settings.LoadFromKey(m_settingKey);
             Application.Run(new MainWindow(s_settings));
+
+            if (m_logger != null)
+                m_logger.Dispose();
+        }
+
+        private static IDisposable m_logger;
+
+        private static void StartNetlog()
+        {
+            m_logger = EVEMon.NetworkLogger.Logger.StartLogging();
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -230,6 +230,8 @@ namespace EVEMon.Common
 
         }
 
+        public static event EventHandler<NetworkLogEventArgs> NetworkLogEvent;
+
         private CookieContainer m_cookies;
 
         private string GetUrl(string url, string refer)
@@ -259,21 +261,69 @@ namespace EVEMon.Common
             wr.Referer = refer;
             wr.CookieContainer = m_cookies;
             wr.AllowAutoRedirect = false;
+
+            if (NetworkLogEvent != null)
+            {
+                NetworkLogEventArgs args = new NetworkLogEventArgs();
+                args.NetworkLogEventType = NetworkLogEventType.BeginGetUrl;
+                args.Url = url;
+                args.Referer = refer;
+                //args.Cookies = m_cookies;
+                NetworkLogEvent(this, args);
+            }
+
             HttpWebResponse resp = null;
             try
             {
                 resp = (HttpWebResponse)wr.GetResponse();
             }
-            catch (WebException)
+            catch (WebException err)
             {
+                if (NetworkLogEvent != null)
+                {
+                    NetworkLogEventArgs args = new NetworkLogEventArgs();
+                    args.NetworkLogEventType = NetworkLogEventType.GotUrlFailure;
+                    args.Url = url;
+                    args.Referer = refer;
+                    args.Cookies = resp.Cookies;
+                    args.Exception = err;
+                    NetworkLogEvent(this, args);
+                }
                 Thread.Sleep(TimeSpan.FromSeconds(3));
                 goto AGAIN;
             }
+            catch (Exception err)
+            {
+                if (NetworkLogEvent != null)
+                {
+                    NetworkLogEventArgs args = new NetworkLogEventArgs();
+                    args.NetworkLogEventType = NetworkLogEventType.GotUrlFailure;
+                    args.Url = url;
+                    args.Referer = refer;
+                    args.Cookies = resp.Cookies;
+                    args.Exception = err;
+                    NetworkLogEvent(this, args);
+                }
+                throw;
+            }
+
             if (resp.StatusCode == HttpStatusCode.Redirect)
             {
                 string loc = resp.GetResponseHeader("Location");
                 Uri x = new Uri(url);
                 Uri newUri = new Uri(x, loc);
+
+                if (NetworkLogEvent != null)
+                {
+                    NetworkLogEventArgs args = new NetworkLogEventArgs();
+                    args.NetworkLogEventType = NetworkLogEventType.Redirected;
+                    args.Url = url;
+                    args.Referer = refer;
+                    args.Cookies = resp.Cookies;
+                    args.RedirectTo = newUri.ToString();
+                    NetworkLogEvent(this, args);
+                }
+
                 refer = url;
                 url = newUri.ToString();
                 resp.Close();
@@ -288,13 +338,38 @@ namespace EVEMon.Common
                 sreader.Close();
                 rs.Close();
                 resp.Close();
+
+                if (NetworkLogEvent != null)
+                {
+                    NetworkLogEventArgs args = new NetworkLogEventArgs();
+                    args.NetworkLogEventType = NetworkLogEventType.GotUrlSuccess;
+                    args.Url = url;
+                    args.Referer = refer;
+                    args.Cookies = resp.Cookies;
+                    args.Data = res;
+                    args.StatusCode = resp.StatusCode;
+                    NetworkLogEvent(this, args);
+                }
             }
 
             if (res.Contains("document.onload=window.location.href='"))
             {
                 Match m = Regex.Match(res, @"document\.onload=window\.location\.href='(.*?)';");
+                string newUrl = m.Groups[1].Value;
+
+                if (NetworkLogEvent != null)
+                {
+                    NetworkLogEventArgs args = new NetworkLogEventArgs();
+                    args.NetworkLogEventType = NetworkLogEventType.ParsedRedirect;
+                    args.Url = url;
+                    args.Referer = refer;
+                    args.Cookies = resp.Cookies;
+                    args.RedirectTo = newUrl;
+                    NetworkLogEvent(this, args);
+                }
+
                 refer = url;
-                url = m.Groups[1].Value;
+                url = newUrl;
                 goto AGAIN;
             }
 
@@ -660,6 +735,115 @@ namespace EVEMon.Common
         private double GetAdjustedAttribute(EveAttribute eveAttribute)
         {
             return GetAttributeAdjustment(eveAttribute, SerializableEveAttributeAdjustment.AllWithLearning);
+        }
+    }
+
+    public enum NetworkLogEventType
+    {
+        BeginGetUrl,
+        Redirected,
+        ParsedRedirect,
+        GotUrlSuccess,
+        GotUrlFailure
+    }
+
+    public class NetworkLogEventArgs : EventArgs
+    {
+        internal NetworkLogEventArgs()
+        {
+        }
+
+        private NetworkLogEventType m_type;
+
+        public NetworkLogEventType NetworkLogEventType
+        {
+            get { return m_type; }
+            set { m_type = value; }
+        }
+
+        private string m_url;
+
+        public string Url
+        {
+            get { return m_url; }
+            set { m_url = value; }
+        }
+
+        private string m_referer;
+
+        public string Referer
+        {
+            get { return m_referer; }
+            set { m_referer = value; }
+        }
+
+        private CookieCollection m_cookies;
+
+        [XmlIgnore]
+        public CookieCollection Cookies
+        {
+            get { return m_cookies; }
+            set { m_cookies = value; }
+        }
+
+        public List<string> CookieList
+        {
+            get
+            {
+                if (m_cookies == null)
+                    return null;
+                List<string> cook = new List<string>();
+                foreach (Cookie c in m_cookies)
+                {
+                    cook.Add(c.ToString());
+                }
+                return cook;
+            }
+            set { }
+        }
+
+        private Exception m_exception;
+
+        [XmlIgnore]
+        public Exception Exception
+        {
+            get { return m_exception; }
+            set { m_exception = value; }
+        }
+
+        public string ExceptionText
+        {
+            get {
+                if (m_exception != null)
+                    return m_exception.ToString();
+                else
+                    return null;
+            }
+            set { }
+        }
+
+        private string m_redirectTo;
+
+        public string RedirectTo
+        {
+            get { return m_redirectTo; }
+            set { m_redirectTo = value; }
+        }
+
+        private HttpStatusCode m_statusCode = HttpStatusCode.OK;
+
+        public HttpStatusCode StatusCode
+        {
+            get { return m_statusCode; }
+            set { m_statusCode = value; }
+        }
+
+        private string m_data;
+
+        public string Data
+        {
+            get { return m_data; }
+            set { m_data = value; }
         }
     }
 

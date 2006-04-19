@@ -7,6 +7,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EveCharacterMonitorSetup", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVEMon.Common", "EVEMon.Common\EVEMon.Common.csproj", "{C0665275-3E0B-4117-81B0-751206ED03CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVEMon.NetworkLogger", "EVEMon.NetworkLogger\EVEMon.NetworkLogger.csproj", "{45877BAD-6688-42DF-A110-DBE9839F99D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{C0665275-3E0B-4117-81B0-751206ED03CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0665275-3E0B-4117-81B0-751206ED03CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0665275-3E0B-4117-81B0-751206ED03CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45877BAD-6688-42DF-A110-DBE9839F99D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45877BAD-6688-42DF-A110-DBE9839F99D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45877BAD-6688-42DF-A110-DBE9839F99D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45877BAD-6688-42DF-A110-DBE9839F99D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
