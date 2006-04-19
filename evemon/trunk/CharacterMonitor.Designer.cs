@@ -39,7 +39,7 @@ namespace EVEMon
             this.lblPerception = new System.Windows.Forms.Label();
             this.lblCharisma = new System.Windows.Forms.Label();
             this.lblIntelligence = new System.Windows.Forms.Label();
-            this.lbSkills = new System.Windows.Forms.ListBox();
+            this.lbSkills = new EVEMon.NoFlickerListBox();
             this.pnlTraining = new System.Windows.Forms.Panel();
             this.lblTrainingEst = new System.Windows.Forms.Label();
             this.lblTrainingRemain = new System.Windows.Forms.Label();
@@ -378,7 +378,7 @@ namespace EVEMon
         private System.Windows.Forms.Label lblPerception;
         private System.Windows.Forms.Label lblCharisma;
         private System.Windows.Forms.Label lblIntelligence;
-        private System.Windows.Forms.ListBox lbSkills;
+        private EVEMon.NoFlickerListBox lbSkills;
         private System.Windows.Forms.Panel pnlTraining;
         private System.Windows.Forms.Label lblTrainingEst;
         private System.Windows.Forms.Label lblTrainingRemain;
