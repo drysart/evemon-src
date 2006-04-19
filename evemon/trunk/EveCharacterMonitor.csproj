@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EveCharacterMonitor</RootNamespace>
-    <AssemblyName>EveCharacterMonitor</AssemblyName>
+    <AssemblyName>EVEMon</AssemblyName>
     <ApplicationIcon>eve.exe_I006b_040f.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -344,6 +344,12 @@
     <Content Include="gpl.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="EVEMon.Common\EVEMon.Common.csproj">
+      <Project>{C0665275-3E0B-4117-81B0-751206ED03CD}</Project>
+      <Name>EVEMon.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
