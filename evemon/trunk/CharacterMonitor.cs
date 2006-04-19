@@ -1130,13 +1130,13 @@ namespace EVEMon
 
                     if (sg.GetTotalPoints() < TotalPoints)
                     {
-                        percentDonePoints = Convert.ToDouble((sg.GetTotalPoints() / TotalPoints));
+                        percentDonePoints = (Convert.ToDouble(sg.GetTotalPoints()) / Convert.ToDouble(TotalPoints)*100);
                         percentDoneSkills = Convert.ToDouble(sg.KnownCount) / Convert.ToDouble(sg.Count);
                         PointsRemaining = TotalPoints - sg.GetTotalPoints();
 
                         string SkillGroupStats = String.Format("Points Completed: {0}/{1} ({2}%)\nSkills Known: {3}/{4} ({5})",
                             sg.GetTotalPoints().ToString("#,##0"), TotalPoints.ToString("#,##0"),
-                            percentDonePoints.ToString("P0"), sg.KnownCount.ToString("#"), 
+                            percentDonePoints.ToString("N3"), sg.KnownCount.ToString("#"), 
                             sg.Count.ToString("#"), percentDoneSkills.ToString("P0"));
 
                         ttToolTip.Active = true;
