@@ -39,6 +39,7 @@ namespace EVEMon
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
+            Program.MainWindow = this;
             m_igbServer = new EVEMon.IGBService.IGBServer();
             m_igbServer.Start();
 
@@ -414,6 +415,18 @@ namespace EVEMon
             lblStatus.Text = "Current EVE Time: " + now.ToString(fi.ShortDatePattern+" HH:mm");
             tmrClock.Interval = ((60-now.Minute) * 1000) + (1000-now.Millisecond);
             tmrClock.Enabled = true;
+        }
+
+        public GrandCharacterInfo GetGrandCharacterInfo(string charName)
+        {
+            foreach (TabPage tp in tcCharacterTabs.TabPages)
+            {
+                CharacterMonitor cm = tp.Controls[0] as CharacterMonitor;
+                GrandCharacterInfo gci = cm.GrandCharacterInfo;
+                if (gci != null && gci.Name == charName)
+                    return gci;
+            }
+            return null;
         }
     }
 }

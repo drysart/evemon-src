@@ -665,15 +665,54 @@ namespace EVEMon.Common
 
         public void SaveAsText(System.IO.StreamWriter sw, PlanTextOptions pto, bool includeForumMarkup)
         {
+            SaveAsText(sw, pto, includeForumMarkup ? MarkupType.Forum : MarkupType.None);
+        }
+
+        public void SaveAsText(System.IO.StreamWriter sw, PlanTextOptions pto, MarkupType markupType)
+        {
+            MethodInvoker writeLine = delegate
+            {
+                if (markupType == MarkupType.Html)
+                    sw.WriteLine("<br>");
+                else
+                    sw.WriteLine();
+            };
+            MethodInvoker boldStart = delegate
+            {
+                switch (markupType)
+                {
+                    case MarkupType.None:
+                        break;
+                    case MarkupType.Forum:
+                        sw.Write("[b]");
+                        break;
+                    case MarkupType.Html:
+                        sw.Write("<b>");
+                        break;
+                }
+            };
+            MethodInvoker boldEnd = delegate
+            {
+                switch (markupType)
+                {
+                    case MarkupType.None:
+                        break;
+                    case MarkupType.Forum:
+                        sw.Write("[/b]");
+                        break;
+                    case MarkupType.Html:
+                        sw.Write("</b>");
+                        break;
+                }
+            };
+
             if (pto.IncludeHeader)
             {
-                if (includeForumMarkup)
-                    sw.Write("[b]");
+                boldStart();
                 sw.Write("Skill Plan for {0}", this.GrandCharacterInfo.Name);
-                if (includeForumMarkup)
-                    sw.Write("[/b]");
-                sw.WriteLine();
-                sw.WriteLine();
+                boldEnd();
+                writeLine();
+                writeLine();
             }
 
             EveAttributeScratchpad scratchpad = new EveAttributeScratchpad();
@@ -687,13 +726,11 @@ namespace EVEMon.Common
                 {
                     sw.Write("{0}: ", num);
                 }
-                if (includeForumMarkup)
-                    sw.Write("[b]");
+                boldStart();
                 sw.Write(pe.SkillName);
                 sw.Write(' ');
                 sw.Write(GrandSkill.GetRomanSkillNumber(pe.Level));
-                if (includeForumMarkup)
-                    sw.Write("[/b]");
+                boldEnd();
 
                 TimeSpan trainingTime = pe.Skill.GetTrainingTimeOfLevelOnly(pe.Level, true);
                 DateTime startDate = curDt;
@@ -729,19 +766,17 @@ namespace EVEMon.Common
                     }
                     sw.Write(')');
                 }
-                sw.WriteLine();
+                writeLine();
             }
             if (pto.FooterCount || pto.FooterTotalTime || pto.FooterDate)
             {
-                sw.WriteLine();
+                writeLine();
                 bool needComma = false;
                 if (pto.FooterCount)
                 {
-                    if (includeForumMarkup)
-                        sw.Write("[b]");
+                    boldStart();
                     sw.Write(num.ToString());
-                    if (includeForumMarkup)
-                        sw.Write("[/b]");
+                    boldEnd();
                     sw.Write(" skill");
                     if (num != 1)
                         sw.Write('s');
@@ -752,12 +787,10 @@ namespace EVEMon.Common
                     if (needComma)
                         sw.Write("; ");
                     sw.Write("Total time: ");
-                    if (includeForumMarkup)
-                        sw.Write("[b]");
+                    boldStart();
                     sw.Write(GrandSkill.TimeSpanToDescriptiveText(totalTrainingTime,
                             DescriptiveTextOptions.FullText | DescriptiveTextOptions.IncludeCommas | DescriptiveTextOptions.SpaceText));
-                    if (includeForumMarkup)
-                        sw.Write("[/b]");
+                    boldEnd();
                     needComma = true;
                 }
                 if (pto.FooterDate)
@@ -765,16 +798,21 @@ namespace EVEMon.Common
                     if (needComma)
                         sw.Write("; ");
                     sw.Write("Completion: ");
-                    if (includeForumMarkup)
-                        sw.Write("[b]");
+                    boldStart();
                     sw.Write(curDt.ToString());
-                    if (includeForumMarkup)
-                        sw.Write("[/b]");
+                    boldEnd();
                     needComma = true;
                 }
-                sw.WriteLine();
+                writeLine();
             }
         }
+    }
+
+    public enum MarkupType
+    {
+        None,
+        Forum,
+        Html
     }
 
     public enum PlanEntryType

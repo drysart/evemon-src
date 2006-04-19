@@ -51,6 +51,14 @@ namespace EVEMon
                 m_logger.Dispose();
         }
 
+        private static MainWindow m_mainWindow;
+
+        public static MainWindow MainWindow
+        {
+            get { return m_mainWindow; }
+            set { m_mainWindow = value; }
+        }
+
         private static IDisposable m_logger;
 
         private static void StartNetlog()

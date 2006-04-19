@@ -154,11 +154,12 @@ namespace EVEMon.IGBService
                 sw.WriteLine("not trusted");
                 return;
             }
-            if (requestUrl.StartsWith("/viewplan.x?"))
+            if (requestUrl.StartsWith("/viewplan.x?p="))
             {
-                string planName = requestUrl.Substring(12);
+                string planName = System.Web.HttpUtility.UrlDecode(requestUrl.Substring(14));
                 sw.WriteLine("<html><head><title>Plan</title></head><body>");
-                sw.WriteLine(String.Format("<h1>Plan: {0}</h1>", planName));
+                sw.WriteLine(String.Format("<h1>Plan: {0}</h1>",
+                    System.Web.HttpUtility.HtmlEncode(planName)));
 
                 Plan p = Program.Settings.GetPlanByName(headers["eve.charname"], planName);
                 if (p == null)
@@ -167,10 +168,20 @@ namespace EVEMon.IGBService
                 }
                 else
                 {
-                    foreach (PlanEntry pe in p.Entries)
+                    if (p.GrandCharacterInfo == null)
+                        p.GrandCharacterInfo = Program.MainWindow.GetGrandCharacterInfo(headers["eve.charname"]);
+                    if (p.GrandCharacterInfo == null)
                     {
-                        sw.WriteLine(pe.SkillName + " " + GrandSkill.GetRomanSkillNumber(pe.Level) + "<br>");
+                        sw.Write("Could not get character info");
                     }
+                    else
+                    {
+                        p.SaveAsText(sw, new PlanTextOptions(), MarkupType.Html);
+                    }
+                    //foreach (PlanEntry pe in p.Entries)
+                    //{
+                    //    sw.WriteLine(pe.SkillName + " " + GrandSkill.GetRomanSkillNumber(pe.Level) + "<br>");
+                    //}
                 }
 
                 sw.WriteLine("<hr><a href=\"/\">Back</a>");
@@ -185,7 +196,9 @@ namespace EVEMon.IGBService
                 sw.WriteLine("<h2>Your Plans:</h2>");
                 foreach (string s in Program.Settings.GetPlansForCharacter(headers["eve.charname"]))
                 {
-                    sw.WriteLine(String.Format("<a href=\"/viewplan.x?{0}\">{0}</a><br>", s));
+                    sw.WriteLine(String.Format("<a href=\"/viewplan.x?p={0}\">{1}</a><br>", 
+                        System.Web.HttpUtility.UrlEncode(s),
+                        System.Web.HttpUtility.HtmlEncode(s)));
                 }
 
                 sw.WriteLine("</body></html>");

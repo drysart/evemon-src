@@ -415,6 +415,11 @@ namespace EVEMon
         private string m_shortText = String.Empty;
         private TimeSpan m_shortTimeSpan = TimeSpan.Zero;
 
+        public GrandCharacterInfo GrandCharacterInfo
+        {
+            get { return m_grandCharacterInfo; }
+        }
+
         public string ShortText
         {
             get { return m_shortText; }
