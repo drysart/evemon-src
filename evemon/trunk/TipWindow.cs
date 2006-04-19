@@ -44,19 +44,24 @@ namespace EVEMon
             pictureBox1.Image = b;
         }
 
+        private static object m_lockObject = new object();
+
         public static void ShowTip(string key, string title, string tiptext)
         {
-            Settings s = Program.Settings;
-
-            if (!s.ConfirmedTips.Contains(key))
+            lock (m_lockObject)
             {
-                using (TipWindow tw = new TipWindow(title, tiptext))
+                Settings s = Program.Settings;
+
+                if (!s.ConfirmedTips.Contains(key))
                 {
-                    DialogResult dr = tw.ShowDialog();
-                    if (dr == DialogResult.OK)
+                    using (TipWindow tw = new TipWindow(title, tiptext))
                     {
-                        s.ConfirmedTips.Add(key);
-                        s.Save();
+                        DialogResult dr = tw.ShowDialog();
+                        if (dr == DialogResult.OK)
+                        {
+                            s.ConfirmedTips.Add(key);
+                            s.Save();
+                        }
                     }
                 }
             }

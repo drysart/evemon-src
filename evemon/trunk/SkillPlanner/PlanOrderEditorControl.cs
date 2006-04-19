@@ -185,6 +185,15 @@ namespace EVEMon.SkillPlanner
                             case ColumnPreference.ColumnType.SkillRank:
                                 res = gs.Rank.ToString();
                                 break;
+                            case ColumnPreference.ColumnType.PrimaryAttribute:
+                                res = gs.PrimaryAttribute.ToString();
+                                break;
+                            case ColumnPreference.ColumnType.SecondaryAttribute:
+                                res = gs.SecondaryAttribute.ToString();
+                                break;
+                            case ColumnPreference.ColumnType.SkillGroup:
+                                res = gs.SkillGroup.Name;
+                                break;
                         }
                         lvi.SubItems[x].Text = res;
                     }

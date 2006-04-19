@@ -51,7 +51,10 @@ namespace EVEMon.SkillPlanner
                 "Select skills to add to your plan using the list on the left. To " +
                 "view the list of skills you've added to your plan, choose " +
                 "\"View Plan\" from the dropdown in the upper left.");
+            m_showing = true;
         }
+
+        private bool m_showing = false;
 
         private void NewPlannerWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -74,7 +77,6 @@ namespace EVEMon.SkillPlanner
 
         private void m_plan_Changed(object sender, EventArgs e)
         {
-            //MessageBox.Show("saving");
             m_settings.Save();
             UpdateStatusBar();
         }
@@ -348,8 +350,19 @@ namespace EVEMon.SkillPlanner
             UpdateStatusBar();
         }
 
+        private bool m_suggestionTipUp = false;
+
         private void UpdateStatusBar()
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    UpdateStatusBar();
+                }));
+                return;
+            }
+
             EveAttributeScratchpad scratchpad = new EveAttributeScratchpad();
             TimeSpan res = TimeSpan.Zero;
             foreach (PlanEntry pe in m_plan.Entries)
@@ -366,9 +379,28 @@ namespace EVEMon.SkillPlanner
                 m_plan.Entries.Count == 1 ? "" : "s",
                 m_plan.UniqueSkillCount,
                 m_plan.UniqueSkillCount == 1 ? "" : "s",
-                GrandSkill.TimeSpanToDescriptiveText(res, DescriptiveTextOptions.FullText|DescriptiveTextOptions.IncludeCommas|DescriptiveTextOptions.SpaceText));
+                GrandSkill.TimeSpanToDescriptiveText(res, DescriptiveTextOptions.FullText | DescriptiveTextOptions.IncludeCommas | DescriptiveTextOptions.SpaceText));
 
-            tslSuggestion.Visible = m_plan.HasAttributeSuggestion;
+            if (m_plan.HasAttributeSuggestion)
+            {
+                tslSuggestion.Visible = true;
+                if (m_showing && !m_suggestionTipUp)
+                {
+                    m_suggestionTipUp = true;
+                    TipWindow.ShowTip("suggestion",
+                        "Plan Suggestion",
+                        "EVEMon has analyzed your plan and has come up with a " +
+                        "suggestion of learning skills that you can add that will " +
+                        "lower the overall training time of the plan. To view this " +
+                        "suggestion and the resulting change in plan time, click the " +
+                        "\"Suggestion\" link in the planner status bar.");
+                    m_suggestionTipUp = false;
+                }
+            }
+            else
+            {
+                tslSuggestion.Visible = false;
+            }
         }
 
         private bool SetPlanLabel(Label label, int level)

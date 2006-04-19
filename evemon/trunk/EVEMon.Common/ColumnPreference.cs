@@ -59,7 +59,13 @@ namespace EVEMon.Common
             [ColumnDisplay("Percent Complete", "%")]
             PercentComplete,
             [ColumnDisplay("Skill Rank", "Rank")]
-            SkillRank
+            SkillRank,
+            [ColumnDisplay("Primary Attribute", "Primary")]
+            PrimaryAttribute,
+            [ColumnDisplay("Secondary Attribute", "Secondary")]
+            SecondaryAttribute,
+            [ColumnDisplay("Skill Group", "Group")]
+            SkillGroup
         }
 
         private bool[] m_prefs;
@@ -185,6 +191,27 @@ namespace EVEMon.Common
         {
             get { return this[ColumnType.SkillRank]; }
             set { this[ColumnType.SkillRank] = value; }
+        }
+
+        [XmlAttribute]
+        public bool PrimaryAttribute
+        {
+            get { return this[ColumnType.PrimaryAttribute]; }
+            set { this[ColumnType.PrimaryAttribute] = value; }
+        }
+
+        [XmlAttribute]
+        public bool SecondaryAttribute
+        {
+            get { return this[ColumnType.SecondaryAttribute]; }
+            set { this[ColumnType.SecondaryAttribute] = value; }
+        }
+
+        [XmlAttribute]
+        public bool SkillGroup
+        {
+            get { return this[ColumnType.SkillGroup]; }
+            set { this[ColumnType.SkillGroup] = value; }
         }
     }
 }
