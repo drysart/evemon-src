@@ -142,69 +142,72 @@ namespace EVEMon
 
                     if (gs.Known)
                     {
-                        // Find the existing listbox item...
-                        int lbIndex = -1;
-                        int shouldInsertAt = -1;
-                        bool shouldInsertSkillGroup = true;
-                        bool inMySkillGroup = false;
-                        bool found = false;
-                        for (int i = 0; i < lbSkills.Items.Count; i++)
+                        // Find the existing listbox item... if the group isn't collapsed
+                        if (!m_groupCollapsed.ContainsKey(gsg) || m_groupCollapsed[gsg] == false)
                         {
-                            object o = lbSkills.Items[i];
-                            if (o == gs)
+                            int lbIndex = -1;
+                            int shouldInsertAt = -1;
+                            bool shouldInsertSkillGroup = true;
+                            bool inMySkillGroup = false;
+                            bool found = false;
+                            for (int i = 0; i < lbSkills.Items.Count; i++)
                             {
-                                shouldInsertSkillGroup = false;
-                                lbIndex = i;
-                                found = true;
-                                break;
+                                object o = lbSkills.Items[i];
+                                if (o == gs)
+                                {
+                                    shouldInsertSkillGroup = false;
+                                    lbIndex = i;
+                                    found = true;
+                                    break;
+                                }
+                                else if (o == gsg)
+                                {
+                                    inMySkillGroup = true;
+                                    shouldInsertSkillGroup = false;
+                                }
+                                else if (o is GrandSkillGroup && ((GrandSkillGroup)o).Name.CompareTo(gsg.Name) > 0)
+                                {
+                                    shouldInsertAt = i;
+                                    shouldInsertSkillGroup = (!inMySkillGroup);
+                                    break;
+                                }
+                                else if (inMySkillGroup && o is GrandSkill && ((GrandSkill)o).Name.CompareTo(gs.Name) > 0)
+                                {
+                                    shouldInsertAt = i;
+                                    shouldInsertSkillGroup = false;
+                                    break;
+                                }
                             }
-                            else if (o == gsg)
-                            {
-                                inMySkillGroup = true;
-                                shouldInsertSkillGroup = false;
-                            }
-                            else if (o is GrandSkillGroup && ((GrandSkillGroup)o).Name.CompareTo(gsg.Name) > 0)
-                            {
-                                shouldInsertAt = i;
-                                shouldInsertSkillGroup = (!inMySkillGroup);
-                                break;
-                            }
-                            else if (inMySkillGroup && o is GrandSkill && ((GrandSkill)o).Name.CompareTo(gs.Name) > 0)
-                            {
-                                shouldInsertAt = i;
-                                shouldInsertSkillGroup = false;
-                                break;
-                            }
-                        }
 
-                        if (shouldInsertSkillGroup)
-                        {
-                            if (shouldInsertAt >= 0)
+                            if (shouldInsertSkillGroup)
                             {
-                                lbSkills.Items.Insert(shouldInsertAt, gsg);
-                                shouldInsertAt++;
+                                if (shouldInsertAt >= 0)
+                                {
+                                    lbSkills.Items.Insert(shouldInsertAt, gsg);
+                                    shouldInsertAt++;
+                                }
+                                else
+                                {
+                                    lbSkills.Items.Add(gsg);
+                                    shouldInsertAt = -1;
+                                }
                             }
-                            else
+                            if (!found)
                             {
-                                lbSkills.Items.Add(gsg);
-                                shouldInsertAt = -1;
+                                if (shouldInsertAt >= 0)
+                                {
+                                    lbSkills.Items.Insert(shouldInsertAt, gs);
+                                    lbIndex = shouldInsertAt;
+                                }
+                                else
+                                {
+                                    lbSkills.Items.Add(gs);
+                                    lbIndex = lbSkills.Items.Count - 1;
+                                }
                             }
-                        }
-                        if (!found)
-                        {
-                            if (shouldInsertAt >= 0)
-                            {
-                                lbSkills.Items.Insert(shouldInsertAt, gs);
-                                lbIndex = shouldInsertAt;
-                            }
-                            else
-                            {
-                                lbSkills.Items.Add(gs);
-                                lbIndex = lbSkills.Items.Count - 1;
-                            }
-                        }
 
-                        lbSkills.Invalidate(lbSkills.GetItemRectangle(lbIndex));
+                            lbSkills.Invalidate(lbSkills.GetItemRectangle(lbIndex));
+                        }
                     }
 
                     if (gs.InTraining)
@@ -602,7 +605,8 @@ namespace EVEMon
                 {
                     m_lastTickSPPaint = trainingSkill.CurrentSkillPoints;
                     int idx = lbSkills.Items.IndexOf(trainingSkill);
-                    lbSkills.Invalidate(lbSkills.GetItemRectangle(idx));
+                    if (idx>=0)
+                        lbSkills.Invalidate(lbSkills.GetItemRectangle(idx));
                     int sgidx = lbSkills.Items.IndexOf(trainingSkill.SkillGroup);
                     lbSkills.Invalidate(lbSkills.GetItemRectangle(sgidx));
                     UpdateSkillHeaderStats();
@@ -775,8 +779,47 @@ namespace EVEMon
             }
         }
 
+        private static Image m_collapseImage = null;
+        private static Image m_expandImage = null;
+
+        public static Image CollapseImage
+        {
+            get
+            {
+                if (m_collapseImage == null)
+                {
+                    // Do not use a "using" block because Image.FromStream requires that
+                    // the stream be left open.
+                    Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                        "EVEMon.Collapse_large.png");
+                    m_collapseImage = Image.FromStream(s, true, true);
+                }
+                return m_collapseImage;
+            }
+        }
+
+        public static Image ExpandImage
+        {
+            get
+            {
+                if (m_expandImage == null)
+                {
+                    // Do not use a "using" block because Image.FromStream requires that
+                    // the stream be left open.
+                    Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                        "EVEMon.Expand_large.png");
+                    m_expandImage = Image.FromStream(s, true, true);
+                }
+                return m_expandImage;
+            }
+        }
+
+        private Dictionary<GrandSkillGroup, bool> m_groupCollapsed = new Dictionary<GrandSkillGroup, bool>();
+
         private const int SKILL_HEADER_HEIGHT = 21;
         private const int SKILL_DETAIL_HEIGHT = 31;
+
+        private const int SG_COLLAPSER_PAD_RIGHT = 6;
 
         private void lbSkills_DrawItem(object sender, DrawItemEventArgs e)
         {
@@ -793,6 +836,10 @@ namespace EVEMon
                 {
                     g.FillRectangle(b, e.Bounds);
                 }
+                using (Pen p = new Pen(Color.FromArgb(100, 100, 100)))
+                {
+                    g.DrawLine(p, e.Bounds.Left, e.Bounds.Top, e.Bounds.Right + 1, e.Bounds.Top);
+                }
                 using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
                 {
                     Size titleSizeInt = TextRenderer.MeasureText(g, sg.Name, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
@@ -800,11 +847,29 @@ namespace EVEMon
                         e.Bounds.Top + ((e.Bounds.Height / 2) - (titleSizeInt.Height / 2)));
                     Point detailTopLeftInt = new Point(titleTopLeftInt.X + titleSizeInt.Width, titleTopLeftInt.Y);
 
-                    string detailText = String.Format(", {0} Skill{1}, {2} Points",
-                        sg.KnownCount, sg.KnownCount > 1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
+                    string trainingStr = String.Empty;
+                    if (m_grandCharacterInfo.CurrentlyTrainingSkill != null &&
+                        m_grandCharacterInfo.CurrentlyTrainingSkill.SkillGroup == sg)
+                    {
+                        trainingStr = ", 1 training";
+                    }
+                    string detailText = String.Format(", {0} Skill{1}, {2} Points{3}",
+                        sg.KnownCount,
+                        sg.KnownCount > 1 ? "s" : "",
+                        sg.GetTotalPoints().ToString("#,##0"),
+                        trainingStr);
                     TextRenderer.DrawText(g, sg.Name, boldf, titleTopLeftInt, Color.White);
                     TextRenderer.DrawText(g, detailText, lbSkills.Font, detailTopLeftInt, Color.White);
                 }
+
+                Image i;
+                if (m_groupCollapsed.ContainsKey(sg) && m_groupCollapsed[sg]==true)
+                    i = CharacterMonitor.ExpandImage;
+                else
+                    i = CharacterMonitor.CollapseImage;
+
+                g.DrawImageUnscaled(i, new Point(e.Bounds.Right - i.Width - SG_COLLAPSER_PAD_RIGHT,
+                    (SKILL_HEADER_HEIGHT / 2) - (i.Height / 2) + e.Bounds.Top));
             }
             else if (item is GrandSkill)
             {
@@ -908,9 +973,9 @@ namespace EVEMon
             if (e.Index < 0)
                 return;
             object item = lbSkills.Items[e.Index];
-            if (item is SerializableSkillGroup || item is GrandSkillGroup)
+            if (item is GrandSkillGroup)
                 e.ItemHeight = SKILL_HEADER_HEIGHT;
-            else if (item is SerializableSkill || item is GrandSkill)
+            else if (item is GrandSkill)
                 e.ItemHeight = SKILL_DETAIL_HEIGHT;
         }
 
@@ -1019,6 +1084,28 @@ namespace EVEMon
                 if (item is GrandSkillGroup)
                 {
                     GrandSkillGroup sg = (GrandSkillGroup)item;
+
+                    bool isCollapsed;
+                    if (m_groupCollapsed.ContainsKey(sg) && m_groupCollapsed[sg] == true)
+                        isCollapsed = true;
+                    else
+                        isCollapsed = false;
+                    Image btnImage;
+                    if (isCollapsed)
+                        btnImage = CharacterMonitor.ExpandImage;
+                    else
+                        btnImage = CharacterMonitor.CollapseImage;
+                    Size btnSize = btnImage.Size;
+                    Rectangle itemRect = lbSkills.GetItemRectangle(lbSkills.Items.IndexOf(item));
+                    Point btnPoint = new Point(itemRect.Right - btnImage.Width - SG_COLLAPSER_PAD_RIGHT,
+                        (SKILL_HEADER_HEIGHT / 2) - (btnImage.Height / 2) + itemRect.Top);
+                    Rectangle buttonRect = new Rectangle(btnPoint, btnSize);
+                    if (buttonRect.Contains(e.Location))
+                    {
+                        ToggleGroupExpandCollapse(sg);
+                        return;
+                    }
+
                     //GrandSkill s (GrandSkill)item;
                     int TotalPoints = 0;
                     int PointsRemaining = 0;
@@ -1130,6 +1217,46 @@ namespace EVEMon
                     }                    
                 }
             }
+        }
+
+        private void ToggleGroupExpandCollapse(GrandSkillGroup gsg)
+        {
+            bool isCollapsed;
+            if (m_groupCollapsed.ContainsKey(gsg) && m_groupCollapsed[gsg] == true)
+                isCollapsed = true;
+            else
+                isCollapsed = false;
+
+            m_groupCollapsed[gsg] = !isCollapsed;
+            if (!isCollapsed)
+            {
+                // Remove the skills in the group from the list
+                for (int i = 0; i < lbSkills.Items.Count; i++)
+                {
+                    object o = lbSkills.Items[i];
+                    if (o is GrandSkill)
+                    {
+                        GrandSkill gs = (GrandSkill)o;
+                        if (gs.SkillGroup == gsg)
+                        {
+                            lbSkills.Items.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                List<GrandSkill> skillList = new List<GrandSkill>();
+                foreach (GrandSkill gs in gsg)
+                {
+                    skillList.Add(gs);
+                }
+                SkillChangedEventArgs args = new SkillChangedEventArgs(skillList.ToArray());
+                m_grandCharacterInfo_SkillChanged(this, args);
+                //void m_grandCharacterInfo_SkillChanged(object sender, SkillChangedEventArgs e)
+            }
+            lbSkills.Invalidate(lbSkills.GetItemRectangle(lbSkills.Items.IndexOf(gsg)));
         }  
 
         private bool m_throbberRunning = false;
@@ -1222,6 +1349,40 @@ namespace EVEMon
         private void pbThrobber_MouseEnter(object sender, EventArgs e)
         {
             ttToolTip.Active = true;
+        }
+
+        private void llToggleAll_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            List<GrandSkillGroup> toggles = new List<GrandSkillGroup>();
+            bool? setCollapsed = null;
+            foreach (object o in lbSkills.Items)
+            {
+                if (o is GrandSkillGroup)
+                {
+                    GrandSkillGroup gsg = (GrandSkillGroup)o;
+                    bool isCollapsed = (m_groupCollapsed.ContainsKey(gsg) && m_groupCollapsed[gsg] == true);
+                    if (setCollapsed == null)
+                    {
+                        setCollapsed = !isCollapsed;
+                    }
+                    if (isCollapsed != setCollapsed)
+                    {
+                        toggles.Add(gsg);
+                    }
+                }
+            }
+            lbSkills.BeginUpdate();
+            try
+            {
+                foreach (GrandSkillGroup toggroup in toggles)
+                {
+                    ToggleGroupExpandCollapse(toggroup);
+                }
+            }
+            finally
+            {
+                lbSkills.EndUpdate();
+            }
         }     
     }
 

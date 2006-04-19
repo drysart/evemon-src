@@ -56,6 +56,7 @@ namespace EVEMon
             this.sfdSaveDialog = new System.Windows.Forms.SaveFileDialog();
             this.ttToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tmrThrobber = new System.Windows.Forms.Timer(this.components);
+            this.llToggleAll = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pbCharImage)).BeginInit();
             this.pnlTraining.SuspendLayout();
             this.pnlCharData.SuspendLayout();
@@ -231,6 +232,7 @@ namespace EVEMon
             // 
             // pnlCharData
             // 
+            this.pnlCharData.Controls.Add(this.llToggleAll);
             this.pnlCharData.Controls.Add(this.pbThrobber);
             this.pnlCharData.Controls.Add(this.btnDebugError);
             this.pnlCharData.Controls.Add(this.lblSkillHeader);
@@ -331,6 +333,18 @@ namespace EVEMon
             // 
             this.tmrThrobber.Tick += new System.EventHandler(this.tmrThrobber_Tick);
             // 
+            // llToggleAll
+            // 
+            this.llToggleAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.llToggleAll.AutoSize = true;
+            this.llToggleAll.Location = new System.Drawing.Point(331, 132);
+            this.llToggleAll.Name = "llToggleAll";
+            this.llToggleAll.Size = new System.Drawing.Size(53, 13);
+            this.llToggleAll.TabIndex = 17;
+            this.llToggleAll.TabStop = true;
+            this.llToggleAll.Text = "Toggle All";
+            this.llToggleAll.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llToggleAll_LinkClicked);
+            // 
             // CharacterMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -381,5 +395,6 @@ namespace EVEMon
         private System.Windows.Forms.ToolTip ttToolTip;
         private System.Windows.Forms.PictureBox pbThrobber;
         private System.Windows.Forms.Timer tmrThrobber;
+        private System.Windows.Forms.LinkLabel llToggleAll;
     }
 }
