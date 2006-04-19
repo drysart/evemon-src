@@ -889,10 +889,14 @@ namespace EVEMon
 
                 using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
                 {
-                    int pointsToNextLevel = s.GetPointsRequiredForLevel(Math.Min(s.Level + 1, 5));
-                    int pointsToThisLevel = s.GetPointsRequiredForLevel(s.Level);
-                    int pointsDelta = pointsToNextLevel - pointsToThisLevel;
-                    double percentComplete = Convert.ToDouble(s.CurrentSkillPoints - pointsToThisLevel) / Convert.ToDouble(pointsDelta);
+                    double percentComplete = 1.0f;
+                    if (s.Level < 5)
+                    {
+                        int pointsToNextLevel = s.GetPointsRequiredForLevel(Math.Min(s.Level + 1, 5));
+                        int pointsToThisLevel = s.GetPointsRequiredForLevel(s.Level);
+                        int pointsDelta = pointsToNextLevel - pointsToThisLevel;
+                        percentComplete = Convert.ToDouble(s.CurrentSkillPoints - pointsToThisLevel) / Convert.ToDouble(pointsDelta);
+                    }
 
                     string skillName = s.Name + " " + GrandSkill.GetRomanSkillNumber(s.Level);
                     string rankText = " (Rank " + s.Rank.ToString() + ")";
