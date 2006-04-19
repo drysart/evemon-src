@@ -565,6 +565,8 @@ namespace EveCharacterMonitor
             }
         }
 
+        private int m_lastTickSPPaint = 0;
+
         private void tmrTick_Tick(object sender, EventArgs e)
         {
             CalcSkillRemainText();
@@ -572,11 +574,15 @@ namespace EveCharacterMonitor
             GrandSkill trainingSkill = m_grandCharacterInfo.CurrentlyTrainingSkill;
             if (trainingSkill != null)
             {
-                int idx = lbSkills.Items.IndexOf(trainingSkill);
-                lbSkills.Invalidate(lbSkills.GetItemRectangle(idx));
-                int sgidx = lbSkills.Items.IndexOf(trainingSkill.SkillGroup);
-                lbSkills.Invalidate(lbSkills.GetItemRectangle(sgidx));
-                UpdateSkillHeaderStats();
+                if (trainingSkill.CurrentSkillPoints != m_lastTickSPPaint)
+                {
+                    m_lastTickSPPaint = trainingSkill.CurrentSkillPoints;
+                    int idx = lbSkills.Items.IndexOf(trainingSkill);
+                    lbSkills.Invalidate(lbSkills.GetItemRectangle(idx));
+                    int sgidx = lbSkills.Items.IndexOf(trainingSkill.SkillGroup);
+                    lbSkills.Invalidate(lbSkills.GetItemRectangle(sgidx));
+                    UpdateSkillHeaderStats();
+                }
             }
 
             if (m_estimatedCompletion < DateTime.Now && m_skillTrainingName != m_lastCompletedSkill)
@@ -746,7 +752,7 @@ namespace EveCharacterMonitor
         }
 
         private const int SKILL_HEADER_HEIGHT = 21;
-        private const int SKILL_DETAIL_HEIGHT = 16;
+        private const int SKILL_DETAIL_HEIGHT = 31;
 
         private void lbSkills_DrawItem(object sender, DrawItemEventArgs e)
         {
@@ -787,19 +793,88 @@ namespace EveCharacterMonitor
 
                 using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
                 {
+                    int pointsToNextLevel = s.GetPointsRequiredForLevel(Math.Min(s.Level + 1, 5));
+                    int pointsToThisLevel = s.GetPointsRequiredForLevel(s.Level);
+                    int pointsDelta = pointsToNextLevel - pointsToThisLevel;
+                    double percentComplete = Convert.ToDouble(s.CurrentSkillPoints - pointsToThisLevel) / Convert.ToDouble(pointsDelta);
+
                     string skillName = s.Name + " " + GrandSkill.GetRomanSkillNumber(s.Level);
-                    Size skillNameSizeInt = TextRenderer.MeasureText(g, skillName, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
-                    Point skillNameTopLeftInt = new Point(e.Bounds.Left + 6,
-                        e.Bounds.Top + ((e.Bounds.Height / 2) - (skillNameSizeInt.Height / 2)));
-                    Point detailTopLeftInt = new Point(skillNameTopLeftInt.X + skillNameSizeInt.Width, skillNameTopLeftInt.Y);
+                    string rankText = " (Rank " + s.Rank.ToString() + ")";
+                    string spText = "SP: " + s.CurrentSkillPoints.ToString("#,##0") + "/" +
+                        s.GetPointsRequiredForLevel(Math.Min(s.Level + 1, 5)).ToString("#,##0");
+                    string levelText = "Level " + s.Level.ToString();
+                    string pctText = percentComplete.ToString("0%") + " Done";
 
-                    TextRenderer.DrawText(g, skillName, boldf, skillNameTopLeftInt, Color.Black);
-                    TextRenderer.DrawText(g, " (Rank " + s.Rank.ToString() + ")", lbSkills.Font, detailTopLeftInt, Color.Black);
+                    int PAD_TOP = 2;
+                    int PAD_LEFT = 6;
+                    int PAD_RIGHT = 7;
+                    int LINE_VPAD = 0;
 
-                    string skillPoints = String.Format("{0}/{1}", s.CurrentSkillPoints.ToString("#,##0"), s.GetPointsRequiredForLevel(5).ToString("#,##0"));
-                    Size skillPointSizeInt = TextRenderer.MeasureText(g, skillPoints, lbSkills.Font, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
-                    Point skillPointTopLeftInt = new Point(e.Bounds.Right - skillPointSizeInt.Width - 6, skillNameTopLeftInt.Y);
-                    TextRenderer.DrawText(g, skillPoints, lbSkills.Font, skillPointTopLeftInt, Color.Black);
+                    Size skillNameSize = TextRenderer.MeasureText(g, skillName, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+                    Size levelTextSize = TextRenderer.MeasureText(g, levelText, lbSkills.Font, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+                    Size pctTextSize = TextRenderer.MeasureText(g, pctText, lbSkills.Font, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+
+                    TextRenderer.DrawText(g, skillName, boldf, new Point(e.Bounds.Left + PAD_LEFT, e.Bounds.Top + PAD_TOP), Color.Black);
+                    TextRenderer.DrawText(g, rankText, lbSkills.Font,
+                        new Point(e.Bounds.Left + PAD_LEFT + skillNameSize.Width, e.Bounds.Top + PAD_TOP), Color.Black);
+                    TextRenderer.DrawText(g, spText, lbSkills.Font,
+                        new Point(e.Bounds.Left + PAD_LEFT, e.Bounds.Top + PAD_TOP + skillNameSize.Height + LINE_VPAD), Color.Black);
+
+                    // Boxes
+                    int BOX_WIDTH = 57;
+                    int BOX_HEIGHT = 14;
+                    int SUBBOX_HEIGHT = 8;
+                    int BOX_HPAD = 6;
+                    int BOX_VPAD = 2;
+                    g.DrawRectangle(Pens.Black,
+                        new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT, e.Bounds.Top + PAD_TOP, BOX_WIDTH, BOX_HEIGHT));
+                    int bWidth = (BOX_WIDTH - 4 - 3) / 5;
+                    for (int bn = 1; bn <= 5; bn++)
+                    {
+                        //if (bn > s.Level)
+                        //    break;
+                        Rectangle brect = new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT + 2 + (bWidth*(bn-1)) + (bn-1),
+                            e.Bounds.Top + PAD_TOP + 2, bWidth, BOX_HEIGHT - 3);
+                        if (bn <= s.Level)
+                            g.FillRectangle(Brushes.Black, brect);
+                        else
+                            g.FillRectangle(Brushes.DarkGray, brect);
+                    }
+
+                    // Percent Bar
+                    g.DrawRectangle(Pens.Black,
+                        new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT, e.Bounds.Top + PAD_TOP + BOX_HEIGHT + BOX_VPAD, BOX_WIDTH, SUBBOX_HEIGHT));
+                    Rectangle pctBarRect = new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT + 2,
+                        e.Bounds.Top + PAD_TOP + BOX_HEIGHT + BOX_VPAD + 2,
+                        BOX_WIDTH - 3, SUBBOX_HEIGHT - 3);
+                    g.FillRectangle(Brushes.DarkGray, pctBarRect);
+                    int fillWidth = Convert.ToInt32(
+                        Math.Round(Convert.ToDouble(pctBarRect.Width) * percentComplete));
+                    if (fillWidth > 0)
+                    {
+                        Rectangle fillRect = new Rectangle(pctBarRect.X, pctBarRect.Y,
+                            fillWidth, pctBarRect.Height);
+                        g.FillRectangle(Brushes.Black, fillRect);
+                    }
+
+                    TextRenderer.DrawText(g, levelText, lbSkills.Font,
+                        new Point(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT - BOX_HPAD - levelTextSize.Width, e.Bounds.Top + PAD_TOP), Color.Black);
+                    TextRenderer.DrawText(g, pctText, lbSkills.Font,
+                        new Point(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT - BOX_HPAD - pctTextSize.Width, e.Bounds.Top + PAD_TOP + levelTextSize.Height + LINE_VPAD), Color.Black);
+
+
+                    //Size skillNameSizeInt = TextRenderer.MeasureText(g, skillName, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+                    //Point skillNameTopLeftInt = new Point(e.Bounds.Left + 6,
+                    //    e.Bounds.Top + ((e.Bounds.Height / 2) - (skillNameSizeInt.Height / 2)));
+                    //Point detailTopLeftInt = new Point(skillNameTopLeftInt.X + skillNameSizeInt.Width, skillNameTopLeftInt.Y);
+
+                    //TextRenderer.DrawText(g, skillName, boldf, skillNameTopLeftInt, Color.Black);
+                    //TextRenderer.DrawText(g, " (Rank " + s.Rank.ToString() + ")", lbSkills.Font, detailTopLeftInt, Color.Black);
+
+                    //string skillPoints = String.Format("{0}/{1}", s.CurrentSkillPoints.ToString("#,##0"), s.GetPointsRequiredForLevel(5).ToString("#,##0"));
+                    //Size skillPointSizeInt = TextRenderer.MeasureText(g, skillPoints, lbSkills.Font, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+                    //Point skillPointTopLeftInt = new Point(e.Bounds.Right - skillPointSizeInt.Width - 6, skillNameTopLeftInt.Y);
+                    //TextRenderer.DrawText(g, skillPoints, lbSkills.Font, skillPointTopLeftInt, Color.Black);
                 }
             }
         }
