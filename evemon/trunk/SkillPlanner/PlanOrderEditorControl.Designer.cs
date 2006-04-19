@@ -41,10 +41,10 @@ namespace EVEMon.SkillPlanner
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.tsbAddSkill = new System.Windows.Forms.ToolStripButton();
+            this.tsbRemoveSkill = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.lvSkills = new EVEMon.SkillPlanner.DraggableListView();
-            this.tsbRemoveSkill = new System.Windows.Forms.ToolStripButton();
             this.cmsContextMenu.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -92,6 +92,7 @@ namespace EVEMon.SkillPlanner
             this.toolStrip1.Size = new System.Drawing.Size(38, 558);
             this.toolStrip1.TabIndex = 10;
             this.toolStrip1.Text = "toolStrip1";
+            this.toolStrip1.Visible = false;
             // 
             // toolStripLabel1
             // 
@@ -139,6 +140,16 @@ namespace EVEMon.SkillPlanner
             this.tsbAddSkill.Size = new System.Drawing.Size(35, 20);
             this.tsbAddSkill.Text = "toolStripButton3";
             // 
+            // tsbRemoveSkill
+            // 
+            this.tsbRemoveSkill.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbRemoveSkill.Enabled = false;
+            this.tsbRemoveSkill.Image = ((System.Drawing.Image)(resources.GetObject("tsbRemoveSkill.Image")));
+            this.tsbRemoveSkill.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRemoveSkill.Name = "tsbRemoveSkill";
+            this.tsbRemoveSkill.Size = new System.Drawing.Size(35, 20);
+            this.tsbRemoveSkill.Text = "toolStripButton4";
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.linkLabel1);
@@ -177,16 +188,6 @@ namespace EVEMon.SkillPlanner
             this.lvSkills.ListViewItemsDragged += new System.EventHandler<System.EventArgs>(this.lvSkills_ListViewItemsDragged);
             this.lvSkills.ListViewItemsDragging += new System.EventHandler<EVEMon.SkillPlanner.ListViewDragEventArgs>(this.lvSkills_ListViewItemsDragging);
             this.lvSkills.ColumnReordered += new System.Windows.Forms.ColumnReorderedEventHandler(this.lvSkills_ColumnReordered);
-            // 
-            // tsbRemoveSkill
-            // 
-            this.tsbRemoveSkill.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRemoveSkill.Enabled = false;
-            this.tsbRemoveSkill.Image = ((System.Drawing.Image)(resources.GetObject("tsbRemoveSkill.Image")));
-            this.tsbRemoveSkill.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbRemoveSkill.Name = "tsbRemoveSkill";
-            this.tsbRemoveSkill.Size = new System.Drawing.Size(35, 20);
-            this.tsbRemoveSkill.Text = "toolStripButton4";
             // 
             // PlanOrderEditorControl
             // 
