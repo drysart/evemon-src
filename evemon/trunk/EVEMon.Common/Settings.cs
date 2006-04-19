@@ -162,8 +162,17 @@ namespace EVEMon.Common
             }
         }
 
+        private string GetInternalPlanName(string charName, string planName)
+        {
+            if (planName == PLAN_DEFAULT)
+                return charName;
+            else
+                return charName + "::" + planName;
+        }
+
         public Plan GetPlanByName(string charName, string planName)
         {
+            string pn = GetInternalPlanName(charName, planName);
             foreach (Pair<string, Plan> x in m_plans)
             {
                 if (planName == PLAN_DEFAULT && x.A == charName)
@@ -219,6 +228,34 @@ namespace EVEMon.Common
             this.Save();
         }
 
+        public bool RenamePlanFor(string charName, string planName, string newName)
+        {
+            if (GetPlanByName(charName, newName) != null)
+                return false;
+
+            bool found = false;
+            for (int i = 0; i < m_plans.Count; i++)
+            {
+                if (planName == PLAN_DEFAULT && m_plans[i].A == charName)
+                {
+                    m_plans[i].A = charName + "::" + newName;
+                    found = true;
+                    break;
+                }
+                else if (m_plans[i].A == charName + "::" + planName)
+                {
+                    if (newName != PLAN_DEFAULT)
+                        m_plans[i].A = charName + "::" + newName;
+                    else
+                        m_plans[i].A = charName;
+                    found = true;
+                    break;
+                }
+            }
+            this.Save();
+            return found;
+        }
+
         public void RemoveAllPlansFor(string charName)
         {
             for (int i = 0; i < m_plans.Count; i++)
@@ -230,6 +267,48 @@ namespace EVEMon.Common
                     m_plans.RemoveAt(i);
                     i--;
                 }
+            }
+            this.Save();
+        }
+
+        public void RearrangePlansFor(string charName, List<string> newOrder)
+        {
+            List<Pair<string, Plan>> plans = new List<Pair<string, Plan>>();
+            for (int i = 0; i < newOrder.Count; i++)
+            {
+                plans.Add(null);
+            }
+            for (int i = 0; i < m_plans.Count; i++)
+            {
+                if (m_plans[i].A.StartsWith(charName + "::") || m_plans[i].A == charName)
+                {
+                    Pair<string, Plan> tp = m_plans[i];
+                    m_plans.RemoveAt(i);
+                    i--;
+
+                    bool added = false;
+                    string tPlanName = null;
+                    if (tp.A == charName)
+                        tPlanName = PLAN_DEFAULT;
+                    else
+                        tPlanName = tp.A.Substring(tp.A.IndexOf("::") + 2);
+                    for (int x = 0; x < newOrder.Count; x++)
+                    {
+                        if (newOrder[x] == tPlanName)
+                        {
+                            plans[x] = tp;
+                            added = true;
+                            break;
+                        }
+                    }
+                    if (!added)
+                        plans.Add(tp);
+                }
+            }
+            foreach (Pair<string, Plan> p in plans)
+            {
+                if (p != null)
+                    m_plans.Add(p);
             }
             this.Save();
         }

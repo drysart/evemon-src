@@ -43,18 +43,40 @@ namespace EVEMon.SkillPlanner
 
         private void PopulatePlanList()
         {
-            lbPlanList.Items.Clear();
-            lbPlanList.Items.Add("<New Plan>");
-
-            foreach (string planName in m_settings.GetPlansForCharacter(m_grandCharacterInfo.Name))
+            lbPlanList.BeginUpdate();
+            try
             {
-                lbPlanList.Items.Add(planName);
+                lbPlanList.Items.Clear();
+                lbPlanList.Items.Add("<New Plan>");
+
+                foreach (string planName in m_settings.GetPlansForCharacter(m_grandCharacterInfo.Name))
+                {
+                    lbPlanList.Items.Add(planName);
+                }
+            }
+            finally
+            {
+                lbPlanList.EndUpdate();
             }
         }
 
         private void lbPlanList_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnOpen.Enabled = (lbPlanList.SelectedItem != null);
+            tsbRenamePlan.Enabled = (lbPlanList.SelectedItem != null && lbPlanList.SelectedIndex > 0);
+            tsbDeletePlan.Enabled = (lbPlanList.SelectedItem != null && lbPlanList.SelectedIndex > 0);
+
+            if (lbPlanList.SelectedItem == null)
+            {
+                tsbMoveUp.Enabled = false;
+                tsbMoveDown.Enabled = false;
+            }
+            else
+            {
+                int idx = lbPlanList.SelectedIndex;
+                tsbMoveUp.Enabled = (idx > 1);
+                tsbMoveDown.Enabled = (idx < lbPlanList.Items.Count - 1 && idx > 0);
+            }
         }
 
         private Plan m_result;
@@ -83,7 +105,7 @@ namespace EVEMon.SkillPlanner
                 btnOpen_Click(this, new EventArgs());
         }
 
-        private void btnLoadFromFile_Click(object sender, EventArgs e)
+        private void LoadPlan()
         {
             DialogResult dr = ofdOpenDialog.ShowDialog();
             if (dr == DialogResult.Cancel)
@@ -135,6 +157,93 @@ namespace EVEMon.SkillPlanner
                     "Could Not Load Plan", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            PopulatePlanList();
+        }
+
+        private void tsbLoadPlan_Click(object sender, EventArgs e)
+        {
+            LoadPlan();
+        }
+
+        private void tsbRenamePlan_Click(object sender, EventArgs e)
+        {
+            using (NewPlanWindow f = new NewPlanWindow())
+            {
+                f.Text = "Rename Plan";
+                DialogResult dr = f.ShowDialog();
+                if (dr == DialogResult.Cancel)
+                    return;
+                string oldName = (string)lbPlanList.SelectedItem;
+                string newName = f.Result;
+                if (oldName == newName)
+                    return;
+                if (m_settings.GetPlanByName(m_grandCharacterInfo.Name, newName) != null)
+                {
+                    MessageBox.Show("A plan with that name already exists.",
+                        "Duplicate Plan Name", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    return;
+                }
+                m_settings.RenamePlanFor(m_grandCharacterInfo.Name,
+                    oldName, f.Result);
+
+                PopulatePlanList();
+            }
+        }
+
+        private void tsbMoveUp_Click(object sender, EventArgs e)
+        {
+            int idx = lbPlanList.SelectedIndex;
+            List<string> newOrder = new List<string>();
+            for (int i = 1; i < lbPlanList.Items.Count; i++)
+            {
+                if (i == idx - 1)
+                    newOrder.Add((string)lbPlanList.SelectedItem);
+                if (i != idx)
+                    newOrder.Add((string)lbPlanList.Items[i]);
+            }
+            FinalizePlanReorder(idx - 1, newOrder);
+        }
+
+        private void FinalizePlanReorder(int idx, List<string> newOrder)
+        {
+            m_settings.RearrangePlansFor(m_grandCharacterInfo.Name, newOrder);
+
+            lbPlanList.BeginUpdate();
+            try
+            {
+                PopulatePlanList();
+                lbPlanList.SelectedIndex = idx;
+            }
+            finally
+            {
+                lbPlanList.EndUpdate();
+            }
+        }
+
+        private void tsbMoveDown_Click(object sender, EventArgs e)
+        {
+            int idx = lbPlanList.SelectedIndex;
+            List<string> newOrder = new List<string>();
+            for (int i = 1; i < lbPlanList.Items.Count; i++)
+            {
+                if (i != idx)
+                    newOrder.Add((string)lbPlanList.Items[i]);
+                if (i == idx + 1)
+                    newOrder.Add((string)lbPlanList.SelectedItem);
+            }
+            FinalizePlanReorder(idx + 1, newOrder);
+        }
+
+        private void tsbDeletePlan_Click(object sender, EventArgs e)
+        {
+            string planName = (string)lbPlanList.SelectedItem;
+
+            DialogResult dr = MessageBox.Show("Are you sure you want to delete \"" + planName +
+                "\"?", "Delete Plan", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            if (dr != DialogResult.Yes)
+                return;
+
+            m_settings.RemovePlanFor(m_grandCharacterInfo.Name, planName);
             PopulatePlanList();
         }
     }
