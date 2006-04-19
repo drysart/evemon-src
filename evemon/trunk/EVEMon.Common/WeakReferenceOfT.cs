@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EVEMon
+namespace EVEMon.Common
 {
-    public class WeakReference<T>: WeakReference
-        where T: class
+    public class WeakReference<T> : WeakReference
+        where T : class
     {
         public WeakReference(T target)
             : base(target)

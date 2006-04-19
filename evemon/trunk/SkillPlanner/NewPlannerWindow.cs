@@ -5,11 +5,11 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-
 using System.IO;
 using System.Xml.Serialization;
 
 using EVEMon;
+using EVEMon.Common;
 
 namespace EVEMon.SkillPlanner
 {
