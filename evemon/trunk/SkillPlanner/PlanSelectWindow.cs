@@ -141,6 +141,7 @@ namespace EVEMon.SkillPlanner
                 using (NewPlanWindow npw = new NewPlanWindow())
                 {
                     npw.Text = "Load Plan";
+                    npw.Result = Path.GetFileNameWithoutExtension(ofdOpenDialog.FileName);
                     DialogResult xdr = npw.ShowDialog();
                     if (xdr == DialogResult.Cancel)
                         return;

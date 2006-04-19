@@ -23,11 +23,12 @@ namespace EVEMon.SkillPlanner
             this.Close();
         }
 
-        private string m_result;
+        private string m_result = String.Empty;
 
         public string Result
         {
             get { return m_result; }
+            set { m_result = value; }
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -40,6 +41,18 @@ namespace EVEMon.SkillPlanner
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             btnOk.Enabled = (!String.IsNullOrEmpty(textBox1.Text));
+        }
+
+        private void NewPlanWindow_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void NewPlanWindow_Shown(object sender, EventArgs e)
+        {
+            textBox1.Text = m_result;
+            textBox1.SelectAll();
+            m_result = String.Empty;
         }
     }
 }

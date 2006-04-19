@@ -28,7 +28,6 @@ namespace EVEMon.SkillPlanner
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewPlanWindow));
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.btnOk = new System.Windows.Forms.Button();
@@ -87,13 +86,14 @@ namespace EVEMon.SkillPlanner
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NewPlanWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "New Plan";
+            this.Shown += new System.EventHandler(this.NewPlanWindow_Shown);
+            this.Load += new System.EventHandler(this.NewPlanWindow_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
