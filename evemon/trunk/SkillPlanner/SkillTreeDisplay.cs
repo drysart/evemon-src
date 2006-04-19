@@ -53,6 +53,20 @@ namespace EVEMon.SkillPlanner
             }
         }
 
+        private bool m_worksafeMode = false;
+
+        public bool WorksafeMode
+        {
+            get { return m_worksafeMode; }
+            set {
+                if (m_worksafeMode != value)
+                {
+                    m_worksafeMode = value;
+                    this.Invalidate();
+                }
+            }
+        }
+
         private const int SKILLBOX_WIDTH = 220;
         private const int SKILLBOX_HEIGHT = 73;
 
@@ -548,10 +562,17 @@ namespace EVEMon.SkillPlanner
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            using (Brush b = new LinearGradientBrush(
-                this.ClientRectangle, Color.LightBlue, Color.DarkBlue, 90.0F))
+            if (!m_worksafeMode)
             {
-                e.Graphics.FillRectangle(b, e.ClipRectangle);
+                using (Brush b = new LinearGradientBrush(
+                    this.ClientRectangle, Color.LightBlue, Color.DarkBlue, 90.0F))
+                {
+                    e.Graphics.FillRectangle(b, e.ClipRectangle);
+                }
+            }
+            else
+            {
+                e.Graphics.FillRectangle(SystemBrushes.Control, e.ClipRectangle);
             }
 
             int ofsLeft = 0 - m_graphBounds.Left + this.AutoScrollPosition.X;
@@ -569,7 +590,12 @@ namespace EVEMon.SkillPlanner
                 ofsTop = (thHalf - ghHalf) - m_graphBounds.Top;
             }
 
-            using (Pen linePen = new Pen(Color.White, 5.0F))
+            Pen linePen;
+            if (!m_worksafeMode)
+                linePen = new Pen(Color.White, 5.0F);
+            else
+                linePen = new Pen(SystemColors.ControlText, 5.0F);
+            try
             {
                 foreach (Rectangle liner in m_lines)
                 {
@@ -577,6 +603,10 @@ namespace EVEMon.SkillPlanner
                     Point lto = new Point(liner.Right + ofsLeft, liner.Bottom + ofsTop);
                     e.Graphics.DrawLine(linePen, lfrom, lto);
                 }
+            }
+            finally
+            {
+                linePen.Dispose();
             }
 
             using (Font boldf = new Font(this.Font, FontStyle.Bold))
@@ -593,12 +623,12 @@ namespace EVEMon.SkillPlanner
                         si.CurrentRectangle = rect;
 
                         string currentLevelText = "Current Level: " + GrandSkill.GetRomanSkillNumber(si.Skill.Level);
-                        Color stdTextColor = Color.Black;
-                        Color reqTextColor = Color.Red;
+                        Color stdTextColor = !m_worksafeMode ? Color.Black : SystemColors.ControlText;
+                        Color reqTextColor = !m_worksafeMode ? Color.Red : SystemColors.GrayText;
                         string requiredLevel = null;
                         string thisRequiredTime = null;
                         string prereqTime = null;
-                        Color prTextColor = Color.Yellow;
+                        Color prTextColor = !m_worksafeMode ? Color.Yellow : SystemColors.ControlText;
                         Brush fillBrush = null;
 
                         if (si.RequiredLevel > 0)
@@ -608,7 +638,7 @@ namespace EVEMon.SkillPlanner
                             {
                                 TimeSpan ts = si.Skill.GetTrainingTimeToLevel(si.RequiredLevel);
                                 thisRequiredTime = "This Time: " + GrandSkill.TimeSpanToDescriptiveText(ts, DTO_TIME);
-                                reqTextColor = Color.Yellow;
+                                reqTextColor = !m_worksafeMode ? Color.Yellow : SystemColors.GrayText;
                                 if (si.Skill.PrerequisitesMet)
                                 {
                                     fillBrush = new LinearGradientBrush(rect, Color.LightPink, Color.DarkRed, 90.0F);
@@ -616,12 +646,12 @@ namespace EVEMon.SkillPlanner
                                 else
                                 {
                                     fillBrush = new LinearGradientBrush(rect, Color.Red, Color.Black, 90.0F);
-                                    stdTextColor = Color.White;
+                                    stdTextColor = !m_worksafeMode ? Color.White : SystemColors.ControlText;
                                 }
                             }
                             else
                             {
-                                reqTextColor = Color.Black;
+                                reqTextColor = !m_worksafeMode ? Color.Black : SystemColors.ControlText;
                                 fillBrush = new LinearGradientBrush(rect, Color.LightSeaGreen, Color.DarkGreen, 90.0F);
                             }
                         }
@@ -634,7 +664,7 @@ namespace EVEMon.SkillPlanner
                             else
                             {
                                 fillBrush = new LinearGradientBrush(rect, Color.Blue, Color.Black, 90.0F);
-                                stdTextColor = Color.White;
+                                stdTextColor = !m_worksafeMode ? Color.White : SystemColors.ControlText;
                             }
                         }
 
@@ -654,6 +684,12 @@ namespace EVEMon.SkillPlanner
                         if (fillBrush == null)
                             fillBrush = new LinearGradientBrush(rect, Color.LightGray,
                                 Color.DarkGray, 90.0F);
+                        if (m_worksafeMode)
+                        {
+                            if (fillBrush != null)
+                                fillBrush.Dispose();
+                            fillBrush = new SolidBrush(SystemColors.Control);
+                        }
 
                         e.Graphics.FillRectangle(fillBrush, rect);
 
@@ -689,7 +725,7 @@ namespace EVEMon.SkillPlanner
                         }
 
 
-                        e.Graphics.DrawRectangle(Pens.Black, rect);
+                        e.Graphics.DrawRectangle(!m_worksafeMode ? Pens.Black : SystemPens.ControlDarkDark, rect);
                     }
                     level++;
                 }

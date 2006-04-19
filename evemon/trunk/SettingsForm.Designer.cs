@@ -28,11 +28,11 @@ namespace EVEMon
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.cbMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbTitleToTime = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpEmailSettings = new System.Windows.Forms.TableLayoutPanel();
@@ -55,7 +55,7 @@ namespace EVEMon
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.cbTitleToTime = new System.Windows.Forms.CheckBox();
+            this.cbWorksafeMode = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -69,7 +69,7 @@ namespace EVEMon
             this.cbMinimizeToTray.AutoSize = true;
             this.cbMinimizeToTray.Location = new System.Drawing.Point(16, 19);
             this.cbMinimizeToTray.Name = "cbMinimizeToTray";
-            this.cbMinimizeToTray.Size = new System.Drawing.Size(102, 17);
+            this.cbMinimizeToTray.Size = new System.Drawing.Size(103, 17);
             this.cbMinimizeToTray.TabIndex = 0;
             this.cbMinimizeToTray.Text = "Minimize to Tray";
             this.cbMinimizeToTray.UseVisualStyleBackColor = true;
@@ -77,7 +77,7 @@ namespace EVEMon
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(287, 372);
+            this.btnOk.Location = new System.Drawing.Point(287, 391);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 1;
@@ -89,7 +89,7 @@ namespace EVEMon
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(206, 372);
+            this.btnCancel.Location = new System.Drawing.Point(206, 391);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 2;
@@ -100,14 +100,25 @@ namespace EVEMon
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.cbWorksafeMode);
             this.groupBox1.Controls.Add(this.cbTitleToTime);
             this.groupBox1.Controls.Add(this.cbMinimizeToTray);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(350, 71);
+            this.groupBox1.Size = new System.Drawing.Size(350, 91);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Window Settings";
+            // 
+            // cbTitleToTime
+            // 
+            this.cbTitleToTime.AutoSize = true;
+            this.cbTitleToTime.Location = new System.Drawing.Point(16, 43);
+            this.cbTitleToTime.Name = "cbTitleToTime";
+            this.cbTitleToTime.Size = new System.Drawing.Size(177, 17);
+            this.cbTitleToTime.TabIndex = 1;
+            this.cbTitleToTime.Text = "Set window title to training time";
+            this.cbTitleToTime.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -115,7 +126,7 @@ namespace EVEMon
             this.groupBox2.Controls.Add(this.tableLayoutPanel2);
             this.groupBox2.Controls.Add(this.btnTestEmail);
             this.groupBox2.Controls.Add(this.cbSendEmail);
-            this.groupBox2.Location = new System.Drawing.Point(12, 89);
+            this.groupBox2.Location = new System.Drawing.Point(12, 109);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(350, 272);
             this.groupBox2.TabIndex = 4;
@@ -155,7 +166,7 @@ namespace EVEMon
             this.tlpEmailSettings.Controls.Add(this.cbEmailServerRequireSsl, 1, 1);
             this.tlpEmailSettings.Controls.Add(this.cbEmailAuthRequired, 1, 2);
             this.tlpEmailSettings.Controls.Add(this.tlpEmailAuthTable, 1, 3);
-            this.tlpEmailSettings.Location = new System.Drawing.Point(23, 3);
+            this.tlpEmailSettings.Location = new System.Drawing.Point(22, 3);
             this.tlpEmailSettings.Name = "tlpEmailSettings";
             this.tlpEmailSettings.RowCount = 6;
             this.tlpEmailSettings.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -164,7 +175,7 @@ namespace EVEMon
             this.tlpEmailSettings.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpEmailSettings.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpEmailSettings.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpEmailSettings.Size = new System.Drawing.Size(291, 184);
+            this.tlpEmailSettings.Size = new System.Drawing.Size(294, 189);
             this.tlpEmailSettings.TabIndex = 2;
             // 
             // label1
@@ -172,9 +183,9 @@ namespace EVEMon
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 0);
+            this.label1.Location = new System.Drawing.Point(9, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 26);
+            this.label1.Size = new System.Drawing.Size(70, 27);
             this.label1.TabIndex = 0;
             this.label1.Text = "Email Server:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -184,9 +195,9 @@ namespace EVEMon
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 132);
+            this.label2.Location = new System.Drawing.Point(3, 135);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(73, 26);
+            this.label2.Size = new System.Drawing.Size(76, 27);
             this.label2.TabIndex = 1;
             this.label2.Text = "From address:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -196,40 +207,40 @@ namespace EVEMon
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 158);
+            this.label3.Location = new System.Drawing.Point(15, 162);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(63, 26);
+            this.label3.Size = new System.Drawing.Size(64, 27);
             this.label3.TabIndex = 2;
             this.label3.Text = "To address:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tbMailServer
             // 
-            this.tbMailServer.Location = new System.Drawing.Point(82, 3);
+            this.tbMailServer.Location = new System.Drawing.Point(85, 3);
             this.tbMailServer.Name = "tbMailServer";
-            this.tbMailServer.Size = new System.Drawing.Size(152, 20);
+            this.tbMailServer.Size = new System.Drawing.Size(152, 21);
             this.tbMailServer.TabIndex = 3;
             // 
             // tbFromAddress
             // 
-            this.tbFromAddress.Location = new System.Drawing.Point(82, 135);
+            this.tbFromAddress.Location = new System.Drawing.Point(85, 138);
             this.tbFromAddress.Name = "tbFromAddress";
-            this.tbFromAddress.Size = new System.Drawing.Size(206, 20);
+            this.tbFromAddress.Size = new System.Drawing.Size(206, 21);
             this.tbFromAddress.TabIndex = 4;
             // 
             // tbToAddress
             // 
-            this.tbToAddress.Location = new System.Drawing.Point(82, 161);
+            this.tbToAddress.Location = new System.Drawing.Point(85, 165);
             this.tbToAddress.Name = "tbToAddress";
-            this.tbToAddress.Size = new System.Drawing.Size(206, 20);
+            this.tbToAddress.Size = new System.Drawing.Size(206, 21);
             this.tbToAddress.TabIndex = 5;
             // 
             // cbEmailServerRequireSsl
             // 
             this.cbEmailServerRequireSsl.AutoSize = true;
-            this.cbEmailServerRequireSsl.Location = new System.Drawing.Point(82, 29);
+            this.cbEmailServerRequireSsl.Location = new System.Drawing.Point(85, 30);
             this.cbEmailServerRequireSsl.Name = "cbEmailServerRequireSsl";
-            this.cbEmailServerRequireSsl.Size = new System.Drawing.Size(117, 17);
+            this.cbEmailServerRequireSsl.Size = new System.Drawing.Size(114, 17);
             this.cbEmailServerRequireSsl.TabIndex = 6;
             this.cbEmailServerRequireSsl.Text = "Connect using SSL";
             this.cbEmailServerRequireSsl.UseVisualStyleBackColor = true;
@@ -237,9 +248,9 @@ namespace EVEMon
             // cbEmailAuthRequired
             // 
             this.cbEmailAuthRequired.AutoSize = true;
-            this.cbEmailAuthRequired.Location = new System.Drawing.Point(82, 52);
+            this.cbEmailAuthRequired.Location = new System.Drawing.Point(85, 53);
             this.cbEmailAuthRequired.Name = "cbEmailAuthRequired";
-            this.cbEmailAuthRequired.Size = new System.Drawing.Size(122, 17);
+            this.cbEmailAuthRequired.Size = new System.Drawing.Size(125, 17);
             this.cbEmailAuthRequired.TabIndex = 7;
             this.cbEmailAuthRequired.Text = "Server requires login";
             this.cbEmailAuthRequired.UseVisualStyleBackColor = true;
@@ -256,13 +267,13 @@ namespace EVEMon
             this.tlpEmailAuthTable.Controls.Add(this.label4, 0, 0);
             this.tlpEmailAuthTable.Controls.Add(this.tbEmailUsername, 1, 0);
             this.tlpEmailAuthTable.Controls.Add(this.tbEmailPassword, 1, 1);
-            this.tlpEmailAuthTable.Location = new System.Drawing.Point(82, 75);
+            this.tlpEmailAuthTable.Location = new System.Drawing.Point(85, 76);
             this.tlpEmailAuthTable.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.tlpEmailAuthTable.Name = "tlpEmailAuthTable";
             this.tlpEmailAuthTable.RowCount = 2;
             this.tlpEmailAuthTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpEmailAuthTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpEmailAuthTable.Size = new System.Drawing.Size(199, 52);
+            this.tlpEmailAuthTable.Size = new System.Drawing.Size(200, 54);
             this.tlpEmailAuthTable.TabIndex = 8;
             // 
             // label5
@@ -270,9 +281,9 @@ namespace EVEMon
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(5, 26);
+            this.label5.Location = new System.Drawing.Point(5, 27);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(56, 26);
+            this.label5.Size = new System.Drawing.Size(57, 27);
             this.label5.TabIndex = 8;
             this.label5.Text = "Password:";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -284,24 +295,24 @@ namespace EVEMon
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(3, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(58, 26);
+            this.label4.Size = new System.Drawing.Size(59, 27);
             this.label4.TabIndex = 7;
             this.label4.Text = "Username:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tbEmailUsername
             // 
-            this.tbEmailUsername.Location = new System.Drawing.Point(67, 3);
+            this.tbEmailUsername.Location = new System.Drawing.Point(68, 3);
             this.tbEmailUsername.Name = "tbEmailUsername";
-            this.tbEmailUsername.Size = new System.Drawing.Size(129, 20);
+            this.tbEmailUsername.Size = new System.Drawing.Size(129, 21);
             this.tbEmailUsername.TabIndex = 9;
             // 
             // tbEmailPassword
             // 
-            this.tbEmailPassword.Location = new System.Drawing.Point(67, 29);
+            this.tbEmailPassword.Location = new System.Drawing.Point(68, 30);
             this.tbEmailPassword.Name = "tbEmailPassword";
             this.tbEmailPassword.PasswordChar = '*';
-            this.tbEmailPassword.Size = new System.Drawing.Size(129, 20);
+            this.tbEmailPassword.Size = new System.Drawing.Size(129, 21);
             this.tbEmailPassword.TabIndex = 10;
             // 
             // btnTestEmail
@@ -381,21 +392,21 @@ namespace EVEMon
             this.label8.Text = "From address:";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // cbTitleToTime
+            // cbWorksafeMode
             // 
-            this.cbTitleToTime.AutoSize = true;
-            this.cbTitleToTime.Location = new System.Drawing.Point(16, 43);
-            this.cbTitleToTime.Name = "cbTitleToTime";
-            this.cbTitleToTime.Size = new System.Drawing.Size(171, 17);
-            this.cbTitleToTime.TabIndex = 1;
-            this.cbTitleToTime.Text = "Set window title to training time";
-            this.cbTitleToTime.UseVisualStyleBackColor = true;
+            this.cbWorksafeMode.AutoSize = true;
+            this.cbWorksafeMode.Location = new System.Drawing.Point(16, 66);
+            this.cbWorksafeMode.Name = "cbWorksafeMode";
+            this.cbWorksafeMode.Size = new System.Drawing.Size(271, 17);
+            this.cbWorksafeMode.TabIndex = 2;
+            this.cbWorksafeMode.Text = "Run in \"safe for work\" mode (no portraits or colors)";
+            this.cbWorksafeMode.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(374, 407);
+            this.ClientSize = new System.Drawing.Size(374, 426);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
@@ -452,5 +463,6 @@ namespace EVEMon
         private System.Windows.Forms.CheckBox cbEmailAuthRequired;
         private System.Windows.Forms.TableLayoutPanel tlpEmailAuthTable;
         private System.Windows.Forms.CheckBox cbTitleToTime;
+        private System.Windows.Forms.CheckBox cbWorksafeMode;
     }
 }

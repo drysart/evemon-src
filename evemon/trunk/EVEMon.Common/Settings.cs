@@ -289,6 +289,24 @@ namespace EVEMon.Common
             set { m_defaultSaveOptions = value; }
         }
 
+        private bool m_worksafeMode = false;
+
+        public bool WorksafeMode
+        {
+            get { return m_worksafeMode; }
+            set { m_worksafeMode = value; OnWorksafeChanged(); }
+        }
+
+        private void OnWorksafeChanged()
+        {
+            if (WorksafeChanged != null)
+                WorksafeChanged(this, new EventArgs());
+        }
+
+        public event EventHandler<EventArgs> WorksafeChanged;
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
         private const string STORE_FILE_NAME = "evemon-logindata{0}.xml";
 
         private static string StoreFileName(string key)

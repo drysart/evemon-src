@@ -42,6 +42,9 @@ namespace EVEMon.SkillPlanner
         private void NewPlannerWindow_Shown(object sender, EventArgs e)
         {
             m_plan.Changed += new EventHandler<EventArgs>(m_plan_Changed);
+            m_settings.WorksafeChanged += new EventHandler<EventArgs>(m_settings_WorksafeChanged);
+
+            m_settings_WorksafeChanged(null, null);
 
             TipWindow.ShowTip("planner",
                 "Welcome to the Skill Planner",
@@ -53,6 +56,7 @@ namespace EVEMon.SkillPlanner
         private void NewPlannerWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
             m_plan.Changed -= new EventHandler<EventArgs>(m_plan_Changed);
+            m_settings.WorksafeChanged -= new EventHandler<EventArgs>(m_settings_WorksafeChanged);
 
             foreach (WeakReference<ImplantCalculator> ric in m_calcWindows)
             {
@@ -63,7 +67,12 @@ namespace EVEMon.SkillPlanner
             m_calcWindows.Clear();
         }
 
-        void m_plan_Changed(object sender, EventArgs e)
+        private void m_settings_WorksafeChanged(object sender, EventArgs e)
+        {
+            skillTreeDisplay1.WorksafeMode = m_settings.WorksafeMode;
+        }
+
+        private void m_plan_Changed(object sender, EventArgs e)
         {
             //MessageBox.Show("saving");
             m_settings.Save();

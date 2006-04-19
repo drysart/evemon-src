@@ -50,6 +50,7 @@ namespace EVEMon
         {
             s.MinimizeToTray = cbMinimizeToTray.Checked;
             s.TitleToTime = cbTitleToTime.Checked;
+            s.WorksafeMode = cbWorksafeMode.Checked;
             s.EnableEmailAlert = cbSendEmail.Checked;
             s.EmailServer = tbMailServer.Text;
             s.EmailServerRequiresSsl = cbEmailServerRequireSsl.Checked;
@@ -73,6 +74,7 @@ namespace EVEMon
         {
             cbMinimizeToTray.Checked = m_settings.MinimizeToTray;
             cbTitleToTime.Checked = m_settings.TitleToTime;
+            cbWorksafeMode.Checked = m_settings.WorksafeMode;
             cbSendEmail.Checked = m_settings.EnableEmailAlert;
             tbMailServer.Text = m_settings.EmailServer;
             cbEmailServerRequireSsl.Checked = m_settings.EmailServerRequiresSsl;

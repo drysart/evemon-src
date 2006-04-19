@@ -87,6 +87,38 @@ namespace EVEMon
             tmrUpdate.Interval = 10;
             tmrUpdate.Enabled = true;
             tmrTick.Enabled = true;
+
+            m_settings.WorksafeChanged += new EventHandler<EventArgs>(m_settings_WorksafeChanged);
+            m_settings_WorksafeChanged(null, null);
+        }
+
+        public void Stop()
+        {
+            if (m_session != null)
+                m_session = null;
+            tmrTick.Enabled = false;
+            tmrUpdate.Enabled = false;
+
+            m_grandCharacterInfo.BioInfoChanged -= new EventHandler(m_grandCharacterInfo_BioInfoChanged);
+            m_grandCharacterInfo.BalanceChanged -= new EventHandler(m_grandCharacterInfo_BalanceChanged);
+            m_grandCharacterInfo.AttributeChanged -= new EventHandler(m_grandCharacterInfo_AttributeChanged);
+            m_grandCharacterInfo.SkillChanged -= new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
+
+            m_settings.WorksafeChanged -= new EventHandler<EventArgs>(m_settings_WorksafeChanged);
+        }
+
+        private void m_settings_WorksafeChanged(object sender, EventArgs e)
+        {
+            pbCharImage.Visible = !m_settings.WorksafeMode;
+            lblCharacterName.Left = m_settings.WorksafeMode ? -3 : 134;
+            lblBioInfo.Left = m_settings.WorksafeMode ? -3 : 134;
+            lblCorpInfo.Left = m_settings.WorksafeMode ? -3 : 134;
+            lblBalance.Left = m_settings.WorksafeMode ? -3 : 134;
+            lblIntelligence.Left = m_settings.WorksafeMode ? -3 : 134;
+            lblCharisma.Left = m_settings.WorksafeMode ? -3 : 134;
+            lblPerception.Left = m_settings.WorksafeMode ? -3 : 134;
+            lblMemory.Left = m_settings.WorksafeMode ? -3 : 134;
+            lblWillpower.Left = m_settings.WorksafeMode ? -3 : 134;
         }
 
         void m_grandCharacterInfo_SkillChanged(object sender, SkillChangedEventArgs e)
@@ -294,14 +326,6 @@ namespace EVEMon
             SerializableCharacterInfo sci = m_grandCharacterInfo.ExportSerializableCharacterInfo();
             m_settings.SetCharacterCache(sci);
             m_settings.Save();
-        }
-
-        public void Stop()
-        {
-            if (m_session != null)
-                m_session = null;
-            tmrTick.Enabled = false;
-            tmrUpdate.Enabled = false;
         }
 
         private DateTime m_tryImageAgainTime = DateTime.MaxValue;
