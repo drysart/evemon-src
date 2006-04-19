@@ -182,6 +182,9 @@ namespace EVEMon.SkillPlanner
                             case ColumnPreference.ColumnType.PercentComplete:
                                 res = pctComplete.ToString("0%");
                                 break;
+                            case ColumnPreference.ColumnType.SkillRank:
+                                res = gs.Rank.ToString();
+                                break;
                         }
                         lvi.SubItems[x].Text = res;
                     }

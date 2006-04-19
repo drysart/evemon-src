@@ -57,7 +57,9 @@ namespace EVEMon.Common
             [ColumnDisplay("Earliest End")]
             EarliestEnd,
             [ColumnDisplay("Percent Complete", "%")]
-            PercentComplete
+            PercentComplete,
+            [ColumnDisplay("Skill Rank", "Rank")]
+            SkillRank
         }
 
         private bool[] m_prefs;
@@ -176,6 +178,13 @@ namespace EVEMon.Common
         {
             get { return this[ColumnType.PercentComplete]; }
             set { this[ColumnType.PercentComplete] = value; }
+        }
+
+        [XmlAttribute]
+        public bool SkillRank
+        {
+            get { return this[ColumnType.SkillRank]; }
+            set { this[ColumnType.SkillRank] = value; }
         }
     }
 }
