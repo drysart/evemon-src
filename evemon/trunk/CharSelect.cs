@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     public partial class CharSelect : EVEMonForm
     {

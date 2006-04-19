@@ -5,7 +5,7 @@ using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace EveCharacterMonitor.SkillPlanner
+namespace EVEMon.SkillPlanner
 {
     public class DraggableListView: ListView
     {

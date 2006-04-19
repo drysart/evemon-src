@@ -9,7 +9,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace EveCharacterMonitor.SkillPlanner
+namespace EVEMon.SkillPlanner
 {
     public partial class PlanSelectWindow : EVEMonForm
     {

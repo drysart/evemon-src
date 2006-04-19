@@ -7,9 +7,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-namespace EveCharacterMonitor.SkillPlanner
+namespace EVEMon.SkillPlanner
 {
-    public partial class CopySaveOptionsWindow : EveCharacterMonitor.EVEMonForm
+    public partial class CopySaveOptionsWindow : EVEMon.EVEMonForm
     {
         public CopySaveOptionsWindow()
         {

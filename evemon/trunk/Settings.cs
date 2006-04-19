@@ -6,9 +6,9 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Xml;
 using System.Xml.Serialization;
-using EveCharacterMonitor.SkillPlanner;
+using EVEMon.SkillPlanner;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     [XmlRoot("logindata2")]
     public class Settings

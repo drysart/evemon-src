@@ -6,7 +6,7 @@ using System.Xml;
 using System.Threading;
 using System.Reflection;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     public class UpdateManager
     {

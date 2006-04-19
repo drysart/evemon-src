@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 using System.Drawing.Drawing2D;
 
-namespace EveCharacterMonitor.SkillPlanner
+namespace EVEMon.SkillPlanner
 {
     public partial class SkillTreeDisplay : UserControl
     {

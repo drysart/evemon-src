@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     public partial class UnhandledExceptionWindow : EVEMonForm
     {

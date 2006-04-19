@@ -14,9 +14,9 @@ using System.Xml.XPath;
 using System.Xml.Xsl;
 using System.Xml.Serialization;
 
-using EveCharacterMonitor.SkillPlanner;
+using EVEMon.SkillPlanner;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     public partial class CharacterMonitor : UserControl
     {

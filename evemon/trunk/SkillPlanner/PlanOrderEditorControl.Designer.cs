@@ -1,4 +1,4 @@
-namespace EveCharacterMonitor.SkillPlanner
+namespace EVEMon.SkillPlanner
 {
     partial class PlanOrderEditorControl
     {
@@ -43,7 +43,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.lvSkills = new EveCharacterMonitor.SkillPlanner.DraggableListView();
+            this.lvSkills = new EVEMon.SkillPlanner.DraggableListView();
             this.cmsContextMenu.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -172,7 +172,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.lvSkills.UseCompatibleStateImageBehavior = false;
             this.lvSkills.View = System.Windows.Forms.View.Details;
             this.lvSkills.ListViewItemsDragged += new System.EventHandler<System.EventArgs>(this.lvSkills_ListViewItemsDragged);
-            this.lvSkills.ListViewItemsDragging += new System.EventHandler<EveCharacterMonitor.SkillPlanner.ListViewDragEventArgs>(this.lvSkills_ListViewItemsDragging);
+            this.lvSkills.ListViewItemsDragging += new System.EventHandler<EVEMon.SkillPlanner.ListViewDragEventArgs>(this.lvSkills_ListViewItemsDragging);
             this.lvSkills.ColumnReordered += new System.Windows.Forms.ColumnReorderedEventHandler(this.lvSkills_ColumnReordered);
             // 
             // PlanOrderEditorControl
@@ -197,7 +197,7 @@ namespace EveCharacterMonitor.SkillPlanner
 
         #endregion
 
-        private EveCharacterMonitor.SkillPlanner.DraggableListView lvSkills;
+        private EVEMon.SkillPlanner.DraggableListView lvSkills;
         private System.Windows.Forms.ContextMenuStrip cmsContextMenu;
         private System.Windows.Forms.ToolStripMenuItem miRemoveFromPlan;
         private System.Windows.Forms.SaveFileDialog sfdSave;

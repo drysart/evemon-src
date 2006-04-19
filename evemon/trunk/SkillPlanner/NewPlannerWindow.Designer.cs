@@ -1,4 +1,4 @@
-namespace EveCharacterMonitor.SkillPlanner
+namespace EVEMon.SkillPlanner
 {
     partial class NewPlannerWindow
     {
@@ -65,10 +65,10 @@ namespace EveCharacterMonitor.SkillPlanner
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpSkillBrowser = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.skillSelectControl1 = new EveCharacterMonitor.SkillPlanner.SkillSelectControl();
-            this.skillTreeDisplay1 = new EveCharacterMonitor.SkillPlanner.SkillTreeDisplay();
+            this.skillSelectControl1 = new EVEMon.SkillPlanner.SkillSelectControl();
+            this.skillTreeDisplay1 = new EVEMon.SkillPlanner.SkillTreeDisplay();
             this.tpPlanQueue = new System.Windows.Forms.TabPage();
-            this.planEditor = new EveCharacterMonitor.SkillPlanner.PlanOrderEditorControl();
+            this.planEditor = new EVEMon.SkillPlanner.PlanOrderEditorControl();
             this.tsbImplantCalculator = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.pnlPlanControl.SuspendLayout();
@@ -440,7 +440,7 @@ namespace EveCharacterMonitor.SkillPlanner
             this.skillTreeDisplay1.RootSkill = null;
             this.skillTreeDisplay1.Size = new System.Drawing.Size(575, 438);
             this.skillTreeDisplay1.TabIndex = 0;
-            this.skillTreeDisplay1.SkillClicked += new EveCharacterMonitor.SkillPlanner.SkillClickedHandler(this.skillTreeDisplay1_SkillClicked);
+            this.skillTreeDisplay1.SkillClicked += new EVEMon.SkillPlanner.SkillClickedHandler(this.skillTreeDisplay1_SkillClicked);
             this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
             // 
             // tpPlanQueue

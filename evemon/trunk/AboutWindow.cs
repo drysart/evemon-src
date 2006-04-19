@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 using System.Reflection;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     public partial class AboutWindow : EVEMonForm
     {

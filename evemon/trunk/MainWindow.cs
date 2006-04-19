@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     public partial class MainWindow : EVEMonForm
     {
@@ -38,7 +38,7 @@ namespace EveCharacterMonitor
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            m_igbServer = new EveCharacterMonitor.IGBService.IGBServer();
+            m_igbServer = new EVEMon.IGBService.IGBServer();
             m_igbServer.Start();
 
             Assembly asm = Assembly.GetExecutingAssembly();

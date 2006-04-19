@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     public class WeakReference<T>: WeakReference
         where T: class

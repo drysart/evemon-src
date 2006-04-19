@@ -11,7 +11,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
 
-namespace EveCharacterMonitor.SkillPlanner
+namespace EVEMon.SkillPlanner
 {
     public partial class PlanOrderEditorControl : UserControl
     {

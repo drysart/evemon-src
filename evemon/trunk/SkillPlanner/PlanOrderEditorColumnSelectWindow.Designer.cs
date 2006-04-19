@@ -1,4 +1,4 @@
-namespace EveCharacterMonitor.SkillPlanner
+namespace EVEMon.SkillPlanner
 {
     partial class PlanOrderEditorColumnSelectWindow
     {

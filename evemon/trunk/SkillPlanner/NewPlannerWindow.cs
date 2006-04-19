@@ -9,9 +9,9 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml.Serialization;
 
-using EveCharacterMonitor;
+using EVEMon;
 
-namespace EveCharacterMonitor.SkillPlanner
+namespace EVEMon.SkillPlanner
 {
     public partial class NewPlannerWindow : EVEMonForm
     {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 using System.Xml.Serialization;
-using EveCharacterMonitor;
+using EVEMon;
 
-namespace EveCharacterMonitor.SkillPlanner
+namespace EVEMon.SkillPlanner
 {
     [XmlRoot("plan")]
     public class Plan

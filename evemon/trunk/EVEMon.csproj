@@ -7,7 +7,7 @@
     <ProjectGuid>{A2E5EFE0-614A-4567-95E5-92A4D94169AC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EveCharacterMonitor</RootNamespace>
+    <RootNamespace>EVEMon</RootNamespace>
     <AssemblyName>EVEMon</AssemblyName>
     <ApplicationIcon>eve.exe_I006b_040f.ico</ApplicationIcon>
   </PropertyGroup>
@@ -136,6 +136,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

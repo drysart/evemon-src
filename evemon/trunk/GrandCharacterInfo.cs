@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO.Compression;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     public class GrandCharacterInfo
     {

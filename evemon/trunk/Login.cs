@@ -10,7 +10,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Xml;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     public partial class Login : EVEMonForm
     {

@@ -11,7 +11,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Windows.Forms;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     [Flags]
     public enum SerializableEveAttributeAdjustment

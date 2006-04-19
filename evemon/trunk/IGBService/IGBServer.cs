@@ -7,10 +7,10 @@ using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Sockets;
 
-using EveCharacterMonitor;
-using EveCharacterMonitor.SkillPlanner;
+using EVEMon;
+using EVEMon.SkillPlanner;
 
-namespace EveCharacterMonitor.IGBService
+namespace EVEMon.IGBService
 {
     public class IGBServer
     {

@@ -1,4 +1,4 @@
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     partial class LoginCharSelect
     {

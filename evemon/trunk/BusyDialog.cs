@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     public partial class BusyDialog : EVEMonForm
     {

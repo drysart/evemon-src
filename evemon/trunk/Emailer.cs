@@ -5,7 +5,7 @@ using System.Text;
 using System.Net;
 using System.Net.Mail;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     class Emailer
     {

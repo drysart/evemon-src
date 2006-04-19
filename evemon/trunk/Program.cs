@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace EveCharacterMonitor
+namespace EVEMon
 {
     static class Program
     {
