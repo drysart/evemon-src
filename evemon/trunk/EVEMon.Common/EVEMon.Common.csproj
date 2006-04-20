@@ -54,6 +54,7 @@
     <Compile Include="GrandCharacterInfo.cs" />
     <Compile Include="Plan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedule\ScheduleItem.cs" />
     <Compile Include="SerializableCharacterInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="WeakReferenceOfT.cs" />

@@ -1038,8 +1038,10 @@ namespace EVEMon
 
         private void btnDebugError_Click(object sender, EventArgs e)
         {
-            MP3Player.Play("SkillTragined.mp3", true);
-            //MessageBox.Show("done");
+            using (Schedule.EditScheduleEntryWindow f = new EVEMon.Schedule.EditScheduleEntryWindow())
+            {
+                f.ShowDialog();
+            }
         }
 
        private void lbSkills_MouseMove(object sender, MouseEventArgs e)

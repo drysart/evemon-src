@@ -58,6 +58,8 @@ namespace EVEMon.SkillPlanner
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbSaveAs = new System.Windows.Forms.ToolStripButton();
             this.tsbCopyForum = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbImplantCalculator = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbDeletePlan = new System.Windows.Forms.ToolStripButton();
             this.ttToolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -69,8 +71,6 @@ namespace EVEMon.SkillPlanner
             this.skillTreeDisplay1 = new EVEMon.SkillPlanner.SkillTreeDisplay();
             this.tpPlanQueue = new System.Windows.Forms.TabPage();
             this.planEditor = new EVEMon.SkillPlanner.PlanOrderEditorControl();
-            this.tsbImplantCalculator = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.pnlPlanControl.SuspendLayout();
             this.cmsSkillContext.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -350,6 +350,20 @@ namespace EVEMon.SkillPlanner
             this.tsbCopyForum.Text = "Copy for Forum";
             this.tsbCopyForum.Click += new System.EventHandler(this.tsbCopyForum_Click);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbImplantCalculator
+            // 
+            this.tsbImplantCalculator.Image = ((System.Drawing.Image)(resources.GetObject("tsbImplantCalculator.Image")));
+            this.tsbImplantCalculator.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbImplantCalculator.Name = "tsbImplantCalculator";
+            this.tsbImplantCalculator.Size = new System.Drawing.Size(114, 22);
+            this.tsbImplantCalculator.Text = "Implant Calculator";
+            this.tsbImplantCalculator.Click += new System.EventHandler(this.tsbImplantCalculator_Click);
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -440,6 +454,7 @@ namespace EVEMon.SkillPlanner
             this.skillTreeDisplay1.RootSkill = null;
             this.skillTreeDisplay1.Size = new System.Drawing.Size(575, 438);
             this.skillTreeDisplay1.TabIndex = 0;
+            this.skillTreeDisplay1.WorksafeMode = false;
             this.skillTreeDisplay1.SkillClicked += new EVEMon.SkillPlanner.SkillClickedHandler(this.skillTreeDisplay1_SkillClicked);
             this.skillTreeDisplay1.Load += new System.EventHandler(this.skillTreeDisplay1_Load);
             // 
@@ -463,21 +478,6 @@ namespace EVEMon.SkillPlanner
             this.planEditor.Plan = null;
             this.planEditor.Size = new System.Drawing.Size(737, 530);
             this.planEditor.TabIndex = 2;
-            // 
-            // tsbImplantCalculator
-            // 
-            this.tsbImplantCalculator.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbImplantCalculator.Image = ((System.Drawing.Image)(resources.GetObject("tsbImplantCalculator.Image")));
-            this.tsbImplantCalculator.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbImplantCalculator.Name = "tsbImplantCalculator";
-            this.tsbImplantCalculator.Size = new System.Drawing.Size(23, 22);
-            this.tsbImplantCalculator.Text = "Implant Calculator";
-            this.tsbImplantCalculator.Click += new System.EventHandler(this.tsbImplantCalculator_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // NewPlannerWindow
             // 
