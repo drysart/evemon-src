@@ -196,52 +196,96 @@ namespace EVEMon
         {
             this.Invoke(new MethodInvoker(delegate
             {
-                SortedList<TimeSpan, string> shortInfos = new SortedList<TimeSpan, string>();
+                SortedList<TimeSpan, GrandCharacterInfo> gcis = new SortedList<TimeSpan, GrandCharacterInfo>();
                 foreach (TabPage tp in tcCharacterTabs.TabPages)
                 {
                     CharacterMonitor cm = tp.Controls[0] as CharacterMonitor;
-                    if (cm != null && !String.IsNullOrEmpty(cm.ShortText) && cm.ShortTimeSpan > TimeSpan.Zero)
+                    if (cm != null && cm.GrandCharacterInfo != null && cm.GrandCharacterInfo.CurrentlyTrainingSkill != null)
                     {
-                        TimeSpan ts = cm.ShortTimeSpan;
-                        while (shortInfos.ContainsKey(ts))
-                            ts = ts + TimeSpan.FromMilliseconds(1);
-                        shortInfos.Add(ts, cm.ShortText);
+                        GrandCharacterInfo gci = cm.GrandCharacterInfo;
+                        GrandSkill gs = gci.CurrentlyTrainingSkill;
+                        TimeSpan ts = gs.EstimatedCompletion - DateTime.Now;
+                        if (ts > TimeSpan.Zero)
+                        {
+                            while (gcis.ContainsKey(ts))
+                                ts = ts + TimeSpan.FromMilliseconds(1);
+                            gcis.Add(ts, gci);
+                        }
                     }
                 }
-                int ttCharsLeft = 64;
                 StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < shortInfos.Count; i++)
+                sb.Append("EVEMon");
+                foreach (GrandCharacterInfo gci in gcis.Values)
                 {
-                    string tKey = shortInfos[shortInfos.Keys[i]];
-                    if (sb.Length > 0)
-                        tKey = "\n" + tKey;
-                    ttCharsLeft -= tKey.Length;
-                    if (ttCharsLeft > 0)
-                        sb.Append(tKey);
-                    else
-                        break;
+                    sb.Append("\n");
+                    sb.Append(gci.Name);
+                    sb.Append(" - ");
+                    sb.Append(gci.CurrentlyTrainingSkill.Name);
+                    sb.Append(" ");
+                    sb.Append(GrandSkill.GetRomanSkillNumber(gci.CurrentlyTrainingSkill.TrainingToLevel));
+                    sb.Append(" - ");
+                    sb.Append(GrandSkill.TimeSpanToDescriptiveText(
+                        gci.CurrentlyTrainingSkill.EstimatedCompletion - DateTime.Now,
+                        DescriptiveTextOptions.IncludeCommas));
                 }
-                if (sb.Length == 0)
-                    sb.Append("EVEMon - No skills in training!");
-                niMinimizeIcon.Text = sb.ToString();
+                SetMinimizedIconTooltipText(sb.ToString());
 
-                if (m_settings.TitleToTime && shortInfos.Count > 0)
+                if (m_settings.TitleToTime && gcis.Count > 0)
                 {
-                    string s = shortInfos[shortInfos.Keys[0]];
-                    Match m = Regex.Match(s, "^(.*?): (.*)$");
-                    if (m.Success)
-                    {
-                        this.Text = m.Groups[2] + ": " + m.Groups[1] + " - EVEMon";
-                    }
-                    else
-                    {
-                        this.Text = s + " - EVEMon";
-                    }
+                    StringBuilder tsb = new StringBuilder();
+                    GrandCharacterInfo gci = gcis.Values[0];
+                    tsb.Append(GrandSkill.TimeSpanToDescriptiveText(
+                        gci.CurrentlyTrainingSkill.EstimatedCompletion - DateTime.Now,
+                        DescriptiveTextOptions.Default));
+                    tsb.Append(" - ");
+                    tsb.Append(gci.Name);
+                    tsb.Append(" - EVEMon");
+                    this.Text = tsb.ToString();
                 }
-                else
-                {
-                    this.Text = "EVEMon";
-                }
+
+                //SortedList<TimeSpan, string> shortInfos = new SortedList<TimeSpan, string>();
+                //foreach (TabPage tp in tcCharacterTabs.TabPages)
+                //{
+                //    CharacterMonitor cm = tp.Controls[0] as CharacterMonitor;
+                //    if (cm != null && !String.IsNullOrEmpty(cm.ShortText) && cm.ShortTimeSpan > TimeSpan.Zero)
+                //    {
+                //        TimeSpan ts = cm.ShortTimeSpan;
+                //        while (shortInfos.ContainsKey(ts))
+                //            ts = ts + TimeSpan.FromMilliseconds(1);
+                //        shortInfos.Add(ts, cm.ShortText);
+                //    }
+                //}
+                //StringBuilder sb = new StringBuilder();
+                //sb.Append("EVEMon");
+                //for (int i = 0; i < shortInfos.Count; i++)
+                //{
+                //    string tKey = shortInfos[shortInfos.Keys[i]];
+                //    if (sb.Length > 0)
+                //        tKey = "\n" + tKey;
+                //    sb.Append(tKey);
+                //}
+                //if (shortInfos.Count == 0)
+                //    sb.Append("\nNo skills in training!");
+                ////niMinimizeIcon.Text = sb.ToString();
+                //SetMinimizedIconTooltipText(sb.ToString());
+
+                //if (m_settings.TitleToTime && shortInfos.Count > 0)
+                //{
+                //    string s = shortInfos[shortInfos.Keys[0]];
+                //    Match m = Regex.Match(s, "^(.*?): (.*)$");
+                //    if (m.Success)
+                //    {
+                //        this.Text = m.Groups[2] + ": " + m.Groups[1] + " - EVEMon";
+                //    }
+                //    else
+                //    {
+                //        this.Text = s + " - EVEMon";
+                //    }
+                //}
+                //else
+                //{
+                //    this.Text = "EVEMon";
+                //}
             }));
         }
 
@@ -431,5 +475,50 @@ namespace EVEMon
             }
             return null;
         }
+
+        private WeakReference<TrayTooltipWindow> m_tooltipWindow = null;
+
+        private void niMinimizeIcon_MouseMove(object sender, MouseEventArgs e)
+        {
+            TrayTooltipWindow ttw = null;
+            if (m_tooltipWindow != null)
+            {
+                ttw = m_tooltipWindow.Target;
+            }
+
+            if (ttw == null)
+            {
+                ttw = new TrayTooltipWindow();
+                ttw.FormClosed += delegate
+                {
+                    m_tooltipWindow = null;
+                };
+                ttw.Text = m_tooltipText;
+                ttw.Show();
+                m_tooltipWindow = new WeakReference<TrayTooltipWindow>(ttw);
+            }
+            else
+            {
+                ttw.RefreshAlive();
+            }
+        }
+
+        private string m_tooltipText = "EVEMon";
+
+        private void SetMinimizedIconTooltipText(string txt)
+        {
+            TrayTooltipWindow ttw = null;
+            if (m_tooltipWindow != null)
+            {
+                ttw = m_tooltipWindow.Target;
+            }
+
+            if (ttw != null)
+            {
+                ttw.Text = txt;
+            }
+            m_tooltipText = txt;
+        }
+
     }
 }

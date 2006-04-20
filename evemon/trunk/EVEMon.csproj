@@ -233,6 +233,12 @@
     <Compile Include="TipWindow.Designer.cs">
       <DependentUpon>TipWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="TrayTooltipWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TrayTooltipWindow.Designer.cs">
+      <DependentUpon>TrayTooltipWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="UnhandledExceptionWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -315,6 +321,10 @@
     <EmbeddedResource Include="TipWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TipWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrayTooltipWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TrayTooltipWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UnhandledExceptionWindow.resx">
       <SubType>Designer</SubType>

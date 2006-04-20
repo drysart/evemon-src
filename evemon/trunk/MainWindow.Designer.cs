@@ -59,8 +59,8 @@ namespace EVEMon
             // niMinimizeIcon
             // 
             this.niMinimizeIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("niMinimizeIcon.Icon")));
-            this.niMinimizeIcon.Text = "EVEMon";
             this.niMinimizeIcon.Click += new System.EventHandler(this.niMinimizeIcon_Click);
+            this.niMinimizeIcon.MouseMove += new System.Windows.Forms.MouseEventHandler(this.niMinimizeIcon_MouseMove);
             // 
             // niAlertIcon
             // 
@@ -160,11 +160,9 @@ namespace EVEMon
             this.Controls.Add(this.tcCharacterTabs);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
-            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(425, 34);
             this.Name = "MainWindow";
-            this.Text = "EVEMon";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainWindow_FormClosed);
             this.Resize += new System.EventHandler(this.MainWindow_Resize);
             this.Shown += new System.EventHandler(this.MainWindow_Shown);
