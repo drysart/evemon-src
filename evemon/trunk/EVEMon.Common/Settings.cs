@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.IO;
 using System.IO.IsolatedStorage;
@@ -392,6 +393,14 @@ namespace EVEMon.Common
             set { m_playSoundOnSkillComplete = value; }
         }
 
+        private SerializableDictionary<string, Rectangle> m_savedWindowLocations = new SerializableDictionary<string, Rectangle>();
+
+        public SerializableDictionary<string, Rectangle> SavedWindowLocations
+        {
+            get { return m_savedWindowLocations; }
+            set { m_savedWindowLocations = value; }
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////
 
         private const string STORE_FILE_NAME = "evemon-logindata{0}.xml";
@@ -401,8 +410,18 @@ namespace EVEMon.Common
             return String.Format(STORE_FILE_NAME, key);
         }
 
+        private static Settings m_instance = null;
+
+        public static Settings GetInstance()
+        {
+            return Settings.LoadFromKey(String.Empty);
+        }
+
         public static Settings LoadFromKey(string key)
         {
+            if (m_instance != null)
+                return m_instance;
+
             try
             {
                 if (File.Exists(Settings.SettingsFileName))
@@ -412,17 +431,22 @@ namespace EVEMon.Common
                         XmlSerializer xs = new XmlSerializer(typeof(Settings));
                         Settings result = (Settings)xs.Deserialize(fs);
                         result.SetKey(key);
+                        m_instance = result;
                         return result;
                     }
                 }
                 else
                 {
-                    return LoadFromKeyFromIsoStorage(key);
+                    Settings r = LoadFromKeyFromIsoStorage(key);
+                    m_instance = r;
+                    return r;
                 }
             }
             catch
             {
-                return LoadFromKeyFromIsoStorage(key);
+                Settings rr = LoadFromKeyFromIsoStorage(key);
+                m_instance = rr;
+                return rr;
             }
         }
 
@@ -579,5 +603,66 @@ namespace EVEMon.Common
             EveSession s = EveSession.GetSession(m_username, m_password);
             return (s.GetCharacterId(m_characterName) > 0);
         }
+    }
+
+    [XmlRoot]
+    public class SerializableDictionary<TKey, TValue>: Dictionary<TKey, TValue>, IXmlSerializable
+    {
+        #region IXmlSerializable Members
+
+        public System.Xml.Schema.XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            XmlSerializer keySer = new XmlSerializer(typeof(TKey));
+            XmlSerializer valueSer = new XmlSerializer(typeof(TValue));
+
+            reader.Read();
+            reader.ReadStartElement("dictionary");
+            while (reader.NodeType != XmlNodeType.EndElement)
+            {
+                reader.ReadStartElement("item");
+                reader.ReadStartElement("key");
+                TKey key = (TKey)keySer.Deserialize(reader);
+                reader.ReadEndElement();
+
+                reader.ReadStartElement("value");
+                TValue value = (TValue)valueSer.Deserialize(reader);
+                reader.ReadEndElement();
+
+                this.Add(key, value);
+                reader.ReadEndElement();
+                reader.MoveToContent();
+            }
+            reader.ReadEndElement();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            XmlSerializer keySer = new XmlSerializer(typeof(TKey));
+            XmlSerializer valueSer = new XmlSerializer(typeof(TValue));
+
+            writer.WriteStartElement("dictionary");
+            foreach (TKey key in this.Keys)
+            {
+                writer.WriteStartElement("item");
+
+                writer.WriteStartElement("key");
+                keySer.Serialize(writer, key);
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("value");
+                valueSer.Serialize(writer, this[key]);
+                writer.WriteEndElement();
+
+                writer.WriteEndElement();
+            }
+            writer.WriteEndElement();
+        }
+
+        #endregion
     }
 }

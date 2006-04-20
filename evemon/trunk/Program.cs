@@ -46,6 +46,7 @@ namespace EVEMon
             //Application.Run(new Form1(ca));
             s_settings = Settings.LoadFromKey(m_settingKey);
             Application.Run(new MainWindow(s_settings));
+            s_settings.Save();
 
             if (m_logger != null)
                 m_logger.Dispose();

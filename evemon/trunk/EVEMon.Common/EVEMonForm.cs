@@ -16,28 +16,39 @@ namespace EVEMon.Common
             InitializeComponent();
         }
 
-        //private VisualStyleRenderer m_renderer;
+        private string m_rememberPositionKey = null;
 
-        //protected override void OnLoad(EventArgs e)
-        //{
-        //    if (Application.RenderWithVisualStyles)
-        //    {
-        //        m_renderer = new VisualStyleRenderer(VisualStyleElement.Window.Dialog.Normal);
-        //        SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-        //        BackColor = Color.Transparent;
-        //    }
+        public string RememberPositionKey
+        {
+            get { return m_rememberPositionKey; }
+            set { m_rememberPositionKey = value; }
+        }
 
-        //    base.OnLoad(e);
-        //}
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
 
-        //protected override void OnPaint(PaintEventArgs e)
-        //{
-        //    base.OnPaint(e);
+            if (!String.IsNullOrEmpty(m_rememberPositionKey))
+            {
+                Settings s = Settings.GetInstance();
+                if (s.SavedWindowLocations.ContainsKey(m_rememberPositionKey))
+                {
+                    Rectangle r = s.SavedWindowLocations[m_rememberPositionKey];
+                    this.SetBounds(r.Left, r.Top, r.Width, r.Height);
+                }
+            }
+        }
 
-        //    if (!Application.RenderWithVisualStyles)
-        //        return;
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            if (!String.IsNullOrEmpty(m_rememberPositionKey))
+            {
+                Settings s = Settings.GetInstance();
+                s.SavedWindowLocations[m_rememberPositionKey] =
+                    new Rectangle(this.Location, this.Size);
+            }
 
-        //    m_renderer.DrawBackground(e.Graphics, this.ClientRectangle);
-        //}
+            base.OnFormClosed(e);
+        }
     }
 }

@@ -39,6 +39,7 @@ namespace EVEMon
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
+            this.RememberPositionKey = "MainWindow";
             Program.MainWindow = this;
             m_igbServer = new EVEMon.IGBService.IGBServer();
             m_igbServer.Start();
