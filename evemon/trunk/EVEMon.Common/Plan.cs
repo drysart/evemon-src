@@ -14,6 +14,15 @@ namespace EVEMon.Common
         {
             //m_entries = new MonitoredList<PlanEntry>();
             m_entries.Changed += new EventHandler<ChangedEventArgs<PlanEntry>>(m_entries_Changed);
+            m_entries.Cleared += new EventHandler<ClearedEventArgs<PlanEntry>>(m_entries_Cleared);
+        }
+
+        void m_entries_Cleared(object sender, ClearedEventArgs<PlanEntry> e)
+        {
+            foreach (PlanEntry pe in e.Items)
+            {
+                pe.Plan = null;
+            }
         }
 
         void m_entries_Changed(object sender, ChangedEventArgs<PlanEntry> e)
@@ -24,6 +33,9 @@ namespace EVEMon.Common
             {
                 case ChangeType.Added:
                     e.Item.Plan = this;
+                    break;
+                case ChangeType.Removed:
+                    e.Item.Plan = null;
                     break;
             }
             OnChange();
@@ -833,7 +845,23 @@ namespace EVEMon.Common
         public Plan Plan
         {
             get { return m_owner; }
-            set { m_owner = value; }
+            set {
+                if (m_owner != value)
+                {
+                    if (m_owner!=null)
+                        m_owner.Changed -= new EventHandler<EventArgs>(m_owner_Changed);
+                    m_owner = value;
+                    if (m_owner != null)
+                        m_owner.Changed += new EventHandler<EventArgs>(m_owner_Changed);
+                }
+            }
+        }
+
+        private IEnumerable<PlanEntryPrerequisite> m_prerequisiteCache = null;
+
+        void m_owner_Changed(object sender, EventArgs e)
+        {
+            m_prerequisiteCache = null;
         }
 
         public string SkillName
@@ -854,25 +882,6 @@ namespace EVEMon.Common
             set { m_entryType = value; }
         }
 
-        /*
-         *  This needs to support multiple targets.
-         * 
-        private string m_prerequisiteForName;
-        private int m_prerequisiteForLevel;
-
-        public string PrerequisiteForName
-        {
-            get { return m_prerequisiteForName; }
-            set { m_prerequisiteForName = value; }
-        }
-
-        public int PrerequisiteForLevel
-        {
-            get { return m_prerequisiteForLevel; }
-            set { m_prerequisiteForLevel = value; }
-        }
-         */
-
         [XmlIgnore]
         public GrandSkill Skill
         {
@@ -883,10 +892,92 @@ namespace EVEMon.Common
                 return m_owner.GrandCharacterInfo.GetSkill(m_skillName);
             }
         }
+
+        [XmlIgnore]
+        public IEnumerable<PlanEntryPrerequisite> Prerequisites
+        {
+            get
+            {
+                if (m_prerequisiteCache == null)
+                {
+                    Dictionary<string, bool> contains = new Dictionary<string, bool>();
+                    List<PlanEntryPrerequisite> result = new List<PlanEntryPrerequisite>();
+                    BuildPrereqs(this.Skill, this.Level, result, contains);
+                    m_prerequisiteCache = result;
+                }
+                return m_prerequisiteCache;
+            }
+        }
+
+        private void BuildPrereqs(GrandSkill gs, int level, List<PlanEntryPrerequisite> result, Dictionary<string, bool> contains)
+        {
+            for (int l = level; l >= 1; l--)
+            {
+                string tSkill = gs.Name + " " + GrandSkill.GetRomanSkillNumber(l);
+                if (!contains.ContainsKey(tSkill))
+                {
+                    PlanEntryPrerequisite pep = new PlanEntryPrerequisite(gs, l,
+                        m_owner.GetEntry(gs.Name, l));
+                    contains[tSkill] = true;
+                    result.Insert(0, pep);
+                }
+            }
+            foreach (GrandSkill.Prereq pp in gs.Prereqs)
+            {
+                string tSkill = pp.Skill + " " + GrandSkill.GetRomanSkillNumber(pp.RequiredLevel);
+                if (!contains.ContainsKey(tSkill))
+                {
+                    PlanEntryPrerequisite pep = new PlanEntryPrerequisite(pp.Skill, pp.RequiredLevel,
+                        m_owner.GetEntry(pp.Skill.Name, pp.RequiredLevel));
+                    contains[tSkill] = true;
+                    result.Insert(0, pep);
+                    BuildPrereqs(pp.Skill, pp.RequiredLevel, result, contains);    
+                }
+            }
+        }
     }
 
     public interface IPlannerWindowFactory
     {
         Form CreateWindow(Settings s, GrandCharacterInfo gci, Plan p);
+    }
+
+    public class PlanEntryPrerequisite
+    {
+        private GrandSkill m_skill;
+        private int m_level;
+        private PlanEntry m_entry;
+
+        public GrandSkill Skill
+        {
+            get { return m_skill; }
+        }
+
+        public int Level
+        {
+            get { return m_level; }
+        }
+
+        public PlanEntry PlanEntry
+        {
+            get { return m_entry; }
+        }
+
+        public bool IsKnown
+        {
+            get { return m_skill.Level >= m_level; }
+        }
+
+        public bool IsPlanned
+        {
+            get { return m_entry != null; }
+        }
+
+        internal PlanEntryPrerequisite(GrandSkill skill, int level, PlanEntry entry)
+        {
+            m_skill = skill;
+            m_level = level;
+            m_entry = entry;
+        }
     }
 }

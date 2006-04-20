@@ -214,6 +214,7 @@ namespace EVEMon.SkillPlanner
 
         private void lvSkills_ListViewItemsDragging(object sender, ListViewDragEventArgs e)
         {
+            /*
             List<PlanEntry> newOrder = new List<PlanEntry>();
             List<PlanEntry> oldItems = new List<PlanEntry>();
             List<PlanEntry> movingItems = new List<PlanEntry>();
@@ -281,6 +282,7 @@ namespace EVEMon.SkillPlanner
                         known[gs.Name] = newOrder[i].Level;
                 }
             }
+             */
         }
 
         private bool CheckPrereqs(GrandSkill gs, int checkLevel, Dictionary<string, int> known, ref string failMessage)
@@ -309,6 +311,11 @@ namespace EVEMon.SkillPlanner
 
         private void lvSkills_ListViewItemsDragged(object sender, EventArgs e)
         {
+            RebuildPlanFromListViewOrder();
+        }
+
+        private void RebuildPlanFromListViewOrder()
+        {
             m_plan.SuppressEvents();
             try
             {
@@ -322,6 +329,8 @@ namespace EVEMon.SkillPlanner
                     pe.EntryType = (PlanEntryType)Enum.Parse(typeof(PlanEntryType), lvi.SubItems[lvSkills.Columns.Count].Text, true);
                     m_plan.Entries.Add(pe);
                 }
+                // Enforces proper ordering too!
+                m_plan.CheckForMissingPrerequisites();
             }
             finally
             {
@@ -476,6 +485,100 @@ namespace EVEMon.SkillPlanner
                     Program.Settings.Save();
                 }));
             });
+        }
+
+        private void lvSkills_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvSkills.SelectedIndices.Count == 0)
+            {
+                tsbMoveUp.Enabled = false;
+                tsbMoveDown.Enabled = false;
+            }
+            else
+            {
+                tsbMoveUp.Enabled = (lvSkills.SelectedIndices[0] != 0);
+                tsbMoveDown.Enabled = (lvSkills.SelectedIndices[lvSkills.SelectedIndices.Count - 1] != lvSkills.Items.Count - 1);
+            }
+        }
+
+        private void tsbMoveUp_Click(object sender, EventArgs e)
+        {
+            Dictionary<string, bool> seld = new Dictionary<string, bool>();
+            lvSkills.BeginUpdate();
+            try
+            {
+                List<int> sel = new List<int>();
+                foreach (int si in lvSkills.SelectedIndices)
+                {
+                    ListViewItem lvi = lvSkills.Items[si];
+                    PlanEntry pe = (PlanEntry)lvi.Tag;
+                    sel.Add(si);
+                    seld[pe.SkillName + " " + pe.Level.ToString()] = true;
+                }
+                for (int i = 0; i < lvSkills.Items.Count; i++)
+                {
+                    if (sel.Contains(i + 1))
+                    {
+                        ListViewItem lvix = lvSkills.Items[i + 1];
+                        lvSkills.Items.RemoveAt(i + 1);
+                        lvSkills.Items.Insert(i, lvix);
+                    }
+                }
+                RebuildPlanFromListViewOrder();
+            }
+            finally
+            {
+                foreach (ListViewItem lvi in lvSkills.Items)
+                {
+                    PlanEntry pe = (PlanEntry)lvi.Tag;
+                    string k = pe.SkillName + " " + pe.Level.ToString();
+                    if (seld.ContainsKey(k))
+                        lvi.Selected = true;
+                    else
+                        lvi.Selected = false;
+                }
+                lvSkills.EndUpdate();
+            }
+        }
+
+        private void tsbMoveDown_Click(object sender, EventArgs e)
+        {
+            Dictionary<string, bool> seld = new Dictionary<string, bool>();
+            lvSkills.BeginUpdate();
+            try
+            {
+                List<int> sel = new List<int>();
+                foreach (int si in lvSkills.SelectedIndices)
+                {
+                    ListViewItem lvi = lvSkills.Items[si];
+                    PlanEntry pe = (PlanEntry)lvi.Tag;
+                    sel.Add(si);
+                    seld[pe.SkillName + " " + pe.Level.ToString()] = true;
+                }
+                for (int i = lvSkills.Items.Count - 1; i >= 0; i--)
+                {
+                    if (sel.Contains(i - 1))
+                    {
+                        ListViewItem lvix = lvSkills.Items[i - 1];
+                        lvSkills.Items.RemoveAt(i - 1);
+                        lvSkills.Items.Insert(i, lvix);
+                    }
+                }
+                RebuildPlanFromListViewOrder();
+            }
+            finally
+            {
+                foreach (ListViewItem lvi in lvSkills.Items)
+                {
+                    PlanEntry pe = (PlanEntry)lvi.Tag;
+                    string k = pe.SkillName + " " + pe.Level.ToString();
+                    if (seld.ContainsKey(k))
+                        lvi.Selected = true;
+                    else
+                        lvi.Selected = false;
+                }
+                lvSkills.EndUpdate();
+            }
         }
     }
 

@@ -682,6 +682,21 @@ namespace EVEMon.Common
         }
     }
 
+    public class ClearedEventArgs<T> : EventArgs
+    {
+        private IEnumerable<T> m_items;
+
+        public IEnumerable<T> Items
+        {
+            get { return m_items; }
+        }
+
+        public ClearedEventArgs(IEnumerable<T> items)
+        {
+            m_items = items;
+        }
+    }
+
     [XmlRoot("monitoredList")]
     public class MonitoredList<T> : IList<T>
         where T : class
@@ -689,11 +704,19 @@ namespace EVEMon.Common
         private List<T> m_inner = new List<T>();
 
         public event EventHandler<ChangedEventArgs<T>> Changed;
+        public event EventHandler<ClearedEventArgs<T>> Cleared;
 
         private void OnChanged(T item, ChangeType changeType)
         {
             if (Changed != null)
                 Changed(this, new ChangedEventArgs<T>(item, changeType));
+        }
+
+        private void OnCleared(IEnumerable<T> items)
+        {
+            if (Cleared != null)
+                Cleared(this, new ClearedEventArgs<T>(items));
+            OnChanged(null, ChangeType.Cleared);
         }
 
         #region IList<T> Members
@@ -750,8 +773,11 @@ namespace EVEMon.Common
 
         public void Clear()
         {
+            List<T> removed = new List<T>();
+            foreach (T item in m_inner)
+                removed.Add(item);
             m_inner.Clear();
-            OnChanged(null, ChangeType.Cleared);
+            OnCleared(removed);
         }
 
         public bool Contains(T item)
@@ -1336,6 +1362,28 @@ namespace EVEMon.Common
                 }
                 return true;
             }
+        }
+
+        public bool HasPrerequisite(int myLevel, string skillName, int level)
+        {
+            if (skillName == m_name && level < myLevel)
+                return true;
+            foreach (Prereq pp in this.Prereqs)
+            {
+                if (skillName == pp.Skill.Name && level <= pp.RequiredLevel)
+                    return true;
+                if (pp.Skill.HasPrerequisite(pp.RequiredLevel, skillName, level))
+                    return true;
+            }
+            return false;
+        }
+
+        public bool IsPrerequisiteFor(int myLevel, string skillName, int level)
+        {
+            if (skillName == m_name && level > myLevel)
+                return true;
+            GrandSkill gs = this.m_owner.GetSkill(skillName);
+            return gs.HasPrerequisite(myLevel, m_name, 1);
         }
 
         public static string TimeSpanToDescriptiveText(TimeSpan ts, DescriptiveTextOptions dto)
