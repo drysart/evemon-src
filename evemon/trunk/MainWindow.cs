@@ -331,7 +331,8 @@ namespace EVEMon
                 niAlertIcon.BalloonTipIcon = ToolTipIcon.Info;
                 niAlertIcon.Visible = true;
                 niAlertIcon.ShowBalloonTip(30000);
-                Emailer.SendAlertMail(m_settings, e.SkillName, e.CharacterName);
+                if (m_settings.EnableEmailAlert)
+                    Emailer.SendAlertMail(m_settings, e.SkillName, e.CharacterName);
 
                 tmrAlertRefresh.Enabled = false;
                 tmrAlertRefresh.Interval = 60000;
