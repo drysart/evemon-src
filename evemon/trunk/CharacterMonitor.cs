@@ -31,14 +31,28 @@ namespace EVEMon
 
         private Settings m_settings;
         private CharLoginInfo m_cli;
+        private SerializableCharacterInfo m_sci;
+        private CharFileInfo m_cfi;
         private EveSession m_session;
         private int m_charId;
+        private FileSystemWatcher m_fsw = null;
 
         public CharacterMonitor(Settings s, CharLoginInfo cli)
             : this()
         {
             m_settings = s;
             m_cli = cli;
+            m_sci = null;
+            m_cfi = null;
+        }
+
+        public CharacterMonitor(Settings s, CharFileInfo cfi, SerializableCharacterInfo sci)
+            : this()
+        {
+            m_settings = s;
+            m_cli = null;
+            m_sci = sci;
+            m_cfi = cfi;
         }
 
         private Image[] m_throbberImages;
@@ -74,22 +88,73 @@ namespace EVEMon
             //    throw new ApplicationException("Could not start character monitor");
             //}
 
-            m_grandCharacterInfo = new GrandCharacterInfo(m_charId, m_cli.CharacterName);
+            if (m_cli != null)
+            {
+                m_grandCharacterInfo = new GrandCharacterInfo(m_charId, m_cli.CharacterName);
+            }
+            else
+            {
+                m_charId = m_sci.CharacterId;
+                m_grandCharacterInfo = new GrandCharacterInfo(m_sci.CharacterId, m_sci.Name);
+                if (m_charId > 0)
+                {
+                    GetCharacterImage();
+                }
+                if (m_cfi.MonitorFile)
+                {
+                    m_fsw = new FileSystemWatcher(
+                        Path.GetDirectoryName(m_cfi.Filename), Path.GetFileName(m_cfi.Filename));
+                    m_fsw.Created += new FileSystemEventHandler(m_fsw_Created);
+                    m_fsw.Changed += new FileSystemEventHandler(m_fsw_Changed);
+                    m_fsw.EnableRaisingEvents = true;
+                }
+            }
             m_grandCharacterInfo.BioInfoChanged += new EventHandler(m_grandCharacterInfo_BioInfoChanged);
             m_grandCharacterInfo.BalanceChanged += new EventHandler(m_grandCharacterInfo_BalanceChanged);
             m_grandCharacterInfo.AttributeChanged += new EventHandler(m_grandCharacterInfo_AttributeChanged);
             m_grandCharacterInfo.SkillChanged += new SkillChangedHandler(m_grandCharacterInfo_SkillChanged);
 
-            SerializableCharacterInfo sci = m_settings.GetCharacterInfo(m_cli.CharacterName);
-            if (sci != null)
-                m_grandCharacterInfo.AssignFromSerializableCharacterInfo(sci);
+            if (m_cli != null)
+            {
+                SerializableCharacterInfo sci = m_settings.GetCharacterInfo(m_cli.CharacterName);
+                if (sci != null)
+                    m_grandCharacterInfo.AssignFromSerializableCharacterInfo(sci);
 
-            tmrUpdate.Interval = 10;
-            tmrUpdate.Enabled = true;
+                tmrUpdate.Interval = 10;
+                tmrUpdate.Enabled = true;
+            }
+            else
+            {
+                tmrUpdate.Enabled = false;
+                pbThrobber.Visible = false;
+                m_grandCharacterInfo.AssignFromSerializableCharacterInfo(m_sci);
+                m_sci = null;
+                if (m_cfi.MonitorFile)
+                {
+                    // TODO: set up file monitor
+                }
+            }
             tmrTick.Enabled = true;
 
             m_settings.WorksafeChanged += new EventHandler<EventArgs>(m_settings_WorksafeChanged);
             m_settings_WorksafeChanged(null, null);
+        }
+
+        private void m_fsw_Created(object sender, FileSystemEventArgs e)
+        {
+            ReloadFromFile();
+        }
+
+        private void m_fsw_Changed(object sender, FileSystemEventArgs e)
+        {
+            ReloadFromFile();
+        }
+
+        private void ReloadFromFile()
+        {
+            SerializableCharacterInfo sci = SerializableCharacterInfo.CreateFromFile(m_cfi.Filename);
+            if (sci != null)
+                m_grandCharacterInfo.AssignFromSerializableCharacterInfo(sci);
         }
 
         public void Stop()
@@ -98,6 +163,8 @@ namespace EVEMon
                 m_session = null;
             tmrTick.Enabled = false;
             tmrUpdate.Enabled = false;
+            if (m_fsw != null)
+                m_fsw.EnableRaisingEvents = false;
 
             m_grandCharacterInfo.BioInfoChanged -= new EventHandler(m_grandCharacterInfo_BioInfoChanged);
             m_grandCharacterInfo.BalanceChanged -= new EventHandler(m_grandCharacterInfo_BalanceChanged);
@@ -326,9 +393,12 @@ namespace EVEMon
 
         private void UpdateCachedCopy()
         {
-            SerializableCharacterInfo sci = m_grandCharacterInfo.ExportSerializableCharacterInfo();
-            m_settings.SetCharacterCache(sci);
-            m_settings.Save();
+            if (m_session != null)
+            {
+                SerializableCharacterInfo sci = m_grandCharacterInfo.ExportSerializableCharacterInfo();
+                m_settings.SetCharacterCache(sci);
+                m_settings.Save();
+            }
         }
 
         private DateTime m_tryImageAgainTime = DateTime.MaxValue;
@@ -632,7 +702,7 @@ namespace EVEMon
         private void GetCharacterImage()
         {
             m_tryImageAgainTime = DateTime.MaxValue;
-            m_session.GetCharaterImageAsync(m_charId, new GetCharacterImageCallback(GotCharacterImage));
+            EveSession.GetCharaterImageAsync(m_charId, new GetCharacterImageCallback(GotCharacterImage));
         }
 
         private enum SaveFormat
@@ -1000,6 +1070,8 @@ namespace EVEMon
             Plan p = null;
             using (PlanSelectWindow psw = new PlanSelectWindow(m_settings, m_grandCharacterInfo))
             {
+                if (m_cfi != null)
+                    psw.CharKey = m_cfi.Filename;
                 DialogResult dr = psw.ShowDialog();
                 if (dr == DialogResult.Cancel)
                     return;
@@ -1019,7 +1091,10 @@ namespace EVEMon
                     p = new Plan();
                     try
                     {
-                        m_settings.AddPlanFor(m_grandCharacterInfo.Name, p, planName);
+                        if (m_cfi == null)
+                            m_settings.AddPlanFor(m_grandCharacterInfo.Name, p, planName);
+                        else
+                            m_settings.AddPlanFor(m_cfi.Filename, p, planName);
                         doAgain = false;
                     }
                     catch (ApplicationException err)

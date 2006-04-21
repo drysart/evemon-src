@@ -74,5 +74,11 @@ namespace EVEMon
         {
             btnSelect.Enabled = (lbChars.SelectedItem != null);
         }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
     }
 }

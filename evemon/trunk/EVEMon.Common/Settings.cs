@@ -50,6 +50,14 @@ namespace EVEMon.Common
             set { m_characterList = value; }
         }
 
+        private List<CharFileInfo> m_charFileList = new List<CharFileInfo>();
+
+        public List<CharFileInfo> CharFileList
+        {
+            get { return m_charFileList; }
+            set { m_charFileList = value; }
+        }
+
         private bool m_enableEmailAlert = false;
 
         public bool EnableEmailAlert
@@ -558,6 +566,19 @@ namespace EVEMon.Common
             }
         }
 
+        public bool AddFileCharacter(CharFileInfo cfi)
+        {
+            // TODO:
+            foreach (CharFileInfo tx in m_charFileList)
+            {
+                if (cfi.Filename == tx.Filename)
+                    return false;
+            }
+            m_charFileList.Add(cfi);
+            this.Save();
+            return true;
+        }
+
         public bool AddCharacter(CharLoginInfo cli)
         {
             foreach (CharLoginInfo tx in m_characterList)
@@ -614,6 +635,24 @@ namespace EVEMon.Common
         {
             EveSession s = EveSession.GetSession(m_username, m_password);
             return (s.GetCharacterId(m_characterName) > 0);
+        }
+    }
+
+    public class CharFileInfo
+    {
+        private string m_filename;
+        private bool m_monitorFile;
+
+        public string Filename
+        {
+            get { return m_filename; }
+            set { m_filename = value; }
+        }
+
+        public bool MonitorFile
+        {
+            get { return m_monitorFile; }
+            set { m_monitorFile = value; }
         }
     }
 

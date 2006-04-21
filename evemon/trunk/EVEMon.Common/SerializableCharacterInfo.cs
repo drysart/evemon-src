@@ -280,6 +280,36 @@ namespace EVEMon.Common
             }
             return null;
         }
+
+        public static SerializableCharacterInfo CreateFromFile(string fileName)
+        {
+            try
+            {
+                XmlDocument xdoc = new XmlDocument();
+                xdoc.Load(fileName);
+                XmlElement charRootEl = null;
+                if (xdoc.DocumentElement.Name == "character")
+                {
+                    charRootEl = xdoc.DocumentElement;
+                }
+                else if (xdoc.DocumentElement.Name == "charactersheet")
+                {
+                    charRootEl = xdoc.DocumentElement.SelectSingleNode("characters/character") as XmlElement;
+                }
+                if (charRootEl == null)
+                    return null;
+
+                using (XmlNodeReader nxr = new XmlNodeReader(charRootEl))
+                {
+                    XmlSerializer xs = new XmlSerializer(typeof(SerializableCharacterInfo));
+                    return (SerializableCharacterInfo)xs.Deserialize(nxr);
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 
     [XmlRoot("skillGroup")]

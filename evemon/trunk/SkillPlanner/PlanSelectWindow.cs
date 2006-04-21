@@ -25,10 +25,18 @@ namespace EVEMon.SkillPlanner
         {
             m_settings = s;
             m_grandCharacterInfo = gci;
+            m_charKey = m_grandCharacterInfo.Name;
         }
 
         private Settings m_settings;
         private GrandCharacterInfo m_grandCharacterInfo;
+        private string m_charKey;
+
+        public string CharKey
+        {
+            get { return m_charKey; }
+            set { m_charKey = value; }
+        }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -49,7 +57,7 @@ namespace EVEMon.SkillPlanner
                 lbPlanList.Items.Clear();
                 lbPlanList.Items.Add("<New Plan>");
 
-                foreach (string planName in m_settings.GetPlansForCharacter(m_grandCharacterInfo.Name))
+                foreach (string planName in m_settings.GetPlansForCharacter(m_charKey))
                 {
                     lbPlanList.Items.Add(planName);
                 }
@@ -93,7 +101,7 @@ namespace EVEMon.SkillPlanner
             else
             {
                 string s = (string)lbPlanList.SelectedItem;
-                m_result = m_settings.GetPlanByName(m_grandCharacterInfo.Name, s);
+                m_result = m_settings.GetPlanByName(m_charKey, s);
             }
             DialogResult = DialogResult.OK;
             this.Close();
@@ -147,8 +155,8 @@ namespace EVEMon.SkillPlanner
                         return;
                     string planName = npw.Result;
                     loadedPlan.GrandCharacterInfo = m_grandCharacterInfo;
-                    
-                    m_settings.AddPlanFor(m_grandCharacterInfo.Name, loadedPlan, planName);
+
+                    m_settings.AddPlanFor(m_charKey, loadedPlan, planName);
                 }
                 
             }
@@ -178,13 +186,13 @@ namespace EVEMon.SkillPlanner
                 string newName = f.Result;
                 if (oldName == newName)
                     return;
-                if (m_settings.GetPlanByName(m_grandCharacterInfo.Name, newName) != null)
+                if (m_settings.GetPlanByName(m_charKey, newName) != null)
                 {
                     MessageBox.Show("A plan with that name already exists.",
                         "Duplicate Plan Name", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     return;
                 }
-                m_settings.RenamePlanFor(m_grandCharacterInfo.Name,
+                m_settings.RenamePlanFor(m_charKey,
                     oldName, f.Result);
 
                 PopulatePlanList();
@@ -207,7 +215,7 @@ namespace EVEMon.SkillPlanner
 
         private void FinalizePlanReorder(int idx, List<string> newOrder)
         {
-            m_settings.RearrangePlansFor(m_grandCharacterInfo.Name, newOrder);
+            m_settings.RearrangePlansFor(m_charKey, newOrder);
 
             lbPlanList.BeginUpdate();
             try
@@ -244,7 +252,7 @@ namespace EVEMon.SkillPlanner
             if (dr != DialogResult.Yes)
                 return;
 
-            m_settings.RemovePlanFor(m_grandCharacterInfo.Name, planName);
+            m_settings.RemovePlanFor(m_charKey, planName);
             PopulatePlanList();
         }
     }

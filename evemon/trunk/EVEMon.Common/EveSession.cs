@@ -421,7 +421,7 @@ namespace EVEMon.Common
             }
         }
 
-        public void GetCharaterImageAsync(int charId, GetCharacterImageCallback callback)
+        public static void GetCharaterImageAsync(int charId, GetCharacterImageCallback callback)
         {
             Pair<HttpWebRequest, GetCharacterImageCallback> p = new Pair<HttpWebRequest, GetCharacterImageCallback>();
             HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://img.eve.is/serv.asp?s=512&c=" + charId.ToString());
@@ -430,7 +430,7 @@ namespace EVEMon.Common
             wr.BeginGetResponse(new AsyncCallback(GotCharacterImage), p);
         }
 
-        private void GotCharacterImage(IAsyncResult ar)
+        private static void GotCharacterImage(IAsyncResult ar)
         {
             Pair<HttpWebRequest, GetCharacterImageCallback> p = ar.AsyncState as Pair<HttpWebRequest, GetCharacterImageCallback>;
             HttpWebRequest wr = p.A;
@@ -451,11 +451,11 @@ namespace EVEMon.Common
                 }
                 MemoryStream ms = new MemoryStream(data);
                 Image i = Image.FromStream(ms, true, true);
-                callback(this, i);
+                callback(null, i);
             }
             catch
             {
-                callback(this, null);
+                callback(null, null);
             }
         }
 

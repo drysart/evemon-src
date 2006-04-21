@@ -17,64 +17,52 @@ namespace EVEMon
             InitializeComponent();
         }
 
-        //private List<Pair<string, int>> m_chars = null;
-
-        //private void cbCharacter_DropDown(object sender, EventArgs e)
-        //{
-        //    if (String.IsNullOrEmpty(tbUsername.Text) || String.IsNullOrEmpty(tbPassword.Text))
-        //    {
-        //        cbCharacter.Items.Clear();
-        //        cbCharacter.Items.Add("<enter login first>");
-        //        return;
-        //    }
-
-        //    EveSession s = EveSession.GetSession(tbUsername.Text, tbPassword.Text);
-        //    if (s == null)
-        //    {
-        //        cbCharacter.Items.Clear();
-        //        cbCharacter.Items.Add("<invalid login>");
-        //        return;
-        //    }
-
-        //    cbCharacter.Items.Clear();
-        //    if (m_chars==null)
-        //        m_chars = s.GetCharacterList();
-        //    foreach (Pair<string, int> p in m_chars)
-        //    {
-        //        cbCharacter.Items.Add(p.A);
-        //    }
-        //}
-
         private void tbUsername_TextChanged(object sender, EventArgs e)
         {
             SetNoCharacter();
         }
 
+        private bool m_charOk = false;
+        private bool m_fileOk = false;
+
+        private bool CharOk
+        {
+            get { return m_charOk; }
+            set { m_charOk = value; CheckValidation(); }
+        }
+
+        private bool FileOk
+        {
+            get { return m_fileOk; }
+            set { m_fileOk = value; CheckValidation(); }
+        }
+
+        private void CheckValidation()
+        {
+            switch (cbCharacterType.SelectedIndex)
+            {
+                case 0:
+                    btnOk.Enabled = m_charOk;
+                    break;
+                case 1:
+                    btnOk.Enabled = m_fileOk;
+                    break;
+                default:
+                    btnOk.Enabled = false;
+                    break;
+            }
+        }
+
         private void SetNoCharacter()
         {
             tbCharName.Text = "(None)";
-            btnOk.Enabled = false;
+            CharOk = false;
         }
 
         private void tbPassword_TextChanged(object sender, EventArgs e)
         {
             SetNoCharacter();
         }
-
-        //private void cbCharacter_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    if (cbCharacter.SelectedIndex == -1)
-        //    {
-        //        btnOk.Enabled = false;
-        //        return;
-        //    }
-        //    string sv = cbCharacter.Items[cbCharacter.SelectedIndex] as string;
-        //    if (String.IsNullOrEmpty(sv) || sv.StartsWith("<"))
-        //    {
-        //        cbCharacter.SelectedIndex = -1;
-        //    }
-        //    btnOk.Enabled = (cbCharacter.SelectedIndex >= 0);
-        //}
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -84,17 +72,41 @@ namespace EVEMon
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            m_username = tbUsername.Text;
-            m_password = tbPassword.Text;
-            m_characterName = tbCharName.Text;
+            switch (cbCharacterType.SelectedIndex)
+            {
+                case 0:
+                    m_isLogin = true;
+                    m_isFile = false;
+                    m_username = tbUsername.Text;
+                    m_password = tbPassword.Text;
+                    m_characterName = tbCharName.Text;
+                    break;
+                case 1:
+                    m_isLogin = false;
+                    m_isFile = true;
+                    m_fileName = tbFilename.Text;
+                    m_monitorFile = cbMonitorFile.Checked;
+                    break;
+                default:
+                    return;
+            }
 
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
+        private bool m_isLogin;
         private string m_username;
         private string m_password;
         private string m_characterName;
+        private bool m_isFile;
+        private string m_fileName;
+        private bool m_monitorFile;
+
+        public bool IsLogin
+        {
+            get { return m_isLogin; }
+        }
 
         public string Username
         {
@@ -109,6 +121,21 @@ namespace EVEMon
         public string CharacterName
         {
             get { return m_characterName; }
+        }
+
+        public bool IsFile
+        {
+            get { return m_isFile; }
+        }
+
+        public string FileName
+        {
+            get { return m_fileName; }
+        }
+
+        public bool MonitorFile
+        {
+            get { return m_monitorFile; }
         }
 
         private void btnCharSelect_Click(object sender, EventArgs e)
@@ -144,8 +171,36 @@ namespace EVEMon
             using (CharSelect f = new CharSelect(s))
             {
                 f.ShowDialog();
-                tbCharName.Text = f.Result;
-                btnOk.Enabled = true;
+                if (f.DialogResult == DialogResult.OK)
+                {
+                    tbCharName.Text = f.Result;
+                    CharOk = true;
+                }
+            }
+        }
+
+        private void LoginCharSelect_Load(object sender, EventArgs e)
+        {
+            gbSavedXML.Location = gbEveLogin.Location;
+            this.ClientSize = new Size(gbSavedXML.Width + (gbSavedXML.Left * 2),
+                this.ClientSize.Height);
+            cbCharacterType.SelectedIndex = 0;
+        }
+
+        private void cbCharacterType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            gbEveLogin.Visible = (cbCharacterType.SelectedIndex == 0);
+            gbSavedXML.Visible = (cbCharacterType.SelectedIndex == 1);
+            CheckValidation();
+        }
+
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = ofdOpenXml.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                tbFilename.Text = ofdOpenXml.FileName;
+                FileOk = true;
             }
         }
     }

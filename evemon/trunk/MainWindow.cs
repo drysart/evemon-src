@@ -82,6 +82,21 @@ namespace EVEMon
                 if (cli != null)
                     AddTab(cli);
             }
+            List<CharFileInfo> invalidFiles = new List<CharFileInfo>();
+            foreach (CharFileInfo cfi in m_settings.CharFileList)
+            {
+                if (cfi != null)
+                {
+                    if (!AddTab(cfi, true))
+                    {
+                        invalidFiles.Add(cfi);
+                    }
+                }
+            }
+            foreach (CharFileInfo cfi in invalidFiles)
+            {
+                RemoveCharFileInfo(cfi);
+            }
         }
 
         private void MainWindow_Shown(object sender, EventArgs e)
@@ -151,33 +166,8 @@ namespace EVEMon
             }));
         }
 
-        private void AddTab(CharLoginInfo cli)
+        private bool AddTab(CharLoginInfo cli)
         {
-        //AGAIN:
-        //    bool result;
-        //    try
-        //    {
-        //        result = cli.Validate();
-        //    }
-        //    catch (NullReferenceException)
-        //    {
-        //        result = false;
-        //    }
-        //    if (!result)
-        //    {
-        //        DialogResult dr = MessageBox.Show(
-        //            "Unable to show character monitor for " + cli.CharacterName + ", " +
-        //            "could not validate username/password/character combination.",
-        //            "Could Not Validate Character",
-        //            MessageBoxButtons.RetryCancel,
-        //            MessageBoxIcon.Error);
-        //        if (dr == DialogResult.Retry)
-        //        {
-        //            goto AGAIN;
-        //        }
-        //        return;
-        //    }
-
             TabPage tp = new TabPage(cli.CharacterName);
             tp.UseVisualStyleBackColor = true;
             tp.Tag = cli;
@@ -191,6 +181,36 @@ namespace EVEMon
             cm.Start();
             tcCharacterTabs.TabPages.Add(tp);
             SetRemoveEnable();
+            return true;
+        }
+
+        private bool AddTab(CharFileInfo cfi, bool silent)
+        {
+            SerializableCharacterInfo sci = SerializableCharacterInfo.CreateFromFile(cfi.Filename);
+            if (sci == null)
+            {
+                if (!silent)
+                {
+                    MessageBox.Show("Unable to get character info from file.",
+                        "Unable To Get Character Info", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                return false;
+            }
+
+            TabPage tp = new TabPage("(File) " + sci.Name);
+            tp.UseVisualStyleBackColor = true;
+            tp.Tag = cfi;
+            tp.Padding = new Padding(5);
+            CharacterMonitor cm = new CharacterMonitor(m_settings, cfi, sci);
+            cm.Parent = tp;
+            cm.Dock = DockStyle.Fill;
+            cm.SkillTrainingCompleted += new SkillTrainingCompletedHandler(cm_SkillTrainingCompleted);
+            cm.ShortInfoChanged += new EventHandler(cm_ShortInfoChanged);
+            cm.ThrobberImages = m_throbberImages;
+            cm.Start();
+            tcCharacterTabs.TabPages.Add(tp);
+            SetRemoveEnable();
+            return true;
         }
 
         private void cm_ShortInfoChanged(object sender, EventArgs e)
@@ -334,12 +354,27 @@ namespace EVEMon
                 cm.Stop();
             cm.SkillTrainingCompleted -= new SkillTrainingCompletedHandler(cm_SkillTrainingCompleted);
             cm.ShortInfoChanged -= new EventHandler(cm_ShortInfoChanged);
-            CharLoginInfo cli = tp.Tag as CharLoginInfo;
             tcCharacterTabs.TabPages.Remove(tp);
-            m_settings.CharacterList.Remove(cli);
-            m_settings.RemoveAllPlansFor(cli.CharacterName);
-            m_settings.Save();
+            if (tp.Tag is CharLoginInfo)
+            {
+                CharLoginInfo cli = tp.Tag as CharLoginInfo;
+                m_settings.CharacterList.Remove(cli);
+                m_settings.RemoveAllPlansFor(cli.CharacterName);
+                m_settings.Save();
+            }
+            else if (tp.Tag is CharFileInfo)
+            {
+                CharFileInfo cfi = tp.Tag as CharFileInfo;
+                RemoveCharFileInfo(cfi);
+            }
             SetRemoveEnable();
+        }
+
+        private void RemoveCharFileInfo(CharFileInfo cfi)
+        {
+            m_settings.CharFileList.Remove(cfi);
+            m_settings.RemoveAllPlansFor(cfi.Filename);
+            m_settings.Save();
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -349,13 +384,26 @@ namespace EVEMon
                 f.ShowDialog();
                 if (f.DialogResult == DialogResult.OK)
                 {
-                    CharLoginInfo cli = new CharLoginInfo();
-                    cli.Username = f.Username;
-                    cli.Password = f.Password;
-                    cli.CharacterName = f.CharacterName;
-                    if (m_settings.AddCharacter(cli))
+                    if (f.IsLogin)
                     {
-                        AddTab(cli);
+                        CharLoginInfo cli = new CharLoginInfo();
+                        cli.Username = f.Username;
+                        cli.Password = f.Password;
+                        cli.CharacterName = f.CharacterName;
+                        if (m_settings.AddCharacter(cli))
+                        {
+                            AddTab(cli);
+                        }
+                    }
+                    else if (f.IsFile)
+                    {
+                        CharFileInfo cfi = new CharFileInfo();
+                        cfi.Filename = f.FileName;
+                        cfi.MonitorFile = f.MonitorFile;
+                        if (m_settings.AddFileCharacter(cfi))
+                        {
+                            AddTab(cfi, false);
+                        }
                     }
                 }
             }
