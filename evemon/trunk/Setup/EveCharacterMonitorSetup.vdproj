@@ -15,8 +15,20 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_4E6F63D6D4CED9150F81A4B5073D6D21"
+        "MsmKey" = "8:_52001816600D788AF1E5E83A28AE2737"
         "OwnerKey" = "8:_D4F185BBCBC1440FB790B216C660C12D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_78FAFC1C1146EB86B59C299A5FE88115"
+        "OwnerKey" = "8:_D4F185BBCBC1440FB790B216C660C12D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_78FAFC1C1146EB86B59C299A5FE88115"
+        "OwnerKey" = "8:_52001816600D788AF1E5E83A28AE2737"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -33,18 +45,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D8FE1D23072E64103018A0F7E0D32249"
-        "OwnerKey" = "8:_D4F185BBCBC1440FB790B216C660C12D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D8FE1D23072E64103018A0F7E0D32249"
-        "OwnerKey" = "8:_4E6F63D6D4CED9150F81A4B5073D6D21"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_D4F185BBCBC1440FB790B216C660C12D"
         "MsmSig" = "8:_UNDEFINED"
@@ -52,13 +52,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4E6F63D6D4CED9150F81A4B5073D6D21"
+        "OwnerKey" = "8:_52001816600D788AF1E5E83A28AE2737"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D8FE1D23072E64103018A0F7E0D32249"
+        "OwnerKey" = "8:_78FAFC1C1146EB86B59C299A5FE88115"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -151,20 +151,51 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4E6F63D6D4CED9150F81A4B5073D6D21"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_52001816600D788AF1E5E83A28AE2737"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:EVEMon.NetworkLogger, Version=1.0.2300.27044, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:EVEMon.NetworkLogger, Version=1.0.2302.31935, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_4E6F63D6D4CED9150F81A4B5073D6D21"
+                    "_52001816600D788AF1E5E83A28AE2737"
                     {
                     "Name" = "8:EVEMon.NetworkLogger.dll"
                     "Attributes" = "3:512"
                     }
                 }
             "SourcePath" = "8:EVEMon.NetworkLogger.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_E9502C7349DE4726ADB58FA4215ADC61"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_78FAFC1C1146EB86B59C299A5FE88115"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:EVEMon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_78FAFC1C1146EB86B59C299A5FE88115"
+                    {
+                    "Name" = "8:EVEMon.Common.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:EVEMon.Common.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E9502C7349DE4726ADB58FA4215ADC61"
@@ -200,37 +231,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D8FE1D23072E64103018A0F7E0D32249"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:EVEMon.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_D8FE1D23072E64103018A0F7E0D32249"
-                    {
-                    "Name" = "8:EVEMon.Common.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:EVEMon.Common.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_E9502C7349DE4726ADB58FA4215ADC61"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
         }
@@ -310,14 +310,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EVE Character Monitor"
-        "ProductCode" = "8:{71028D54-4D85-48B1-82E7-161FB01A6B20}"
-        "PackageCode" = "8:{94554455-A227-40B8-8E50-DBFF62BF52F6}"
+        "ProductCode" = "8:{B3C090CF-5539-42EA-90EB-8648A79C7F8B}"
+        "PackageCode" = "8:{D9E62A89-284E-403D-B141-B354CBE4442F}"
         "UpgradeCode" = "8:{58326FBE-234A-4DE0-92CF-41A957A8CE23}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.18"
+        "ProductVersion" = "8:1.0.19"
         "Manufacturer" = "8:Evercrest.com"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
