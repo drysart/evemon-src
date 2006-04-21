@@ -43,6 +43,8 @@ namespace EVEMon
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbOptions = new System.Windows.Forms.ToolStripButton();
             this.tsbAbout = new System.Windows.Forms.ToolStripButton();
+            this.tsbSchedule = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -101,6 +103,8 @@ namespace EVEMon
             this.tsbAddChar,
             this.tsbRemoveChar,
             this.toolStripSeparator1,
+            this.tsbSchedule,
+            this.toolStripSeparator2,
             this.tsbOptions,
             this.tsbAbout});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -152,6 +156,20 @@ namespace EVEMon
             this.tsbAbout.Text = "About...";
             this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
             // 
+            // tsbSchedule
+            // 
+            this.tsbSchedule.Image = ((System.Drawing.Image)(resources.GetObject("tsbSchedule.Image")));
+            this.tsbSchedule.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSchedule.Name = "tsbSchedule";
+            this.tsbSchedule.Size = new System.Drawing.Size(70, 22);
+            this.tsbSchedule.Text = "Schedule";
+            this.tsbSchedule.Click += new System.EventHandler(this.tsbSchedule_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -191,5 +209,7 @@ namespace EVEMon
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton tsbOptions;
         private System.Windows.Forms.ToolStripButton tsbAbout;
+        private System.Windows.Forms.ToolStripButton tsbSchedule;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

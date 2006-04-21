@@ -1038,10 +1038,12 @@ namespace EVEMon
 
         private void btnDebugError_Click(object sender, EventArgs e)
         {
-            using (Schedule.EditScheduleEntryWindow f = new EVEMon.Schedule.EditScheduleEntryWindow())
-            {
-                f.ShowDialog();
-            }
+            //using (Schedule.EditScheduleEntryWindow f = new EVEMon.Schedule.EditScheduleEntryWindow())
+            //{
+            //    f.ShowDialog();
+            //}
+            Schedule.ScheduleEditorWindow f = new EVEMon.Schedule.ScheduleEditorWindow();
+            f.Show();
         }
 
        private void lbSkills_MouseMove(object sender, MouseEventArgs e)

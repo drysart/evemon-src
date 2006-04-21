@@ -35,16 +35,16 @@ namespace EVEMon.Common.Schedule
         Quiet = 2        // Silences alerts
     }
 
-    public interface IScheduleEntry
+    public abstract class ScheduleEntry
     {
-        bool Contains(DateTime checkDateTime);
-        bool Expired { get; }
-        IEnumerable<ScheduleDateTimeRange> GetRangesInPeriod(DateTime fromDt, DateTime toDt);
-        ScheduleEntryOptions ScheduleEntryOptions { set; get; }
-        string Title { set; get; }
+        public abstract bool Contains(DateTime checkDateTime);
+        public abstract bool Expired { get; }
+        public abstract IEnumerable<ScheduleDateTimeRange> GetRangesInPeriod(DateTime fromDt, DateTime toDt);
+        public abstract ScheduleEntryOptions ScheduleEntryOptions { set; get; }
+        public abstract string Title { set; get; }
     }
 
-    public class SimpleScheduleEntry: IScheduleEntry
+    public class SimpleScheduleEntry: ScheduleEntry
     {
         private DateTime m_start = DateTime.MinValue;
         private DateTime m_end = DateTime.MinValue;
@@ -63,20 +63,20 @@ namespace EVEMon.Common.Schedule
             set { m_end = value; }
         }
 
-        #region IScheduleEntry Members
+        #region ScheduleEntry Members
 
-        public bool Contains(DateTime checkDateTime)
+        public override bool Contains(DateTime checkDateTime)
         {
             return (checkDateTime >= m_start && checkDateTime < m_end);
         }
 
         [XmlIgnore]
-        public bool Expired
+        public override bool Expired
         {
             get { return (DateTime.Now > m_end); }
         }
 
-        public IEnumerable<ScheduleDateTimeRange> GetRangesInPeriod(DateTime fromDt, DateTime toDt)
+        public override IEnumerable<ScheduleDateTimeRange> GetRangesInPeriod(DateTime fromDt, DateTime toDt)
         {
             List<ScheduleDateTimeRange> result = new List<ScheduleDateTimeRange>();
             if ((m_start < fromDt && m_end > fromDt) ||
@@ -85,13 +85,13 @@ namespace EVEMon.Common.Schedule
             return result;
         }
 
-        public ScheduleEntryOptions ScheduleEntryOptions
+        public override ScheduleEntryOptions ScheduleEntryOptions
         {
             get { return m_seo; }
             set { m_seo = value; }
         }
 
-        public string Title
+        public override string Title
         {
             get { return m_title; }
             set { m_title = value; }
@@ -116,7 +116,7 @@ namespace EVEMon.Common.Schedule
         OverlapForward  // Apr 31 becomes May 1
     }
 
-    public class RecurringScheduleEntry : IScheduleEntry
+    public class RecurringScheduleEntry : ScheduleEntry
     {
         private string m_title = String.Empty;
         private ScheduleEntryOptions m_seo = ScheduleEntryOptions.None;
@@ -186,9 +186,9 @@ namespace EVEMon.Common.Schedule
 
         public const int SECONDS_PER_DAY = 60 * 60 * 24;
 
-        #region IScheduleEntry Members
+        #region ScheduleEntry Members
 
-        public bool Contains(DateTime checkDateTime)
+        public override bool Contains(DateTime checkDateTime)
         {
             IEnumerable<ScheduleDateTimeRange> ranges = GetRangesInPeriod(checkDateTime, checkDateTime);
             foreach (ScheduleDateTimeRange sdtr in ranges)
@@ -200,12 +200,12 @@ namespace EVEMon.Common.Schedule
         }
 
         [XmlIgnore]
-        public bool Expired
+        public override bool Expired
         {
             get { return DateTime.Now > m_recurEnd; }
         }
 
-        public IEnumerable<ScheduleDateTimeRange> GetRangesInPeriod(DateTime fromDt, DateTime toDt)
+        public override IEnumerable<ScheduleDateTimeRange> GetRangesInPeriod(DateTime fromDt, DateTime toDt)
         {
             List<ScheduleDateTimeRange> result = new List<ScheduleDateTimeRange>();
             DateTime startDt = fromDt - 
@@ -301,13 +301,13 @@ namespace EVEMon.Common.Schedule
             }
         }
 
-        public ScheduleEntryOptions ScheduleEntryOptions
+        public override ScheduleEntryOptions ScheduleEntryOptions
         {
             get { return m_seo; }
             set { m_seo = value; }
         }
 
-        public string Title
+        public override string Title
         {
             get { return m_title; }
             set { m_title = value; }

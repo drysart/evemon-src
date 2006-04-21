@@ -17,9 +17,9 @@ namespace EVEMon.Schedule
             InitializeComponent();
         }
 
-        private IScheduleEntry m_scheduleEntry = null;
+        private ScheduleEntry m_scheduleEntry = null;
 
-        public IScheduleEntry ScheduleEntry
+        public ScheduleEntry ScheduleEntry
         {
             get { return m_scheduleEntry; }
             set { m_scheduleEntry = value; UpdateFromEntry(); }
@@ -392,9 +392,9 @@ namespace EVEMon.Schedule
             this.Close();
         }
 
-        private IScheduleEntry GenerateScheduleEntry()
+        private ScheduleEntry GenerateScheduleEntry()
         {
-            IScheduleEntry result = null;
+            ScheduleEntry result = null;
             if (rbOneTime.Checked)
             {
                 SimpleScheduleEntry sse = new SimpleScheduleEntry();
@@ -431,7 +431,7 @@ namespace EVEMon.Schedule
         {
             if (!btnOk.Enabled)
                 return;
-            IScheduleEntry ise = GenerateScheduleEntry();
+            ScheduleEntry ise = GenerateScheduleEntry();
             this.ScheduleEntry = ise;
         }
 

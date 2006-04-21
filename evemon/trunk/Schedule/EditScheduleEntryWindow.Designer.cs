@@ -87,7 +87,7 @@ namespace EVEMon.Schedule
             this.groupBox1.Location = new System.Drawing.Point(12, 114);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(377, 370);
-            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Date/Time Setting";
             // 
@@ -121,7 +121,7 @@ namespace EVEMon.Schedule
             this.btnRecurringNoStartDate.Location = new System.Drawing.Point(286, 0);
             this.btnRecurringNoStartDate.Name = "btnRecurringNoStartDate";
             this.btnRecurringNoStartDate.Size = new System.Drawing.Size(48, 23);
-            this.btnRecurringNoStartDate.TabIndex = 20;
+            this.btnRecurringNoStartDate.TabIndex = 2;
             this.btnRecurringNoStartDate.Text = "None";
             this.btnRecurringNoStartDate.UseVisualStyleBackColor = true;
             this.btnRecurringNoStartDate.Click += new System.EventHandler(this.btnRecurringNoStartDate_Click);
@@ -132,7 +132,7 @@ namespace EVEMon.Schedule
             this.btnRecurringNoEndDate.Location = new System.Drawing.Point(286, 27);
             this.btnRecurringNoEndDate.Name = "btnRecurringNoEndDate";
             this.btnRecurringNoEndDate.Size = new System.Drawing.Size(48, 23);
-            this.btnRecurringNoEndDate.TabIndex = 19;
+            this.btnRecurringNoEndDate.TabIndex = 5;
             this.btnRecurringNoEndDate.Text = "None";
             this.btnRecurringNoEndDate.UseVisualStyleBackColor = true;
             this.btnRecurringNoEndDate.Click += new System.EventHandler(this.btnRecurringNoEndDate_Click);
@@ -142,7 +142,7 @@ namespace EVEMon.Schedule
             this.tbRecurringTimeTo.Location = new System.Drawing.Point(162, 144);
             this.tbRecurringTimeTo.Name = "tbRecurringTimeTo";
             this.tbRecurringTimeTo.Size = new System.Drawing.Size(64, 21);
-            this.tbRecurringTimeTo.TabIndex = 18;
+            this.tbRecurringTimeTo.TabIndex = 8;
             this.tbRecurringTimeTo.TextChanged += new System.EventHandler(this.tbRecurringTimeTo_TextChanged);
             // 
             // label9
@@ -168,7 +168,7 @@ namespace EVEMon.Schedule
             this.tbRecurringTimeFrom.Location = new System.Drawing.Point(63, 144);
             this.tbRecurringTimeFrom.Name = "tbRecurringTimeFrom";
             this.tbRecurringTimeFrom.Size = new System.Drawing.Size(64, 21);
-            this.tbRecurringTimeFrom.TabIndex = 15;
+            this.tbRecurringTimeFrom.TabIndex = 7;
             this.tbRecurringTimeFrom.TextChanged += new System.EventHandler(this.tbRecurringTimeFrom_TextChanged);
             // 
             // pnlRecurMonthly
@@ -207,7 +207,7 @@ namespace EVEMon.Schedule
             this.cbRecurOnOverflow.Location = new System.Drawing.Point(79, 27);
             this.cbRecurOnOverflow.Name = "cbRecurOnOverflow";
             this.cbRecurOnOverflow.Size = new System.Drawing.Size(109, 21);
-            this.cbRecurOnOverflow.TabIndex = 2;
+            this.cbRecurOnOverflow.TabIndex = 1;
             // 
             // label7
             // 
@@ -268,7 +268,7 @@ namespace EVEMon.Schedule
             this.cbRecurringFrequency.Location = new System.Drawing.Point(63, 54);
             this.cbRecurringFrequency.Name = "cbRecurringFrequency";
             this.cbRecurringFrequency.Size = new System.Drawing.Size(114, 21);
-            this.cbRecurringFrequency.TabIndex = 12;
+            this.cbRecurringFrequency.TabIndex = 6;
             this.cbRecurringFrequency.SelectedIndexChanged += new System.EventHandler(this.cbRecurringFrequency_SelectedIndexChanged);
             // 
             // btnRecurringEndDateChoose
@@ -277,7 +277,7 @@ namespace EVEMon.Schedule
             this.btnRecurringEndDateChoose.Location = new System.Drawing.Point(252, 27);
             this.btnRecurringEndDateChoose.Name = "btnRecurringEndDateChoose";
             this.btnRecurringEndDateChoose.Size = new System.Drawing.Size(28, 23);
-            this.btnRecurringEndDateChoose.TabIndex = 11;
+            this.btnRecurringEndDateChoose.TabIndex = 4;
             this.btnRecurringEndDateChoose.Text = "...";
             this.btnRecurringEndDateChoose.UseVisualStyleBackColor = true;
             this.btnRecurringEndDateChoose.Click += new System.EventHandler(this.btnRecurringEndDateChoose_Click);
@@ -299,7 +299,7 @@ namespace EVEMon.Schedule
             this.tbRecurringEndDate.Name = "tbRecurringEndDate";
             this.tbRecurringEndDate.ReadOnly = true;
             this.tbRecurringEndDate.Size = new System.Drawing.Size(183, 21);
-            this.tbRecurringEndDate.TabIndex = 9;
+            this.tbRecurringEndDate.TabIndex = 3;
             // 
             // btnRecurringStartDateChoose
             // 
@@ -307,7 +307,7 @@ namespace EVEMon.Schedule
             this.btnRecurringStartDateChoose.Location = new System.Drawing.Point(252, 0);
             this.btnRecurringStartDateChoose.Name = "btnRecurringStartDateChoose";
             this.btnRecurringStartDateChoose.Size = new System.Drawing.Size(28, 23);
-            this.btnRecurringStartDateChoose.TabIndex = 8;
+            this.btnRecurringStartDateChoose.TabIndex = 1;
             this.btnRecurringStartDateChoose.Text = "...";
             this.btnRecurringStartDateChoose.UseVisualStyleBackColor = true;
             this.btnRecurringStartDateChoose.Click += new System.EventHandler(this.btnRecurringStartDateChoose_Click);
@@ -329,7 +329,7 @@ namespace EVEMon.Schedule
             this.tbRecurringStartDate.Name = "tbRecurringStartDate";
             this.tbRecurringStartDate.ReadOnly = true;
             this.tbRecurringStartDate.Size = new System.Drawing.Size(183, 21);
-            this.tbRecurringStartDate.TabIndex = 2;
+            this.tbRecurringStartDate.TabIndex = 0;
             // 
             // rbRecurring
             // 
@@ -337,7 +337,7 @@ namespace EVEMon.Schedule
             this.rbRecurring.Location = new System.Drawing.Point(17, 169);
             this.rbRecurring.Name = "rbRecurring";
             this.rbRecurring.Size = new System.Drawing.Size(100, 17);
-            this.rbRecurring.TabIndex = 9;
+            this.rbRecurring.TabIndex = 1;
             this.rbRecurring.TabStop = true;
             this.rbRecurring.Text = "Recurring entry";
             this.rbRecurring.UseVisualStyleBackColor = true;
@@ -379,7 +379,7 @@ namespace EVEMon.Schedule
             this.tbOneTimeEndDate.Name = "tbOneTimeEndDate";
             this.tbOneTimeEndDate.ReadOnly = true;
             this.tbOneTimeEndDate.Size = new System.Drawing.Size(189, 21);
-            this.tbOneTimeEndDate.TabIndex = 8;
+            this.tbOneTimeEndDate.TabIndex = 3;
             // 
             // btnOneTimeEndDateChoose
             // 
@@ -387,7 +387,7 @@ namespace EVEMon.Schedule
             this.btnOneTimeEndDateChoose.Location = new System.Drawing.Point(259, 54);
             this.btnOneTimeEndDateChoose.Name = "btnOneTimeEndDateChoose";
             this.btnOneTimeEndDateChoose.Size = new System.Drawing.Size(75, 23);
-            this.btnOneTimeEndDateChoose.TabIndex = 10;
+            this.btnOneTimeEndDateChoose.TabIndex = 4;
             this.btnOneTimeEndDateChoose.Text = "Choose...";
             this.btnOneTimeEndDateChoose.UseVisualStyleBackColor = true;
             this.btnOneTimeEndDateChoose.Click += new System.EventHandler(this.btnOneTimeEndDateChoose_Click);
@@ -406,7 +406,7 @@ namespace EVEMon.Schedule
             this.tbOneTimeEndTime.Location = new System.Drawing.Point(63, 81);
             this.tbOneTimeEndTime.Name = "tbOneTimeEndTime";
             this.tbOneTimeEndTime.Size = new System.Drawing.Size(64, 21);
-            this.tbOneTimeEndTime.TabIndex = 7;
+            this.tbOneTimeEndTime.TabIndex = 5;
             this.tbOneTimeEndTime.TextChanged += new System.EventHandler(this.tbOneTimeEndTime_TextChanged);
             // 
             // tbOneTimeStartDate
@@ -417,7 +417,7 @@ namespace EVEMon.Schedule
             this.tbOneTimeStartDate.Name = "tbOneTimeStartDate";
             this.tbOneTimeStartDate.ReadOnly = true;
             this.tbOneTimeStartDate.Size = new System.Drawing.Size(190, 21);
-            this.tbOneTimeStartDate.TabIndex = 1;
+            this.tbOneTimeStartDate.TabIndex = 0;
             // 
             // label3
             // 
@@ -434,7 +434,7 @@ namespace EVEMon.Schedule
             this.btnOneTimeStartDateChoose.Location = new System.Drawing.Point(259, 0);
             this.btnOneTimeStartDateChoose.Name = "btnOneTimeStartDateChoose";
             this.btnOneTimeStartDateChoose.Size = new System.Drawing.Size(75, 23);
-            this.btnOneTimeStartDateChoose.TabIndex = 3;
+            this.btnOneTimeStartDateChoose.TabIndex = 1;
             this.btnOneTimeStartDateChoose.Text = "Choose...";
             this.btnOneTimeStartDateChoose.UseVisualStyleBackColor = true;
             this.btnOneTimeStartDateChoose.Click += new System.EventHandler(this.btnOneTimeStartDateChoose_Click);
@@ -453,7 +453,7 @@ namespace EVEMon.Schedule
             this.tbOneTimeStartTime.Location = new System.Drawing.Point(63, 27);
             this.tbOneTimeStartTime.Name = "tbOneTimeStartTime";
             this.tbOneTimeStartTime.Size = new System.Drawing.Size(64, 21);
-            this.tbOneTimeStartTime.TabIndex = 4;
+            this.tbOneTimeStartTime.TabIndex = 2;
             this.tbOneTimeStartTime.TextChanged += new System.EventHandler(this.tbOneTimeStartTime_TextChanged);
             // 
             // rbOneTime
@@ -486,7 +486,7 @@ namespace EVEMon.Schedule
             this.cbSilent.Location = new System.Drawing.Point(17, 43);
             this.cbSilent.Name = "cbSilent";
             this.cbSilent.Size = new System.Drawing.Size(195, 17);
-            this.cbSilent.TabIndex = 3;
+            this.cbSilent.TabIndex = 1;
             this.cbSilent.Text = "Run in silent mode during this entry";
             this.cbSilent.UseVisualStyleBackColor = true;
             // 
@@ -496,7 +496,7 @@ namespace EVEMon.Schedule
             this.cbBlocking.Location = new System.Drawing.Point(17, 20);
             this.cbBlocking.Name = "cbBlocking";
             this.cbBlocking.Size = new System.Drawing.Size(283, 17);
-            this.cbBlocking.TabIndex = 2;
+            this.cbBlocking.TabIndex = 0;
             this.cbBlocking.Text = "Unavailable to start new skill training during this entry";
             this.cbBlocking.UseVisualStyleBackColor = true;
             // 
@@ -526,7 +526,7 @@ namespace EVEMon.Schedule
             this.btnOk.Location = new System.Drawing.Point(314, 494);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
-            this.btnOk.TabIndex = 2;
+            this.btnOk.TabIndex = 3;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
@@ -535,10 +535,10 @@ namespace EVEMon.Schedule
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(233, 493);
+            this.btnCancel.Location = new System.Drawing.Point(233, 494);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 3;
+            this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -549,7 +549,7 @@ namespace EVEMon.Schedule
             this.button1.Location = new System.Drawing.Point(12, 493);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(114, 23);
-            this.button1.TabIndex = 4;
+            this.button1.TabIndex = 5;
             this.button1.Text = "debug: roundtrip";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);

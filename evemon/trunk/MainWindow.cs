@@ -521,5 +521,38 @@ namespace EVEMon
             m_tooltipText = txt;
         }
 
+        private WeakReference<Schedule.ScheduleEditorWindow> m_scheduler;
+
+        private void tsbSchedule_Click(object sender, EventArgs e)
+        {
+            Schedule.ScheduleEditorWindow sched = null;
+
+            if (m_scheduler != null)
+            {
+                sched = m_scheduler.Target;
+                if (sched != null)
+                {
+                    try
+                    {
+                        if (sched.Visible)
+                            sched.BringToFront();
+                        else
+                            sched = null;
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        sched = null;
+                        m_scheduler = null;
+                    }
+                }
+            }
+            if (sched == null)
+            {
+                sched = new EVEMon.Schedule.ScheduleEditorWindow(m_settings);
+                sched.Show();
+                m_scheduler = new WeakReference<EVEMon.Schedule.ScheduleEditorWindow>(sched);
+            }
+        }
+
     }
 }

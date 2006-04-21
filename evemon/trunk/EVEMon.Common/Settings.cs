@@ -7,6 +7,8 @@ using System.IO.IsolatedStorage;
 using System.Xml;
 using System.Xml.Serialization;
 
+using EVEMon.Common.Schedule;
+
 namespace EVEMon.Common
 {
     [XmlRoot("logindata2")]
@@ -399,6 +401,16 @@ namespace EVEMon.Common
         {
             get { return m_savedWindowLocations; }
             set { m_savedWindowLocations = value; }
+        }
+
+        private List<ScheduleEntry> m_schedule = new List<ScheduleEntry>();
+
+        [XmlArrayItem("simple", typeof(SimpleScheduleEntry))]
+        [XmlArrayItem("recur", typeof(RecurringScheduleEntry))]
+        public List<ScheduleEntry> Schedule
+        {
+            get { return m_schedule; }
+            set { m_schedule = value; }
         }
 
         ////////////////////////////////////////////////////////////////////////////////////
