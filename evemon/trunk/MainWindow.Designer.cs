@@ -41,10 +41,10 @@ namespace EVEMon
             this.tsbAddChar = new System.Windows.Forms.ToolStripButton();
             this.tsbRemoveChar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbOptions = new System.Windows.Forms.ToolStripButton();
-            this.tsbAbout = new System.Windows.Forms.ToolStripButton();
             this.tsbSchedule = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbOptions = new System.Windows.Forms.ToolStripButton();
+            this.tsbAbout = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -137,6 +137,22 @@ namespace EVEMon
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
+            // tsbSchedule
+            // 
+            this.tsbSchedule.Image = ((System.Drawing.Image)(resources.GetObject("tsbSchedule.Image")));
+            this.tsbSchedule.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSchedule.Name = "tsbSchedule";
+            this.tsbSchedule.Size = new System.Drawing.Size(70, 22);
+            this.tsbSchedule.Text = "Schedule";
+            this.tsbSchedule.Visible = false;
+            this.tsbSchedule.Click += new System.EventHandler(this.tsbSchedule_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator2.Visible = false;
+            // 
             // tsbOptions
             // 
             this.tsbOptions.Image = ((System.Drawing.Image)(resources.GetObject("tsbOptions.Image")));
@@ -155,20 +171,6 @@ namespace EVEMon
             this.tsbAbout.Size = new System.Drawing.Size(23, 22);
             this.tsbAbout.Text = "About...";
             this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
-            // 
-            // tsbSchedule
-            // 
-            this.tsbSchedule.Image = ((System.Drawing.Image)(resources.GetObject("tsbSchedule.Image")));
-            this.tsbSchedule.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSchedule.Name = "tsbSchedule";
-            this.tsbSchedule.Size = new System.Drawing.Size(70, 22);
-            this.tsbSchedule.Text = "Schedule";
-            this.tsbSchedule.Click += new System.EventHandler(this.tsbSchedule_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // MainWindow
             // 
