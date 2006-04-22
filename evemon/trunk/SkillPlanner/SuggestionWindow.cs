@@ -53,10 +53,7 @@ namespace EVEMon.SkillPlanner
 
                 GrandSkill gs = gci.GetSkill(pe.SkillName);
                 postTime += gs.GetTrainingTimeOfLevelOnly(pe.Level, true, scratchpad);
-                if (gs.Name == "Learning")
-                    scratchpad.AdjustLearningLevelBonus(1);
-                else
-                    scratchpad.AdjustAttributeBonus(gs.AttributeModified, 1);
+                scratchpad.ApplyALevelOf(gs);
             }
             postTime += m_plan.GetTotalTime(scratchpad);
             TimeSpan preTime = m_plan.GetTotalTime(null);

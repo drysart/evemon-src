@@ -369,10 +369,7 @@ namespace EVEMon.SkillPlanner
             {
                 GrandSkill gs = pe.Skill;
                 res += gs.GetTrainingTimeOfLevelOnly(pe.Level, true, scratchpad);
-                if (gs.Name == "Learning")
-                    scratchpad.AdjustLearningLevelBonus(1);
-                if (gs.IsLearningSkill)
-                    scratchpad.AdjustAttributeBonus(gs.AttributeModified, 1);
+                scratchpad.ApplyALevelOf(pe.Skill);
             }
             slblStatusText.Text = String.Format("{0} Skill{1} Planned ({2} Unique Skill{3}). Total training time: {4}",
                 m_plan.Entries.Count,

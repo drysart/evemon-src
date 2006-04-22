@@ -1515,5 +1515,13 @@ namespace EVEMon.Common
         public EveAttributeScratchpad()
         {
         }
+
+        public void ApplyALevelOf(GrandSkill gs)
+        {
+            if (gs.Name == "Learning")
+                this.AdjustLearningLevelBonus(1);
+            else if (gs.IsLearningSkill)
+                this.AdjustAttributeBonus(gs.AttributeModified, 1);
+        }
     }
 }

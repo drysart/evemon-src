@@ -200,10 +200,7 @@ namespace EVEMon.SkillPlanner
 
                     lvi.SubItems[lvSkills.Columns.Count].Text = pe.EntryType.ToString();
 
-                    if (pe.SkillName == "Learning")
-                        scratchpad.AdjustLearningLevelBonus(1);
-                    else if (gs.IsLearningSkill)
-                        scratchpad.AdjustAttributeBonus(gs.AttributeModified, 1);
+                    scratchpad.ApplyALevelOf(gs);
                 }
             }
             finally

@@ -265,10 +265,7 @@ namespace EVEMon.Common
             foreach (PlanEntry pe in m_entries)
             {
                 ts += pe.Skill.GetTrainingTimeOfLevelOnly(pe.Level, true, scratchpad);
-                if (pe.Skill.Name == "Learning")
-                    scratchpad.AdjustLearningLevelBonus(1);
-                else if (pe.Skill.IsLearningSkill)
-                    scratchpad.AdjustAttributeBonus(pe.Skill.AttributeModified, 1);
+                scratchpad.ApplyALevelOf(pe.Skill);
             }
             return ts;
         }
@@ -744,7 +741,8 @@ namespace EVEMon.Common
                 sw.Write(GrandSkill.GetRomanSkillNumber(pe.Level));
                 boldEnd();
 
-                TimeSpan trainingTime = pe.Skill.GetTrainingTimeOfLevelOnly(pe.Level, true);
+                TimeSpan trainingTime = pe.Skill.GetTrainingTimeOfLevelOnly(pe.Level, true, scratchpad);
+                scratchpad.ApplyALevelOf(pe.Skill);
                 DateTime startDate = curDt;
                 curDt += trainingTime;
                 DateTime finishDate = curDt;
