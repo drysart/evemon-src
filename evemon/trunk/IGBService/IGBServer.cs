@@ -20,14 +20,24 @@ namespace EVEMon.IGBService
             m_listener.ClientConnected += new EventHandler<ClientConnectedEventArgs>(m_listener_ClientConnected);
         }
 
+        private bool m_running = false;
+
         public void Start()
         {
-            m_listener.Start();
+            if (!m_running)
+            {
+                m_running = true;
+                m_listener.Start();
+            }
         }
 
         public void Stop()
         {
-            m_listener.Stop();
+            if (m_running)
+            {
+                m_running = false;
+                m_listener.Stop();
+            }
         }
 
         private IGBTcpListener m_listener = new IGBTcpListener(new IPEndPoint(IPAddress.Loopback, 80));

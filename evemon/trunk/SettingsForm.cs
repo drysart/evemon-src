@@ -51,6 +51,7 @@ namespace EVEMon
             s.MinimizeToTray = cbMinimizeToTray.Checked;
             s.TitleToTime = cbTitleToTime.Checked;
             s.WorksafeMode = cbWorksafeMode.Checked;
+            s.RunIGBServer = cbRunIGBServer.Checked;
             s.PlaySoundOnSkillComplete = cbPlaySoundOnSkillComplete.Checked;
             s.EnableEmailAlert = cbSendEmail.Checked;
             s.EmailServer = tbMailServer.Text;
@@ -76,6 +77,7 @@ namespace EVEMon
             cbMinimizeToTray.Checked = m_settings.MinimizeToTray;
             cbTitleToTime.Checked = m_settings.TitleToTime;
             cbWorksafeMode.Checked = m_settings.WorksafeMode;
+            cbRunIGBServer.Checked = m_settings.RunIGBServer;
             cbPlaySoundOnSkillComplete.Checked = m_settings.PlaySoundOnSkillComplete;
             cbSendEmail.Checked = m_settings.EnableEmailAlert;
             tbMailServer.Text = m_settings.EmailServer;

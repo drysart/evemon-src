@@ -421,6 +421,22 @@ namespace EVEMon.Common
             set { m_schedule = value; }
         }
 
+        private bool m_runIgbServer = true;
+
+        public bool RunIGBServer
+        {
+            get { return m_runIgbServer; }
+            set { m_runIgbServer = value; OnRunIGBServerChanged(); }
+        }
+
+        private void OnRunIGBServerChanged()
+        {
+            if (RunIGBServerChanged != null)
+                RunIGBServerChanged(this, new EventArgs());
+        }
+
+        public event EventHandler<EventArgs> RunIGBServerChanged;
+
         ////////////////////////////////////////////////////////////////////////////////////
 
         private const string STORE_FILE_NAME = "evemon-logindata{0}.xml";

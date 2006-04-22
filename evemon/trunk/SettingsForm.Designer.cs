@@ -35,6 +35,7 @@ namespace EVEMon
             this.cbWorksafeMode = new System.Windows.Forms.CheckBox();
             this.cbTitleToTime = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbPlaySoundOnSkillComplete = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpEmailSettings = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -56,7 +57,7 @@ namespace EVEMon
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.cbPlaySoundOnSkillComplete = new System.Windows.Forms.CheckBox();
+            this.cbRunIGBServer = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -101,12 +102,13 @@ namespace EVEMon
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.cbRunIGBServer);
             this.groupBox1.Controls.Add(this.cbWorksafeMode);
             this.groupBox1.Controls.Add(this.cbTitleToTime);
             this.groupBox1.Controls.Add(this.cbMinimizeToTray);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(350, 91);
+            this.groupBox1.Size = new System.Drawing.Size(350, 113);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Window Settings";
@@ -138,12 +140,22 @@ namespace EVEMon
             this.groupBox2.Controls.Add(this.tableLayoutPanel2);
             this.groupBox2.Controls.Add(this.btnTestEmail);
             this.groupBox2.Controls.Add(this.cbSendEmail);
-            this.groupBox2.Location = new System.Drawing.Point(12, 129);
+            this.groupBox2.Location = new System.Drawing.Point(12, 131);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(350, 292);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Alert Settings";
+            // 
+            // cbPlaySoundOnSkillComplete
+            // 
+            this.cbPlaySoundOnSkillComplete.AutoSize = true;
+            this.cbPlaySoundOnSkillComplete.Location = new System.Drawing.Point(16, 20);
+            this.cbPlaySoundOnSkillComplete.Name = "cbPlaySoundOnSkillComplete";
+            this.cbPlaySoundOnSkillComplete.Size = new System.Drawing.Size(216, 17);
+            this.cbPlaySoundOnSkillComplete.TabIndex = 5;
+            this.cbPlaySoundOnSkillComplete.Text = "Play sound when skill training completes";
+            this.cbPlaySoundOnSkillComplete.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel2
             // 
@@ -404,15 +416,15 @@ namespace EVEMon
             this.label8.Text = "From address:";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // cbPlaySoundOnSkillComplete
+            // cbRunIGBServer
             // 
-            this.cbPlaySoundOnSkillComplete.AutoSize = true;
-            this.cbPlaySoundOnSkillComplete.Location = new System.Drawing.Point(16, 20);
-            this.cbPlaySoundOnSkillComplete.Name = "cbPlaySoundOnSkillComplete";
-            this.cbPlaySoundOnSkillComplete.Size = new System.Drawing.Size(216, 17);
-            this.cbPlaySoundOnSkillComplete.TabIndex = 5;
-            this.cbPlaySoundOnSkillComplete.Text = "Play sound when skill training completes";
-            this.cbPlaySoundOnSkillComplete.UseVisualStyleBackColor = true;
+            this.cbRunIGBServer.AutoSize = true;
+            this.cbRunIGBServer.Location = new System.Drawing.Point(16, 88);
+            this.cbRunIGBServer.Name = "cbRunIGBServer";
+            this.cbRunIGBServer.Size = new System.Drawing.Size(217, 17);
+            this.cbRunIGBServer.TabIndex = 3;
+            this.cbRunIGBServer.Text = "Run IGB Mini-server on http://localhost/";
+            this.cbRunIGBServer.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -477,5 +489,6 @@ namespace EVEMon
         private System.Windows.Forms.CheckBox cbTitleToTime;
         private System.Windows.Forms.CheckBox cbWorksafeMode;
         private System.Windows.Forms.CheckBox cbPlaySoundOnSkillComplete;
+        private System.Windows.Forms.CheckBox cbRunIGBServer;
     }
 }

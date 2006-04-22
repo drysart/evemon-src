@@ -41,8 +41,6 @@ namespace EVEMon
         {
             this.RememberPositionKey = "MainWindow";
             Program.MainWindow = this;
-            m_igbServer = new EVEMon.IGBService.IGBServer();
-            m_igbServer.Start();
 
             Assembly asm = Assembly.GetExecutingAssembly();
             using (Stream s = asm.GetManifestResourceStream("EVEMon.throbber.png"))
@@ -110,11 +108,27 @@ namespace EVEMon
             im.Signaled += new EventHandler<EventArgs>(im_Signaled);
 #endif
 
+            m_igbServer = new EVEMon.IGBService.IGBServer();
+            m_settings.RunIGBServerChanged += new EventHandler<EventArgs>(m_settings_RunIGBServerChanged);
+            m_settings_RunIGBServerChanged(null, null);
+
             TipWindow.ShowTip("startup",
                 "Getting Started",
                 "To begin using EVEMon, click the \"Add Character\" button in " +
                 "the upper left corner of the window, enter your login information " +
                 "and choose a character to monitor.");
+        }
+
+        private void m_settings_RunIGBServerChanged(object sender, EventArgs e)
+        {
+            if (m_settings.RunIGBServer)
+            {
+                m_igbServer.Start();
+            }
+            else
+            {
+                m_igbServer.Stop();
+            }
         }
 
         void im_Signaled(object sender, EventArgs e)
@@ -487,6 +501,8 @@ namespace EVEMon
             UpdateManager um = UpdateManager.GetInstance();
             um.Stop();
             um.UpdateAvailable -= new UpdateAvailableHandler(um_UpdateAvailable);
+
+            m_settings.RunIGBServerChanged -= new EventHandler<EventArgs>(m_settings_RunIGBServerChanged);
 
             foreach (Image i in m_throbberImages)
             {
