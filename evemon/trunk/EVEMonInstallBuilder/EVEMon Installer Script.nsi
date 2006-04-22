@@ -11,7 +11,7 @@
 Name "EVEMon"
 OutFile "${OUTDIR}\EVEMon-install-${VERSION}.exe"
 InstallDir "$PROGRAMFILES\EVEMon\"
-InstallDirRegKey HKLM "Software\EVEMon" ""
+InstallDirRegKey HKLM "Software\EVEMon" "InstallDir"
 
 VIAddVersionKey "ProductName" "EVEMon Installer"
 VIAddVersionKey "CompanyName" "evercrest.com"
@@ -38,7 +38,11 @@ Var MUI_TEMP
 #-------------------------------------
 
 !insertmacro MUI_PAGE_INSTFILES
+# Finish page configuration
+!define MUI_FINISHPAGE_RUN $INSTDIR\EVEMon.exe
+!define MUI_FINISHPAGE_RUN_TEXT "Run EVEMon Now"
 !insertmacro MUI_PAGE_FINISH
+#-------------------------------------
 
 !insertmacro MUI_UNPAGE_WELCOME
 !insertmacro MUI_UNPAGE_CONFIRM
@@ -49,7 +53,135 @@ Var MUI_TEMP
 
 !include "NETFrameworkCheck.nsh"
 
+Function EnsureNotRunning
+  IntOp $1 0 + 0
+  lbl_tryAgain:
+  ClearErrors
+  FileOpen $0 "$INSTDIR\EVEMon.exe" a
+  IfErrors lbl_failedOpen
+  FileClose $0
+  goto lbl_Done
+
+  lbl_failedOpen:
+  IfSilent lbl_waitForIt
+  MessageBox MB_RETRYCANCEL|MB_DEFBUTTON1|MB_ICONEXCLAMATION \
+      "Please close EVEMon before continuing." /SD IDCANCEL IDRETRY lbl_tryAgain IDCANCEL lbl_abort
+  goto lbl_tryAgain
+
+  lbl_waitForIt:
+  IntOp $1 $1 + 1
+  IntCmp $1 10 0 0 lbl_failedToClose
+  Sleep 500
+  goto lbl_tryAgain
+
+  lbl_failedToClose:
+  Abort "EVEMon failed to close."
+
+  lbl_abort:
+  Abort "Operation cancelled by user."
+ 
+  lbl_Done:
+FunctionEnd
+
+Function un.EnsureNotRunning
+  IntOp $1 0 + 0
+  lbl_tryAgain:
+  ClearErrors
+  FileOpen $0 "$INSTDIR\EVEMon.exe" a
+  IfErrors lbl_failedOpen
+  FileClose $0
+  goto lbl_Done
+
+  lbl_failedOpen:
+  IfSilent lbl_waitForIt
+  MessageBox MB_RETRYCANCEL|MB_DEFBUTTON1|MB_ICONEXCLAMATION \
+      "Please close EVEMon before continuing." /SD IDCANCEL IDRETRY lbl_tryAgain IDCANCEL lbl_abort
+  goto lbl_tryAgain
+
+  lbl_waitForIt:
+  IntOp $1 $1 + 1
+  IntCmp $1 10 0 0 lbl_failedToClose
+  Sleep 500
+  goto lbl_tryAgain
+
+  lbl_failedToClose:
+  Abort "EVEMon failed to close."
+
+  lbl_abort:
+  Abort "Operation cancelled by user."
+ 
+  lbl_Done:
+FunctionEnd
+
+ ; StrStr
+ ; input, top of stack = string to search for
+ ;        top of stack-1 = string to search in
+ ; output, top of stack (replaces with the portion of the string remaining)
+ ; modifies no other variables.
+ ;
+ ; Usage:
+ ;   Push "this is a long ass string"
+ ;   Push "ass"
+ ;   Call StrStr
+ ;   Pop $R0
+ ;  ($R0 at this point is "ass string")
+
+ Function StrStr
+   Exch $R1 ; st=haystack,old$R1, $R1=needle
+   Exch    ; st=old$R1,haystack
+   Exch $R2 ; st=old$R1,old$R2, $R2=haystack
+   Push $R3
+   Push $R4
+   Push $R5
+   StrLen $R3 $R1
+   StrCpy $R4 0
+   ; $R1=needle
+   ; $R2=haystack
+   ; $R3=len(needle)
+   ; $R4=cnt
+   ; $R5=tmp
+   loop:
+     StrCpy $R5 $R2 $R3 $R4
+     StrCmp $R5 $R1 done
+     StrCmp $R5 "" done
+     IntOp $R4 $R4 + 1
+     Goto loop
+ done:
+   StrCpy $R1 $R2 "" $R4
+   Pop $R5
+   Pop $R4
+   Pop $R3
+   Pop $R2
+   Exch $R1
+ FunctionEnd
+
+function .onInstSuccess
+  ; skip if not in silent mode
+  IfSilent 0 lbl_skipRun
+
+  ; search for /AUTORUN on commandline and skip if not found
+  Push $CMDLINE
+  Push "/AUTORUN"
+  Call StrStr
+  Pop $0
+  StrCmp $0 "" lbl_skipRun
+
+  ; Autorun if in silent mode and /AUTORUN is specified
+  Exec "$INSTDIR\EVEMon.exe"
+
+  lbl_skipRun:
+FunctionEnd
+
 Section "Installer Section"
+  Call EnsureNotRunning
+
+  ClearErrors
+  ReadRegStr $0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\{B3C090CF-5539-42EA-90EB-8648A79C7F8B}" \
+        "UninstallString"
+  IfErrors lbl_NoLegacyUninstall
+  ExecWait "MsiExec.exe /quiet /x {B3C090CF-5539-42EA-90EB-8648A79C7F8B}"
+
+  lbl_noLegacyUninstall:
   SetOutPath "$INSTDIR"
   File /r /x *vshost* "..\bin\Release\*.*" 
   File "..\eve.exe_I006b_040f.ico"
@@ -88,6 +220,7 @@ Section "Installer Section"
 SectionEnd
 
 Section "un.Uninstaller Section"
+  Call un.EnsureNotRunning
   RMDir /r $INSTDIR
 
   !insertmacro MUI_STARTMENU_GETFOLDER EVEMon $MUI_TEMP
