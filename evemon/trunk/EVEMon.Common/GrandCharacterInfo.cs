@@ -1146,32 +1146,28 @@ namespace EVEMon.Common
             get { return m_rank; }
         }
 
-        private int m_level = -1;
-
         public int Level
         {
             get
             {
-                if (m_level == -1 || m_inTraining)
-                    CalculateLevel();
-                return m_level;
+                return CalculateLevel();
             }
         }
 
-        private void CalculateLevel()
+        private int CalculateLevel()
         {
             if (m_inTraining)
             {
-                m_level = this.TrainingToLevel - 1;
-                return;
+                return this.TrainingToLevel - 1;
             }
             int csp = this.CurrentSkillPoints;
-            m_level = 0;
+            int result = 0;
             for (int i = 1; i <= 5; i++)
             {
                 if (GetPointsRequiredForLevel(i) <= csp)
-                    m_level = i;
+                    result = i;
             }
+            return result;
         }
 
         public IEnumerable<Prereq> Prereqs
@@ -1196,7 +1192,6 @@ namespace EVEMon.Common
 
         private void OnChanged()
         {
-            m_level = -1;
             if (Changed != null)
                 Changed(this, new EventArgs());
         }
