@@ -180,9 +180,9 @@ namespace EVEMon.SkillPlanner
         private void lbSearchList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lbSearchList.SelectedIndex >= 0)
-                this.SelectedSkill = null;
-            else
                 this.SelectedSkill = m_grandCharacterInfo.GetSkill((string)lbSearchList.Items[lbSearchList.SelectedIndex]);
+            else
+                this.SelectedSkill = null;
         }
 
         private void tvSkillList_AfterSelect(object sender, TreeViewEventArgs e)
