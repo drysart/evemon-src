@@ -459,18 +459,18 @@ namespace EVEMon.Common
             }
         }
 
-        public void UpdateGrandCharacterInfoAsync(GrandCharacterInfo grandCharacterInfo, UpdateGrandCharacterInfoCallback callback)
+        public void UpdateGrandCharacterInfoAsync(GrandCharacterInfo grandCharacterInfo, Control invokeControl, UpdateGrandCharacterInfoCallback callback)
         {
             ThreadPool.QueueUserWorkItem(new WaitCallback(delegate
             {
-                int timeLeftInCache = this.UpdateGrandCharacterInfo(grandCharacterInfo);
+                int timeLeftInCache = this.UpdateGrandCharacterInfo(grandCharacterInfo, invokeControl);
                 callback(this, timeLeftInCache);
             }));
         }
 
         private const int DEFAULT_RETRY_INTERVAL = 60 * 5;
 
-        public int UpdateGrandCharacterInfo(GrandCharacterInfo grandCharacterInfo)
+        public int UpdateGrandCharacterInfo(GrandCharacterInfo grandCharacterInfo, Control invokeControl)
         {
             GrandSkill newTrainingSkill = null;
             int trainingToLevel = -1;
@@ -524,13 +524,17 @@ namespace EVEMon.Common
 
             int timeLeftInCache;
             SerializableCharacterInfo result = ProcessCharacterXml(xdoc, grandCharacterInfo.CharacterId, out timeLeftInCache);
-            grandCharacterInfo.AssignFromSerializableCharacterInfo(result);
 
-            grandCharacterInfo.CancelCurrentSkillTraining();
-            if (newTrainingSkill != null)
+            invokeControl.Invoke(new MethodInvoker(delegate
             {
-                newTrainingSkill.SetTrainingInfo(trainingToLevel, estimatedCompletion);
-            }
+                grandCharacterInfo.AssignFromSerializableCharacterInfo(result);
+
+                grandCharacterInfo.CancelCurrentSkillTraining();
+                if (newTrainingSkill != null)
+                {
+                    newTrainingSkill.SetTrainingInfo(trainingToLevel, estimatedCompletion);
+                }
+            }));
 
             return timeLeftInCache;
         }

@@ -155,10 +155,6 @@ namespace EVEMon
                 pbThrobber.Visible = false;
                 m_grandCharacterInfo.AssignFromSerializableCharacterInfo(m_sci);
                 m_sci = null;
-                if (m_cfi.MonitorFile)
-                {
-                    // TODO: set up file monitor
-                }
             }
             tmrTick.Enabled = true;
 
@@ -178,6 +174,12 @@ namespace EVEMon
 
         private void ReloadFromFile()
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(ReloadFromFile));
+                return;
+            }
+
             SerializableCharacterInfo sci = SerializableCharacterInfo.CreateFromFile(m_cfi.Filename);
             if (sci != null)
                 m_grandCharacterInfo.AssignFromSerializableCharacterInfo(sci);
@@ -487,7 +489,7 @@ namespace EVEMon
 
         private void UpdateGrandCharacterInfo()
         {
-            m_session.UpdateGrandCharacterInfoAsync(m_grandCharacterInfo,
+            m_session.UpdateGrandCharacterInfoAsync(m_grandCharacterInfo, Program.MainWindow, 
                 new UpdateGrandCharacterInfoCallback(delegate (EveSession s, int timeLeftInCache)
                 {
                     this.Invoke(new MethodInvoker(delegate
