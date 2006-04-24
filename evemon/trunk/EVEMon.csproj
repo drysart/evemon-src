@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EVEMon</RootNamespace>
     <AssemblyName>EVEMon</AssemblyName>
-    <ApplicationIcon>eve.exe_I006b_040f.ico</ApplicationIcon>
+    <ApplicationIcon>EVEMon-all.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -281,6 +281,7 @@
     <EmbeddedResource Include="bee.jpg" />
     <EmbeddedResource Include="Collapse_large.png" />
     <Resource Include="eve.exe_I006b_040f.ico" />
+    <Resource Include="EVEMon-all.ico" />
     <EmbeddedResource Include="Expand_large.png" />
     <EmbeddedResource Include="throbber.png" />
   </ItemGroup>
