@@ -65,7 +65,9 @@ namespace EVEMon.Common
             [ColumnDisplay("Secondary Attribute", "Secondary")]
             SecondaryAttribute,
             [ColumnDisplay("Skill Group", "Group")]
-            SkillGroup
+            SkillGroup,
+            [ColumnDisplay("Notes", "Notes")]
+            Notes
         }
 
         private bool[] m_prefs;
@@ -212,6 +214,13 @@ namespace EVEMon.Common
         {
             get { return this[ColumnType.SkillGroup]; }
             set { this[ColumnType.SkillGroup] = value; }
+        }
+
+        [XmlAttribute]
+        public bool Notes
+        {
+            get { return this[ColumnType.Notes]; }
+            set { this[ColumnType.Notes] = value; }
         }
     }
 }

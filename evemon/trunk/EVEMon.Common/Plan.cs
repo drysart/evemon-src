@@ -832,12 +832,13 @@ namespace EVEMon.Common
     }
 
     [XmlRoot("planentry")]
-    public class PlanEntry
+    public class PlanEntry: ICloneable
     {
         private Plan m_owner;
         private string m_skillName;
         private int m_level;
         private PlanEntryType m_entryType;
+        private string m_notes;
 
         [XmlIgnore]
         public Plan Plan
@@ -878,6 +879,12 @@ namespace EVEMon.Common
         {
             get { return m_entryType; }
             set { m_entryType = value; }
+        }
+
+        public string Notes
+        {
+            get { return m_notes; }
+            set { m_notes = value; }
         }
 
         [XmlIgnore]
@@ -933,6 +940,20 @@ namespace EVEMon.Common
                 }
             }
         }
+
+        #region ICloneable Members
+
+        public object Clone()
+        {
+            PlanEntry pe = new PlanEntry();
+            pe.SkillName = this.SkillName;
+            pe.Level = this.Level;
+            pe.EntryType = this.EntryType;
+            pe.Notes = this.Notes;
+            return pe;
+        }
+
+        #endregion
     }
 
     public interface IPlannerWindowFactory

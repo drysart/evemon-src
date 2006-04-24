@@ -191,6 +191,12 @@
     <Compile Include="SkillPlanner\DraggableListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SkillPlanner\EditEntryNoteWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\EditEntryNoteWindow.Designer.cs">
+      <DependentUpon>EditEntryNoteWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkillPlanner\ImplantCalculator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -318,6 +324,10 @@
     <EmbeddedResource Include="SkillPlanner\CopySaveOptionsWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CopySaveOptionsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\EditEntryNoteWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditEntryNoteWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\ImplantCalculator.resx">
       <SubType>Designer</SubType>

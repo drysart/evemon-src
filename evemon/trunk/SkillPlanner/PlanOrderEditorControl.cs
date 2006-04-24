@@ -115,6 +115,8 @@ namespace EVEMon.SkillPlanner
         //private const int SUBITEM_LEVELNUMERIC = 5;
         //private const int SUBITEM_MAX = 6;
 
+        private const int MAX_NOTES_PREVIEW_CHARS = 60;
+
         private void UpdateListViewItems()
         {
             if (this.InvokeRequired)
@@ -193,6 +195,19 @@ namespace EVEMon.SkillPlanner
                                 break;
                             case ColumnPreference.ColumnType.SkillGroup:
                                 res = gs.SkillGroup.Name;
+                                break;
+                            case ColumnPreference.ColumnType.Notes:
+                                string xx;
+                                if (String.IsNullOrEmpty(pe.Notes))
+                                    res = String.Empty;
+                                else
+                                {
+                                    xx = Regex.Replace(pe.Notes, @"(\r|\n)+", " ", RegexOptions.None);
+                                    if (xx.Length <= MAX_NOTES_PREVIEW_CHARS)
+                                        res = xx;
+                                    else
+                                        res = xx.Substring(0,MAX_NOTES_PREVIEW_CHARS)+"...";
+                                }
                                 break;
                         }
                         lvi.SubItems[x].Text = res;
@@ -319,12 +334,13 @@ namespace EVEMon.SkillPlanner
                 m_plan.Entries.Clear();
                 foreach (ListViewItem lvi in lvSkills.Items)
                 {
-                    PlanEntry pe = new PlanEntry();
-                    Match m = Regex.Match(lvi.Text, "^(.*) ([IV]+)$");
-                    pe.SkillName = m.Groups[1].Value;
-                    pe.Level = GrandSkill.GetIntForRoman(m.Groups[2].Value);
-                    pe.EntryType = (PlanEntryType)Enum.Parse(typeof(PlanEntryType), lvi.SubItems[lvSkills.Columns.Count].Text, true);
-                    m_plan.Entries.Add(pe);
+                    PlanEntry newPe = ((PlanEntry)lvi.Tag).Clone() as PlanEntry;
+                    //PlanEntry pe = new PlanEntry();
+                    //Match m = Regex.Match(lvi.Text, "^(.*) ([IV]+)$");
+                    //pe.SkillName = m.Groups[1].Value;
+                    //pe.Level = GrandSkill.GetIntForRoman(m.Groups[2].Value);
+                    //pe.EntryType = (PlanEntryType)Enum.Parse(typeof(PlanEntryType), lvi.SubItems[lvSkills.Columns.Count].Text, true);
+                    m_plan.Entries.Add(newPe);
                 }
                 // Enforces proper ordering too!
                 m_plan.CheckForMissingPrerequisites();
@@ -338,6 +354,7 @@ namespace EVEMon.SkillPlanner
         private void cmsContextMenu_Opening(object sender, CancelEventArgs e)
         {
             miRemoveFromPlan.Enabled = (lvSkills.SelectedItems.Count == 1);
+            miChangeNote.Enabled = (lvSkills.SelectedItems.Count == 1);
         }
 
         private void miRemoveFromPlan_Click(object sender, EventArgs e)
@@ -575,6 +592,29 @@ namespace EVEMon.SkillPlanner
                         lvi.Selected = false;
                 }
                 lvSkills.EndUpdate();
+            }
+        }
+
+        private void miChangeNote_Click(object sender, EventArgs e)
+        {
+            if (lvSkills.SelectedItems.Count < 0)
+                return;
+            ListViewItem lvi = lvSkills.SelectedItems[0];
+            if (lvi == null)
+                return;
+            PlanEntry pe = lvi.Tag as PlanEntry;
+            if (pe == null)
+                return;
+            string sn = pe.SkillName + " " + GrandSkill.GetRomanSkillNumber(pe.Level);
+            using (EditEntryNoteWindow f = new EditEntryNoteWindow(sn))
+            {
+                f.NoteText = pe.Notes;
+                DialogResult dr = f.ShowDialog();
+                if (dr == DialogResult.Cancel)
+                    return;
+                pe.Notes = f.NoteText;
+                UpdateListViewItems();
+                Program.Settings.Save();
             }
         }
     }
