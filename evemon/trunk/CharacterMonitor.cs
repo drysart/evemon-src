@@ -55,12 +55,38 @@ namespace EVEMon
             m_cfi = cfi;
         }
 
-        private Image[] m_throbberImages;
+        private static Image[] m_throbberImages = null;
 
-        public Image[] ThrobberImages
+        public static Image[] ThrobberImages
         {
-            get { return m_throbberImages; }
-            set { m_throbberImages = value; }
+            get {
+                if (m_throbberImages == null)
+                    InitializeThrobberImages();
+                return m_throbberImages;
+            }
+        }
+
+        private const int THROBBERIMG_WIDTH = 24;
+        private const int THROBBERIMG_HEIGHT = 24;
+
+        private static void InitializeThrobberImages()
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            using (Stream s = asm.GetManifestResourceStream("EVEMon.throbber.png"))
+            using (Image b = Image.FromStream(s, true, true))
+            {
+                m_throbberImages = new Image[9];
+                for (int i = 0; i < 9; i++)
+                {
+                    Bitmap ib = new Bitmap(THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT);
+                    using (Graphics g = Graphics.FromImage(ib))
+                    {
+                        g.DrawImage(b, new Rectangle(0, 0, THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT),
+                            new Rectangle(i * THROBBERIMG_WIDTH, 0, THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT), GraphicsUnit.Pixel);
+                    }
+                    m_throbberImages[i] = ib;
+                }
+            }
         }
 
         public event SkillTrainingCompletedHandler SkillTrainingCompleted;
@@ -1383,7 +1409,7 @@ namespace EVEMon
             if (m_throbberRunning)
             {
                 m_throbberFrame = ((m_throbberFrame + 1) % 8);
-                pbThrobber.Image = m_throbberImages[m_throbberFrame + 1];
+                pbThrobber.Image = ThrobberImages[m_throbberFrame + 1];
                 tmrThrobber.Enabled = true;
             }
             else if (m_throbberError)
@@ -1392,12 +1418,12 @@ namespace EVEMon
                 if (!blinkState)
                     pbThrobber.Image = null;
                 else
-                    pbThrobber.Image = m_throbberImages[0];
+                    pbThrobber.Image = ThrobberImages[0];
                 tmrThrobber.Enabled = true;
             }
             else
             {
-                pbThrobber.Image = m_throbberImages[0];
+                pbThrobber.Image = ThrobberImages[0];
                 m_throbberFrame = 0;
             }
         }

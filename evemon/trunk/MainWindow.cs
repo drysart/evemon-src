@@ -32,8 +32,6 @@ namespace EVEMon
         }
 
         private Image[] m_throbberImages;
-        private const int THROBBERIMG_WIDTH = 24;
-        private const int THROBBERIMG_HEIGHT = 24;
 
         private IGBService.IGBServer m_igbServer;
 
@@ -41,23 +39,6 @@ namespace EVEMon
         {
             this.RememberPositionKey = "MainWindow";
             Program.MainWindow = this;
-
-            Assembly asm = Assembly.GetExecutingAssembly();
-            using (Stream s = asm.GetManifestResourceStream("EVEMon.throbber.png"))
-            using (Image b = Image.FromStream(s, true, true))
-            {
-                m_throbberImages = new Image[9];
-                for (int i = 0; i < 9; i++)
-                {
-                    Bitmap ib = new Bitmap(THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT);
-                    using (Graphics g = Graphics.FromImage(ib))
-                    {
-                        g.DrawImage(b, new Rectangle(0, 0, THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT),
-                            new Rectangle(i * THROBBERIMG_WIDTH, 0, THROBBERIMG_WIDTH, THROBBERIMG_HEIGHT), GraphicsUnit.Pixel);
-                    }
-                    m_throbberImages[i] = ib;
-                }
-            }
 
             if (!String.IsNullOrEmpty(m_settings.Username) &&
                 !String.IsNullOrEmpty(m_settings.Password) &&
@@ -191,7 +172,6 @@ namespace EVEMon
             cm.Dock = DockStyle.Fill;
             cm.SkillTrainingCompleted += new SkillTrainingCompletedHandler(cm_SkillTrainingCompleted);
             cm.ShortInfoChanged += new EventHandler(cm_ShortInfoChanged);
-            cm.ThrobberImages = m_throbberImages;
             cm.Start();
             tcCharacterTabs.TabPages.Add(tp);
             SetRemoveEnable();
@@ -220,7 +200,6 @@ namespace EVEMon
             cm.Dock = DockStyle.Fill;
             cm.SkillTrainingCompleted += new SkillTrainingCompletedHandler(cm_SkillTrainingCompleted);
             cm.ShortInfoChanged += new EventHandler(cm_ShortInfoChanged);
-            cm.ThrobberImages = m_throbberImages;
             cm.Start();
             tcCharacterTabs.TabPages.Add(tp);
             SetRemoveEnable();
@@ -503,11 +482,6 @@ namespace EVEMon
             um.UpdateAvailable -= new UpdateAvailableHandler(um_UpdateAvailable);
 
             m_settings.RunIGBServerChanged -= new EventHandler<EventArgs>(m_settings_RunIGBServerChanged);
-
-            foreach (Image i in m_throbberImages)
-            {
-                i.Dispose();
-            }
 
             m_igbServer.Stop();
         }
