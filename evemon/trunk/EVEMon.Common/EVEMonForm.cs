@@ -34,6 +34,7 @@ namespace EVEMon.Common
                 if (s.SavedWindowLocations.ContainsKey(m_rememberPositionKey))
                 {
                     Rectangle r = s.SavedWindowLocations[m_rememberPositionKey];
+                    r = VerifyValidWindowLocation(r);
                     this.SetBounds(r.Left, r.Top, r.Width, r.Height);
                 }
             }
@@ -49,6 +50,32 @@ namespace EVEMon.Common
             }
 
             base.OnFormClosed(e);
+        }
+
+        private Rectangle VerifyValidWindowLocation(Rectangle inRect)
+        {
+            Point p = inRect.Location;
+            Size s = inRect.Size;
+            s.Width = Math.Max(s.Width, this.MinimumSize.Width);
+            s.Height = Math.Max(s.Height, this.MinimumSize.Height);
+
+            foreach (Screen ts in Screen.AllScreens)
+            {
+                if (ts.WorkingArea.Contains(inRect))
+                {
+                    return inRect;
+                }
+                if (ts.WorkingArea.Contains(p))
+                {
+                    p.X = Math.Min(p.X, ts.WorkingArea.Right - s.Width);
+                    p.Y = Math.Min(p.Y, ts.WorkingArea.Bottom - s.Height);
+                    return new Rectangle(p, s);
+                }
+            }
+
+            p.X = Screen.PrimaryScreen.WorkingArea.X + 5;
+            p.Y = Screen.PrimaryScreen.WorkingArea.Y + 5;
+            return new Rectangle(p, s);
         }
     }
 }
