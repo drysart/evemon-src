@@ -1100,6 +1100,8 @@ namespace EVEMon.Common
 
         public int GetPointsRequiredForLevel(int level)
         {
+            if (level == 0)
+                return 0;
             int pointsForLevel = Convert.ToInt32(250 * m_rank * Math.Pow(32, Convert.ToDouble(level - 1) / 2));
             // There's some sort of weird rounding error
             // these values need to be corrected by one.
