@@ -54,6 +54,7 @@ Var MUI_TEMP
 !include "NETFrameworkCheck.nsh"
 
 Function EnsureNotRunning
+  IfFileExists "$INSTDIR\EVEMon.exe" 0 lbl_Done
   IntOp $1 0 + 0
   lbl_tryAgain:
   ClearErrors
