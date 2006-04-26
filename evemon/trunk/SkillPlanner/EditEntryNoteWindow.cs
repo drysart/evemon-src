@@ -25,6 +25,8 @@ namespace EVEMon.SkillPlanner
         {
             get { return textBox1.Text; }
             set {
+                if (String.IsNullOrEmpty(value))
+                    value = String.Empty;
                 textBox1.Lines = value.Split(new string[4] { "\r\n", "\n\r", "\r", "\n" }, StringSplitOptions.None);
             }
         }
