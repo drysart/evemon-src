@@ -24,8 +24,8 @@ Var STARTMENU_FOLDER
 Var MUI_TEMP
 
 !define MUI_ABORTWARNING
-!define MUI_ICON "..\eve.exe_I006b_040f.ico"
-!define MUI_UNICON "..\eve.exe_I006b_040f.ico"
+!define MUI_ICON "..\EVEMon-all.ico"
+!define MUI_UNICON "..\EVEMon-all.ico"
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_DIRECTORY
@@ -185,6 +185,7 @@ Section "Installer Section"
   SetOutPath "$INSTDIR"
   File /r /x *vshost* "..\bin\Release\*.*" 
   File "..\eve.exe_I006b_040f.ico"
+  File "..\EVEMon-all.ico"
   CreateDirectory "$INSTDIR\Debugging Tools"
   SetOutPath "$INSTDIR\Debugging Tools"
   CreateShortCut "$INSTDIR\Debugging Tools\EVEMon (with network logging).lnk" "$INSTDIR\EVEMon.exe" "-netlog"
