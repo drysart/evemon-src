@@ -285,7 +285,8 @@ namespace EVEMon.Common
                     args.NetworkLogEventType = NetworkLogEventType.GotUrlFailure;
                     args.Url = url;
                     args.Referer = refer;
-                    args.Cookies = resp.Cookies;
+                    if (resp != null)
+                        args.Cookies = resp.Cookies;
                     args.Exception = err;
                     NetworkLogEvent(this, args);
                 }
@@ -300,7 +301,8 @@ namespace EVEMon.Common
                     args.NetworkLogEventType = NetworkLogEventType.GotUrlFailure;
                     args.Url = url;
                     args.Referer = refer;
-                    args.Cookies = resp.Cookies;
+                    if (resp != null)
+                        args.Cookies = resp.Cookies;
                     args.Exception = err;
                     NetworkLogEvent(this, args);
                 }
