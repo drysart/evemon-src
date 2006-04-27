@@ -99,24 +99,44 @@ Var DOTNET_RETURN_CODE
 
 Section "Microsoft .NET Framework v2.0"
   SectionIn RO
+  
+  ; search for /SKIPDOTNET on commandline and skip if found
+  Push $CMDLINE
+  Push "/SKIPDOTNET"
+  Call StrStr
+  Pop $0
+  StrCmp $0 "" lbl_notSkipped
+  goto lbl_Done
+  
+  lbl_notSkipped:
   Call GetDotNETVersion
   Pop $0
   ${If} $0 == "not found"
-     goto lbl_StartInstall
+     goto lbl_StartInstallNotFound
   ${EndIf}
   StrCpy $0 $0 "" 1
   ${VersionCompare} $0 "2.0" $1
   ${If} $1 == 2
-     goto lbl_StartInstall
+     goto lbl_StartInstallTooLow
   ${EndIf}
   goto lbl_Done
 
-  lbl_StartInstall:
-  MessageBox MB_ICONEXCLAMATION|MB_YESNO|MB_DEFBUTTON2 "Microsoft .NET Framework 2.0 is required.$\nYou must \
+  lbl_StartInstallNotFound:
+  MessageBox MB_ICONEXCLAMATION|MB_YESNO|MB_DEFBUTTON2 "Microsoft .NET Framework 2.0 is required, and you do not have any version installed.$\nYou must \
                     install it before continuing.$\nIf you choose to continue, you will need to be connected \
-                    to the internet before proceeding.$\nWould you like to continue with the installation?" /SD IDNO IDYES +2 IDNO 0
+                    to the internet before proceeding.$\nWould you like to continue with the installation?" /SD IDNO IDYES lbl_Confirmed IDNO lbl_Cancelled
+
+  lbl_StartInstallTooLow:
+  Call GetDotNETVersion
+  Pop $0
+  MessageBox MB_ICONEXCLAMATION|MB_YESNO|MB_DEFBUTTON2 "Microsoft .NET Framework 2.0 is required (you only have $0).$\nYou must \
+                    install it before continuing.$\nIf you choose to continue, you will need to be connected \
+                    to the internet before proceeding.$\nWould you like to continue with the installation?" /SD IDNO IDYES lbl_Confirmed IDNO lbl_Cancelled
+
+  lbl_Cancelled:                  
   Abort "Microsoft .NET Framework 2.0 is required."
 
+  lbl_Confirmed:
   AddSize 153600
   nsisdl::download \
          /TIMEOUT=30000 "http://download.microsoft.com/download/5/6/7/567758a3-759e-473e-bf8f-52154438565a/dotnetfx.exe" "$PLUGINSDIR\dotnetfx.exe"
