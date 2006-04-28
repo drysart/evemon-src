@@ -205,15 +205,25 @@ namespace EVEMon
         private void m_settings_WorksafeChanged(object sender, EventArgs e)
         {
             pbCharImage.Visible = !m_settings.WorksafeMode;
-            lblCharacterName.Left = m_settings.WorksafeMode ? -3 : 134;
-            lblBioInfo.Left = m_settings.WorksafeMode ? -3 : 134;
-            lblCorpInfo.Left = m_settings.WorksafeMode ? -3 : 134;
-            lblBalance.Left = m_settings.WorksafeMode ? -3 : 134;
-            lblIntelligence.Left = m_settings.WorksafeMode ? -3 : 134;
-            lblCharisma.Left = m_settings.WorksafeMode ? -3 : 134;
-            lblPerception.Left = m_settings.WorksafeMode ? -3 : 134;
-            lblMemory.Left = m_settings.WorksafeMode ? -3 : 134;
-            lblWillpower.Left = m_settings.WorksafeMode ? -3 : 134;
+            if (m_settings.WorksafeMode)
+            {
+                tableLayoutPanel1.SetColumnSpan(lblSkillHeader, 1);
+                tableLayoutPanel1.SetColumn(lblSkillHeader, 1);
+            }
+            else
+            {
+                tableLayoutPanel1.SetColumn(lblSkillHeader, 0);
+                tableLayoutPanel1.SetColumnSpan(lblSkillHeader, 2);
+            }
+            //lblCharacterName.Left = m_settings.WorksafeMode ? -3 : 134;
+            //lblBioInfo.Left = m_settings.WorksafeMode ? -3 : 134;
+            //lblCorpInfo.Left = m_settings.WorksafeMode ? -3 : 134;
+            //lblBalance.Left = m_settings.WorksafeMode ? -3 : 134;
+            //lblIntelligence.Left = m_settings.WorksafeMode ? -3 : 134;
+            //lblCharisma.Left = m_settings.WorksafeMode ? -3 : 134;
+            //lblPerception.Left = m_settings.WorksafeMode ? -3 : 134;
+            //lblMemory.Left = m_settings.WorksafeMode ? -3 : 134;
+            //lblWillpower.Left = m_settings.WorksafeMode ? -3 : 134;
         }
 
         void m_grandCharacterInfo_SkillChanged(object sender, SkillChangedEventArgs e)
@@ -1497,6 +1507,11 @@ namespace EVEMon
             {
                 lbSkills.EndUpdate();
             }
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }     
     }
 
