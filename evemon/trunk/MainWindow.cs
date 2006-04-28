@@ -518,28 +518,42 @@ namespace EVEMon
 
         private WeakReference<TrayTooltipWindow> m_tooltipWindow = null;
 
+        private bool m_inMinIconMouseMove = false;
+
         private void niMinimizeIcon_MouseMove(object sender, MouseEventArgs e)
         {
-            TrayTooltipWindow ttw = null;
-            if (m_tooltipWindow != null)
+            if (!m_inMinIconMouseMove)
             {
-                ttw = m_tooltipWindow.Target;
-            }
-
-            if (ttw == null)
-            {
-                ttw = new TrayTooltipWindow();
-                ttw.FormClosed += delegate
+                m_inMinIconMouseMove = true;
+                try
                 {
-                    m_tooltipWindow = null;
-                };
-                ttw.Text = m_tooltipText;
-                ttw.Show();
-                m_tooltipWindow = new WeakReference<TrayTooltipWindow>(ttw);
-            }
-            else
-            {
-                ttw.RefreshAlive();
+                    TrayTooltipWindow ttw = null;
+                    if (m_tooltipWindow != null)
+                    {
+                        ttw = m_tooltipWindow.Target;
+                    }
+
+                    if (ttw == null)
+                    {
+                        ttw = new TrayTooltipWindow();
+                        m_tooltipWindow = new WeakReference<TrayTooltipWindow>(ttw);
+                        ttw.FormClosed += delegate
+                        {
+                            m_tooltipWindow = null;
+                            ttw.Dispose();
+                        };
+                        ttw.Text = m_tooltipText;
+                        ttw.Show();
+                    }
+                    else
+                    {
+                        ttw.RefreshAlive();
+                    }
+                }
+                finally
+                {
+                    m_inMinIconMouseMove = false;
+                }
             }
         }
 

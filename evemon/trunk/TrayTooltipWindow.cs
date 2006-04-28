@@ -14,8 +14,10 @@ namespace EVEMon
         public TrayTooltipWindow()
         {
             InitializeComponent();
+            m_initialized = true;
         }
 
+        private bool m_initialized = false;
         private Size m_size = new Size(50, 50);
 
         public override string Text
@@ -24,15 +26,20 @@ namespace EVEMon
             set
             {
                 base.Text = value;
-                CalculateSize();
-                if (this.Visible)
+                if (m_initialized)
+                {
+                    CalculateSize();
                     PositionWindow();
+                }
             }
         }
 
         private void CalculateSize()
         {
-            m_size = TextRenderer.MeasureText(this.Text, this.Font, new Size(0, 0), TextFormatFlags.NoClipping | TextFormatFlags.NoPadding);
+            using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
+            {
+                m_size = TextRenderer.MeasureText(g, this.Text, this.Font, new Size(0, 0), TextFormatFlags.NoClipping | TextFormatFlags.NoPadding);
+            }
             m_size = new Size(m_size.Width + 6, m_size.Height + 4);
             this.ClientSize = m_size;
             this.Invalidate();
