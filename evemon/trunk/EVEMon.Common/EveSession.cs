@@ -342,6 +342,8 @@ namespace EVEMon.Common
                     url = newUrl;
                     goto AGAIN;
                 }
+
+                return res;
             }
             catch (WebException err)
             {
@@ -374,8 +376,6 @@ namespace EVEMon.Common
                 }
                 throw;
             }
-
-            return res;
         }
 
         public void ReLogin()
