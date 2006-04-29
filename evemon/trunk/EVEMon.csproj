@@ -239,6 +239,12 @@
     <Compile Include="SkillPlanner\PlanSelectWindow.Designer.cs">
       <DependentUpon>PlanSelectWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkillPlanner\ShipSelectControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\ShipSelectControl.Designer.cs">
+      <DependentUpon>ShipSelectControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkillPlanner\SkillSelectControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -356,6 +362,10 @@
     <EmbeddedResource Include="SkillPlanner\PlanSelectWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PlanSelectWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\ShipSelectControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ShipSelectControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\SkillSelectControl.resx">
       <SubType>Designer</SubType>

@@ -588,14 +588,7 @@ namespace EVEMon.SkillPlanner
             }
             if (planEntries.Count > 0)
             {
-                using (AddPlanConfirmWindow f = new AddPlanConfirmWindow(planEntries))
-                {
-                    DialogResult dr = f.ShowDialog();
-                    if (dr == DialogResult.OK)
-                    {
-                        m_plan.AddList(planEntries);
-                    }
-                }
+                ConfirmSkillAdd(planEntries);
             }
             else
             {
@@ -617,6 +610,18 @@ namespace EVEMon.SkillPlanner
                 }
             }
             UpdatePlanControl();
+        }
+
+        private void ConfirmSkillAdd(List<PlanEntry> planEntries)
+        {
+            using (AddPlanConfirmWindow f = new AddPlanConfirmWindow(planEntries))
+            {
+                DialogResult dr = f.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    m_plan.AddList(planEntries);
+                }
+            }
         }
 
         private void AddPrerequisiteEntries(GrandSkill gs, List<PlanEntry> planEntries)
@@ -972,6 +977,156 @@ namespace EVEMon.SkillPlanner
             m_calcWindows.Add(new WeakReference<ImplantCalculator>(ic));
 
             ic.Show();
+        }
+
+        private void shipSelectControl1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void shipSelectControl1_SelectedShipChanged(object sender, EventArgs e)
+        {
+            Bitmap b = new Bitmap(256, 256);
+            using (Graphics g = Graphics.FromImage(b))
+            {
+                g.FillRectangle(Brushes.Black, new Rectangle(0, 0, 256, 256));
+            }
+            pbShipImage.Image = b;
+
+            if (shipSelectControl1.SelectedShip != null)
+            {
+                Ship s = shipSelectControl1.SelectedShip;
+                int shipId = s.Id;
+                EveSession.GetImageAsync(
+                    "http://www.eve-online.com/bitmaps/icons/itemdb/shiptypes/256_256/" +
+                    shipId.ToString() + ".png", delegate(EveSession ss, Image i)
+                    {
+                        GotShipImage(shipId, i);
+                    });
+
+                lblShipClass.Text = s.Type + " > " + s.Race;
+                lblShipName.Text = s.Name;
+                lblShipDescription.Text = s.Description;
+
+                bool allKnown = true;
+                allKnown = SetShipSkillLabel(0, lblShipSkill1, s.RequiredSkills) && allKnown;
+                allKnown = SetShipSkillLabel(1, lblShipSkill2, s.RequiredSkills) && allKnown;
+                allKnown = SetShipSkillLabel(2, lblShipSkill3, s.RequiredSkills) && allKnown;
+
+                if (!allKnown)
+                {
+                    List<Pair<GrandSkill, int>> reqSkills = new List<Pair<GrandSkill, int>>();
+                    foreach (ShipRequiredSkill srs in s.RequiredSkills)
+                    {
+                        Pair<GrandSkill, int> p = new Pair<GrandSkill, int>();
+                        p.A = m_grandCharacterInfo.GetSkill(srs.Name);
+                        p.B = srs.Level;
+                        reqSkills.Add(p);
+                    }
+                    TimeSpan trainTime = m_grandCharacterInfo.GetTrainingTimeToMultipleSkills(reqSkills);
+                    lblShipTimeRequired.Text = "Training Time: " +
+                        GrandSkill.TimeSpanToDescriptiveText(trainTime, DescriptiveTextOptions.IncludeCommas | DescriptiveTextOptions.SpaceText);
+                    btnShipSkillsAdd.Enabled = true;
+                }
+                else
+                {
+                    lblShipTimeRequired.Text = String.Empty;
+                    btnShipSkillsAdd.Enabled = false;
+                }
+
+                lbShipProperties.BeginUpdate();
+                try
+                {
+                    lbShipProperties.Items.Clear();
+                    foreach (ShipProperty prop in s.Properties)
+                    {
+                        lbShipProperties.Items.Add(prop);
+                    }
+                }
+                finally
+                {
+                    lbShipProperties.EndUpdate();
+                }
+
+                foreach (Control c in scShipSelect.Panel2.Controls)
+                {
+                    c.Visible = true;
+                }
+            }
+            else
+            {
+                foreach (Control c in scShipSelect.Panel2.Controls)
+                {
+                    c.Visible = false;
+                }
+            }
+        }
+
+        private bool SetShipSkillLabel(int rnum, Label skillLabel, List<ShipRequiredSkill> list)
+        {
+            if (list.Count > rnum)
+            {
+                GrandSkill gs = m_grandCharacterInfo.GetSkill(list[rnum].Name);
+                string knownText = String.Empty;
+                if (gs.Level >= list[rnum].Level)
+                    knownText = " (Known)";
+                skillLabel.Text = list[rnum].Name + " " +
+                    GrandSkill.GetRomanSkillNumber(list[rnum].Level) + knownText;
+                return (knownText.Length > 0);
+            }
+            else
+            {
+                skillLabel.Text = String.Empty;
+                return true;
+            }
+        }
+
+        private void GotShipImage(int shipId, Image i)
+        {
+            if (i == null)
+                return;
+            if (shipSelectControl1.SelectedShip == null)
+                return;
+            if (shipId != shipSelectControl1.SelectedShip.Id)
+                return;
+            pbShipImage.Image = i;
+        }
+
+        private void btnShipSkillsAdd_Click(object sender, EventArgs e)
+        {
+            Ship s = shipSelectControl1.SelectedShip;
+            if (s == null)
+                return;
+
+            List<PlanEntry> planEntries = new List<PlanEntry>();
+            foreach (ShipRequiredSkill srs in s.RequiredSkills)
+            {
+                GrandSkill gs = m_grandCharacterInfo.GetSkill(srs.Name);
+                if (ShouldAdd(gs, srs.Level, planEntries))
+                {
+                    AddPrerequisiteEntries(gs, planEntries);
+                    for (int i = 1; i <= srs.Level; i++)
+                    {
+                        if (ShouldAdd(gs, i, planEntries))
+                        {
+                            PlanEntry pe = new PlanEntry();
+                            pe.SkillName = gs.Name;
+                            pe.Level = i;
+                            pe.EntryType = (i == srs.Level) ? PlanEntryType.Planned : PlanEntryType.Prerequisite;
+                            planEntries.Add(pe);
+                        }
+                    }
+                }
+            }
+            if (planEntries.Count > 0)
+            {
+                ConfirmSkillAdd(planEntries);
+            }
+            else
+            {
+                MessageBox.Show("All the required skills are already in your plan.",
+                    "Already Planned", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 

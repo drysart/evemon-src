@@ -740,7 +740,7 @@ namespace EVEMon
         private void GetCharacterImage()
         {
             m_tryImageAgainTime = DateTime.MaxValue;
-            EveSession.GetCharaterImageAsync(m_charId, new GetCharacterImageCallback(GotCharacterImage));
+            EveSession.GetCharaterImageAsync(m_charId, new GetImageCallback(GotCharacterImage));
         }
 
         private enum SaveFormat

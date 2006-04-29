@@ -57,6 +57,7 @@
     <Compile Include="Schedule\ScheduleItem.cs" />
     <Compile Include="SerializableCharacterInfo.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Ship.cs" />
     <Compile Include="WeakReferenceOfT.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="EVEMon-all.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="eve-ships2.xml.gz" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

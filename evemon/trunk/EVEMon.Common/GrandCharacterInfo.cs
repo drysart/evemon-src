@@ -627,6 +627,35 @@ namespace EVEMon.Common
 
             return ci;
         }
+
+        public TimeSpan GetTrainingTimeToMultipleSkills(IEnumerable<Pair<GrandSkill, int>> skills)
+        {
+            Dictionary<GrandSkill, int> trainedAlready = new Dictionary<GrandSkill,int>();
+            TimeSpan result = TimeSpan.Zero;
+
+            foreach (Pair<GrandSkill, int> ts in skills)
+            {
+                result += ts.A.GetPrerequisiteTime(trainedAlready);
+                for (int i = 1; i <= ts.B; i++)
+                {
+                    int pointsReq = ts.A.GetPointsRequiredForLevel(i);
+                    bool needTrain = true;
+                    if ((trainedAlready.ContainsKey(ts.A) &&
+                        trainedAlready[ts.A] >= pointsReq) ||
+                        ts.A.Level >= ts.B)
+                    {
+                        needTrain = false;
+                    }
+                    if (needTrain)
+                    {
+                        result += ts.A.GetTrainingTimeOfLevelOnly(i, true);
+                        trainedAlready[ts.A] = ts.A.GetPointsRequiredForLevel(i);
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 
     public delegate void SkillChangedHandler(object sender, SkillChangedEventArgs e);

@@ -423,20 +423,25 @@ namespace EVEMon.Common
             }
         }
 
-        public static void GetCharaterImageAsync(int charId, GetCharacterImageCallback callback)
+        public static void GetCharaterImageAsync(int charId, GetImageCallback callback)
         {
-            Pair<HttpWebRequest, GetCharacterImageCallback> p = new Pair<HttpWebRequest, GetCharacterImageCallback>();
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://img.eve.is/serv.asp?s=512&c=" + charId.ToString());
-            p.A = wr;
-            p.B = callback;
-            wr.BeginGetResponse(new AsyncCallback(GotCharacterImage), p);
+            GetImageAsync("http://img.eve.is/serv.asp?s=512&c=" + charId.ToString(), callback);
         }
 
-        private static void GotCharacterImage(IAsyncResult ar)
+        public static void GetImageAsync(string url, GetImageCallback callback)
         {
-            Pair<HttpWebRequest, GetCharacterImageCallback> p = ar.AsyncState as Pair<HttpWebRequest, GetCharacterImageCallback>;
+            Pair<HttpWebRequest, GetImageCallback> p = new Pair<HttpWebRequest, GetImageCallback>();
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
+            p.A = wr;
+            p.B = callback;
+            wr.BeginGetResponse(new AsyncCallback(GotImage), p);
+        }
+
+        private static void GotImage(IAsyncResult ar)
+        {
+            Pair<HttpWebRequest, GetImageCallback> p = ar.AsyncState as Pair<HttpWebRequest, GetImageCallback>;
             HttpWebRequest wr = p.A;
-            GetCharacterImageCallback callback = p.B;
+            GetImageCallback callback = p.B;
             try
             {
                 HttpWebResponse resp = (HttpWebResponse)wr.EndGetResponse(ar);
@@ -563,7 +568,7 @@ namespace EVEMon.Common
 
     public delegate void UpdateGrandCharacterInfoCallback(EveSession sender, int timeLeftInCache);
 
-    public delegate void GetCharacterImageCallback(EveSession sender, Image i);
+    public delegate void GetImageCallback(EveSession sender, Image i);
 
     public delegate void GetCharacterInfoCallback(EveSession sender, SerializableCharacterInfo ci);
 
