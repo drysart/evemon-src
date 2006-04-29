@@ -425,16 +425,82 @@ namespace EVEMon.Common
 
         public static void GetCharaterImageAsync(int charId, GetImageCallback callback)
         {
-            GetImageAsync("http://img.eve.is/serv.asp?s=512&c=" + charId.ToString(), callback);
+            GetImageAsync("http://img.eve.is/serv.asp?s=512&c=" + charId.ToString(), false, callback);
         }
 
-        public static void GetImageAsync(string url, GetImageCallback callback)
+        public static string ImageCacheDirectory
         {
+            get
+            {
+                string cacheDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                    "/EVEMon/cache/images";
+                if (!Directory.Exists(cacheDir))
+                    Directory.CreateDirectory(cacheDir);
+                return cacheDir;
+            }
+        }
+
+        public static void GetImageAsync(string url, bool useCache, GetImageCallback callback)
+        {
+            if (useCache)
+            {
+                string cacheName = GetCacheName(url);
+                if (File.Exists(ImageCacheDirectory + "/" + cacheName))
+                {
+                    Image i = null;
+                    try
+                    {
+                        i = Image.FromFile(ImageCacheDirectory + "/" + cacheName, true);
+                    }
+                    catch { }
+                    if (i != null)
+                    {
+                        callback(null, i);
+                        return;
+                    }
+                }
+                GetImageCallback origCallback = callback;
+                callback = new GetImageCallback(delegate (EveSession s, Image i)
+                {
+                    AddImageToCache(url, i);
+                    origCallback(s, i);
+                });
+            }
             Pair<HttpWebRequest, GetImageCallback> p = new Pair<HttpWebRequest, GetImageCallback>();
             HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
             p.A = wr;
             p.B = callback;
             wr.BeginGetResponse(new AsyncCallback(GotImage), p);
+        }
+
+        private static string GetCacheName(string url)
+        {
+            Match extensionMatch = Regex.Match(url, @"([^\.]+)$");
+            string ext = String.Empty;
+            if (extensionMatch.Success)
+            {
+                ext = "." + extensionMatch.Groups[1];
+            }
+            byte[] hash = System.Security.Cryptography.MD5.Create().ComputeHash(
+                System.Text.Encoding.UTF8.GetBytes(url));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(String.Format("{0:x2}", hash[i]));
+            }
+            sb.Append(ext);
+            return sb.ToString();
+        }
+
+        private static void AddImageToCache(string url, Image i)
+        {
+            string cacheName = GetCacheName(url);
+            using (StreamWriter sw = new StreamWriter(ImageCacheDirectory + "/file.map", true))
+            {
+                sw.WriteLine(String.Format("{0} {1}", cacheName, url));
+            }
+            string fn = ImageCacheDirectory + "/" + cacheName;
+            i.Save(fn);
         }
 
         private static void GotImage(IAsyncResult ar)

@@ -1001,7 +1001,7 @@ namespace EVEMon.SkillPlanner
                 int shipId = s.Id;
                 EveSession.GetImageAsync(
                     "http://www.eve-online.com/bitmaps/icons/itemdb/shiptypes/256_256/" +
-                    shipId.ToString() + ".png", delegate(EveSession ss, Image i)
+                    shipId.ToString() + ".png", true, delegate(EveSession ss, Image i)
                     {
                         GotShipImage(shipId, i);
                     });
