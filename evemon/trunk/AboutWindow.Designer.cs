@@ -37,6 +37,7 @@ namespace EVEMon
             this.label2 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.llHomePage = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,7 +45,7 @@ namespace EVEMon
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(117, 23);
+            this.label1.Location = new System.Drawing.Point(117, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 13);
             this.label1.TabIndex = 0;
@@ -53,7 +54,7 @@ namespace EVEMon
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(117, 36);
+            this.lblVersion.Location = new System.Drawing.Point(118, 25);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(61, 13);
             this.lblVersion.TabIndex = 1;
@@ -93,7 +94,7 @@ namespace EVEMon
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(118, 49);
+            this.label2.Location = new System.Drawing.Point(118, 38);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(164, 13);
             this.label2.TabIndex = 5;
@@ -117,12 +118,24 @@ namespace EVEMon
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
+            // llHomePage
+            // 
+            this.llHomePage.AutoSize = true;
+            this.llHomePage.Location = new System.Drawing.Point(118, 51);
+            this.llHomePage.Name = "llHomePage";
+            this.llHomePage.Size = new System.Drawing.Size(154, 13);
+            this.llHomePage.TabIndex = 8;
+            this.llHomePage.TabStop = true;
+            this.llHomePage.Text = "http://evemon.evercrest.com/";
+            this.llHomePage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llHomePage_LinkClicked);
+            // 
             // AboutWindow
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(389, 338);
+            this.Controls.Add(this.llHomePage);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
@@ -131,7 +144,6 @@ namespace EVEMon
             this.Controls.Add(this.label3);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -155,5 +167,6 @@ namespace EVEMon
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.LinkLabel llHomePage;
     }
 }

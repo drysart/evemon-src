@@ -135,13 +135,10 @@ namespace EVEMon.SkillPlanner
                                 results[s.Name] = s;
                             }
                         }
-                        bool hasResult = false;
                         foreach (string shipName in results.Keys)
                         {
-                            hasResult = true;
                             lbShipResults.Items.Add(shipName);
                         }
-                        lbNoMatches.Visible = !hasResult;
                         lbShipResults.Location = tvShips.Location;
                         lbShipResults.Size = tvShips.Size;
                         lbShipResults.Anchor = tvShips.Anchor;
@@ -155,6 +152,9 @@ namespace EVEMon.SkillPlanner
 
             tvShips.Visible = !showListBox;
             lbShipResults.Visible = showListBox;
+            lbNoMatches.Visible = showListBox && (lbShipResults.Items.Count == 0);
+            if (lbNoMatches.Visible)
+                lbNoMatches.BringToFront();
         }
 
         private void tvShips_AfterSelect(object sender, TreeViewEventArgs e)

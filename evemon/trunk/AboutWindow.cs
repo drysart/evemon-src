@@ -37,5 +37,10 @@ namespace EVEMon
         {
             this.Close();
         }
+
+        private void llHomePage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://evemon.evercrest.com/");
+        }
     }
 }

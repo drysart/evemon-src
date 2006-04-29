@@ -46,6 +46,8 @@ namespace EVEMon.SkillPlanner
 
             m_settings_WorksafeChanged(null, null);
 
+            shipSelectControl1_SelectedShipChanged(null, null);
+
             TipWindow.ShowTip("planner",
                 "Welcome to the Skill Planner",
                 "Select skills to add to your plan using the list on the left. To " +
