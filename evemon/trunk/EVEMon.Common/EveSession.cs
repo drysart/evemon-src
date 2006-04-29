@@ -276,6 +276,72 @@ namespace EVEMon.Common
             try
             {
                 resp = (HttpWebResponse)wr.GetResponse();
+
+                if (resp.StatusCode == HttpStatusCode.Redirect)
+                {
+                    string loc = resp.GetResponseHeader("Location");
+                    Uri x = new Uri(url);
+                    Uri newUri = new Uri(x, loc);
+
+                    if (NetworkLogEvent != null)
+                    {
+                        NetworkLogEventArgs args = new NetworkLogEventArgs();
+                        args.NetworkLogEventType = NetworkLogEventType.Redirected;
+                        args.Url = url;
+                        args.Referer = refer;
+                        args.Cookies = resp.Cookies;
+                        args.RedirectTo = newUri.ToString();
+                        NetworkLogEvent(this, args);
+                    }
+
+                    refer = url;
+                    url = newUri.ToString();
+                    resp.Close();
+                    goto AGAIN;
+                }
+
+                string res = String.Empty;
+                using (Stream rs = resp.GetResponseStream())
+                using (StreamReader sreader = new StreamReader(rs, Encoding.GetEncoding("iso-8859-1")))
+                {
+                    res = sreader.ReadToEnd();
+                    sreader.Close();
+                    rs.Close();
+                    resp.Close();
+
+                    if (NetworkLogEvent != null)
+                    {
+                        NetworkLogEventArgs args = new NetworkLogEventArgs();
+                        args.NetworkLogEventType = NetworkLogEventType.GotUrlSuccess;
+                        args.Url = url;
+                        args.Referer = refer;
+                        args.Cookies = resp.Cookies;
+                        args.Data = res;
+                        args.StatusCode = resp.StatusCode;
+                        NetworkLogEvent(this, args);
+                    }
+                }
+
+                if (res.Contains("document.onload=window.location.href='"))
+                {
+                    Match m = Regex.Match(res, @"document\.onload=window\.location\.href='(.*?)';");
+                    string newUrl = m.Groups[1].Value;
+
+                    if (NetworkLogEvent != null)
+                    {
+                        NetworkLogEventArgs args = new NetworkLogEventArgs();
+                        args.NetworkLogEventType = NetworkLogEventType.ParsedRedirect;
+                        args.Url = url;
+                        args.Referer = refer;
+                        args.Cookies = resp.Cookies;
+                        args.RedirectTo = newUrl;
+                        NetworkLogEvent(this, args);
+                    }
+
+                    refer = url;
+                    url = newUrl;
+                    goto AGAIN;
+                }
             }
             catch (WebException err)
             {
@@ -307,72 +373,6 @@ namespace EVEMon.Common
                     NetworkLogEvent(this, args);
                 }
                 throw;
-            }
-
-            if (resp.StatusCode == HttpStatusCode.Redirect)
-            {
-                string loc = resp.GetResponseHeader("Location");
-                Uri x = new Uri(url);
-                Uri newUri = new Uri(x, loc);
-
-                if (NetworkLogEvent != null)
-                {
-                    NetworkLogEventArgs args = new NetworkLogEventArgs();
-                    args.NetworkLogEventType = NetworkLogEventType.Redirected;
-                    args.Url = url;
-                    args.Referer = refer;
-                    args.Cookies = resp.Cookies;
-                    args.RedirectTo = newUri.ToString();
-                    NetworkLogEvent(this, args);
-                }
-
-                refer = url;
-                url = newUri.ToString();
-                resp.Close();
-                goto AGAIN;
-            }
-
-            string res = String.Empty;
-            using (Stream rs = resp.GetResponseStream())
-            using (StreamReader sreader = new StreamReader(rs, Encoding.GetEncoding("iso-8859-1")))
-            {
-                res = sreader.ReadToEnd();
-                sreader.Close();
-                rs.Close();
-                resp.Close();
-
-                if (NetworkLogEvent != null)
-                {
-                    NetworkLogEventArgs args = new NetworkLogEventArgs();
-                    args.NetworkLogEventType = NetworkLogEventType.GotUrlSuccess;
-                    args.Url = url;
-                    args.Referer = refer;
-                    args.Cookies = resp.Cookies;
-                    args.Data = res;
-                    args.StatusCode = resp.StatusCode;
-                    NetworkLogEvent(this, args);
-                }
-            }
-
-            if (res.Contains("document.onload=window.location.href='"))
-            {
-                Match m = Regex.Match(res, @"document\.onload=window\.location\.href='(.*?)';");
-                string newUrl = m.Groups[1].Value;
-
-                if (NetworkLogEvent != null)
-                {
-                    NetworkLogEventArgs args = new NetworkLogEventArgs();
-                    args.NetworkLogEventType = NetworkLogEventType.ParsedRedirect;
-                    args.Url = url;
-                    args.Referer = refer;
-                    args.Cookies = resp.Cookies;
-                    args.RedirectTo = newUrl;
-                    NetworkLogEvent(this, args);
-                }
-
-                refer = url;
-                url = newUrl;
-                goto AGAIN;
             }
 
             return res;
