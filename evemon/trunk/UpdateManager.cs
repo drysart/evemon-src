@@ -49,7 +49,8 @@ namespace EVEMon
             }
         }
 
-        private const string UPDATE_URL = "http://static.evercrest.com/www/images2/ext/sa/evemon-data.xml";
+        //private const string UPDATE_URL = "http://static.evercrest.com/www/images2/ext/sa/evemon-data.xml";
+        private const string UPDATE_URL = "http://evemon.evercrest.com/patch.xml";
 
         private void TimerTrigger(object state)
         {
@@ -90,13 +91,26 @@ namespace EVEMon
                         string updateUrl = newestEl.SelectSingleNode("url").InnerText;
                         string updateMessage = newestEl.SelectSingleNode("message").InnerText;
 
+                        bool canAutoInstall = false;
+                        string installArgs = String.Empty;
+                        string installUrl = String.Empty;
+                        XmlElement argEl = newestEl.SelectSingleNode("autopatchargs") as XmlElement;
+                        XmlElement iUrlEl = newestEl.SelectSingleNode("autopatchurl") as XmlElement;
+                        if (iUrlEl != null && argEl != null)
+                        {
+                            canAutoInstall = true;
+                            installUrl = iUrlEl.InnerText;
+                            installArgs = argEl.InnerText;
+                        }
+
                         if (newestVersion > currentVersion)
                         {
                             // Use ThreadPool to avoid deadlock if the callback tries to
                             // call Stop() on the UpdateManager.
                             ThreadPool.QueueUserWorkItem(new WaitCallback(delegate(object o)
                             {
-                                OnUpdateAvailable(updateUrl, updateMessage, newestVersion, currentVersion);
+                                OnUpdateAvailable(updateUrl, updateMessage, newestVersion,
+                                    currentVersion, canAutoInstall, installArgs, installUrl);
                             }));
                         }
                     }
@@ -110,7 +124,9 @@ namespace EVEMon
 
         public event UpdateAvailableHandler UpdateAvailable;
 
-        private void OnUpdateAvailable(string updateUrl, string updateMessage, Version newestVersion, Version currentVersion)
+        private void OnUpdateAvailable(string updateUrl, string updateMessage,
+            Version newestVersion, Version currentVersion, bool canAutoInstall,
+            string installArgs, string installUrl)
         {
             if (UpdateAvailable != null)
             {
@@ -119,6 +135,9 @@ namespace EVEMon
                 e.NewestVersion = newestVersion;
                 e.UpdateMessage = updateMessage;
                 e.UpdateUrl = updateUrl;
+                e.CanAutoInstall = canAutoInstall;
+                e.AutoInstallUrl = installUrl;
+                e.AutoInstallArguments = installArgs;
                 UpdateAvailable(this, e);
             }
         }
@@ -158,6 +177,30 @@ namespace EVEMon
         {
             get { return m_newestVersion; }
             set { m_newestVersion = value; }
+        }
+
+        private bool m_canAutoInstall = false;
+
+        public bool CanAutoInstall
+        {
+            get { return m_canAutoInstall; }
+            set { m_canAutoInstall = value; }
+        }
+
+        private string m_autoInstallUrl = String.Empty;
+
+        public string AutoInstallUrl
+        {
+            get { return m_autoInstallUrl; }
+            set { m_autoInstallUrl = value; }
+        }
+
+        private string m_autoInstallArguments = String.Empty;
+
+        public string AutoInstallArguments
+        {
+            get { return m_autoInstallArguments; }
+            set { m_autoInstallArguments = value; }
         }
     }
 }

@@ -46,7 +46,46 @@ namespace EVEMon
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(m_args.UpdateUrl);
+            if (cbAutoInstall.Enabled && cbAutoInstall.Checked)
+            {
+                Uri i = new Uri(m_args.AutoInstallUrl);
+                string fn = System.IO.Path.GetFileName(i.AbsolutePath);
+                using (UpdateDownloadForm f = new UpdateDownloadForm(
+                    m_args.AutoInstallUrl, fn))
+                {
+                    f.ShowDialog();
+                    if (f.DialogResult == DialogResult.OK)
+                    {
+                        ExecPatcher(fn, m_args.AutoInstallArguments);
+                    }
+                }
+            }
+            else
+            {
+                System.Diagnostics.Process.Start(m_args.UpdateUrl);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+        }
+
+        private void ExecPatcher(string fn, string args)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(fn, args);
+            }
+            catch
+            {
+                if (System.IO.File.Exists(fn))
+                {
+                    try
+                    {
+                        System.IO.File.Delete(fn);
+                    }
+                    catch { }
+                }
+                throw;
+            }
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -64,6 +103,7 @@ namespace EVEMon
         private void UpdateNotifyForm_Shown(object sender, EventArgs e)
         {
             UpdateInformation();
+            cbAutoInstall.Checked = m_args.CanAutoInstall;
             UpdateManager.GetInstance().UpdateAvailable += new UpdateAvailableHandler(UpdateNotifyForm_UpdateAvailable);
         }
 
@@ -84,6 +124,8 @@ Current version: {0}
 Newest version: {1}
 
 The newest version has the following updates:", m_args.CurrentVersion, m_args.NewestVersion);
+
+            cbAutoInstall.Enabled = m_args.CanAutoInstall;
         }
 
         private void UpdateNotifyForm_FormClosed(object sender, FormClosedEventArgs e)

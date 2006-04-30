@@ -281,6 +281,12 @@
     <Compile Include="UnhandledExceptionWindow.Designer.cs">
       <DependentUpon>UnhandledExceptionWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="UpdateDownloadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateDownloadForm.Designer.cs">
+      <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UpdateManager.cs" />
     <Compile Include="UpdateNotifyForm.cs">
       <SubType>Form</SubType>
@@ -390,6 +396,10 @@
     <EmbeddedResource Include="UnhandledExceptionWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>UnhandledExceptionWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdateDownloadForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

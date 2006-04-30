@@ -1173,12 +1173,13 @@ namespace EVEMon
 
         private void btnDebugError_Click(object sender, EventArgs e)
         {
-            //using (Schedule.EditScheduleEntryWindow f = new EVEMon.Schedule.EditScheduleEntryWindow())
-            //{
-            //    f.ShowDialog();
-            //}
-            Schedule.ScheduleEditorWindow f = new EVEMon.Schedule.ScheduleEditorWindow();
-            f.Show();
+            using (UpdateDownloadForm f = new UpdateDownloadForm(
+                "http://evemon.evercrest.com/downloads/EVEMon-install-1.0.20.1.exe",
+                "EVEMon-install-1.0.20.1.downloaded.exe"))
+            {
+                f.ShowDialog();
+                MessageBox.Show(f.DialogResult.ToString());
+            }
         }
 
        private void lbSkills_MouseMove(object sender, MouseEventArgs e)
