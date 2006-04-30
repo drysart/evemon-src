@@ -74,6 +74,22 @@ namespace EVEMon
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
+            int maxWidth = 0;
+            int maxHeight = 0;
+            foreach (TabPage tp in tabControl1.TabPages)
+            {
+                tabControl1.SelectedTab = tp;
+                Size prefSize = tp.Controls[0].GetPreferredSize(new Size(Int32.MaxValue, Int32.MaxValue));
+                prefSize.Width += tp.Padding.Left + tp.Padding.Right;
+                prefSize.Height += tp.Padding.Top + tp.Padding.Bottom;
+                maxWidth = Math.Max(maxWidth, prefSize.Width);
+                maxHeight = Math.Max(maxHeight, prefSize.Height);
+            }
+            int extraHeight = tabControl1.ClientSize.Height - tabControl1.TabPages[0].Height;
+            int extraWidth = tabControl1.ClientSize.Width - tabControl1.TabPages[0].Width;
+            tabControl1.ClientSize = new Size(maxWidth + extraWidth, maxHeight + extraHeight);
+            tabControl1.SelectedTab = tabControl1.TabPages[0];
+
             cbMinimizeToTray.Checked = m_settings.MinimizeToTray;
             cbTitleToTime.Checked = m_settings.TitleToTime;
             cbWorksafeMode.Checked = m_settings.WorksafeMode;

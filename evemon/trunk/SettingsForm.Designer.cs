@@ -31,10 +31,9 @@ namespace EVEMon
             this.cbMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbRunIGBServer = new System.Windows.Forms.CheckBox();
             this.cbWorksafeMode = new System.Windows.Forms.CheckBox();
             this.cbTitleToTime = new System.Windows.Forms.CheckBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbPlaySoundOnSkillComplete = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpEmailSettings = new System.Windows.Forms.TableLayoutPanel();
@@ -57,19 +56,46 @@ namespace EVEMon
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.cbRunIGBServer = new System.Windows.Forms.CheckBox();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.verticalFlowPanel1 = new EVEMon.Common.VerticalFlowPanel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.verticalFlowPanel2 = new EVEMon.Common.VerticalFlowPanel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpEmailSettings.SuspendLayout();
             this.tlpEmailAuthTable.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.verticalFlowPanel1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.verticalFlowPanel2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.flowLayoutPanel6.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.flowLayoutPanel5.SuspendLayout();
+            this.flowLayoutPanel7.SuspendLayout();
+            this.flowLayoutPanel8.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbMinimizeToTray
             // 
             this.cbMinimizeToTray.AutoSize = true;
-            this.cbMinimizeToTray.Location = new System.Drawing.Point(16, 19);
+            this.cbMinimizeToTray.Location = new System.Drawing.Point(12, 3);
             this.cbMinimizeToTray.Name = "cbMinimizeToTray";
             this.cbMinimizeToTray.Size = new System.Drawing.Size(103, 17);
             this.cbMinimizeToTray.TabIndex = 0;
@@ -79,7 +105,7 @@ namespace EVEMon
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(287, 431);
+            this.btnOk.Location = new System.Drawing.Point(84, 3);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 1;
@@ -91,7 +117,7 @@ namespace EVEMon
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(206, 431);
+            this.btnCancel.Location = new System.Drawing.Point(3, 3);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 2;
@@ -99,24 +125,20 @@ namespace EVEMon
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // groupBox1
+            // cbRunIGBServer
             // 
-            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox1.Controls.Add(this.cbRunIGBServer);
-            this.groupBox1.Controls.Add(this.cbWorksafeMode);
-            this.groupBox1.Controls.Add(this.cbTitleToTime);
-            this.groupBox1.Controls.Add(this.cbMinimizeToTray);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(350, 113);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Window Settings";
+            this.cbRunIGBServer.AutoSize = true;
+            this.cbRunIGBServer.Location = new System.Drawing.Point(12, 3);
+            this.cbRunIGBServer.Name = "cbRunIGBServer";
+            this.cbRunIGBServer.Size = new System.Drawing.Size(217, 17);
+            this.cbRunIGBServer.TabIndex = 3;
+            this.cbRunIGBServer.Text = "Run IGB Mini-server on http://localhost/";
+            this.cbRunIGBServer.UseVisualStyleBackColor = true;
             // 
             // cbWorksafeMode
             // 
             this.cbWorksafeMode.AutoSize = true;
-            this.cbWorksafeMode.Location = new System.Drawing.Point(16, 66);
+            this.cbWorksafeMode.Location = new System.Drawing.Point(12, 49);
             this.cbWorksafeMode.Name = "cbWorksafeMode";
             this.cbWorksafeMode.Size = new System.Drawing.Size(271, 17);
             this.cbWorksafeMode.TabIndex = 2;
@@ -126,31 +148,17 @@ namespace EVEMon
             // cbTitleToTime
             // 
             this.cbTitleToTime.AutoSize = true;
-            this.cbTitleToTime.Location = new System.Drawing.Point(16, 43);
+            this.cbTitleToTime.Location = new System.Drawing.Point(12, 26);
             this.cbTitleToTime.Name = "cbTitleToTime";
             this.cbTitleToTime.Size = new System.Drawing.Size(177, 17);
             this.cbTitleToTime.TabIndex = 1;
             this.cbTitleToTime.Text = "Set window title to training time";
             this.cbTitleToTime.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
-            // 
-            this.groupBox2.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox2.Controls.Add(this.cbPlaySoundOnSkillComplete);
-            this.groupBox2.Controls.Add(this.tableLayoutPanel2);
-            this.groupBox2.Controls.Add(this.btnTestEmail);
-            this.groupBox2.Controls.Add(this.cbSendEmail);
-            this.groupBox2.Location = new System.Drawing.Point(12, 131);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(350, 292);
-            this.groupBox2.TabIndex = 4;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Alert Settings";
-            // 
             // cbPlaySoundOnSkillComplete
             // 
             this.cbPlaySoundOnSkillComplete.AutoSize = true;
-            this.cbPlaySoundOnSkillComplete.Location = new System.Drawing.Point(16, 20);
+            this.cbPlaySoundOnSkillComplete.Location = new System.Drawing.Point(12, 3);
             this.cbPlaySoundOnSkillComplete.Name = "cbPlaySoundOnSkillComplete";
             this.cbPlaySoundOnSkillComplete.Size = new System.Drawing.Size(216, 17);
             this.cbPlaySoundOnSkillComplete.TabIndex = 5;
@@ -165,7 +173,7 @@ namespace EVEMon
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.tlpEmailSettings, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 66);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 26);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -342,7 +350,7 @@ namespace EVEMon
             // btnTestEmail
             // 
             this.btnTestEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTestEmail.Location = new System.Drawing.Point(234, 263);
+            this.btnTestEmail.Location = new System.Drawing.Point(240, 224);
             this.btnTestEmail.Name = "btnTestEmail";
             this.btnTestEmail.Size = new System.Drawing.Size(110, 23);
             this.btnTestEmail.TabIndex = 3;
@@ -353,7 +361,7 @@ namespace EVEMon
             // cbSendEmail
             // 
             this.cbSendEmail.AutoSize = true;
-            this.cbSendEmail.Location = new System.Drawing.Point(16, 43);
+            this.cbSendEmail.Location = new System.Drawing.Point(12, 3);
             this.cbSendEmail.Name = "cbSendEmail";
             this.cbSendEmail.Size = new System.Drawing.Size(215, 17);
             this.cbSendEmail.TabIndex = 0;
@@ -416,25 +424,213 @@ namespace EVEMon
             this.label8.Text = "From address:";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // cbRunIGBServer
+            // tabControl1
             // 
-            this.cbRunIGBServer.AutoSize = true;
-            this.cbRunIGBServer.Location = new System.Drawing.Point(16, 88);
-            this.cbRunIGBServer.Name = "cbRunIGBServer";
-            this.cbRunIGBServer.Size = new System.Drawing.Size(217, 17);
-            this.cbRunIGBServer.TabIndex = 3;
-            this.cbRunIGBServer.Text = "Run IGB Mini-server on http://localhost/";
-            this.cbRunIGBServer.UseVisualStyleBackColor = true;
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(3, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(480, 492);
+            this.tabControl1.TabIndex = 5;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.verticalFlowPanel1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(472, 466);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "General";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // verticalFlowPanel1
+            // 
+            this.verticalFlowPanel1.AutoSize = true;
+            this.verticalFlowPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.verticalFlowPanel1.Controls.Add(this.groupBox2);
+            this.verticalFlowPanel1.Controls.Add(this.groupBox1);
+            this.verticalFlowPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel1.Location = new System.Drawing.Point(3, 3);
+            this.verticalFlowPanel1.Name = "verticalFlowPanel1";
+            this.verticalFlowPanel1.Size = new System.Drawing.Size(466, 460);
+            this.verticalFlowPanel1.TabIndex = 7;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.AutoSize = true;
+            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox2.Controls.Add(this.flowLayoutPanel3);
+            this.groupBox2.Location = new System.Drawing.Point(3, 98);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(460, 43);
+            this.groupBox2.TabIndex = 5;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "IGB Mini-server";
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.AutoSize = true;
+            this.flowLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel3.Controls.Add(this.cbRunIGBServer);
+            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 17);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(454, 23);
+            this.flowLayoutPanel3.TabIndex = 4;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.AutoSize = true;
+            this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox1.Controls.Add(this.flowLayoutPanel2);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(460, 89);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Window Settings";
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.AutoSize = true;
+            this.flowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel2.Controls.Add(this.cbMinimizeToTray);
+            this.flowLayoutPanel2.Controls.Add(this.cbTitleToTime);
+            this.flowLayoutPanel2.Controls.Add(this.cbWorksafeMode);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 17);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(454, 69);
+            this.flowLayoutPanel2.TabIndex = 3;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.verticalFlowPanel2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(472, 466);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Alerts";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // verticalFlowPanel2
+            // 
+            this.verticalFlowPanel2.AutoSize = true;
+            this.verticalFlowPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.verticalFlowPanel2.Controls.Add(this.groupBox3);
+            this.verticalFlowPanel2.Controls.Add(this.groupBox4);
+            this.verticalFlowPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel2.Location = new System.Drawing.Point(3, 3);
+            this.verticalFlowPanel2.Name = "verticalFlowPanel2";
+            this.verticalFlowPanel2.Size = new System.Drawing.Size(466, 460);
+            this.verticalFlowPanel2.TabIndex = 9;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.AutoSize = true;
+            this.groupBox3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox3.Controls.Add(this.flowLayoutPanel6);
+            this.groupBox3.Location = new System.Drawing.Point(3, 52);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(460, 270);
+            this.groupBox3.TabIndex = 6;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Email Alert";
+            // 
+            // flowLayoutPanel6
+            // 
+            this.flowLayoutPanel6.AutoSize = true;
+            this.flowLayoutPanel6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel6.Controls.Add(this.cbSendEmail);
+            this.flowLayoutPanel6.Controls.Add(this.tableLayoutPanel2);
+            this.flowLayoutPanel6.Controls.Add(this.btnTestEmail);
+            this.flowLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel6.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 17);
+            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
+            this.flowLayoutPanel6.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(454, 250);
+            this.flowLayoutPanel6.TabIndex = 5;
+            this.flowLayoutPanel6.WrapContents = false;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.AutoSize = true;
+            this.groupBox4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox4.Controls.Add(this.flowLayoutPanel5);
+            this.groupBox4.Location = new System.Drawing.Point(3, 3);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(460, 43);
+            this.groupBox4.TabIndex = 7;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Sound Alert";
+            // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.AutoSize = true;
+            this.flowLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel5.Controls.Add(this.cbPlaySoundOnSkillComplete);
+            this.flowLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel5.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 17);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(454, 23);
+            this.flowLayoutPanel5.TabIndex = 6;
+            // 
+            // flowLayoutPanel7
+            // 
+            this.flowLayoutPanel7.AutoSize = true;
+            this.flowLayoutPanel7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel7.Controls.Add(this.tabControl1);
+            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel8);
+            this.flowLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel7.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel7.Name = "flowLayoutPanel7";
+            this.flowLayoutPanel7.Size = new System.Drawing.Size(597, 596);
+            this.flowLayoutPanel7.TabIndex = 6;
+            this.flowLayoutPanel7.WrapContents = false;
+            // 
+            // flowLayoutPanel8
+            // 
+            this.flowLayoutPanel8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel8.AutoSize = true;
+            this.flowLayoutPanel8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel8.Controls.Add(this.btnOk);
+            this.flowLayoutPanel8.Controls.Add(this.btnCancel);
+            this.flowLayoutPanel8.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.flowLayoutPanel8.Location = new System.Drawing.Point(321, 498);
+            this.flowLayoutPanel8.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.flowLayoutPanel8.Name = "flowLayoutPanel8";
+            this.flowLayoutPanel8.Size = new System.Drawing.Size(162, 29);
+            this.flowLayoutPanel8.TabIndex = 6;
             // 
             // SettingsForm
             // 
+            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(374, 466);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOk);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(597, 596);
+            this.Controls.Add(this.flowLayoutPanel7);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -442,10 +638,6 @@ namespace EVEMon
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EVEMon Settings";
             this.Load += new System.EventHandler(this.SettingsForm_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tlpEmailSettings.ResumeLayout(false);
@@ -454,7 +646,36 @@ namespace EVEMon
             this.tlpEmailAuthTable.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.verticalFlowPanel1.ResumeLayout(false);
+            this.verticalFlowPanel1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.verticalFlowPanel2.ResumeLayout(false);
+            this.verticalFlowPanel2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.flowLayoutPanel6.ResumeLayout(false);
+            this.flowLayoutPanel6.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.flowLayoutPanel5.ResumeLayout(false);
+            this.flowLayoutPanel5.PerformLayout();
+            this.flowLayoutPanel7.ResumeLayout(false);
+            this.flowLayoutPanel7.PerformLayout();
+            this.flowLayoutPanel8.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -463,8 +684,6 @@ namespace EVEMon
         private System.Windows.Forms.CheckBox cbMinimizeToTray;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox cbSendEmail;
         private System.Windows.Forms.TableLayoutPanel tlpEmailSettings;
         private System.Windows.Forms.Label label1;
@@ -490,5 +709,20 @@ namespace EVEMon
         private System.Windows.Forms.CheckBox cbWorksafeMode;
         private System.Windows.Forms.CheckBox cbPlaySoundOnSkillComplete;
         private System.Windows.Forms.CheckBox cbRunIGBServer;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel8;
+        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel1;
+        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel2;
     }
 }

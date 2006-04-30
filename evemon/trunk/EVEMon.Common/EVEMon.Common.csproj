@@ -58,6 +58,9 @@
     <Compile Include="SerializableCharacterInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Ship.cs" />
+    <Compile Include="VerticalFlowPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WeakReferenceOfT.cs" />
   </ItemGroup>
   <ItemGroup>
