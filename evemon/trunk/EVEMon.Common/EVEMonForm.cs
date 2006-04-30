@@ -40,6 +40,26 @@ namespace EVEMon.Common
             }
         }
 
+        protected override void OnLayout(LayoutEventArgs levent)
+        {
+            base.OnLayout(levent);
+
+            if (this.AutoSize && this.StartPosition == FormStartPosition.CenterScreen)
+            {
+                this.CenterToScreen();
+            }
+        }
+
+        //protected override void OnShown(EventArgs e)
+        //{
+        //    base.OnShown(e);
+
+        //    if (this.AutoSize && this.StartPosition == FormStartPosition.CenterScreen)
+        //    {
+        //        this.CenterToScreen();
+        //    }
+        //}
+
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             if (!String.IsNullOrEmpty(m_rememberPositionKey))
