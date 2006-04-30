@@ -436,6 +436,7 @@ namespace EVEMon
         {
             this.Visible = true;
             this.WindowState = FormWindowState.Normal;
+            this.Activate();
         }
 
         private void tmrAlertRefresh_Tick(object sender, EventArgs e)
@@ -466,13 +467,22 @@ namespace EVEMon
 
         private void AlertIconClick()
         {
-            niAlertIcon.Visible = false;
-            tmrAlertRefresh.Enabled = false;
-            using (SkillCompleteDialog f = new SkillCompleteDialog(m_completedSkills))
+            if (this.InvokeRequired)
             {
-                f.ShowDialog();
+                this.Invoke(new MethodInvoker(AlertIconClick));
+                return;
             }
-            m_completedSkills.Clear();
+
+            if (m_completedSkills.Count > 0)
+            {
+                niAlertIcon.Visible = false;
+                tmrAlertRefresh.Enabled = false;
+                using (SkillCompleteDialog f = new SkillCompleteDialog(m_completedSkills))
+                {
+                    f.ShowDialog();
+                }
+                m_completedSkills.Clear();
+            }
         }
 
         private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
