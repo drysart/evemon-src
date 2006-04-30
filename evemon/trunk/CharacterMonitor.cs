@@ -705,11 +705,33 @@ namespace EVEMon
             }
         }
 
+        private void UpdateNextUpdateLabel()
+        {
+            if (m_throbberRunning)
+            {
+                lblUpdateTimer.Visible = false;
+                return;
+            }
+
+            TimeSpan ts = m_nextScheduledUpdateAt - DateTime.Now;
+            if (ts < TimeSpan.Zero || ts > TimeSpan.FromMinutes(60))
+            {
+                lblUpdateTimer.Visible = false;
+            }
+            else
+            {
+                lblUpdateTimer.Text =
+                    String.Format("{0:d2}:{1:d2}", ts.Minutes, ts.Seconds);
+                lblUpdateTimer.Visible = true;
+            }
+        }
+
         private int m_lastTickSPPaint = 0;
 
         private void tmrTick_Tick(object sender, EventArgs e)
         {
             CalcSkillRemainText();
+            UpdateNextUpdateLabel();
 
             GrandSkill trainingSkill = m_grandCharacterInfo.CurrentlyTrainingSkill;
             if (trainingSkill != null)
@@ -1443,6 +1465,7 @@ namespace EVEMon
         private void pbThrobber_Click(object sender, EventArgs e)
         {
             tmrUpdate_Tick(null, null);
+            UpdateNextUpdateLabel();
         }
 
         private void ttToolTip_Popup(object sender, PopupEventArgs e)
@@ -1510,6 +1533,11 @@ namespace EVEMon
         }
 
         private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void flowLayoutPanel5_Paint(object sender, PaintEventArgs e)
         {
 
         }     
