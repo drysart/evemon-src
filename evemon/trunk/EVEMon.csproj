@@ -419,6 +419,10 @@
       <Project>{45877BAD-6688-42DF-A110-DBE9839F99D0}</Project>
       <Name>EVEMon.NetworkLogger</Name>
     </ProjectReference>
+    <ProjectReference Include="EVEMon.WindowRelocator\EVEMon.WindowRelocator.csproj">
+      <Project>{F0627E15-E8DF-404F-BF82-C48D890F9C5C}</Project>
+      <Name>EVEMon.WindowRelocator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -428,4 +432,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(SolutionDir)EVEMon.WinHook\bin\$(ConfigurationName)\EVEMon.WinHook.dll" "$(TargetDir)EVEMon.WinHook.dll"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

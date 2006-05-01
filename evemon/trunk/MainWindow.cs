@@ -78,6 +78,11 @@ namespace EVEMon
             }
         }
 
+        void m_shiftTest_WindowCreated(object sender, EventArgs e)
+        {
+            System.Media.SystemSounds.Beep.Play();
+        }
+
         private void MainWindow_Shown(object sender, EventArgs e)
         {
             UpdateManager um = UpdateManager.GetInstance();
@@ -92,12 +97,19 @@ namespace EVEMon
             m_igbServer = new EVEMon.IGBService.IGBServer();
             m_settings.RunIGBServerChanged += new EventHandler<EventArgs>(m_settings_RunIGBServerChanged);
             m_settings_RunIGBServerChanged(null, null);
+            m_settings.RelocateEveWindowChanged += new EventHandler<EventArgs>(m_settings_RelocateEveWindowChanged);
+            m_settings_RelocateEveWindowChanged(null, null);
 
             TipWindow.ShowTip("startup",
                 "Getting Started",
                 "To begin using EVEMon, click the \"Add Character\" button in " +
                 "the upper left corner of the window, enter your login information " +
                 "and choose a character to monitor.");
+        }
+
+        void m_settings_RelocateEveWindowChanged(object sender, EventArgs e)
+        {
+            Program.SetRelocatorState(m_settings.RelocateEveWindow);
         }
 
         private void m_settings_RunIGBServerChanged(object sender, EventArgs e)

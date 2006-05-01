@@ -403,24 +403,6 @@ namespace EVEMon.Common
             set { m_playSoundOnSkillComplete = value; }
         }
 
-        private SerializableDictionary<string, Rectangle> m_savedWindowLocations = new SerializableDictionary<string, Rectangle>();
-
-        public SerializableDictionary<string, Rectangle> SavedWindowLocations
-        {
-            get { return m_savedWindowLocations; }
-            set { m_savedWindowLocations = value; }
-        }
-
-        private List<ScheduleEntry> m_schedule = new List<ScheduleEntry>();
-
-        [XmlArrayItem("simple", typeof(SimpleScheduleEntry))]
-        [XmlArrayItem("recur", typeof(RecurringScheduleEntry))]
-        public List<ScheduleEntry> Schedule
-        {
-            get { return m_schedule; }
-            set { m_schedule = value; }
-        }
-
         private bool m_runIgbServer = true;
 
         public bool RunIGBServer
@@ -436,6 +418,61 @@ namespace EVEMon.Common
         }
 
         public event EventHandler<EventArgs> RunIGBServerChanged;
+
+        private bool m_relocateEveWindow = false;
+
+        public bool RelocateEveWindow
+        {
+            get { return m_relocateEveWindow; }
+            set
+            {
+                m_relocateEveWindow = value;
+                OnRelocateEveWindowChanged();
+            }
+        }
+
+        private void OnRelocateEveWindowChanged()
+        {
+            if (RelocateEveWindowChanged != null)
+                RelocateEveWindowChanged(this, new EventArgs());
+        }
+
+        public event EventHandler<EventArgs> RelocateEveWindowChanged;
+
+        private int m_relocateTargetScreen = 0;
+
+        public int RelocateTargetScreen
+        {
+            get { return m_relocateTargetScreen; }
+            set
+            {
+                if (m_relocateTargetScreen != value)
+                {
+                    m_relocateTargetScreen = value;
+                    OnRelocateEveWindowChanged();
+                }
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        private List<ScheduleEntry> m_schedule = new List<ScheduleEntry>();
+
+        [XmlArrayItem("simple", typeof(SimpleScheduleEntry))]
+        [XmlArrayItem("recur", typeof(RecurringScheduleEntry))]
+        public List<ScheduleEntry> Schedule
+        {
+            get { return m_schedule; }
+            set { m_schedule = value; }
+        }
+
+        private SerializableDictionary<string, Rectangle> m_savedWindowLocations = new SerializableDictionary<string, Rectangle>();
+
+        public SerializableDictionary<string, Rectangle> SavedWindowLocations
+        {
+            get { return m_savedWindowLocations; }
+            set { m_savedWindowLocations = value; }
+        }
 
         ////////////////////////////////////////////////////////////////////////////////////
 

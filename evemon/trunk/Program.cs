@@ -48,6 +48,7 @@ namespace EVEMon
             Application.Run(new MainWindow(s_settings));
             s_settings.Save();
 
+            SetRelocatorState(false);
             if (m_logger != null)
                 m_logger.Dispose();
         }
@@ -65,6 +66,29 @@ namespace EVEMon
         private static void StartNetlog()
         {
             m_logger = EVEMon.NetworkLogger.Logger.StartLogging();
+        }
+
+        private static bool m_relocatorRunning = false;
+
+        public static void SetRelocatorState(bool state)
+        {
+            if (!state && !m_relocatorRunning)
+                return;
+            InternalSetRelocatorState(state);
+        }
+
+        private static void InternalSetRelocatorState(bool state)
+        {
+            if (state)
+            {
+                m_relocatorRunning = true;
+                EVEMon.WindowRelocator.Relocator.Start(Program.Settings.RelocateTargetScreen);
+            }
+            else
+            {
+                m_relocatorRunning = false;
+                EVEMon.WindowRelocator.Relocator.Stop();
+            }
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

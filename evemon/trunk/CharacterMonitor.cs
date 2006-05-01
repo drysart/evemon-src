@@ -1173,13 +1173,14 @@ namespace EVEMon
 
         private void btnDebugError_Click(object sender, EventArgs e)
         {
-            using (UpdateDownloadForm f = new UpdateDownloadForm(
-                "http://evemon.evercrest.com/downloads/EVEMon-install-1.0.20.1.exe",
-                "EVEMon-install-1.0.20.1.downloaded.exe"))
-            {
-                f.ShowDialog();
-                MessageBox.Show(f.DialogResult.ToString());
-            }
+            //using (UpdateDownloadForm f = new UpdateDownloadForm(
+            //    "http://evemon.evercrest.com/downloads/EVEMon-install-1.0.20.1.exe",
+            //    "EVEMon-install-1.0.20.1.downloaded.exe"))
+            //{
+            //    f.ShowDialog();
+            //    MessageBox.Show(f.DialogResult.ToString());
+            //}
+            EVEMon.WindowRelocator.IdentifyScreenForm.Display();
         }
 
        private void lbSkills_MouseMove(object sender, MouseEventArgs e)

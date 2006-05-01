@@ -59,6 +59,9 @@ namespace EVEMon
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.verticalFlowPanel1 = new EVEMon.Common.VerticalFlowPanel();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.cbRelocateEveWindow = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -71,6 +74,11 @@ namespace EVEMon
             this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
+            this.cbScreenList = new System.Windows.Forms.ComboBox();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.btnIdentifyScreens = new System.Windows.Forms.Button();
+            this.flpScreenSelect = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpEmailSettings.SuspendLayout();
             this.tlpEmailAuthTable.SuspendLayout();
@@ -78,6 +86,8 @@ namespace EVEMon
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.verticalFlowPanel1.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -90,6 +100,8 @@ namespace EVEMon
             this.flowLayoutPanel5.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
             this.flowLayoutPanel8.SuspendLayout();
+            this.flowLayoutPanel4.SuspendLayout();
+            this.flpScreenSelect.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbMinimizeToTray
@@ -449,6 +461,7 @@ namespace EVEMon
             // 
             this.verticalFlowPanel1.AutoSize = true;
             this.verticalFlowPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.verticalFlowPanel1.Controls.Add(this.groupBox5);
             this.verticalFlowPanel1.Controls.Add(this.groupBox2);
             this.verticalFlowPanel1.Controls.Add(this.groupBox1);
             this.verticalFlowPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -456,6 +469,44 @@ namespace EVEMon
             this.verticalFlowPanel1.Name = "verticalFlowPanel1";
             this.verticalFlowPanel1.Size = new System.Drawing.Size(466, 460);
             this.verticalFlowPanel1.TabIndex = 7;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.AutoSize = true;
+            this.groupBox5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox5.Controls.Add(this.flowLayoutPanel1);
+            this.groupBox5.Location = new System.Drawing.Point(3, 147);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(460, 72);
+            this.groupBox5.TabIndex = 6;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "EVE Window Relocation";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel1.Controls.Add(this.cbRelocateEveWindow);
+            this.flowLayoutPanel1.Controls.Add(this.flpScreenSelect);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 17);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(454, 52);
+            this.flowLayoutPanel1.TabIndex = 1;
+            this.flowLayoutPanel1.WrapContents = false;
+            // 
+            // cbRelocateEveWindow
+            // 
+            this.cbRelocateEveWindow.AutoSize = true;
+            this.cbRelocateEveWindow.Location = new System.Drawing.Point(12, 3);
+            this.cbRelocateEveWindow.Name = "cbRelocateEveWindow";
+            this.cbRelocateEveWindow.Size = new System.Drawing.Size(214, 17);
+            this.cbRelocateEveWindow.TabIndex = 0;
+            this.cbRelocateEveWindow.Text = "Relocate windowed EVE to fill a monitor";
+            this.cbRelocateEveWindow.UseVisualStyleBackColor = true;
+            this.cbRelocateEveWindow.CheckedChanged += new System.EventHandler(this.cbRelocateEveWindow_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -543,9 +594,9 @@ namespace EVEMon
             this.groupBox3.AutoSize = true;
             this.groupBox3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox3.Controls.Add(this.flowLayoutPanel6);
-            this.groupBox3.Location = new System.Drawing.Point(3, 52);
+            this.groupBox3.Location = new System.Drawing.Point(3, 51);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(460, 270);
+            this.groupBox3.Size = new System.Drawing.Size(460, 269);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Email Alert";
@@ -562,7 +613,7 @@ namespace EVEMon
             this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
             this.flowLayoutPanel6.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
-            this.flowLayoutPanel6.Size = new System.Drawing.Size(454, 250);
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(454, 249);
             this.flowLayoutPanel6.TabIndex = 5;
             this.flowLayoutPanel6.WrapContents = false;
             // 
@@ -575,7 +626,7 @@ namespace EVEMon
             this.groupBox4.Controls.Add(this.flowLayoutPanel5);
             this.groupBox4.Location = new System.Drawing.Point(3, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(460, 43);
+            this.groupBox4.Size = new System.Drawing.Size(460, 42);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Sound Alert";
@@ -590,7 +641,7 @@ namespace EVEMon
             this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
             this.flowLayoutPanel5.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(454, 23);
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(454, 22);
             this.flowLayoutPanel5.TabIndex = 6;
             // 
             // flowLayoutPanel7
@@ -620,6 +671,66 @@ namespace EVEMon
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
             this.flowLayoutPanel8.Size = new System.Drawing.Size(162, 29);
             this.flowLayoutPanel8.TabIndex = 6;
+            // 
+            // cbScreenList
+            // 
+            this.cbScreenList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbScreenList.FormattingEnabled = true;
+            this.cbScreenList.Location = new System.Drawing.Point(56, 3);
+            this.cbScreenList.Name = "cbScreenList";
+            this.cbScreenList.Size = new System.Drawing.Size(121, 21);
+            this.cbScreenList.TabIndex = 1;
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.AutoSize = true;
+            this.flowLayoutPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel4.Controls.Add(this.label9);
+            this.flowLayoutPanel4.Controls.Add(this.cbScreenList);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(180, 27);
+            this.flowLayoutPanel4.TabIndex = 2;
+            this.flowLayoutPanel4.WrapContents = false;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(47, 27);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Monitor:";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnIdentifyScreens
+            // 
+            this.btnIdentifyScreens.AutoSize = true;
+            this.btnIdentifyScreens.Location = new System.Drawing.Point(183, 3);
+            this.btnIdentifyScreens.Name = "btnIdentifyScreens";
+            this.btnIdentifyScreens.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.btnIdentifyScreens.Size = new System.Drawing.Size(102, 23);
+            this.btnIdentifyScreens.TabIndex = 3;
+            this.btnIdentifyScreens.Text = "Identify Screens";
+            this.btnIdentifyScreens.UseVisualStyleBackColor = true;
+            this.btnIdentifyScreens.Click += new System.EventHandler(this.btnIdentifyScreens_Click);
+            // 
+            // flpScreenSelect
+            // 
+            this.flpScreenSelect.AutoSize = true;
+            this.flpScreenSelect.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flpScreenSelect.Controls.Add(this.flowLayoutPanel4);
+            this.flpScreenSelect.Controls.Add(this.btnIdentifyScreens);
+            this.flpScreenSelect.Enabled = false;
+            this.flpScreenSelect.Location = new System.Drawing.Point(34, 23);
+            this.flpScreenSelect.Margin = new System.Windows.Forms.Padding(25, 0, 25, 0);
+            this.flpScreenSelect.Name = "flpScreenSelect";
+            this.flpScreenSelect.Size = new System.Drawing.Size(288, 29);
+            this.flpScreenSelect.TabIndex = 7;
+            this.flpScreenSelect.WrapContents = false;
             // 
             // SettingsForm
             // 
@@ -651,6 +762,10 @@ namespace EVEMon
             this.tabPage1.PerformLayout();
             this.verticalFlowPanel1.ResumeLayout(false);
             this.verticalFlowPanel1.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
@@ -674,6 +789,10 @@ namespace EVEMon
             this.flowLayoutPanel7.ResumeLayout(false);
             this.flowLayoutPanel7.PerformLayout();
             this.flowLayoutPanel8.ResumeLayout(false);
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
+            this.flpScreenSelect.ResumeLayout(false);
+            this.flpScreenSelect.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -724,5 +843,13 @@ namespace EVEMon
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel8;
         private EVEMon.Common.VerticalFlowPanel verticalFlowPanel1;
         private EVEMon.Common.VerticalFlowPanel verticalFlowPanel2;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.CheckBox cbRelocateEveWindow;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox cbScreenList;
+        private System.Windows.Forms.Button btnIdentifyScreens;
+        private System.Windows.Forms.FlowLayoutPanel flpScreenSelect;
     }
 }

@@ -52,6 +52,8 @@ namespace EVEMon
             s.TitleToTime = cbTitleToTime.Checked;
             s.WorksafeMode = cbWorksafeMode.Checked;
             s.RunIGBServer = cbRunIGBServer.Checked;
+            s.RelocateEveWindow = cbRelocateEveWindow.Checked;
+            s.RelocateTargetScreen = cbScreenList.SelectedIndex;
             s.PlaySoundOnSkillComplete = cbPlaySoundOnSkillComplete.Checked;
             s.EnableEmailAlert = cbSendEmail.Checked;
             s.EmailServer = tbMailServer.Text;
@@ -74,6 +76,12 @@ namespace EVEMon
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
+            cbScreenList.Items.Clear();
+            for (int i = 0; i < Screen.AllScreens.Length; i++)
+            {
+                cbScreenList.Items.Add(String.Format("Screen {0}", i + 1));
+            }
+
             int maxWidth = 0;
             int maxHeight = 0;
             foreach (TabPage tp in tabControl1.TabPages)
@@ -94,6 +102,11 @@ namespace EVEMon
             cbTitleToTime.Checked = m_settings.TitleToTime;
             cbWorksafeMode.Checked = m_settings.WorksafeMode;
             cbRunIGBServer.Checked = m_settings.RunIGBServer;
+            cbRelocateEveWindow.Checked = m_settings.RelocateEveWindow;
+            if (m_settings.RelocateTargetScreen < cbScreenList.Items.Count)
+                cbScreenList.SelectedIndex = m_settings.RelocateTargetScreen;
+            else
+                cbScreenList.SelectedIndex = 0;
             cbPlaySoundOnSkillComplete.Checked = m_settings.PlaySoundOnSkillComplete;
             cbSendEmail.Checked = m_settings.EnableEmailAlert;
             tbMailServer.Text = m_settings.EmailServer;
@@ -136,6 +149,16 @@ namespace EVEMon
         private void cbEmailAuthRequired_CheckedChanged(object sender, EventArgs e)
         {
             UpdateDisables();
+        }
+
+        private void btnIdentifyScreens_Click(object sender, EventArgs e)
+        {
+            EVEMon.WindowRelocator.IdentifyScreenForm.Display();
+        }
+
+        private void cbRelocateEveWindow_CheckedChanged(object sender, EventArgs e)
+        {
+            flpScreenSelect.Enabled = cbRelocateEveWindow.Checked;
         }
     }
 }
