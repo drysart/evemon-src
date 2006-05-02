@@ -1130,6 +1130,30 @@ namespace EVEMon.SkillPlanner
                     "Already Planned", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void lblShipDescription_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void scShipSelect_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pnlShipDescription_ClientSizeChanged(object sender, EventArgs e)
+        {
+            int w = pnlShipDescription.ClientSize.Width;
+            lblShipDescription.MaximumSize = new Size(w, Int32.MaxValue);
+            if (lblShipDescription.PreferredHeight > pnlShipDescription.ClientSize.Height)
+            {
+                pnlShipDescription.Visible = false;
+                pnlShipDescription.PerformLayout();
+                int xw = pnlShipDescription.ClientSize.Width;
+                lblShipDescription.MaximumSize = new Size(xw, Int32.MaxValue);
+                pnlShipDescription.Visible = true;
+            }
+        }
     }
 
     public class PlannerWindowFactory : IPlannerWindowFactory
