@@ -462,7 +462,8 @@ namespace EVEMon.Common
                 GetImageCallback origCallback = callback;
                 callback = new GetImageCallback(delegate (EveSession s, Image i)
                 {
-                    AddImageToCache(url, i);
+                    if (i!=null)
+                        AddImageToCache(url, i);
                     origCallback(s, i);
                 });
             }
