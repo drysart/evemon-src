@@ -280,6 +280,14 @@ namespace EVEMon.Common
             }
             return null;
         }
+        
+        //anders - new function
+        //If you get rid of LoginCharSelect.tbFileCharName and friends, I'd just move this xpath into CreateFromFile
+        public static XmlElement FindCharacterElement(XmlDocument xdoc)
+        {
+            return (XmlElement)xdoc.SelectSingleNode("charactersheet/characters/character[count(child::*)>0]");
+            
+        }
 
         public static SerializableCharacterInfo CreateFromFile(string fileName)
         {
@@ -294,7 +302,8 @@ namespace EVEMon.Common
                 }
                 else if (xdoc.DocumentElement.Name == "charactersheet")
                 {
-                    charRootEl = xdoc.DocumentElement.SelectSingleNode("characters/character") as XmlElement;
+                    // anders - I think this should do it charRootEl = xdoc.DocumentElement.SelectSingleNode("characters/character") as XmlElement;
+                    charRootEl = FindCharacterElement(xdoc);
                 }
                 if (charRootEl == null)
                     return null;

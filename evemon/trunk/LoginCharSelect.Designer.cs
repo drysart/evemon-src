@@ -45,6 +45,8 @@ namespace EVEMon
             this.cbCharacterType = new System.Windows.Forms.ComboBox();
             this.gbEveLogin = new System.Windows.Forms.GroupBox();
             this.gbSavedXML = new System.Windows.Forms.GroupBox();
+            this.tbFileCharName = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.cbMonitorFile = new System.Windows.Forms.CheckBox();
             this.ofdOpenXml = new System.Windows.Forms.OpenFileDialog();
             this.gbEveLogin.SuspendLayout();
@@ -225,6 +227,8 @@ namespace EVEMon
             // 
             // gbSavedXML
             // 
+            this.gbSavedXML.Controls.Add(this.tbFileCharName);
+            this.gbSavedXML.Controls.Add(this.label7);
             this.gbSavedXML.Controls.Add(this.cbMonitorFile);
             this.gbSavedXML.Controls.Add(this.btnBrowse);
             this.gbSavedXML.Controls.Add(this.label5);
@@ -235,6 +239,28 @@ namespace EVEMon
             this.gbSavedXML.TabIndex = 8;
             this.gbSavedXML.TabStop = false;
             this.gbSavedXML.Text = "Saved Character XML";
+            // 
+            // tbFileCharName
+            // 
+            this.tbFileCharName.Location = new System.Drawing.Point(83, 109);
+            this.tbFileCharName.Name = "tbFileCharName";
+            this.tbFileCharName.ReadOnly = true;
+            this.tbFileCharName.Size = new System.Drawing.Size(100, 21);
+            this.tbFileCharName.TabIndex = 5;
+            this.tbFileCharName.TabStop = false;
+            this.tbFileCharName.Text = "(None)";
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(18, 112);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(59, 13);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "Character:";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // cbMonitorFile
             // 
@@ -303,5 +329,7 @@ namespace EVEMon
         private System.Windows.Forms.GroupBox gbSavedXML;
         private System.Windows.Forms.CheckBox cbMonitorFile;
         private System.Windows.Forms.OpenFileDialog ofdOpenXml;
+        private System.Windows.Forms.TextBox tbFileCharName;
+        private System.Windows.Forms.Label label7;
     }
 }
