@@ -1428,10 +1428,7 @@ namespace EVEMon
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new MethodInvoker(delegate
-                {
-                    SetErrorThrobber();
-                }));
+                this.Invoke(new MethodInvoker(SetErrorThrobber));
                 return;
             }
 
@@ -1466,8 +1463,15 @@ namespace EVEMon
 
         private void pbThrobber_Click(object sender, EventArgs e)
         {
-            tmrUpdate_Tick(null, null);
-            UpdateNextUpdateLabel();
+            if (!m_throbberError)
+            {
+                tmrUpdate_Tick(null, null);
+                UpdateNextUpdateLabel();
+            }
+            else
+            {
+                cmsThrobberMenu.Show(Control.MousePosition);
+            }
         }
 
         private void ttToolTip_Popup(object sender, PopupEventArgs e)
@@ -1542,6 +1546,35 @@ namespace EVEMon
         private void flowLayoutPanel5_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void CharacterMonitor_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miHitEveO_Click(object sender, EventArgs e)
+        {
+            tmrUpdate_Tick(this, new EventArgs());
+        }
+
+        private void miChangeInfo_Click(object sender, EventArgs e)
+        {
+            using (ChangeLoginWindow f = new ChangeLoginWindow())
+            {
+                f.CharacterName = m_grandCharacterInfo.Name;
+                DialogResult dr = f.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    m_cli.Username = f.Username;
+                    m_cli.Password = f.Password;
+                    m_session = EveSession.GetSession(f.Username, f.Password);
+                    m_charId = -1;
+                    tmrUpdate_Tick(this, new EventArgs());
+
+                    m_settings.Save();
+                }
+            }
         }     
     }
 

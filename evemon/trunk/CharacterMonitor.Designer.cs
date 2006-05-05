@@ -51,6 +51,9 @@ namespace EVEMon
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
             this.pbThrobber = new System.Windows.Forms.PictureBox();
+            this.cmsThrobberMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miHitEveO = new System.Windows.Forms.ToolStripMenuItem();
+            this.miChangeInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.lblUpdateTimer = new System.Windows.Forms.Label();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
@@ -73,6 +76,7 @@ namespace EVEMon
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbThrobber)).BeginInit();
+            this.cmsThrobberMenu.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -340,6 +344,7 @@ namespace EVEMon
             // pbThrobber
             // 
             this.pbThrobber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbThrobber.ContextMenuStrip = this.cmsThrobberMenu;
             this.pbThrobber.Location = new System.Drawing.Point(35, 0);
             this.pbThrobber.Margin = new System.Windows.Forms.Padding(0);
             this.pbThrobber.Name = "pbThrobber";
@@ -349,6 +354,28 @@ namespace EVEMon
             this.ttToolTip.SetToolTip(this.pbThrobber, "Click to update now.");
             this.pbThrobber.Click += new System.EventHandler(this.pbThrobber_Click);
             this.pbThrobber.MouseEnter += new System.EventHandler(this.pbThrobber_MouseEnter);
+            // 
+            // cmsThrobberMenu
+            // 
+            this.cmsThrobberMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miHitEveO,
+            this.miChangeInfo});
+            this.cmsThrobberMenu.Name = "cmsThrobberMenu";
+            this.cmsThrobberMenu.Size = new System.Drawing.Size(217, 70);
+            // 
+            // miHitEveO
+            // 
+            this.miHitEveO.Name = "miHitEveO";
+            this.miHitEveO.Size = new System.Drawing.Size(216, 22);
+            this.miHitEveO.Text = "Get data from EVE Online";
+            this.miHitEveO.Click += new System.EventHandler(this.miHitEveO_Click);
+            // 
+            // miChangeInfo
+            // 
+            this.miChangeInfo.Name = "miChangeInfo";
+            this.miChangeInfo.Size = new System.Drawing.Size(216, 22);
+            this.miChangeInfo.Text = "Change login information...";
+            this.miChangeInfo.Click += new System.EventHandler(this.miChangeInfo_Click);
             // 
             // lblUpdateTimer
             // 
@@ -544,6 +571,7 @@ namespace EVEMon
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "CharacterMonitor";
             this.Size = new System.Drawing.Size(392, 499);
+            this.Load += new System.EventHandler(this.CharacterMonitor_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbCharImage)).EndInit();
             this.pnlTraining.ResumeLayout(false);
             this.pnlTraining.PerformLayout();
@@ -558,6 +586,7 @@ namespace EVEMon
             this.flowLayoutPanel5.ResumeLayout(false);
             this.flowLayoutPanel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbThrobber)).EndInit();
+            this.cmsThrobberMenu.ResumeLayout(false);
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
@@ -607,5 +636,8 @@ namespace EVEMon
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
         private System.Windows.Forms.Label lblUpdateTimer;
+        private System.Windows.Forms.ContextMenuStrip cmsThrobberMenu;
+        private System.Windows.Forms.ToolStripMenuItem miHitEveO;
+        private System.Windows.Forms.ToolStripMenuItem miChangeInfo;
     }
 }
