@@ -84,6 +84,7 @@ namespace EVEMon
                 MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.Yes)
             {
+                Program.Settings.NeverSave();
                 Settings.ResetKey(Program.SettingKey);
                 MessageBox.Show("Your settings have been reset.",
                     "Settings Reset", MessageBoxButtons.OK, MessageBoxIcon.Information);
