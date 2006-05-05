@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 using EVEMon;
@@ -1008,7 +1009,7 @@ namespace EVEMon.SkillPlanner
 
                 lblShipClass.Text = s.Type + " > " + s.Race;
                 lblShipName.Text = s.Name;
-                lblShipDescription.Text = s.Description;
+                lblShipDescription.Text = Regex.Replace(s.Description, "<.+?>", String.Empty, RegexOptions.Singleline);
 
                 bool allKnown = true;
                 allKnown = SetShipSkillLabel(0, lblShipSkill1, s.RequiredSkills) && allKnown;
