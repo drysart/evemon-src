@@ -658,9 +658,15 @@ namespace EVEMon.Common
         }
     }
 
+    //now with encryption.  Not bulletproof by any means, but better than plaintext
     public class CharLoginInfo
     {
         private string m_username;
+        
+        public CharLoginInfo()
+        {          
+            
+        }
 
         public string Username
         {
@@ -670,6 +676,20 @@ namespace EVEMon.Common
 
         private string m_password;
 
+        [XmlElement("Password")]
+        public string EncryptedPassword
+        {
+            get {
+                return EncryptionHelper.Encrypt(m_password);
+            }
+            set {
+                m_password = EncryptionHelper.Decrypt(value);
+            }
+        }
+
+        
+
+        [XmlIgnore]
         public string Password
         {
             get { return m_password; }
