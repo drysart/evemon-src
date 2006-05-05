@@ -492,10 +492,11 @@ namespace EVEMon
             {
                 niAlertIcon.Visible = false;
                 tmrAlertRefresh.Enabled = false;
-                using (SkillCompleteDialog f = new SkillCompleteDialog(m_completedSkills))
-                {
-                    f.ShowDialog();
-                }
+                SkillCompleteDialog f = new SkillCompleteDialog(m_completedSkills);
+                f.FormClosed += delegate { f.Dispose(); };
+                f.Show();
+                f.Activate();
+
                 m_completedSkills.Clear();
             }
         }
