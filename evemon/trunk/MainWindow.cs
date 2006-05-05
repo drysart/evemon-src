@@ -37,6 +37,9 @@ namespace EVEMon
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
+#if DEBUG
+            tsbSchedule.Visible = true;
+#endif
             this.RememberPositionKey = "MainWindow";
             Program.MainWindow = this;
 

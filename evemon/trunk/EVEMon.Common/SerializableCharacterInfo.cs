@@ -115,7 +115,7 @@ namespace EVEMon.Common
             m_attributes.SetOwner(this);
         }
 
-        private string m_name;
+        private string m_name = String.Empty;
 
         [XmlAttribute("name")]
         public string Name
@@ -151,7 +151,7 @@ namespace EVEMon.Common
             set { m_skillInTraining = value; }
         }
 
-        private string m_race;
+        private string m_race = String.Empty;
 
         [XmlElement("race")]
         public string Race
@@ -160,7 +160,7 @@ namespace EVEMon.Common
             set { m_race = value; }
         }
 
-        private string m_bloodLine;
+        private string m_bloodLine = String.Empty;
 
         [XmlElement("bloodLine")]
         public string BloodLine
@@ -169,7 +169,7 @@ namespace EVEMon.Common
             set { m_bloodLine = value; }
         }
 
-        private string m_gender;
+        private string m_gender = String.Empty;
 
         [XmlElement("gender")]
         public string Gender
@@ -178,7 +178,7 @@ namespace EVEMon.Common
             set { m_gender = value; }
         }
 
-        private string m_corpName;
+        private string m_corpName = String.Empty;
 
         [XmlElement("corporationName")]
         public string CorpName
@@ -315,7 +315,7 @@ namespace EVEMon.Common
     [XmlRoot("skillGroup")]
     public class SerializableSkillGroup
     {
-        private string m_name;
+        private string m_name = String.Empty;
         private int m_id;
         private List<SerializableSkill> m_skills = new List<SerializableSkill>();
 
@@ -374,7 +374,7 @@ namespace EVEMon.Common
     [XmlRoot("skill")]
     public class SerializableSkill
     {
-        private string m_name;
+        private string m_name = String.Empty;
         private int m_id;
         private int m_groupId;
         private int m_flag;
@@ -514,7 +514,7 @@ namespace EVEMon.Common
     [XmlRoot("skillInTraining")]
     public class SerializableSkillInTraining
     {
-        private string m_skillName;
+        private string m_skillName = String.Empty;
 
         public string SkillName
         {
