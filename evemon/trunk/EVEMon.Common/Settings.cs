@@ -674,26 +674,50 @@ namespace EVEMon.Common
             set { m_username = value; }
         }
 
-        private string m_password;
+        private const string ENCRYPTED_PREFIX = "ENCRYPTED::";
+
+        private string m_encryptedPassword = String.Empty;
+        private string m_password = String.Empty;
 
         [XmlElement("Password")]
         public string EncryptedPassword
         {
             get {
-                return EncryptionHelper.Encrypt(m_password);
+                if (String.IsNullOrEmpty(m_encryptedPassword))
+                    m_encryptedPassword = EncryptionHelper.Encrypt(m_username, m_password);
+                StringBuilder sb = new StringBuilder();
+                sb.Append(ENCRYPTED_PREFIX);
+                sb.Append(m_encryptedPassword);
+                return sb.ToString();
             }
             set {
-                m_password = EncryptionHelper.Decrypt(value);
+                if (!value.StartsWith(ENCRYPTED_PREFIX))
+                {
+                    m_encryptedPassword = String.Empty;
+                    m_password = value;
+                }
+                else
+                {
+                    m_encryptedPassword = value.Substring(ENCRYPTED_PREFIX.Length);
+                    m_password = String.Empty;
+                }
             }
         }
-
-        
 
         [XmlIgnore]
         public string Password
         {
-            get { return m_password; }
-            set { m_password = value; }
+            get {
+                if (String.IsNullOrEmpty(m_password) && !String.IsNullOrEmpty(m_encryptedPassword))
+                {
+                    m_password = EncryptionHelper.Decrypt(m_username, m_encryptedPassword);
+                }
+                return m_password;
+            }
+            set {
+                m_password = value;
+                m_encryptedPassword = String.Empty;
+            }
         }
 
         private string m_characterName;
