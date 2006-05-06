@@ -775,7 +775,7 @@ namespace EVEMon
 
         private void button1_Click(object sender, EventArgs e)
         {
-            sfdSaveDialog.FileName = m_cli.CharacterName;
+            sfdSaveDialog.FileName = m_grandCharacterInfo.Name;
             sfdSaveDialog.FilterIndex = (int)SaveFormat.Xml;
             DialogResult dr = sfdSaveDialog.ShowDialog();
             if (dr == DialogResult.OK)
