@@ -31,6 +31,8 @@ namespace EVEMon.SkillPlanner
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlanOrderEditorControl));
             this.cmsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miChangeNote = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.miRemoveFromPlan = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdSave = new System.Windows.Forms.SaveFileDialog();
             this.tmrTick = new System.Windows.Forms.Timer(this.components);
@@ -45,8 +47,9 @@ namespace EVEMon.SkillPlanner
             this.panel1 = new System.Windows.Forms.Panel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.lvSkills = new EVEMon.SkillPlanner.DraggableListView();
-            this.miChangeNote = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.tsbSort = new System.Windows.Forms.ToolStripButton();
             this.cmsContextMenu.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -59,8 +62,20 @@ namespace EVEMon.SkillPlanner
             this.toolStripMenuItem1,
             this.miRemoveFromPlan});
             this.cmsContextMenu.Name = "cmsContextMenu";
-            this.cmsContextMenu.Size = new System.Drawing.Size(187, 76);
+            this.cmsContextMenu.Size = new System.Drawing.Size(187, 54);
             this.cmsContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContextMenu_Opening);
+            // 
+            // miChangeNote
+            // 
+            this.miChangeNote.Name = "miChangeNote";
+            this.miChangeNote.Size = new System.Drawing.Size(186, 22);
+            this.miChangeNote.Text = "View/Change Note...";
+            this.miChangeNote.Click += new System.EventHandler(this.miChangeNote_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(183, 6);
             // 
             // miRemoveFromPlan
             // 
@@ -90,7 +105,10 @@ namespace EVEMon.SkillPlanner
             this.toolStripSeparator1,
             this.toolStripLabel2,
             this.tsbAddSkill,
-            this.tsbRemoveSkill});
+            this.tsbRemoveSkill,
+            this.toolStripSeparator2,
+            this.toolStripLabel3,
+            this.tsbSort});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(38, 558);
@@ -199,17 +217,26 @@ namespace EVEMon.SkillPlanner
             this.lvSkills.ListViewItemsDragging += new System.EventHandler<EVEMon.SkillPlanner.ListViewDragEventArgs>(this.lvSkills_ListViewItemsDragging);
             this.lvSkills.ColumnReordered += new System.Windows.Forms.ColumnReorderedEventHandler(this.lvSkills_ColumnReordered);
             // 
-            // miChangeNote
+            // toolStripSeparator2
             // 
-            this.miChangeNote.Name = "miChangeNote";
-            this.miChangeNote.Size = new System.Drawing.Size(186, 22);
-            this.miChangeNote.Text = "View/Change Note...";
-            this.miChangeNote.Click += new System.EventHandler(this.miChangeNote_Click);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(35, 6);
             // 
-            // toolStripMenuItem1
+            // toolStripLabel3
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(183, 6);
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            this.toolStripLabel3.Size = new System.Drawing.Size(35, 13);
+            this.toolStripLabel3.Text = "Sort:";
+            // 
+            // tsbSort
+            // 
+            this.tsbSort.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSort.Image = ((System.Drawing.Image)(resources.GetObject("tsbSort.Image")));
+            this.tsbSort.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSort.Name = "tsbSort";
+            this.tsbSort.Size = new System.Drawing.Size(35, 20);
+            this.tsbSort.Text = "toolStripButton1";
+            this.tsbSort.Click += new System.EventHandler(this.tsbSort_Click);
             // 
             // PlanOrderEditorControl
             // 
@@ -250,5 +277,8 @@ namespace EVEMon.SkillPlanner
         private System.Windows.Forms.ToolStripButton tsbRemoveSkill;
         private System.Windows.Forms.ToolStripMenuItem miChangeNote;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
+        private System.Windows.Forms.ToolStripButton tsbSort;
     }
 }

@@ -617,6 +617,18 @@ namespace EVEMon.SkillPlanner
                 Program.Settings.Save();
             }
         }
+
+        private void tsbSort_Click(object sender, EventArgs e)
+        {
+            using (PlanSortWindow f = new PlanSortWindow())
+            {
+                DialogResult dr = f.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    PlanSorter.SortPlan(m_plan, f.SortType, f.LearningFirst);
+                }
+            }
+        }
     }
 
 }

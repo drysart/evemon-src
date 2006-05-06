@@ -631,6 +631,16 @@ namespace EVEMon.Common
             get { return m_b; }
             set { m_b = value; }
         }
+
+        public Pair()
+        {
+        }
+
+        public Pair(TypeA a, TypeB b)
+        {
+            m_a = a;
+            m_b = b;
+        }
     }
 
     public delegate void UpdateGrandCharacterInfoCallback(EveSession sender, int timeLeftInCache);

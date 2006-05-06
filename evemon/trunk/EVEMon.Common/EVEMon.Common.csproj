@@ -44,6 +44,7 @@
     </Compile>
     <Compile Include="ColumnPreference.cs" />
     <Compile Include="EncryptionHelper.cs" />
+    <Compile Include="EnumAttributeReader.cs" />
     <Compile Include="EVEMonForm.cs">
       <SubType>Form</SubType>
     </Compile>
