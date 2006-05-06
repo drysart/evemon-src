@@ -773,6 +773,9 @@ namespace EVEMon.SkillPlanner
                 //Ensures any existing learning skills in the plan get moved to
                 //account for higher levels being inserted at the front...
                 m_plan.CheckForMissingPrerequisites();
+
+                // Arrange the learning skills in the plan in optimal order
+                PlanSorter.SortPlan(m_plan, PlanSortType.NoChange, true);
             }
             finally
             {
