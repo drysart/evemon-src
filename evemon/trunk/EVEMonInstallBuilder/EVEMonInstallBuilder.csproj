@@ -44,8 +44,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="EVEMon Installer Script.nsi" />
-    <None Include="NETFrameworkCheck.nsh" />
+    <None Include="EVEMon Installer Script.nsi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="NETFrameworkCheck.nsh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
