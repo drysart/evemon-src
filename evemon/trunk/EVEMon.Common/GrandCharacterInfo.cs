@@ -55,16 +55,18 @@ namespace EVEMon.Common
                                 Convert.ToInt32(pel.GetAttribute("l")));
                             prereqs.Add(p);
                         }
+
+                        bool _pub = (sel.GetAttribute("p") != "false");
+                        string _name = sel.GetAttribute("n");
+                        int _id = Convert.ToInt32(sel.GetAttribute("i"));
+                        string _desc = sel.GetAttribute("d");
+                        EveAttribute _primAttr = (EveAttribute)Enum.Parse(typeof(EveAttribute), sel.GetAttribute("a1"), true);
+                        EveAttribute _secAttr = (EveAttribute)Enum.Parse(typeof(EveAttribute), sel.GetAttribute("a2"), true);
+                        int _rank = Convert.ToInt32(sel.GetAttribute("r"));
+
                         GrandSkill gs = new GrandSkill(
-                            this,
-                            sel.GetAttribute("n"),
-                            Convert.ToInt32(sel.GetAttribute("i")),
-                            sel.GetAttribute("d"),
-                            (EveAttribute)Enum.Parse(typeof(EveAttribute), sel.GetAttribute("a1"), true),
-                            (EveAttribute)Enum.Parse(typeof(EveAttribute), sel.GetAttribute("a2"), true),
-                            Convert.ToInt32(sel.GetAttribute("r")),
-                            prereqs,
-                            allSkills);
+                            this, _pub, _name, _id, _desc, _primAttr, _secAttr, _rank,
+                            prereqs, allSkills);
                         gs.Changed += new EventHandler(gs_Changed);
 
                         skills.Add(gs);
@@ -1006,6 +1008,7 @@ namespace EVEMon.Common
     public class GrandSkill
     {
         private GrandCharacterInfo m_owner;
+        private bool m_public;
         private string m_name;
         private int m_id;
         private string m_description;
@@ -1019,10 +1022,11 @@ namespace EVEMon.Common
 
         private int m_currentSkillPoints;
 
-        public GrandSkill(GrandCharacterInfo gci, string name, int id, string description, 
+        public GrandSkill(GrandCharacterInfo gci, bool pub, string name, int id, string description, 
             EveAttribute a1, EveAttribute a2, int rank, IEnumerable<Prereq> prereqs, IDictionary<string, GrandSkill> otherSkills)
         {
             m_owner = gci;
+            m_public = pub;
             m_name = name;
             m_id = id;
             m_description = description;
@@ -1145,6 +1149,11 @@ namespace EVEMon.Common
             else if (pointsForLevel == 226274)
                 pointsForLevel = 226275;
             return pointsForLevel;
+        }
+
+        public bool Public
+        {
+            get { return m_public; }
         }
 
         public string Name

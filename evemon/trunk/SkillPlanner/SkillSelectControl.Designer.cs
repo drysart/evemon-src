@@ -36,6 +36,7 @@ namespace EVEMon.SkillPlanner
             this.lbSearchList = new System.Windows.Forms.ListBox();
             this.lblSearchTip = new System.Windows.Forms.Label();
             this.lblNoMatches = new System.Windows.Forms.Label();
+            this.cbShowNonPublic = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbSearchImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -87,7 +88,7 @@ namespace EVEMon.SkillPlanner
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tvSkillList.Location = new System.Drawing.Point(0, 54);
             this.tvSkillList.Name = "tvSkillList";
-            this.tvSkillList.Size = new System.Drawing.Size(163, 280);
+            this.tvSkillList.Size = new System.Drawing.Size(163, 259);
             this.tvSkillList.TabIndex = 20;
             this.tvSkillList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSkillList_AfterSelect);
             // 
@@ -134,10 +135,23 @@ namespace EVEMon.SkillPlanner
             this.lblNoMatches.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lblNoMatches.Visible = false;
             // 
+            // cbShowNonPublic
+            // 
+            this.cbShowNonPublic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbShowNonPublic.AutoSize = true;
+            this.cbShowNonPublic.Location = new System.Drawing.Point(0, 317);
+            this.cbShowNonPublic.Name = "cbShowNonPublic";
+            this.cbShowNonPublic.Size = new System.Drawing.Size(130, 17);
+            this.cbShowNonPublic.TabIndex = 24;
+            this.cbShowNonPublic.Text = "Show Non-Public Skills";
+            this.cbShowNonPublic.UseVisualStyleBackColor = true;
+            this.cbShowNonPublic.CheckedChanged += new System.EventHandler(this.cbShowNonPublic_CheckedChanged);
+            // 
             // SkillSelectControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cbShowNonPublic);
             this.Controls.Add(this.lblNoMatches);
             this.Controls.Add(this.lblSearchTip);
             this.Controls.Add(this.lbSearchList);
@@ -164,5 +178,6 @@ namespace EVEMon.SkillPlanner
         private System.Windows.Forms.ListBox lbSearchList;
         private System.Windows.Forms.Label lblSearchTip;
         private System.Windows.Forms.Label lblNoMatches;
+        private System.Windows.Forms.CheckBox cbShowNonPublic;
     }
 }

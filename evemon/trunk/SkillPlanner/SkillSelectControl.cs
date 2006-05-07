@@ -98,7 +98,7 @@ namespace EVEMon.SkillPlanner
                 TreeNode gtn = new TreeNode(gsg.Name);
                 foreach (GrandSkill gs in gsg)
                 {
-                    if (sf(gs))
+                    if (sf(gs) && (gs.Public || cbShowNonPublic.Checked))
                     {
                         TreeNode stn = new TreeNode(gs.Name);
                         stn.Tag = gs;
@@ -196,6 +196,11 @@ namespace EVEMon.SkillPlanner
         private void SkillSelectControl_Load(object sender, EventArgs e)
         {
             cbFilter.SelectedIndex = 0;
+        }
+
+        private void cbShowNonPublic_CheckedChanged(object sender, EventArgs e)
+        {
+            cbFilter_SelectedIndexChanged(this, new EventArgs());
         }
     }
 }
