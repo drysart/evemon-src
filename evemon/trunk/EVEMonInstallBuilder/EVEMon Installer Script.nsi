@@ -228,7 +228,14 @@ Section "un.Uninstaller Section"
   Delete "$INSTDIR\Debugging Tools\EVEMon (with network logging).lnk"
   RMDir "$INSTDIR\Debugging Tools"
 ## INSTALLBUILDER: INSERT DELETES HERE ##
-  RMDir $INSTDIR
+  Delete "$INSTDIR\eve.exe_I006b_040f.ico"
+  Delete "$INSTDIR\EVEMon-all.ico"
+  Delete "$INSTDIR\uninstall.exe"
+
+  ; Just to be sure it gets cleaned up if it was locked...
+  Delete /REBOOTOK "$INSTDIR\EVEMon.WinHook.dll"
+
+  RMDir /REBOOTOK $INSTDIR
 
   !insertmacro MUI_STARTMENU_GETFOLDER EVEMon $MUI_TEMP
   Delete "$SMPROGRAMS\$MUI_TEMP\EVEMon.lnk"
