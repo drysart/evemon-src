@@ -44,12 +44,12 @@ namespace EVEMon.SkillPlanner
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.tsbAddSkill = new System.Windows.Forms.ToolStripButton();
             this.tsbRemoveSkill = new System.Windows.Forms.ToolStripButton();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.lvSkills = new EVEMon.SkillPlanner.DraggableListView();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.tsbSort = new System.Windows.Forms.ToolStripButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.lvSkills = new EVEMon.SkillPlanner.DraggableListView();
             this.cmsContextMenu.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -177,6 +177,27 @@ namespace EVEMon.SkillPlanner
             this.tsbRemoveSkill.Text = "Remove Skill...";
             this.tsbRemoveSkill.Visible = false;
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(35, 6);
+            // 
+            // toolStripLabel3
+            // 
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            this.toolStripLabel3.Size = new System.Drawing.Size(35, 13);
+            this.toolStripLabel3.Text = "Sort:";
+            // 
+            // tsbSort
+            // 
+            this.tsbSort.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSort.Image = ((System.Drawing.Image)(resources.GetObject("tsbSort.Image")));
+            this.tsbSort.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSort.Name = "tsbSort";
+            this.tsbSort.Size = new System.Drawing.Size(35, 20);
+            this.tsbSort.Text = "Sort Plan Entries";
+            this.tsbSort.Click += new System.EventHandler(this.tsbSort_Click);
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.linkLabel1);
@@ -216,27 +237,6 @@ namespace EVEMon.SkillPlanner
             this.lvSkills.ListViewItemsDragged += new System.EventHandler<System.EventArgs>(this.lvSkills_ListViewItemsDragged);
             this.lvSkills.ListViewItemsDragging += new System.EventHandler<EVEMon.SkillPlanner.ListViewDragEventArgs>(this.lvSkills_ListViewItemsDragging);
             this.lvSkills.ColumnReordered += new System.Windows.Forms.ColumnReorderedEventHandler(this.lvSkills_ColumnReordered);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(35, 6);
-            // 
-            // toolStripLabel3
-            // 
-            this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(35, 13);
-            this.toolStripLabel3.Text = "Sort:";
-            // 
-            // tsbSort
-            // 
-            this.tsbSort.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSort.Image = ((System.Drawing.Image)(resources.GetObject("tsbSort.Image")));
-            this.tsbSort.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSort.Name = "tsbSort";
-            this.tsbSort.Size = new System.Drawing.Size(35, 20);
-            this.tsbSort.Text = "toolStripButton1";
-            this.tsbSort.Click += new System.EventHandler(this.tsbSort_Click);
             // 
             // PlanOrderEditorControl
             // 
