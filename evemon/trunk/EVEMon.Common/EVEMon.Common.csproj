@@ -51,6 +51,7 @@
     <Compile Include="EVEMonForm.designer.cs">
       <DependentUpon>EVEMonForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Item.cs" />
     <Compile Include="PlanTextOptions.cs" />
     <Compile Include="EveSession.cs" />
     <Compile Include="GrandCharacterInfo.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="SerializableCharacterInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Ship.cs" />
+    <Compile Include="StringTable.cs" />
     <Compile Include="VerticalFlowPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -83,6 +85,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="eve-ships2.xml.gz" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="eve-items2.xml.gz" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

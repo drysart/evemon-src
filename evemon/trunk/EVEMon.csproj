@@ -209,6 +209,18 @@
     <Compile Include="SkillPlanner\ImplantCalculator.Designer.cs">
       <DependentUpon>ImplantCalculator.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkillPlanner\ItemBrowserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\ItemBrowserControl.Designer.cs">
+      <DependentUpon>ItemBrowserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\ItemSelectControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\ItemSelectControl.Designer.cs">
+      <DependentUpon>ItemSelectControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkillPlanner\LineDrawControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -360,6 +372,14 @@
     <EmbeddedResource Include="SkillPlanner\ImplantCalculator.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ImplantCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\ItemBrowserControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ItemBrowserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\ItemSelectControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ItemSelectControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SkillPlanner\LineDrawControl.resx">
       <SubType>Designer</SubType>

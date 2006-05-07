@@ -48,6 +48,7 @@ namespace EVEMon.SkillPlanner
             m_settings_WorksafeChanged(null, null);
 
             shipSelectControl1_SelectedShipChanged(null, null);
+            itemBrowserControl1.Plan = m_plan;
 
             TipWindow.ShowTip("planner",
                 "Welcome to the Skill Planner",
@@ -1104,35 +1105,42 @@ namespace EVEMon.SkillPlanner
             if (s == null)
                 return;
 
-            List<PlanEntry> planEntries = new List<PlanEntry>();
+            List<Pair<string, int>> skillsToAdd = new List<Pair<string, int>>();
             foreach (ShipRequiredSkill srs in s.RequiredSkills)
             {
-                GrandSkill gs = m_grandCharacterInfo.GetSkill(srs.Name);
-                if (ShouldAdd(gs, srs.Level, planEntries))
-                {
-                    AddPrerequisiteEntries(gs, planEntries);
-                    for (int i = 1; i <= srs.Level; i++)
-                    {
-                        if (ShouldAdd(gs, i, planEntries))
-                        {
-                            PlanEntry pe = new PlanEntry();
-                            pe.SkillName = gs.Name;
-                            pe.Level = i;
-                            pe.EntryType = (i == srs.Level) ? PlanEntryType.Planned : PlanEntryType.Prerequisite;
-                            planEntries.Add(pe);
-                        }
-                    }
-                }
+                skillsToAdd.Add(new Pair<string, int>(srs.Name, srs.Level));
             }
-            if (planEntries.Count > 0)
-            {
-                ConfirmSkillAdd(planEntries);
-            }
-            else
-            {
-                MessageBox.Show("All the required skills are already in your plan.",
-                    "Already Planned", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            AddPlanConfirmWindow.AddSkillsWithConfirm(m_plan, skillsToAdd);
+
+            //List<PlanEntry> planEntries = new List<PlanEntry>();
+            //foreach (ShipRequiredSkill srs in s.RequiredSkills)
+            //{
+            //    GrandSkill gs = m_grandCharacterInfo.GetSkill(srs.Name);
+            //    if (ShouldAdd(gs, srs.Level, planEntries))
+            //    {
+            //        AddPrerequisiteEntries(gs, planEntries);
+            //        for (int i = 1; i <= srs.Level; i++)
+            //        {
+            //            if (ShouldAdd(gs, i, planEntries))
+            //            {
+            //                PlanEntry pe = new PlanEntry();
+            //                pe.SkillName = gs.Name;
+            //                pe.Level = i;
+            //                pe.EntryType = (i == srs.Level) ? PlanEntryType.Planned : PlanEntryType.Prerequisite;
+            //                planEntries.Add(pe);
+            //            }
+            //        }
+            //    }
+            //}
+            //if (planEntries.Count > 0)
+            //{
+            //    ConfirmSkillAdd(planEntries);
+            //}
+            //else
+            //{
+            //    MessageBox.Show("All the required skills are already in your plan.",
+            //        "Already Planned", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
         }
 
         private void lblShipDescription_Click(object sender, EventArgs e)
