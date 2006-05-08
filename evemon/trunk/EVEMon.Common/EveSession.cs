@@ -256,11 +256,15 @@ namespace EVEMon.Common
         AGAIN:
             if (maxRedirects-- <= 0)
                 return String.Empty;
+
             HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
             wr.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1";
             wr.Referer = refer;
             wr.CookieContainer = m_cookies;
             wr.AllowAutoRedirect = false;
+
+            //wr.KeepAlive = false;
+            //wr.ProtocolVersion = HttpVersion.Version10;
 
             if (NetworkLogEvent != null)
             {
@@ -268,6 +272,7 @@ namespace EVEMon.Common
                 args.NetworkLogEventType = NetworkLogEventType.BeginGetUrl;
                 args.Url = url;
                 args.Referer = refer;
+                args.Cookies = m_cookies.GetCookies(new Uri(url));
                 //args.Cookies = m_cookies;
                 NetworkLogEvent(this, args);
             }
@@ -276,6 +281,7 @@ namespace EVEMon.Common
             try
             {
                 resp = (HttpWebResponse)wr.GetResponse();
+                m_cookies.Add(resp.Cookies);
 
                 if (resp.StatusCode == HttpStatusCode.Redirect)
                 {

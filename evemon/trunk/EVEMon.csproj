@@ -83,6 +83,18 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="ManualImplantDetailWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManualImplantDetailWindow.Designer.cs">
+      <DependentUpon>ManualImplantDetailWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManualImplantWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManualImplantWindow.Designer.cs">
+      <DependentUpon>ManualImplantWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="MP3Player.cs" />
     <Compile Include="NoFlickerListBox.cs">
       <SubType>Component</SubType>
@@ -335,6 +347,14 @@
     <EmbeddedResource Include="ChangeLoginWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ChangeLoginWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManualImplantDetailWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ManualImplantDetailWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManualImplantWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ManualImplantWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="output-html.xsl" />
     <EmbeddedResource Include="Schedule\CalendarControl.resx">

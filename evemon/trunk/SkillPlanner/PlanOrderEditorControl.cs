@@ -209,6 +209,9 @@ namespace EVEMon.SkillPlanner
                                         res = xx.Substring(0,MAX_NOTES_PREVIEW_CHARS)+"...";
                                 }
                                 break;
+                            case ColumnPreference.ColumnType.PlanType:
+                                res = pe.EntryType.ToString();
+                                break;
                         }
                         lvi.SubItems[x].Text = res;
                     }

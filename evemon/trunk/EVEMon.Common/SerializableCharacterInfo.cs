@@ -42,6 +42,15 @@ namespace EVEMon.Common
             get { return m_amount; }
             set { m_amount = value; }
         }
+
+        private bool m_manual = false;
+
+        [XmlAttribute]
+        public bool Manual
+        {
+            get { return m_manual; }
+            set { m_manual = value; }
+        }
     }
 
     [XmlRoot("intelligenceBonus")]

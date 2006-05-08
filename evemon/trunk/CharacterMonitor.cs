@@ -25,7 +25,7 @@ namespace EVEMon
             InitializeComponent();
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 #if DEBUG
-            btnDebugError.Visible = true;
+            btnMoreOptions.Visible = true;
 #endif
         }
 
@@ -1171,16 +1171,10 @@ namespace EVEMon
             p.ShowEditor(m_settings, m_grandCharacterInfo);
         }
 
-        private void btnDebugError_Click(object sender, EventArgs e)
+        private void btnMoreOptions_Click(object sender, EventArgs e)
         {
-            //using (UpdateDownloadForm f = new UpdateDownloadForm(
-            //    "http://evemon.evercrest.com/downloads/EVEMon-install-1.0.20.1.exe",
-            //    "EVEMon-install-1.0.20.1.downloaded.exe"))
-            //{
-            //    f.ShowDialog();
-            //    MessageBox.Show(f.DialogResult.ToString());
-            //}
-            EVEMon.WindowRelocator.IdentifyScreenForm.Display();
+            cmsMoreOptions.Show(btnMoreOptions,
+                btnMoreOptions.PointToClient(Control.MousePosition), ToolStripDropDownDirection.Default);
         }
 
        private void lbSkills_MouseMove(object sender, MouseEventArgs e)
@@ -1573,6 +1567,38 @@ namespace EVEMon
                     tmrUpdate_Tick(this, new EventArgs());
 
                     m_settings.Save();
+                }
+            }
+        }
+
+        private void miManualImplants_Click(object sender, EventArgs e)
+        {
+            using (ManualImplantWindow f = new ManualImplantWindow(m_grandCharacterInfo.AttributeBonuses))
+            {
+                DialogResult dr = f.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    m_grandCharacterInfo.SuppressEvents();
+                    try
+                    {
+                        for (int i = 0; i < m_grandCharacterInfo.AttributeBonuses.Count; i++)
+                        {
+                            GrandEveAttributeBonus geab = m_grandCharacterInfo.AttributeBonuses[i];
+                            if (geab.Manual)
+                            {
+                                m_grandCharacterInfo.AttributeBonuses.RemoveAt(i);
+                                i--;
+                            }
+                        }
+                        foreach (GrandEveAttributeBonus b in f.ResultBonuses)
+                        {
+                            m_grandCharacterInfo.AttributeBonuses.Add(b);
+                        }
+                    }
+                    finally
+                    {
+                        m_grandCharacterInfo.ResumeEvents();
+                    }
                 }
             }
         }     

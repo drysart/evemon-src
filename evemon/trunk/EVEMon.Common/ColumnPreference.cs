@@ -67,7 +67,9 @@ namespace EVEMon.Common
             [ColumnDisplay("Skill Group", "Group")]
             SkillGroup,
             [ColumnDisplay("Notes", "Notes")]
-            Notes
+            Notes,
+            [ColumnDisplay("Plan Type (Planned/Prerequisite)", "Type")]
+            PlanType
         }
 
         private bool[] m_prefs;
@@ -221,6 +223,13 @@ namespace EVEMon.Common
         {
             get { return this[ColumnType.Notes]; }
             set { this[ColumnType.Notes] = value; }
+        }
+
+        [XmlAttribute]
+        public bool PlanType
+        {
+            get { return this[ColumnType.PlanType]; }
+            set { this[ColumnType.PlanType] = value; }
         }
     }
 }

@@ -58,9 +58,11 @@ namespace EVEMon
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.llToggleAll = new System.Windows.Forms.LinkLabel();
+            this.btnMoreOptions = new System.Windows.Forms.Button();
+            this.cmsMoreOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miManualImplants = new System.Windows.Forms.ToolStripMenuItem();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnPlan = new System.Windows.Forms.Button();
-            this.btnDebugError = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.lblSkillHeader = new System.Windows.Forms.Label();
             this.tmrTick = new System.Windows.Forms.Timer(this.components);
@@ -79,6 +81,7 @@ namespace EVEMon
             this.cmsThrobberMenu.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.cmsMoreOptions.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -361,7 +364,7 @@ namespace EVEMon
             this.miHitEveO,
             this.miChangeInfo});
             this.cmsThrobberMenu.Name = "cmsThrobberMenu";
-            this.cmsThrobberMenu.Size = new System.Drawing.Size(217, 70);
+            this.cmsThrobberMenu.Size = new System.Drawing.Size(217, 48);
             // 
             // miHitEveO
             // 
@@ -414,22 +417,22 @@ namespace EVEMon
             this.flowLayoutPanel2.AutoSize = true;
             this.flowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel2.Controls.Add(this.llToggleAll);
+            this.flowLayoutPanel2.Controls.Add(this.btnMoreOptions);
             this.flowLayoutPanel2.Controls.Add(this.btnSave);
             this.flowLayoutPanel2.Controls.Add(this.btnPlan);
-            this.flowLayoutPanel2.Controls.Add(this.btnDebugError);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(330, 41);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(326, 42);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.tableLayoutPanel1.SetRowSpan(this.flowLayoutPanel2, 3);
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(62, 103);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(66, 102);
             this.flowLayoutPanel2.TabIndex = 20;
             // 
             // llToggleAll
             // 
             this.llToggleAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.llToggleAll.AutoSize = true;
-            this.llToggleAll.Location = new System.Drawing.Point(9, 90);
+            this.llToggleAll.Location = new System.Drawing.Point(13, 89);
             this.llToggleAll.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
             this.llToggleAll.Name = "llToggleAll";
             this.llToggleAll.Size = new System.Drawing.Size(53, 13);
@@ -438,6 +441,39 @@ namespace EVEMon
             this.llToggleAll.Text = "Toggle All";
             this.llToggleAll.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llToggleAll_LinkClicked);
             // 
+            // btnMoreOptions
+            // 
+            this.btnMoreOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMoreOptions.AutoSize = true;
+            this.btnMoreOptions.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnMoreOptions.ContextMenuStrip = this.cmsMoreOptions;
+            this.btnMoreOptions.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnMoreOptions.Location = new System.Drawing.Point(3, 61);
+            this.btnMoreOptions.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.btnMoreOptions.Name = "btnMoreOptions";
+            this.btnMoreOptions.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.btnMoreOptions.Size = new System.Drawing.Size(63, 22);
+            this.btnMoreOptions.TabIndex = 19;
+            this.btnMoreOptions.Text = "More...";
+            this.btnMoreOptions.UseVisualStyleBackColor = true;
+            this.btnMoreOptions.Visible = false;
+            this.btnMoreOptions.Click += new System.EventHandler(this.btnMoreOptions_Click);
+            // 
+            // cmsMoreOptions
+            // 
+            this.cmsMoreOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miManualImplants});
+            this.cmsMoreOptions.Name = "cmsMoreOptions";
+            this.cmsMoreOptions.Size = new System.Drawing.Size(176, 48);
+            // 
+            // miManualImplants
+            // 
+            this.miManualImplants.Name = "miManualImplants";
+            this.miManualImplants.Size = new System.Drawing.Size(175, 22);
+            this.miManualImplants.Text = "Manual Implants...";
+            this.miManualImplants.Click += new System.EventHandler(this.miManualImplants_Click);
+            // 
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -445,11 +481,11 @@ namespace EVEMon
             this.btnSave.AutoSize = true;
             this.btnSave.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(3, 61);
+            this.btnSave.Location = new System.Drawing.Point(3, 32);
             this.btnSave.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.btnSave.Name = "btnSave";
             this.btnSave.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.btnSave.Size = new System.Drawing.Size(59, 23);
+            this.btnSave.Size = new System.Drawing.Size(63, 23);
             this.btnSave.TabIndex = 12;
             this.btnSave.Text = "Save...";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -462,32 +498,15 @@ namespace EVEMon
             this.btnPlan.AutoSize = true;
             this.btnPlan.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnPlan.Enabled = false;
-            this.btnPlan.Location = new System.Drawing.Point(3, 32);
+            this.btnPlan.Location = new System.Drawing.Point(3, 3);
             this.btnPlan.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.btnPlan.Name = "btnPlan";
             this.btnPlan.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.btnPlan.Size = new System.Drawing.Size(59, 23);
+            this.btnPlan.Size = new System.Drawing.Size(63, 23);
             this.btnPlan.TabIndex = 18;
             this.btnPlan.Text = "Plan...";
             this.btnPlan.UseVisualStyleBackColor = true;
             this.btnPlan.Click += new System.EventHandler(this.btnPlan_Click);
-            // 
-            // btnDebugError
-            // 
-            this.btnDebugError.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDebugError.AutoSize = true;
-            this.btnDebugError.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnDebugError.Location = new System.Drawing.Point(3, 3);
-            this.btnDebugError.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.btnDebugError.Name = "btnDebugError";
-            this.btnDebugError.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.btnDebugError.Size = new System.Drawing.Size(59, 23);
-            this.btnDebugError.TabIndex = 19;
-            this.btnDebugError.Text = "ERROR";
-            this.btnDebugError.UseVisualStyleBackColor = true;
-            this.btnDebugError.Visible = false;
-            this.btnDebugError.Click += new System.EventHandler(this.btnDebugError_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -591,6 +610,7 @@ namespace EVEMon
             this.flowLayoutPanel4.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
+            this.cmsMoreOptions.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -630,7 +650,7 @@ namespace EVEMon
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button btnPlan;
-        private System.Windows.Forms.Button btnDebugError;
+        private System.Windows.Forms.Button btnMoreOptions;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
@@ -639,5 +659,7 @@ namespace EVEMon
         private System.Windows.Forms.ContextMenuStrip cmsThrobberMenu;
         private System.Windows.Forms.ToolStripMenuItem miHitEveO;
         private System.Windows.Forms.ToolStripMenuItem miChangeInfo;
+        private System.Windows.Forms.ContextMenuStrip cmsMoreOptions;
+        private System.Windows.Forms.ToolStripMenuItem miManualImplants;
     }
 }

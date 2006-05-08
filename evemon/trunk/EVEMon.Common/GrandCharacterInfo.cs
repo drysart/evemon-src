@@ -524,11 +524,22 @@ namespace EVEMon.Common
             this.BaseMemory = ci.Attributes.BaseMemory;
             this.BaseWillpower = ci.Attributes.BaseWillpower;
 
+            List<GrandEveAttributeBonus> manualBonuses = new List<GrandEveAttributeBonus>();
+            foreach (GrandEveAttributeBonus tb in this.AttributeBonuses)
+            {
+                if (tb.Manual)
+                    manualBonuses.Add(tb);
+            }
+
             this.AttributeBonuses.Clear();
             foreach (SerializableEveAttributeBonus bonus in ci.AttributeBonuses.Bonuses)
             {
-                GrandEveAttributeBonus geab = new GrandEveAttributeBonus(bonus.Name, bonus.EveAttribute, bonus.Amount);
+                GrandEveAttributeBonus geab = new GrandEveAttributeBonus(bonus.Name, bonus.EveAttribute, bonus.Amount, bonus.Manual);
                 this.AttributeBonuses.Add(geab);
+            }
+            foreach (GrandEveAttributeBonus tb in manualBonuses)
+            {
+                this.AttributeBonuses.Add(tb);
             }
 
             foreach (SerializableSkillGroup sg in ci.SkillGroups)
@@ -586,6 +597,7 @@ namespace EVEMon.Common
                 {
                     eab.Name = geab.Name;
                     eab.Amount = geab.Amount;
+                    eab.Manual = geab.Manual;
                     ci.AttributeBonuses.Bonuses.Add(eab);
                 }
             }
@@ -877,6 +889,7 @@ namespace EVEMon.Common
         private string m_name;
         private EveAttribute m_attribute;
         private int m_amount;
+        private bool m_manual = false;
 
         public string Name
         {
@@ -893,11 +906,22 @@ namespace EVEMon.Common
             get { return m_amount; }
         }
 
+        public bool Manual
+        {
+            get { return m_manual; }
+        }
+
         public GrandEveAttributeBonus(string name, EveAttribute attr, int amount)
+            : this(name, attr, amount, false)
+        {
+        }
+
+        public GrandEveAttributeBonus(string name, EveAttribute attr, int amount, bool manual)
         {
             m_name = name;
             m_attribute = attr;
             m_amount = amount;
+            m_manual = manual;
         }
     }
 
