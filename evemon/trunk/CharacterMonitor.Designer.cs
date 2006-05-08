@@ -457,7 +457,6 @@ namespace EVEMon
             this.btnMoreOptions.TabIndex = 19;
             this.btnMoreOptions.Text = "More...";
             this.btnMoreOptions.UseVisualStyleBackColor = true;
-            this.btnMoreOptions.Visible = false;
             this.btnMoreOptions.Click += new System.EventHandler(this.btnMoreOptions_Click);
             // 
             // cmsMoreOptions
@@ -465,7 +464,7 @@ namespace EVEMon
             this.cmsMoreOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miManualImplants});
             this.cmsMoreOptions.Name = "cmsMoreOptions";
-            this.cmsMoreOptions.Size = new System.Drawing.Size(176, 48);
+            this.cmsMoreOptions.Size = new System.Drawing.Size(176, 26);
             // 
             // miManualImplants
             // 

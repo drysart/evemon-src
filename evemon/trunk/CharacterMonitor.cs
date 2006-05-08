@@ -24,9 +24,6 @@ namespace EVEMon
         {
             InitializeComponent();
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-#if DEBUG
-            btnMoreOptions.Visible = true;
-#endif
         }
 
         private Settings m_settings;
