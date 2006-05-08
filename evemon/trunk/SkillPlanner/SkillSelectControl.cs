@@ -52,6 +52,11 @@ namespace EVEMon.SkillPlanner
 
         private void cbFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
+            UpdateSkillDisplay();
+        }
+
+        private void UpdateSkillFilter()
+        {
             if (m_grandCharacterInfo == null || m_plan == null)
                 return;
 
@@ -110,8 +115,6 @@ namespace EVEMon.SkillPlanner
                     tvSkillList.Nodes.Add(gtn);
                 }
             }
-
-            tbSearch_TextChanged(this, new EventArgs());
         }
 
         private void lblSearchTip_Click(object sender, EventArgs e)
@@ -131,56 +134,184 @@ namespace EVEMon.SkillPlanner
 
         private void tbSearch_TextChanged(object sender, EventArgs e)
         {
+            SearchTextChanged();
+        }
+
+        private void SearchTextChanged()
+        {
             string searchText = tbSearch.Text.ToLower().Trim();
 
             if (String.IsNullOrEmpty(searchText))
             {
-                lbSearchList.Visible = false;
-                tvSkillList.Visible = true;
-                lblNoMatches.Visible = false;
-                return;
+                if (cbSorting.SelectedIndex == 0)
+                {
+                    lbSearchList.Visible = false;
+                    tvSkillList.Visible = true;
+                    lblNoMatches.Visible = false;
+                    lvSortedSkillList.Visible = false;
+                    return;
+                }
+                //else
+                //{
+                //    lbSearchList.Visible = false;
+                //    lblNoMatches.Visible = false;
+                //    tvSkillList.Visible = false;
+                //    lvSortedSkillList.Visible = true;
+                //}
             }
 
-            bool hasMatch = false;
-            lbSearchList.BeginUpdate();
-            try
+            SortedList<string, GrandSkill> filteredItems = new SortedList<string, GrandSkill>();
+            foreach (TreeNode gtn in tvSkillList.Nodes)
             {
-                lbSearchList.Items.Clear();
-                List<string> filteredItems = new List<string>();
-                foreach (TreeNode gtn in tvSkillList.Nodes)
+                foreach (TreeNode tn in gtn.Nodes)
                 {
-                    foreach (TreeNode tn in gtn.Nodes)
+                    if (tn.Text.ToLower().Contains(searchText))
                     {
-                        if (tn.Text.ToLower().Contains(searchText))
-                        {
-                            filteredItems.Add(tn.Text);
-                            //lbSearchList.Items.Add(tn.Text);
-                            //hasMatch = true;
-                        }
+                        filteredItems.Add(tn.Text, tn.Tag as GrandSkill);
                     }
                 }
-                filteredItems.Sort();
-                foreach (string s in filteredItems)
+            }
+
+            SortedListSortKey sk;
+            SortedListDisplayKey dk;
+            MakeUniqueSortKey mu;
+            string sortColName = String.Empty;
+
+            switch (cbSorting.SelectedIndex)
+            {
+                default:
+                case 0: // No sorting
+                    lbSearchList.BeginUpdate();
+                    try
+                    {
+                        lbSearchList.Items.Clear();
+                        foreach (GrandSkill gs in filteredItems.Values)
+                        {
+                            lbSearchList.Items.Add(gs);
+                        }
+
+                        lbSearchList.Location = tvSkillList.Location;
+                        lbSearchList.Size = tvSkillList.Size;
+                        lbSearchList.Visible = true;
+                        tvSkillList.Visible = false;
+                        lvSortedSkillList.Visible = false;
+                        lblNoMatches.Visible = (filteredItems.Count == 0);
+                    }
+                    finally
+                    {
+                        lbSearchList.EndUpdate();
+                    }
+                    return;
+                case 1: // Training time to next level
+                    sortColName = "Time";
+                    sk = delegate(GrandSkill gs)
+                    {
+                        int curLevel = gs.Level;
+                        if (curLevel == 5)
+                            return TimeSpan.MaxValue;
+                        int nextLevel = curLevel + 1;
+                        return gs.GetPrerequisiteTime() + gs.GetTrainingTimeToLevel(nextLevel);
+                    };
+                    dk = delegate(GrandSkill gs, object v)
+                    {
+                        TimeSpan ts = (TimeSpan)v;
+                        if (ts == TimeSpan.MaxValue)
+                            return "-";
+                        else
+                        {
+                            int nextLevel = gs.Level + 1;
+                            return
+                                GrandSkill.GetRomanSkillNumber(nextLevel) + ": " +
+                                GrandSkill.TimeSpanToDescriptiveText(ts, DescriptiveTextOptions.Default);
+                        }
+                    };
+                    mu = delegate(IComparable v)
+                    {
+                        TimeSpan ts = (TimeSpan)v;
+                        ts = ts + TimeSpan.FromTicks(1);
+                        return ts;
+                    };
+                    break;
+                case 2: // Training time to level V
+                    sortColName = "Time";
+                    sk = delegate(GrandSkill gs)
+                    {
+                        int curLevel = gs.Level;
+                        if (curLevel == 5)
+                            return TimeSpan.MaxValue;
+                        return gs.GetPrerequisiteTime() + gs.GetTrainingTimeToLevel(5);
+                    };
+                    dk = delegate(GrandSkill gs, object v)
+                    {
+                        TimeSpan ts = (TimeSpan)v;
+                        if (ts == TimeSpan.MaxValue)
+                            return "-";
+                        else
+                        {
+                            int nextLevel = gs.Level + 1;
+                            return
+                                GrandSkill.GetRomanSkillNumber(5) + ": " +
+                                GrandSkill.TimeSpanToDescriptiveText(ts, DescriptiveTextOptions.Default);
+                        }
+                    };
+                    mu = delegate(IComparable v)
+                    {
+                        TimeSpan ts = (TimeSpan)v;
+                        ts = ts + TimeSpan.FromTicks(1);
+                        return ts;
+                    };
+                    break;
+            }
+
+            lvSortedSkillList.BeginUpdate();
+            try
+            {
+                SortedList<IComparable, Pair<GrandSkill, string>> sortedItems = new SortedList<IComparable, Pair<GrandSkill, string>>();
+                foreach (GrandSkill gs in filteredItems.Values)
                 {
-                    lbSearchList.Items.Add(s);
+                    IComparable sortVal = sk(gs);
+                    string dispVal = dk(gs, sortVal);
+                    while (sortedItems.ContainsKey(sortVal))
+                    {
+                        sortVal = mu(sortVal);
+                    }
+                    sortedItems.Add(sortVal, new Pair<GrandSkill, string>(gs, dispVal));
                 }
 
-                lbSearchList.Location = tvSkillList.Location;
-                lbSearchList.Size = tvSkillList.Size;
-                lbSearchList.Visible = true;
+                chSortKey.Text = sortColName;
+                lvSortedSkillList.Items.Clear();
+                foreach (Pair<GrandSkill, string> p in sortedItems.Values)
+                {
+                    ListViewItem lvi = new ListViewItem(p.A.Name);
+                    lvi.SubItems.Add(p.B);
+                    lvi.Tag = p.A;
+                    lvSortedSkillList.Items.Add(lvi);
+                }
+
+                chName.Width = -2;
+                chSortKey.Width = -2;
+
+                lvSortedSkillList.Location = tvSkillList.Location;
+                lvSortedSkillList.Size = tvSkillList.Size;
+                lvSortedSkillList.Visible = true;
                 tvSkillList.Visible = false;
-                lblNoMatches.Visible = (filteredItems.Count==0);
+                lbSearchList.Visible = false;
+                lblNoMatches.Visible = (sortedItems.Count == 0);
             }
             finally
             {
-                lbSearchList.EndUpdate();
+                lvSortedSkillList.EndUpdate();
             }
         }
+
+        private delegate IComparable SortedListSortKey(GrandSkill gs);
+        private delegate IComparable MakeUniqueSortKey(IComparable v);
+        private delegate string SortedListDisplayKey(GrandSkill gs, object v);
 
         private void lbSearchList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lbSearchList.SelectedIndex >= 0)
-                this.SelectedSkill = m_grandCharacterInfo.GetSkill((string)lbSearchList.Items[lbSearchList.SelectedIndex]);
+                this.SelectedSkill = lbSearchList.Items[lbSearchList.SelectedIndex] as GrandSkill;
             else
                 this.SelectedSkill = null;
         }
@@ -196,11 +327,36 @@ namespace EVEMon.SkillPlanner
         private void SkillSelectControl_Load(object sender, EventArgs e)
         {
             cbFilter.SelectedIndex = 0;
+            cbSorting.SelectedIndex = 0;
         }
 
         private void cbShowNonPublic_CheckedChanged(object sender, EventArgs e)
         {
-            cbFilter_SelectedIndexChanged(this, new EventArgs());
+            UpdateSkillDisplay();
+        }
+
+        private void cbSorting_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateSkillDisplay();
+        }
+
+        private void UpdateSkillDisplay()
+        {
+            UpdateSkillFilter();
+            SearchTextChanged();
+        }
+
+        private void lvSortedSkillList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvSortedSkillList.SelectedItems.Count == 0)
+            {
+                this.SelectedSkill = null;
+            }
+            else
+            {
+                ListViewItem lvi = lvSortedSkillList.SelectedItems[0];
+                this.SelectedSkill = lvi.Tag as GrandSkill;
+            }
         }
     }
 }

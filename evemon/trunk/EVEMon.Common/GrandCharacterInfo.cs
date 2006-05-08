@@ -1508,6 +1508,11 @@ namespace EVEMon.Common
                 return 5;
             return 0;
         }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 
     [Flags]
