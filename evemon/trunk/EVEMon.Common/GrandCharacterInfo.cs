@@ -548,6 +548,15 @@ namespace EVEMon.Common
                 foreach (SerializableSkill s in sg.Skills)
                 {
                     GrandSkill gs = gsg[s.Name];
+                    if (gs == null)
+                    {
+                        gs = new GrandSkill(this, false,
+                            s.Name, s.Id, "Unknown Skill", EveAttribute.Intelligence, EveAttribute.Willpower,
+                            s.Rank, new List<GrandSkill.Prereq>(), new Dictionary<string, GrandSkill>());
+                        gs.Changed += new EventHandler(gs_Changed);
+
+                        gsg.InsertSkill(gs);
+                    }
                     gs.CurrentSkillPoints = s.SkillPoints;
                     gs.Known = true;
                 }
@@ -1027,6 +1036,15 @@ namespace EVEMon.Common
         }
 
         #endregion
+
+        internal void InsertSkill(GrandSkill gs)
+        {
+            m_skills[gs.Name] = gs;
+            gs.Changed += new EventHandler(gs_Changed);
+            gs.SetSkillGroup(this);
+
+            gs_Changed(this, new EventArgs());
+        }
     }
 
     public class GrandSkill
