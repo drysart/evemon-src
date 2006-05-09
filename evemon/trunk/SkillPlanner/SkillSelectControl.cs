@@ -228,7 +228,10 @@ namespace EVEMon.SkillPlanner
                     mu = delegate(IComparable v)
                     {
                         TimeSpan ts = (TimeSpan)v;
-                        ts = ts + TimeSpan.FromTicks(1);
+                        if (ts > TimeSpan.MaxValue - TimeSpan.FromTicks(1000))
+                            ts -= TimeSpan.FromTicks(1);
+                        else
+                            ts += TimeSpan.FromTicks(1);
                         return ts;
                     };
                     break;
@@ -257,7 +260,10 @@ namespace EVEMon.SkillPlanner
                     mu = delegate(IComparable v)
                     {
                         TimeSpan ts = (TimeSpan)v;
-                        ts = ts + TimeSpan.FromTicks(1);
+                        if (ts > TimeSpan.MaxValue - TimeSpan.FromTicks(1000))
+                            ts -= TimeSpan.FromTicks(1);
+                        else
+                            ts += TimeSpan.FromTicks(1);
                         return ts;
                     };
                     break;
