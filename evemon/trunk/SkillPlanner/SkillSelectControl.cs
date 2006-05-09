@@ -95,6 +95,12 @@ namespace EVEMon.SkillPlanner
                         return (gs.Level == 0 && gs.PrerequisitesMet);
                     };
                     break;
+                case 5: // Trainable Skills
+                    sf = delegate(GrandSkill gs)
+                    {
+                        return (gs.PrerequisitesMet && gs.Level < 5);
+                    };
+                    break;
             }
 
             tvSkillList.Nodes.Clear();

@@ -57,7 +57,8 @@ namespace EVEMon.SkillPlanner
             "Known Skills",
             "Not Known Skills",
             "Planned Skills",
-            "Level I Ready Skills"});
+            "Level I Ready Skills",
+            "Trainable Skills"});
             this.cbFilter.Location = new System.Drawing.Point(38, 0);
             this.cbFilter.Name = "cbFilter";
             this.cbFilter.Size = new System.Drawing.Size(125, 21);
