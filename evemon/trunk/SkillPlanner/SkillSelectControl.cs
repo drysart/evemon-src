@@ -215,7 +215,7 @@ namespace EVEMon.SkillPlanner
                     dk = delegate(GrandSkill gs, object v)
                     {
                         TimeSpan ts = (TimeSpan)v;
-                        if (ts == TimeSpan.MaxValue)
+                        if (ts > TimeSpan.MaxValue - TimeSpan.FromTicks(1000))
                             return "-";
                         else
                         {
@@ -247,7 +247,7 @@ namespace EVEMon.SkillPlanner
                     dk = delegate(GrandSkill gs, object v)
                     {
                         TimeSpan ts = (TimeSpan)v;
-                        if (ts == TimeSpan.MaxValue)
+                        if (ts > TimeSpan.MaxValue - TimeSpan.FromTicks(1000))
                             return "-";
                         else
                         {
