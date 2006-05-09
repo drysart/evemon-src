@@ -24,43 +24,56 @@ namespace EVEMon.Common
             }));
         }
 
+        private static object m_lockObj = new object();
         private static int m_displayCounter = 0;
         private static Thread m_runThread;
         private static BusyDialog m_instance;
 
         public static void IncrementDisplay()
         {
-            if (m_displayCounter == 0)
+            lock (m_lockObj)
             {
-                AutoResetEvent startEvent = new AutoResetEvent(false);
-                m_runThread = new Thread(new ThreadStart(delegate
+                if (m_displayCounter == 0)
                 {
-                    using (BusyDialog d = new BusyDialog())
+                    AutoResetEvent startEvent = new AutoResetEvent(false);
+                    m_runThread = new Thread(new ThreadStart(delegate
                     {
-                        m_instance = d;
-                        d.Shown += new EventHandler(delegate { startEvent.Set(); });
-                        d.ShowDialog();
-                        m_instance = null;
-                    }
-                }));
-                m_runThread.Start();
-                startEvent.WaitOne();
+                        using (BusyDialog d = new BusyDialog())
+                        {
+                            m_instance = d;
+                            d.Shown += new EventHandler(delegate { startEvent.Set(); });
+                            d.ShowDialog();
+                            m_instance = null;
+                        }
+                    }));
+                    m_runThread.Start();
+                    startEvent.WaitOne();
+                }
+                m_displayCounter++;
             }
-            m_displayCounter++;
         }
 
         public static void DecrementDisplay()
         {
-            m_displayCounter--;
-            if (m_displayCounter <= 0)
+            lock (m_lockObj)
             {
-                m_displayCounter = 0;
-                m_instance.Invoke(new MethodInvoker(delegate
+                m_displayCounter--;
+                if (m_displayCounter <= 0)
                 {
-                    m_instance.Close();
-                }));
-                m_runThread.Join();
-                m_runThread = null;
+                    m_displayCounter = 0;
+                    if (m_instance != null)
+                    {
+                        m_instance.Invoke(new MethodInvoker(delegate
+                        {
+                            m_instance.Close();
+                        }));
+                    }
+                    if (m_runThread != null)
+                    {
+                        m_runThread.Join();
+                        m_runThread = null;
+                    }
+                }
             }
         }
 

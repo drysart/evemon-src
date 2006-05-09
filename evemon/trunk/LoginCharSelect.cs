@@ -148,7 +148,11 @@ namespace EVEMon
                 return;
             }
 
-            EveSession s = EveSession.GetSession(tbUsername.Text, tbPassword.Text);
+            EveSession s = null;
+            using (IDisposable d = BusyDialog.GetScope())
+            {
+                s = EveSession.GetSession(tbUsername.Text, tbPassword.Text);
+            }
             if (s == null)
             {
                 SetNoCharacter();
