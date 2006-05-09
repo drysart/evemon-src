@@ -1,0 +1,498 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A2E5EFE0-614A-4567-95E5-92A4D94169AC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EVEMon</RootNamespace>
+    <AssemblyName>EVEMon</AssemblyName>
+    <ApplicationIcon>EVEMon-all.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutWindow.Designer.cs">
+      <DependentUpon>AboutWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeLoginWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeLoginWindow.Designer.cs">
+      <DependentUpon>ChangeLoginWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CharacterMonitor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CharacterMonitor.Designer.cs">
+      <DependentUpon>CharacterMonitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CharSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CharSelect.Designer.cs">
+      <DependentUpon>CharSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Emailer.cs" />
+    <Compile Include="IGBService\IGBServer.cs" />
+    <Compile Include="InstanceManager.cs" />
+    <Compile Include="Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoginCharSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginCharSelect.Designer.cs">
+      <DependentUpon>LoginCharSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManualImplantDetailWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManualImplantDetailWindow.Designer.cs">
+      <DependentUpon>ManualImplantDetailWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManualImplantWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManualImplantWindow.Designer.cs">
+      <DependentUpon>ManualImplantWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MP3Player.cs" />
+    <Compile Include="NoFlickerListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CharacterMonitor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CharacterMonitor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CharSelect.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CharSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginCharSelect.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LoginCharSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillCompleteDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SkillCompleteDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdateNotifyForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UpdateNotifyForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Schedule\CalendarControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Schedule\CalendarControl.Designer.cs">
+      <DependentUpon>CalendarControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Schedule\DateSelectWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Schedule\DateSelectWindow.Designer.cs">
+      <DependentUpon>DateSelectWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Schedule\EditScheduleEntryWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Schedule\EditScheduleEntryWindow.Designer.cs">
+      <DependentUpon>EditScheduleEntryWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Schedule\ScheduleEditorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Schedule\ScheduleEditorWindow.Designer.cs">
+      <DependentUpon>ScheduleEditorWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillCompleteDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillCompleteDialog.Designer.cs">
+      <DependentUpon>SkillCompleteDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\AddPlanConfirmWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\AddPlanConfirmWindow.Designer.cs">
+      <DependentUpon>AddPlanConfirmWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\CancelChoiceWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\CancelChoiceWindow.Designer.cs">
+      <DependentUpon>CancelChoiceWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\CopySaveOptionsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\CopySaveOptionsWindow.Designer.cs">
+      <DependentUpon>CopySaveOptionsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\DraggableListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\EditEntryNoteWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\EditEntryNoteWindow.Designer.cs">
+      <DependentUpon>EditEntryNoteWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\ImplantCalculator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\ImplantCalculator.Designer.cs">
+      <DependentUpon>ImplantCalculator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\ItemBrowserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\ItemBrowserControl.Designer.cs">
+      <DependentUpon>ItemBrowserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\ItemSelectControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\ItemSelectControl.Designer.cs">
+      <DependentUpon>ItemSelectControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\LineDrawControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\LineDrawControl.Designer.cs">
+      <DependentUpon>LineDrawControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\NewPlannerWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\NewPlannerWindow.Designer.cs">
+      <DependentUpon>NewPlannerWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\NewPlanWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\NewPlanWindow.Designer.cs">
+      <DependentUpon>NewPlanWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanOrderEditorColumnSelectWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanOrderEditorColumnSelectWindow.Designer.cs">
+      <DependentUpon>PlanOrderEditorColumnSelectWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanOrderEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanOrderEditorControl.Designer.cs">
+      <DependentUpon>PlanOrderEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanSelectWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanSelectWindow.Designer.cs">
+      <DependentUpon>PlanSelectWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanSortWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\PlanSortWindow.Designer.cs">
+      <DependentUpon>PlanSortWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\ShipSelectControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\ShipSelectControl.Designer.cs">
+      <DependentUpon>ShipSelectControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\SkillSelectControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\SkillSelectControl.Designer.cs">
+      <DependentUpon>SkillSelectControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\SkillTreeDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\SkillTreeDisplay.Designer.cs">
+      <DependentUpon>SkillTreeDisplay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillPlanner\SuggestionWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillPlanner\SuggestionWindow.Designer.cs">
+      <DependentUpon>SuggestionWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TipWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TipWindow.Designer.cs">
+      <DependentUpon>TipWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TrayTooltipWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TrayTooltipWindow.Designer.cs">
+      <DependentUpon>TrayTooltipWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UnhandledExceptionWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UnhandledExceptionWindow.Designer.cs">
+      <DependentUpon>UnhandledExceptionWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UpdateDownloadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateDownloadForm.Designer.cs">
+      <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UpdateManager.cs" />
+    <Compile Include="UpdateNotifyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateNotifyForm.Designer.cs">
+      <DependentUpon>UpdateNotifyForm.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="bee.jpg" />
+    <EmbeddedResource Include="Collapse_large.png" />
+    <Resource Include="eve.exe_I006b_040f.ico" />
+    <Resource Include="EVEMon-all.ico" />
+    <EmbeddedResource Include="Expand_large.png" />
+    <EmbeddedResource Include="throbber.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AboutWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangeLoginWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChangeLoginWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManualImplantDetailWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ManualImplantDetailWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManualImplantWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ManualImplantWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="output-html.xsl" />
+    <EmbeddedResource Include="Schedule\CalendarControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CalendarControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schedule\DateSelectWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DateSelectWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schedule\EditScheduleEntryWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditScheduleEntryWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schedule\ScheduleEditorWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ScheduleEditorWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\AddPlanConfirmWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddPlanConfirmWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\CancelChoiceWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CancelChoiceWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\CopySaveOptionsWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CopySaveOptionsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\EditEntryNoteWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditEntryNoteWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\ImplantCalculator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImplantCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\ItemBrowserControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ItemBrowserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\ItemSelectControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ItemSelectControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\LineDrawControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LineDrawControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\NewPlannerWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NewPlannerWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\NewPlanWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NewPlanWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\PlanOrderEditorColumnSelectWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PlanOrderEditorColumnSelectWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\PlanOrderEditorControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PlanOrderEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\PlanSelectWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PlanSelectWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\PlanSortWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PlanSortWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\ShipSelectControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ShipSelectControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\SkillSelectControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SkillSelectControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\SkillTreeDisplay.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SkillTreeDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillPlanner\SuggestionWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SuggestionWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TipWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TipWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrayTooltipWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TrayTooltipWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UnhandledExceptionWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UnhandledExceptionWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdateDownloadForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="gpl.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SkillTrained.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="EVEMon.Common\EVEMon.Common.csproj">
+      <Project>{C0665275-3E0B-4117-81B0-751206ED03CD}</Project>
+      <Name>EVEMon.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="EVEMon.NetworkLogger\EVEMon.NetworkLogger.csproj">
+      <Project>{45877BAD-6688-42DF-A110-DBE9839F99D0}</Project>
+      <Name>EVEMon.NetworkLogger</Name>
+    </ProjectReference>
+    <ProjectReference Include="EVEMon.WindowRelocator\EVEMon.WindowRelocator.csproj">
+      <Project>{F0627E15-E8DF-404F-BF82-C48D890F9C5C}</Project>
+      <Name>EVEMon.WindowRelocator</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(SolutionDir)EVEMon.WinHook\bin\$(ConfigurationName)\EVEMon.WinHook.dll" "$(TargetDir)EVEMon.WinHook.dll"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
