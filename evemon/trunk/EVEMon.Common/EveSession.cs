@@ -258,10 +258,16 @@ namespace EVEMon.Common
                 return String.Empty;
 
             HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
-            wr.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1";
+            wr.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1 EVEMon/0.0";
             wr.Referer = refer;
             wr.CookieContainer = m_cookies;
             wr.AllowAutoRedirect = false;
+            wr.Accept = "text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5";
+            wr.Headers[HttpRequestHeader.AcceptLanguage] = "en-us,en;q=0.5";
+            wr.Headers[HttpRequestHeader.AcceptEncoding] = "gzip,deflate";
+            wr.Headers[HttpRequestHeader.AcceptCharset] = "ISO-8859-1,utf-8;q=0.7,*;q=0.7";
+            wr.KeepAlive = true;
+            wr.Headers[HttpRequestHeader.Pragma] = "no-cache";
 
             //wr.KeepAlive = false;
             //wr.ProtocolVersion = HttpVersion.Version10;
