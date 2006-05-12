@@ -126,10 +126,5 @@ namespace EVEMon.Sales
         {
             FireSubtotalChanged();
         }
-
-        private void txtStock_TextChanged(object sender, EventArgs e)
-        {
-            FireSubtotalChanged();
-        }
     }
 }
