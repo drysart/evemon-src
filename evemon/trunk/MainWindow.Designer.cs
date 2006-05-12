@@ -41,10 +41,11 @@ namespace EVEMon
             this.tsbAddChar = new System.Windows.Forms.ToolStripButton();
             this.tsbRemoveChar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbSchedule = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbOptions = new System.Windows.Forms.ToolStripButton();
-            this.tsbAbout = new System.Windows.Forms.ToolStripButton();
+            this.tsdToolDrop = new System.Windows.Forms.ToolStripDropDownButton();
+            this.tmiOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmiMineralSheet = new System.Windows.Forms.ToolStripMenuItem();
+            this.scheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -103,10 +104,7 @@ namespace EVEMon
             this.tsbAddChar,
             this.tsbRemoveChar,
             this.toolStripSeparator1,
-            this.tsbSchedule,
-            this.toolStripSeparator2,
-            this.tsbOptions,
-            this.tsbAbout});
+            this.tsdToolDrop});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(417, 25);
@@ -137,40 +135,54 @@ namespace EVEMon
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbSchedule
+            // tsdToolDrop
             // 
-            this.tsbSchedule.Image = ((System.Drawing.Image)(resources.GetObject("tsbSchedule.Image")));
-            this.tsbSchedule.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSchedule.Name = "tsbSchedule";
-            this.tsbSchedule.Size = new System.Drawing.Size(70, 22);
-            this.tsbSchedule.Text = "Schedule";
-            this.tsbSchedule.Visible = false;
-            this.tsbSchedule.Click += new System.EventHandler(this.tsbSchedule_Click);
+            this.tsdToolDrop.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmiOptions,
+            this.scheduleToolStripMenuItem,
+            this.tmiMineralSheet,
+            this.aboutToolStripMenuItem});
+            this.tsdToolDrop.Image = ((System.Drawing.Image)(resources.GetObject("tsdToolDrop.Image")));
+            this.tsdToolDrop.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsdToolDrop.Name = "tsdToolDrop";
+            this.tsdToolDrop.Size = new System.Drawing.Size(61, 22);
+            this.tsdToolDrop.Text = "Tools";
             // 
-            // toolStripSeparator2
+            // tmiOptions
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            this.toolStripSeparator2.Visible = false;
+            this.tmiOptions.Image = ((System.Drawing.Image)(resources.GetObject("tmiOptions.Image")));
+            this.tmiOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tmiOptions.Name = "tmiOptions";
+            this.tmiOptions.Size = new System.Drawing.Size(174, 22);
+            this.tmiOptions.Text = "Options...";
+            this.tmiOptions.Click += new System.EventHandler(this.tsbOptions_Click);
             // 
-            // tsbOptions
+            // tmiMineralSheet
             // 
-            this.tsbOptions.Image = ((System.Drawing.Image)(resources.GetObject("tsbOptions.Image")));
-            this.tsbOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbOptions.Name = "tsbOptions";
-            this.tsbOptions.Size = new System.Drawing.Size(76, 22);
-            this.tsbOptions.Text = "Options...";
-            this.tsbOptions.Click += new System.EventHandler(this.tsbOptions_Click);
+            this.tmiMineralSheet.Image = ((System.Drawing.Image)(resources.GetObject("tmiMineralSheet.Image")));
+            this.tmiMineralSheet.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tmiMineralSheet.Name = "tmiMineralSheet";
+            this.tmiMineralSheet.Size = new System.Drawing.Size(174, 22);
+            this.tmiMineralSheet.Text = "Mineral Worksheet";
+            this.tmiMineralSheet.Click += new System.EventHandler(this.tmiMineralSheet_Click);
             // 
-            // tsbAbout
+            // scheduleToolStripMenuItem
             // 
-            this.tsbAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbAbout.Image = ((System.Drawing.Image)(resources.GetObject("tsbAbout.Image")));
-            this.tsbAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbAbout.Name = "tsbAbout";
-            this.tsbAbout.Size = new System.Drawing.Size(23, 22);
-            this.tsbAbout.Text = "About...";
-            this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
+            this.scheduleToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("scheduleToolStripMenuItem.Image")));
+            this.scheduleToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.scheduleToolStripMenuItem.Name = "scheduleToolStripMenuItem";
+            this.scheduleToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.scheduleToolStripMenuItem.Text = "Schedule";
+            this.scheduleToolStripMenuItem.Click += new System.EventHandler(this.tsbSchedule_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
+            this.aboutToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.aboutToolStripMenuItem.Text = "About...";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.tsbAbout_Click);
             // 
             // MainWindow
             // 
@@ -209,9 +221,10 @@ namespace EVEMon
         private System.Windows.Forms.ToolStripButton tsbAddChar;
         private System.Windows.Forms.ToolStripButton tsbRemoveChar;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton tsbOptions;
-        private System.Windows.Forms.ToolStripButton tsbAbout;
-        private System.Windows.Forms.ToolStripButton tsbSchedule;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripDropDownButton tsdToolDrop;
+        private System.Windows.Forms.ToolStripMenuItem tmiOptions;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tmiMineralSheet;
+        private System.Windows.Forms.ToolStripMenuItem scheduleToolStripMenuItem;
     }
 }

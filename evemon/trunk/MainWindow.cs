@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
+using EVEMon.Sales;
 
 using EVEMon.Common;
 
@@ -38,7 +39,7 @@ namespace EVEMon
         private void MainWindow_Load(object sender, EventArgs e)
         {
 #if DEBUG
-            tsbSchedule.Visible = true;
+            this.scheduleToolStripMenuItem.Visible = true;
 #endif
             this.RememberPositionKey = "MainWindow";
             Program.MainWindow = this;
@@ -205,7 +206,6 @@ namespace EVEMon
                 }
                 return false;
             }
-
             TabPage tp = new TabPage("(File) " + sci.Name);
             tp.UseVisualStyleBackColor = true;
             tp.Tag = cfi;
@@ -632,6 +632,40 @@ namespace EVEMon
                 m_scheduler = new WeakReference<EVEMon.Schedule.ScheduleEditorWindow>(sched);
             }
         }
+
+        private WeakReference<MineralWorksheet> m_minSheet;
+
+        private void tmiMineralSheet_Click(object sender, EventArgs e)
+        {
+            MineralWorksheet min = null;
+
+            if (m_minSheet != null)
+            {
+                min = m_minSheet.Target;
+                if (min != null)
+                {
+                    try
+                    {
+                        if (min.Visible)
+                            min.BringToFront();
+                        else
+                            min = null;
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        min = null;
+                        m_minSheet = null;
+                    }
+                }
+            }
+            if (min == null)
+            {
+                min = new MineralWorksheet(m_settings);
+                min.Show();
+                m_minSheet = new WeakReference<MineralWorksheet>(min);
+            }
+        }
+
 
     }
 }

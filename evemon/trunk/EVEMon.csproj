@@ -143,6 +143,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -478,6 +479,10 @@
     <ProjectReference Include="EVEMon.NetworkLogger\EVEMon.NetworkLogger.csproj">
       <Project>{45877BAD-6688-42DF-A110-DBE9839F99D0}</Project>
       <Name>EVEMon.NetworkLogger</Name>
+    </ProjectReference>
+    <ProjectReference Include="EVEMon.Sales\EVEMon.Sales.csproj">
+      <Project>{097C8821-39BB-446D-87E1-5D24E9115CFB}</Project>
+      <Name>EVEMon.Sales</Name>
     </ProjectReference>
     <ProjectReference Include="EVEMon.WindowRelocator\EVEMon.WindowRelocator.csproj">
       <Project>{F0627E15-E8DF-404F-BF82-C48D890F9C5C}</Project>
