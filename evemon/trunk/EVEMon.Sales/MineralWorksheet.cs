@@ -90,7 +90,7 @@ namespace EVEMon.Sales
         {
             BackgroundWorker worker = (BackgroundWorker)sender;
 
-            PhoenixParser p = (PhoenixParser)e.Argument;
+            IMineralParser p = (IMineralParser)e.Argument;
             
             TileUpdate price = new TileUpdate(SetPrice);
 
@@ -105,10 +105,7 @@ namespace EVEMon.Sales
                 tile.SellPricePer = price;
         }
 
-        private void phoenixIndustriesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            backgroundWorker1.RunWorkerAsync(new PhoenixParser("http://www.phoenix-industries.org"));
-        }
+        
 
         private bool m_subtotals = false;
 
@@ -140,6 +137,16 @@ namespace EVEMon.Sales
         {
             Instructions inst = new Instructions();
             inst.Show();
+        }
+
+        private void matariMineralIndexToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            backgroundWorker1.RunWorkerAsync(new MatariParser("http://www.evegeek.com/mineralindex.php"));
+        }
+
+        private void phoenixIndustriesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            backgroundWorker1.RunWorkerAsync(new PhoenixParser("http://www.phoenix-industries.org"));
         }
     }
 }

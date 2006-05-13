@@ -36,6 +36,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMineralParser.cs" />
+    <Compile Include="MatariParser.cs" />
     <Compile Include="Instructions.cs">
       <SubType>Form</SubType>
     </Compile>

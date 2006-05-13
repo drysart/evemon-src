@@ -39,6 +39,7 @@ namespace EVEMon.Sales
             this.tslTotal = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbSubtotals = new System.Windows.Forms.ToolStripButton();
+            this.tsbHelp = new System.Windows.Forms.ToolStripButton();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.mt_tritanium = new EVEMon.Sales.MineralTile();
             this.mt_zydrine = new EVEMon.Sales.MineralTile();
@@ -51,7 +52,7 @@ namespace EVEMon.Sales
             this.mineralTile1 = new EVEMon.Sales.MineralTile();
             this.mineralTile2 = new EVEMon.Sales.MineralTile();
             this.mineralTile3 = new EVEMon.Sales.MineralTile();
-            this.tsbHelp = new System.Windows.Forms.ToolStripButton();
+            this.matariMineralIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,7 +92,8 @@ namespace EVEMon.Sales
             // 
             this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.phoenixIndustriesToolStripMenuItem});
+            this.phoenixIndustriesToolStripMenuItem,
+            this.matariMineralIndexToolStripMenuItem});
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -101,7 +103,7 @@ namespace EVEMon.Sales
             // phoenixIndustriesToolStripMenuItem
             // 
             this.phoenixIndustriesToolStripMenuItem.Name = "phoenixIndustriesToolStripMenuItem";
-            this.phoenixIndustriesToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.phoenixIndustriesToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.phoenixIndustriesToolStripMenuItem.Text = "Phoenix Industries";
             this.phoenixIndustriesToolStripMenuItem.Click += new System.EventHandler(this.phoenixIndustriesToolStripMenuItem_Click);
             // 
@@ -140,6 +142,16 @@ namespace EVEMon.Sales
             this.tsbSubtotals.Size = new System.Drawing.Size(85, 22);
             this.tsbSubtotals.Text = "Show Subtotals";
             this.tsbSubtotals.Click += new System.EventHandler(this.tsbSubtotals_Click);
+            // 
+            // tsbHelp
+            // 
+            this.tsbHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbHelp.Image = ((System.Drawing.Image)(resources.GetObject("tsbHelp.Image")));
+            this.tsbHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbHelp.Name = "tsbHelp";
+            this.tsbHelp.Size = new System.Drawing.Size(36, 22);
+            this.tsbHelp.Text = "Help!";
+            this.tsbHelp.Click += new System.EventHandler(this.tsbHelp_Click);
             // 
             // backgroundWorker1
             // 
@@ -310,15 +322,12 @@ namespace EVEMon.Sales
             this.mineralTile3.Size = new System.Drawing.Size(264, 83);
             this.mineralTile3.TabIndex = 2;
             // 
-            // tsbHelp
+            // matariMineralIndexToolStripMenuItem
             // 
-            this.tsbHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbHelp.Image = ((System.Drawing.Image)(resources.GetObject("tsbHelp.Image")));
-            this.tsbHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbHelp.Name = "tsbHelp";
-            this.tsbHelp.Size = new System.Drawing.Size(36, 22);
-            this.tsbHelp.Text = "Help!";
-            this.tsbHelp.Click += new System.EventHandler(this.tsbHelp_Click);
+            this.matariMineralIndexToolStripMenuItem.Name = "matariMineralIndexToolStripMenuItem";
+            this.matariMineralIndexToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.matariMineralIndexToolStripMenuItem.Text = "Matari Mineral Index";
+            this.matariMineralIndexToolStripMenuItem.Click += new System.EventHandler(this.matariMineralIndexToolStripMenuItem_Click);
             // 
             // MineralWorksheet
             // 
@@ -370,6 +379,7 @@ namespace EVEMon.Sales
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton tsbSubtotals;
         private System.Windows.Forms.ToolStripButton tsbHelp;
+        private System.Windows.Forms.ToolStripMenuItem matariMineralIndexToolStripMenuItem;
 
     }
 }

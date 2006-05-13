@@ -7,7 +7,7 @@ using System.IO;
 
 namespace EVEMon.Sales
 {
-    class PhoenixParser
+    class PhoenixParser:IMineralParser
     {
         private static Regex mineralLineScan = new Regex(@"(?<=Corp\sMineral\sPrices\s-\s)(?<mineral>.*\s*\:\s*(\d|\.)*)", RegexOptions.Compiled);
         private static Regex mineralTokenizer = new Regex(@"(?<name>\w*)\:(?<price>(\d|\.)*)\s", RegexOptions.Compiled);
