@@ -51,6 +51,7 @@ namespace EVEMon.Sales
             this.mineralTile1 = new EVEMon.Sales.MineralTile();
             this.mineralTile2 = new EVEMon.Sales.MineralTile();
             this.mineralTile3 = new EVEMon.Sales.MineralTile();
+            this.tsbHelp = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,7 +65,8 @@ namespace EVEMon.Sales
             this.toolStripLabel1,
             this.tslTotal,
             this.toolStripSeparator3,
-            this.tsbSubtotals});
+            this.tsbSubtotals,
+            this.tsbHelp});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(562, 25);
@@ -99,7 +101,7 @@ namespace EVEMon.Sales
             // phoenixIndustriesToolStripMenuItem
             // 
             this.phoenixIndustriesToolStripMenuItem.Name = "phoenixIndustriesToolStripMenuItem";
-            this.phoenixIndustriesToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.phoenixIndustriesToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.phoenixIndustriesToolStripMenuItem.Text = "Phoenix Industries";
             this.phoenixIndustriesToolStripMenuItem.Click += new System.EventHandler(this.phoenixIndustriesToolStripMenuItem_Click);
             // 
@@ -308,6 +310,16 @@ namespace EVEMon.Sales
             this.mineralTile3.Size = new System.Drawing.Size(264, 83);
             this.mineralTile3.TabIndex = 2;
             // 
+            // tsbHelp
+            // 
+            this.tsbHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbHelp.Image = ((System.Drawing.Image)(resources.GetObject("tsbHelp.Image")));
+            this.tsbHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbHelp.Name = "tsbHelp";
+            this.tsbHelp.Size = new System.Drawing.Size(36, 22);
+            this.tsbHelp.Text = "Help!";
+            this.tsbHelp.Click += new System.EventHandler(this.tsbHelp_Click);
+            // 
             // MineralWorksheet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -357,6 +369,7 @@ namespace EVEMon.Sales
         private System.Windows.Forms.ToolStripLabel tslTotal;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton tsbSubtotals;
+        private System.Windows.Forms.ToolStripButton tsbHelp;
 
     }
 }

@@ -135,5 +135,11 @@ namespace EVEMon.Sales
                 tsbSubtotals.Text = "Hide Subtotals";
             }
         }
+
+        private void tsbHelp_Click(object sender, EventArgs e)
+        {
+            Instructions inst = new Instructions();
+            inst.Show();
+        }
     }
 }

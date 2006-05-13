@@ -75,7 +75,7 @@ namespace EVEMon.Sales
             this.txtStock.Size = new System.Drawing.Size(90, 20);
             this.txtStock.TabIndex = 3;
             this.txtStock.Text = "0";
-            this.txtStock.Leave += new System.EventHandler(this.txtLastSell_TextChanged);
+            this.txtStock.TextChanged += new System.EventHandler(this.txtLastSell_TextChanged);
             // 
             // txtLastSell
             // 
@@ -86,7 +86,7 @@ namespace EVEMon.Sales
             this.txtLastSell.Size = new System.Drawing.Size(90, 20);
             this.txtLastSell.TabIndex = 2;
             this.txtLastSell.Text = "0";
-            this.txtLastSell.Leave += new System.EventHandler(this.txtLastSell_TextChanged);
+            this.txtLastSell.TextChanged += new System.EventHandler(this.txtLastSell_TextChanged);
             // 
             // lblQuantity
             // 

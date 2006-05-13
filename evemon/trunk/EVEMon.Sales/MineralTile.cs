@@ -45,9 +45,16 @@ namespace EVEMon.Sales
         public Single Subtotal
         {
             get
-            {                
+            {
+                try
+                {
                     return Int32.Parse(txtStock.Text, System.Globalization.NumberStyles.AllowThousands) * Single.Parse(txtLastSell.Text, System.Globalization.NumberStyles.AllowDecimalPoint |
-                        System.Globalization.NumberStyles.AllowThousands);                
+                        System.Globalization.NumberStyles.AllowThousands);
+                }
+                catch (FormatException)
+                {
+                    return 0;
+                }
             }
         }
         
@@ -126,5 +133,7 @@ namespace EVEMon.Sales
         {
             FireSubtotalChanged();
         }
+
+
     }
 }
