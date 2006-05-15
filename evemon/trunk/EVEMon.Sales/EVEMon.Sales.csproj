@@ -5,10 +5,12 @@
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{097C8821-39BB-446D-87E1-5D24E9115CFB}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EVEMon.Sales</RootNamespace>
     <AssemblyName>EVEMon.Sales</AssemblyName>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,12 +40,6 @@
   <ItemGroup>
     <Compile Include="IMineralParser.cs" />
     <Compile Include="MatariParser.cs" />
-    <Compile Include="Instructions.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Instructions.Designer.cs">
-      <DependentUpon>Instructions.cs</DependentUpon>
-    </Compile>
     <Compile Include="Minerals.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -62,12 +58,7 @@
       <DependentUpon>MineralWorksheet.cs</DependentUpon>
     </Compile>
     <Compile Include="PhoenixParser.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Instructions.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>Instructions.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Minerals.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
