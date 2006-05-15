@@ -69,7 +69,9 @@ namespace EVEMon.Common
             [ColumnDisplay("Notes", "Notes")]
             Notes,
             [ColumnDisplay("Plan Type (Planned/Prerequisite)", "Type")]
-            PlanType
+            PlanType,
+            [ColumnDisplay("Estimated Skill Point Total", "Est. SP Total")]
+            SPTotal
         }
 
         private bool[] m_prefs;
@@ -230,6 +232,13 @@ namespace EVEMon.Common
         {
             get { return this[ColumnType.PlanType]; }
             set { this[ColumnType.PlanType] = value; }
+        }
+
+        [XmlAttribute]
+        public bool SPTotal
+        {
+            get { return this[ColumnType.SPTotal]; }
+            set { this[ColumnType.SPTotal] = value; }
         }
     }
 }

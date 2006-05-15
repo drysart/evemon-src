@@ -134,6 +134,9 @@ namespace EVEMon.SkillPlanner
             try
             {
                 DateTime start = DateTime.Now;
+                int skillPointTotal = m_plan.GrandCharacterInfo.SkillPointTotal;
+                System.Globalization.NumberFormatInfo nfi = System.Globalization.NumberFormatInfo.CurrentInfo;
+
                 for (int i = 0; i < lvSkills.Items.Count; i++)
                 {
                     ListViewItem lvi = lvSkills.Items[i];
@@ -162,6 +165,8 @@ namespace EVEMon.SkillPlanner
                     DateTime thisStart = start;
                     start += trainTime;
                     DateTime thisEnd = start;
+
+                    skillPointTotal += (reqToThisLevel - reqBeforeThisLevel - pointsInThisLevel);
 
                     for (int x = 0; x < lvSkills.Columns.Count; x++)
                     {
@@ -211,6 +216,9 @@ namespace EVEMon.SkillPlanner
                                 break;
                             case ColumnPreference.ColumnType.PlanType:
                                 res = pe.EntryType.ToString();
+                                break;
+                            case ColumnPreference.ColumnType.SPTotal:
+                                res = skillPointTotal.ToString("N00", nfi);
                                 break;
                         }
                         lvi.SubItems[x].Text = res;
