@@ -135,8 +135,8 @@ namespace EVEMon.Sales
 
         private void tsbHelp_Click(object sender, EventArgs e)
         {
-            Instructions inst = new Instructions();
-            inst.Show();
+            //Instructions inst = new Instructions();
+            //inst.Show();
         }
 
         private void matariMineralIndexToolStripMenuItem_Click(object sender, EventArgs e)
