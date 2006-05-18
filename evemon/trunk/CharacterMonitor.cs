@@ -199,6 +199,14 @@ namespace EVEMon
             m_settings.WorksafeChanged -= new EventHandler<EventArgs>(m_settings_WorksafeChanged);
         }
 
+        private bool m_currentlyVisible = true;
+
+        public bool CurrentlyVisible
+        {
+            get { return m_currentlyVisible; }
+            set { m_currentlyVisible = value; }
+        }
+
         private void m_settings_WorksafeChanged(object sender, EventArgs e)
         {
             pbCharImage.Visible = !m_settings.WorksafeMode;
@@ -730,18 +738,21 @@ namespace EVEMon
             CalcSkillRemainText();
             UpdateNextUpdateLabel();
 
-            GrandSkill trainingSkill = m_grandCharacterInfo.CurrentlyTrainingSkill;
-            if (trainingSkill != null)
+            if (m_currentlyVisible)
             {
-                if (trainingSkill.CurrentSkillPoints != m_lastTickSPPaint)
+                GrandSkill trainingSkill = m_grandCharacterInfo.CurrentlyTrainingSkill;
+                if (trainingSkill != null)
                 {
-                    m_lastTickSPPaint = trainingSkill.CurrentSkillPoints;
-                    int idx = lbSkills.Items.IndexOf(trainingSkill);
-                    if (idx>=0)
-                        lbSkills.Invalidate(lbSkills.GetItemRectangle(idx));
-                    int sgidx = lbSkills.Items.IndexOf(trainingSkill.SkillGroup);
-                    lbSkills.Invalidate(lbSkills.GetItemRectangle(sgidx));
-                    UpdateSkillHeaderStats();
+                    if (trainingSkill.CurrentSkillPoints != m_lastTickSPPaint)
+                    {
+                        m_lastTickSPPaint = trainingSkill.CurrentSkillPoints;
+                        int idx = lbSkills.Items.IndexOf(trainingSkill);
+                        if (idx >= 0)
+                            lbSkills.Invalidate(lbSkills.GetItemRectangle(idx));
+                        int sgidx = lbSkills.Items.IndexOf(trainingSkill.SkillGroup);
+                        lbSkills.Invalidate(lbSkills.GetItemRectangle(sgidx));
+                        UpdateSkillHeaderStats();
+                    }
                 }
             }
 
@@ -1429,26 +1440,29 @@ namespace EVEMon
 
         private void tmrThrobber_Tick(object sender, EventArgs e)
         {
-            tmrThrobber.Enabled = false;
-            if (m_throbberRunning)
+            if (m_currentlyVisible)
             {
-                m_throbberFrame = ((m_throbberFrame + 1) % 8);
-                pbThrobber.Image = ThrobberImages[m_throbberFrame + 1];
-                tmrThrobber.Enabled = true;
-            }
-            else if (m_throbberError)
-            {
-                bool blinkState = (DateTime.Now.Millisecond > 500);
-                if (!blinkState)
-                    pbThrobber.Image = null;
+                tmrThrobber.Enabled = false;
+                if (m_throbberRunning)
+                {
+                    m_throbberFrame = ((m_throbberFrame + 1) % 8);
+                    pbThrobber.Image = ThrobberImages[m_throbberFrame + 1];
+                    tmrThrobber.Enabled = true;
+                }
+                else if (m_throbberError)
+                {
+                    bool blinkState = (DateTime.Now.Millisecond > 500);
+                    if (!blinkState)
+                        pbThrobber.Image = null;
+                    else
+                        pbThrobber.Image = ThrobberImages[0];
+                    tmrThrobber.Enabled = true;
+                }
                 else
+                {
                     pbThrobber.Image = ThrobberImages[0];
-                tmrThrobber.Enabled = true;
-            }
-            else
-            {
-                pbThrobber.Image = ThrobberImages[0];
-                m_throbberFrame = 0;
+                    m_throbberFrame = 0;
+                }
             }
         }
 

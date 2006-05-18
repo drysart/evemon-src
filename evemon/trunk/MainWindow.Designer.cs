@@ -58,6 +58,7 @@ namespace EVEMon
             this.tcCharacterTabs.SelectedIndex = 0;
             this.tcCharacterTabs.Size = new System.Drawing.Size(417, 389);
             this.tcCharacterTabs.TabIndex = 0;
+            this.tcCharacterTabs.SelectedIndexChanged += new System.EventHandler(this.tcCharacterTabs_SelectedIndexChanged);
             // 
             // niMinimizeIcon
             // 

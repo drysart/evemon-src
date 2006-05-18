@@ -648,5 +648,16 @@ namespace EVEMon
             };
             ws.Show();
         }
+
+        private void tcCharacterTabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            foreach (TabPage p in tcCharacterTabs.TabPages)
+            {
+                bool vis = (p == tcCharacterTabs.SelectedTab);
+                CharacterMonitor cm = p.Controls[0] as CharacterMonitor;
+                if (cm != null)
+                    cm.CurrentlyVisible = vis;
+            }
+        }
     }
 }
