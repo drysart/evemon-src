@@ -39,7 +39,7 @@ namespace EVEMon
         private void MainWindow_Load(object sender, EventArgs e)
         {
 #if DEBUG
-            this.scheduleToolStripMenuItem.Visible = true;
+            this.tsbSchedule.Visible = true;
 #endif
             this.RememberPositionKey = "MainWindow";
             Program.MainWindow = this;
@@ -350,7 +350,7 @@ namespace EVEMon
 
         private void SetRemoveEnable()
         {
-            if (tcCharacterTabs.TabPages.Count > 1)
+            if (tcCharacterTabs.TabPages.Count > 0)
                 tsbRemoveChar.Enabled = true;
             else
                 tsbRemoveChar.Enabled = false;
@@ -421,7 +421,13 @@ namespace EVEMon
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             TabPage activeTab = tcCharacterTabs.SelectedTab;
-            RemoveTab(activeTab);
+            DialogResult dr =
+                MessageBox.Show("Are you sure you want to remove \"" + activeTab.Text + "\"?\nThis will remove all plans for this character as well!",
+                "Confirm Removal", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            if (dr == DialogResult.Yes)
+            {
+                RemoveTab(activeTab);
+            }
         }
 
         private void tsbOptions_Click(object sender, EventArgs e)
@@ -635,7 +641,7 @@ namespace EVEMon
 
         private WeakReference<MineralWorksheet> m_minSheet;
 
-        private void tmiMineralSheet_Click(object sender, EventArgs e)
+        private void tsbMineralSheet_Click(object sender, EventArgs e)
         {
             MineralWorksheet min = null;
 
