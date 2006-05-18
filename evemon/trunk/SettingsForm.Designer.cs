@@ -62,10 +62,30 @@ namespace EVEMon
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.cbRelocateEveWindow = new System.Windows.Forms.CheckBox();
+            this.flpScreenSelect = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cbScreenList = new System.Windows.Forms.ComboBox();
+            this.btnIdentifyScreens = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.verticalFlowPanel3 = new EVEMon.Common.VerticalFlowPanel();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.verticalFlowPanel4 = new EVEMon.Common.VerticalFlowPanel();
+            this.vfpCustomProxySettings = new EVEMon.Common.VerticalFlowPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.label10 = new System.Windows.Forms.Label();
+            this.tbProxyHttpHost = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.btnProxyHttpAuth = new System.Windows.Forms.Button();
+            this.tbProxyHttpPort = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.rbCustomProxy = new System.Windows.Forms.RadioButton();
+            this.rbDefaultProxy = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.verticalFlowPanel2 = new EVEMon.Common.VerticalFlowPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -74,11 +94,6 @@ namespace EVEMon
             this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
-            this.cbScreenList = new System.Windows.Forms.ComboBox();
-            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label9 = new System.Windows.Forms.Label();
-            this.btnIdentifyScreens = new System.Windows.Forms.Button();
-            this.flpScreenSelect = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpEmailSettings.SuspendLayout();
             this.tlpEmailAuthTable.SuspendLayout();
@@ -88,10 +103,18 @@ namespace EVEMon
             this.verticalFlowPanel1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.flpScreenSelect.SuspendLayout();
+            this.flowLayoutPanel4.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.verticalFlowPanel3.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.verticalFlowPanel4.SuspendLayout();
+            this.vfpCustomProxySettings.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.verticalFlowPanel2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -100,8 +123,6 @@ namespace EVEMon
             this.flowLayoutPanel5.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
             this.flowLayoutPanel8.SuspendLayout();
-            this.flowLayoutPanel4.SuspendLayout();
-            this.flpScreenSelect.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbMinimizeToTray
@@ -439,6 +460,7 @@ namespace EVEMon
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Name = "tabControl1";
@@ -508,6 +530,66 @@ namespace EVEMon
             this.cbRelocateEveWindow.UseVisualStyleBackColor = true;
             this.cbRelocateEveWindow.CheckedChanged += new System.EventHandler(this.cbRelocateEveWindow_CheckedChanged);
             // 
+            // flpScreenSelect
+            // 
+            this.flpScreenSelect.AutoSize = true;
+            this.flpScreenSelect.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flpScreenSelect.Controls.Add(this.flowLayoutPanel4);
+            this.flpScreenSelect.Controls.Add(this.btnIdentifyScreens);
+            this.flpScreenSelect.Enabled = false;
+            this.flpScreenSelect.Location = new System.Drawing.Point(34, 23);
+            this.flpScreenSelect.Margin = new System.Windows.Forms.Padding(25, 0, 25, 0);
+            this.flpScreenSelect.Name = "flpScreenSelect";
+            this.flpScreenSelect.Size = new System.Drawing.Size(288, 29);
+            this.flpScreenSelect.TabIndex = 7;
+            this.flpScreenSelect.WrapContents = false;
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.AutoSize = true;
+            this.flowLayoutPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel4.Controls.Add(this.label9);
+            this.flowLayoutPanel4.Controls.Add(this.cbScreenList);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(180, 27);
+            this.flowLayoutPanel4.TabIndex = 2;
+            this.flowLayoutPanel4.WrapContents = false;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(47, 27);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Monitor:";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cbScreenList
+            // 
+            this.cbScreenList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbScreenList.FormattingEnabled = true;
+            this.cbScreenList.Location = new System.Drawing.Point(56, 3);
+            this.cbScreenList.Name = "cbScreenList";
+            this.cbScreenList.Size = new System.Drawing.Size(121, 21);
+            this.cbScreenList.TabIndex = 1;
+            // 
+            // btnIdentifyScreens
+            // 
+            this.btnIdentifyScreens.AutoSize = true;
+            this.btnIdentifyScreens.Location = new System.Drawing.Point(183, 3);
+            this.btnIdentifyScreens.Name = "btnIdentifyScreens";
+            this.btnIdentifyScreens.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.btnIdentifyScreens.Size = new System.Drawing.Size(102, 23);
+            this.btnIdentifyScreens.TabIndex = 3;
+            this.btnIdentifyScreens.Text = "Identify Screens";
+            this.btnIdentifyScreens.UseVisualStyleBackColor = true;
+            this.btnIdentifyScreens.Click += new System.EventHandler(this.btnIdentifyScreens_Click);
+            // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -563,6 +645,193 @@ namespace EVEMon
             this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
             this.flowLayoutPanel2.Size = new System.Drawing.Size(454, 69);
             this.flowLayoutPanel2.TabIndex = 3;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.verticalFlowPanel3);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(472, 466);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Network";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // verticalFlowPanel3
+            // 
+            this.verticalFlowPanel3.Controls.Add(this.groupBox6);
+            this.verticalFlowPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel3.Location = new System.Drawing.Point(3, 3);
+            this.verticalFlowPanel3.Name = "verticalFlowPanel3";
+            this.verticalFlowPanel3.Size = new System.Drawing.Size(466, 460);
+            this.verticalFlowPanel3.TabIndex = 1;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.AutoSize = true;
+            this.groupBox6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox6.Controls.Add(this.verticalFlowPanel4);
+            this.groupBox6.Location = new System.Drawing.Point(3, 3);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(460, 141);
+            this.groupBox6.TabIndex = 0;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Proxy Server Settings";
+            // 
+            // verticalFlowPanel4
+            // 
+            this.verticalFlowPanel4.AutoSize = true;
+            this.verticalFlowPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.verticalFlowPanel4.Controls.Add(this.vfpCustomProxySettings);
+            this.verticalFlowPanel4.Controls.Add(this.rbCustomProxy);
+            this.verticalFlowPanel4.Controls.Add(this.rbDefaultProxy);
+            this.verticalFlowPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel4.Location = new System.Drawing.Point(3, 17);
+            this.verticalFlowPanel4.Name = "verticalFlowPanel4";
+            this.verticalFlowPanel4.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.verticalFlowPanel4.Size = new System.Drawing.Size(454, 121);
+            this.verticalFlowPanel4.TabIndex = 1;
+            // 
+            // vfpCustomProxySettings
+            // 
+            this.vfpCustomProxySettings.AutoSize = true;
+            this.vfpCustomProxySettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.vfpCustomProxySettings.Controls.Add(this.tableLayoutPanel3);
+            this.vfpCustomProxySettings.Controls.Add(this.label13);
+            this.vfpCustomProxySettings.Enabled = false;
+            this.vfpCustomProxySettings.Location = new System.Drawing.Point(35, 49);
+            this.vfpCustomProxySettings.Margin = new System.Windows.Forms.Padding(25, 3, 3, 3);
+            this.vfpCustomProxySettings.Name = "vfpCustomProxySettings";
+            this.vfpCustomProxySettings.Size = new System.Drawing.Size(406, 69);
+            this.vfpCustomProxySettings.TabIndex = 2;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.AutoSize = true;
+            this.tableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel3.ColumnCount = 6;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.label10, 1, 1);
+            this.tableLayoutPanel3.Controls.Add(this.tbProxyHttpHost, 2, 1);
+            this.tableLayoutPanel3.Controls.Add(this.label11, 3, 0);
+            this.tableLayoutPanel3.Controls.Add(this.label12, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.btnProxyHttpAuth, 4, 1);
+            this.tableLayoutPanel3.Controls.Add(this.tbProxyHttpPort, 3, 1);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(400, 50);
+            this.tableLayoutPanel3.TabIndex = 1;
+            // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(51, 23);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(36, 27);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "HTTP:";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tbProxyHttpHost
+            // 
+            this.tbProxyHttpHost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbProxyHttpHost.Location = new System.Drawing.Point(93, 26);
+            this.tbProxyHttpHost.Name = "tbProxyHttpHost";
+            this.tbProxyHttpHost.Size = new System.Drawing.Size(107, 21);
+            this.tbProxyHttpHost.TabIndex = 1;
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(206, 10);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(38, 13);
+            this.label11.TabIndex = 4;
+            this.label11.Text = "Port";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label12
+            // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(93, 10);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(107, 13);
+            this.label12.TabIndex = 3;
+            this.label12.Text = "Host/IP Address";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // btnProxyHttpAuth
+            // 
+            this.btnProxyHttpAuth.AutoSize = true;
+            this.btnProxyHttpAuth.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnProxyHttpAuth.Location = new System.Drawing.Point(250, 26);
+            this.btnProxyHttpAuth.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.btnProxyHttpAuth.Name = "btnProxyHttpAuth";
+            this.btnProxyHttpAuth.Size = new System.Drawing.Size(99, 23);
+            this.btnProxyHttpAuth.TabIndex = 5;
+            this.btnProxyHttpAuth.Text = "Authentication...";
+            this.btnProxyHttpAuth.UseVisualStyleBackColor = true;
+            this.btnProxyHttpAuth.Click += new System.EventHandler(this.btnProxyHttpAuth_Click);
+            // 
+            // tbProxyHttpPort
+            // 
+            this.tbProxyHttpPort.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbProxyHttpPort.Location = new System.Drawing.Point(206, 26);
+            this.tbProxyHttpPort.Name = "tbProxyHttpPort";
+            this.tbProxyHttpPort.Size = new System.Drawing.Size(38, 21);
+            this.tbProxyHttpPort.TabIndex = 2;
+            this.tbProxyHttpPort.TextChanged += new System.EventHandler(this.tbProxyHttpPort_TextChanged);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(3, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(400, 13);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Please enter the server and port to use as your proxy server:";
+            // 
+            // rbCustomProxy
+            // 
+            this.rbCustomProxy.AutoSize = true;
+            this.rbCustomProxy.Location = new System.Drawing.Point(13, 26);
+            this.rbCustomProxy.Name = "rbCustomProxy";
+            this.rbCustomProxy.Size = new System.Drawing.Size(428, 17);
+            this.rbCustomProxy.TabIndex = 3;
+            this.rbCustomProxy.TabStop = true;
+            this.rbCustomProxy.Text = "Use custom proxy settings:";
+            this.rbCustomProxy.UseVisualStyleBackColor = true;
+            this.rbCustomProxy.CheckedChanged += new System.EventHandler(this.rbCustomProxy_CheckedChanged);
+            // 
+            // rbDefaultProxy
+            // 
+            this.rbDefaultProxy.AutoSize = true;
+            this.rbDefaultProxy.Location = new System.Drawing.Point(13, 3);
+            this.rbDefaultProxy.Name = "rbDefaultProxy";
+            this.rbDefaultProxy.Size = new System.Drawing.Size(428, 17);
+            this.rbDefaultProxy.TabIndex = 2;
+            this.rbDefaultProxy.TabStop = true;
+            this.rbDefaultProxy.Text = "Use system default proxy (from Control Panel)";
+            this.rbDefaultProxy.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
@@ -672,66 +941,6 @@ namespace EVEMon
             this.flowLayoutPanel8.Size = new System.Drawing.Size(162, 29);
             this.flowLayoutPanel8.TabIndex = 6;
             // 
-            // cbScreenList
-            // 
-            this.cbScreenList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbScreenList.FormattingEnabled = true;
-            this.cbScreenList.Location = new System.Drawing.Point(56, 3);
-            this.cbScreenList.Name = "cbScreenList";
-            this.cbScreenList.Size = new System.Drawing.Size(121, 21);
-            this.cbScreenList.TabIndex = 1;
-            // 
-            // flowLayoutPanel4
-            // 
-            this.flowLayoutPanel4.AutoSize = true;
-            this.flowLayoutPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel4.Controls.Add(this.label9);
-            this.flowLayoutPanel4.Controls.Add(this.cbScreenList);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(180, 27);
-            this.flowLayoutPanel4.TabIndex = 2;
-            this.flowLayoutPanel4.WrapContents = false;
-            // 
-            // label9
-            // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(47, 27);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Monitor:";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // btnIdentifyScreens
-            // 
-            this.btnIdentifyScreens.AutoSize = true;
-            this.btnIdentifyScreens.Location = new System.Drawing.Point(183, 3);
-            this.btnIdentifyScreens.Name = "btnIdentifyScreens";
-            this.btnIdentifyScreens.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.btnIdentifyScreens.Size = new System.Drawing.Size(102, 23);
-            this.btnIdentifyScreens.TabIndex = 3;
-            this.btnIdentifyScreens.Text = "Identify Screens";
-            this.btnIdentifyScreens.UseVisualStyleBackColor = true;
-            this.btnIdentifyScreens.Click += new System.EventHandler(this.btnIdentifyScreens_Click);
-            // 
-            // flpScreenSelect
-            // 
-            this.flpScreenSelect.AutoSize = true;
-            this.flpScreenSelect.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flpScreenSelect.Controls.Add(this.flowLayoutPanel4);
-            this.flpScreenSelect.Controls.Add(this.btnIdentifyScreens);
-            this.flpScreenSelect.Enabled = false;
-            this.flpScreenSelect.Location = new System.Drawing.Point(34, 23);
-            this.flpScreenSelect.Margin = new System.Windows.Forms.Padding(25, 0, 25, 0);
-            this.flpScreenSelect.Name = "flpScreenSelect";
-            this.flpScreenSelect.Size = new System.Drawing.Size(288, 29);
-            this.flpScreenSelect.TabIndex = 7;
-            this.flpScreenSelect.WrapContents = false;
-            // 
             // SettingsForm
             // 
             this.AcceptButton = this.btnOk;
@@ -766,6 +975,10 @@ namespace EVEMon
             this.groupBox5.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            this.flpScreenSelect.ResumeLayout(false);
+            this.flpScreenSelect.PerformLayout();
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
@@ -774,6 +987,17 @@ namespace EVEMon
             this.groupBox1.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.verticalFlowPanel3.ResumeLayout(false);
+            this.verticalFlowPanel3.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.verticalFlowPanel4.ResumeLayout(false);
+            this.verticalFlowPanel4.PerformLayout();
+            this.vfpCustomProxySettings.ResumeLayout(false);
+            this.vfpCustomProxySettings.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.verticalFlowPanel2.ResumeLayout(false);
@@ -789,10 +1013,6 @@ namespace EVEMon
             this.flowLayoutPanel7.ResumeLayout(false);
             this.flowLayoutPanel7.PerformLayout();
             this.flowLayoutPanel8.ResumeLayout(false);
-            this.flowLayoutPanel4.ResumeLayout(false);
-            this.flowLayoutPanel4.PerformLayout();
-            this.flpScreenSelect.ResumeLayout(false);
-            this.flpScreenSelect.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -851,5 +1071,20 @@ namespace EVEMon
         private System.Windows.Forms.ComboBox cbScreenList;
         private System.Windows.Forms.Button btnIdentifyScreens;
         private System.Windows.Forms.FlowLayoutPanel flpScreenSelect;
+        private System.Windows.Forms.TabPage tabPage3;
+        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel3;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel4;
+        private EVEMon.Common.VerticalFlowPanel vfpCustomProxySettings;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox tbProxyHttpPort;
+        private System.Windows.Forms.TextBox tbProxyHttpHost;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button btnProxyHttpAuth;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.RadioButton rbCustomProxy;
+        private System.Windows.Forms.RadioButton rbDefaultProxy;
     }
 }

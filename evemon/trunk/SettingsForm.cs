@@ -63,6 +63,19 @@ namespace EVEMon
             s.EmailAuthPassword = tbEmailPassword.Text;
             s.EmailFromAddress = tbFromAddress.Text;
             s.EmailToAddress = tbToAddress.Text;
+
+            s.UseCustomProxySettings = rbCustomProxy.Checked;
+            ProxySetting httpSetting = ((ProxySetting)btnProxyHttpAuth.Tag).Clone();
+            httpSetting.Host = tbProxyHttpHost.Text;
+            try
+            {
+                httpSetting.Port = Convert.ToInt32(tbProxyHttpPort.Text);
+            }
+            catch
+            {
+                httpSetting.Port = 0;
+            }
+            s.HttpProxy = httpSetting;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -116,6 +129,13 @@ namespace EVEMon
             tbEmailPassword.Text = m_settings.EmailAuthPassword;
             tbFromAddress.Text = m_settings.EmailFromAddress;
             tbToAddress.Text = m_settings.EmailToAddress;
+
+            rbDefaultProxy.Checked = (m_settings.UseCustomProxySettings == false);
+            rbCustomProxy.Checked = (m_settings.UseCustomProxySettings == true);
+            tbProxyHttpHost.Text = m_settings.HttpProxy.Host;
+            tbProxyHttpPort.Text = m_settings.HttpProxy.Port.ToString();
+            btnProxyHttpAuth.Tag = m_settings.HttpProxy.Clone();
+
             UpdateDisables();
         }
 
@@ -129,6 +149,27 @@ namespace EVEMon
             tlpEmailSettings.Enabled = cbSendEmail.Checked;
             btnTestEmail.Enabled = cbSendEmail.Checked;
             tlpEmailAuthTable.Enabled = cbEmailAuthRequired.Checked;
+
+            bool isValid = true;
+            isValid = isValid && ValidateProxySetting(tbProxyHttpHost.Text, tbProxyHttpPort.Text);
+
+            btnOk.Enabled = isValid;
+        }
+
+        private bool ValidateProxySetting(string host, string port)
+        {
+            if (rbCustomProxy.Checked)
+            {
+                if (String.IsNullOrEmpty(host))
+                    return false;
+
+                int junk;
+                if (!Int32.TryParse(port, out junk) || junk < 0)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void btnTestEmail_Click(object sender, EventArgs e)
@@ -159,6 +200,31 @@ namespace EVEMon
         private void cbRelocateEveWindow_CheckedChanged(object sender, EventArgs e)
         {
             flpScreenSelect.Enabled = cbRelocateEveWindow.Checked;
+        }
+
+        private void rbCustomProxy_CheckedChanged(object sender, EventArgs e)
+        {
+            vfpCustomProxySettings.Enabled = rbCustomProxy.Checked;
+            UpdateDisables();
+        }
+
+        private void tbProxyHttpPort_TextChanged(object sender, EventArgs e)
+        {
+            UpdateDisables();
+        }
+
+        private void btnProxyHttpAuth_Click(object sender, EventArgs e)
+        {
+            ProxySetting ps = ((ProxySetting)btnProxyHttpAuth.Tag).Clone();
+            using (ProxyAuthenticationWindow f = new ProxyAuthenticationWindow())
+            {
+                f.ProxySetting = ps;
+                DialogResult dr = f.ShowDialog();
+                if (dr == DialogResult.OK)
+                {
+                    btnProxyHttpAuth.Tag = f.ProxySetting.Clone();
+                }
+            }
         }
     }
 }

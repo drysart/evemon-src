@@ -454,6 +454,22 @@ namespace EVEMon.Common
             }
         }
 
+        private bool m_useCustomProxySettings = false;
+
+        public bool UseCustomProxySettings
+        {
+            get { return m_useCustomProxySettings; }
+            set { m_useCustomProxySettings = value; }
+        }
+
+        private ProxySetting m_httpProxy = new ProxySetting();
+
+        public ProxySetting HttpProxy
+        {
+            get { return m_httpProxy; }
+            set { m_httpProxy = value; }
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////
 
         private List<ScheduleEntry> m_schedule = new List<ScheduleEntry>();
@@ -751,6 +767,71 @@ namespace EVEMon.Common
             get { return m_monitorFile; }
             set { m_monitorFile = value; }
         }
+    }
+
+    [XmlRoot("proxySetting")]
+    public class ProxySetting: ICloneable
+    {
+        private string m_host = String.Empty;
+
+        public string Host
+        {
+            get { return m_host; }
+            set { m_host = value; }
+        }
+
+        private int m_port = 0;
+
+        public int Port
+        {
+            get { return m_port; }
+            set { m_port = value; }
+        }
+
+        private ProxyAuthType m_authType = ProxyAuthType.None;
+
+        public ProxyAuthType AuthType
+        {
+            get { return m_authType; }
+            set { m_authType = value; }
+        }
+
+        private string m_username = String.Empty;
+
+        public string Username
+        {
+            get { return m_username; }
+            set { m_username = value; }
+        }
+
+        private string m_password = String.Empty;
+
+        public string Password
+        {
+            get { return m_password; }
+            set { m_password = value; }
+        }
+
+        #region ICloneable Members
+
+        public ProxySetting Clone()
+        {
+            return (ProxySetting)((ICloneable)this).Clone();
+        }
+
+        object ICloneable.Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
+        #endregion
+    }
+
+    public enum ProxyAuthType
+    {
+        None,
+        SystemDefault,
+        Specified
     }
 
     [XmlRoot]
