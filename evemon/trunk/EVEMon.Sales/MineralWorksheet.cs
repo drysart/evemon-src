@@ -115,6 +115,8 @@ namespace EVEMon.Sales
             if (m_pricesLocked) {
                 PricesLocked = false;
                 btnLockPrices.Text = "Lock Prices";
+
+                
             }
             else {
                 PricesLocked = true;

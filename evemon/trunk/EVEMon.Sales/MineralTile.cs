@@ -84,6 +84,7 @@ namespace EVEMon.Sales
             }
             set
             {
+                this.txtLastSell.TabStop = !value;
                 txtLastSell.ReadOnly = value;
             }
         }

@@ -155,6 +155,7 @@ namespace EVEMon.Sales
             this.tbSubtotal.ReadOnly = true;
             this.tbSubtotal.Size = new System.Drawing.Size(100, 20);
             this.tbSubtotal.TabIndex = 5;
+            this.tbSubtotal.TabStop = false;
             // 
             // MineralTile
             // 
