@@ -41,11 +41,11 @@ namespace EVEMon
             this.tsbAddChar = new System.Windows.Forms.ToolStripButton();
             this.tsbRemoveChar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbOptions = new System.Windows.Forms.ToolStripButton();
-            this.tsbSchedule = new System.Windows.Forms.ToolStripButton();
-            this.tsbAbout = new System.Windows.Forms.ToolStripButton();
             this.tsbMineralSheet = new System.Windows.Forms.ToolStripButton();
+            this.tsbSchedule = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbOptions = new System.Windows.Forms.ToolStripButton();
+            this.tsbAbout = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -139,35 +139,6 @@ namespace EVEMon
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbOptions
-            // 
-            this.tsbOptions.Image = ((System.Drawing.Image)(resources.GetObject("tsbOptions.Image")));
-            this.tsbOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbOptions.Name = "tsbOptions";
-            this.tsbOptions.Size = new System.Drawing.Size(76, 22);
-            this.tsbOptions.Text = "Options...";
-            this.tsbOptions.Click += new System.EventHandler(this.tsbOptions_Click);
-            // 
-            // tsbSchedule
-            // 
-            this.tsbSchedule.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSchedule.Image = ((System.Drawing.Image)(resources.GetObject("tsbSchedule.Image")));
-            this.tsbSchedule.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSchedule.Name = "tsbSchedule";
-            this.tsbSchedule.Size = new System.Drawing.Size(23, 22);
-            this.tsbSchedule.Text = "Schedule";
-            this.tsbSchedule.Click += new System.EventHandler(this.tsbSchedule_Click);
-            // 
-            // tsbAbout
-            // 
-            this.tsbAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbAbout.Image = ((System.Drawing.Image)(resources.GetObject("tsbAbout.Image")));
-            this.tsbAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbAbout.Name = "tsbAbout";
-            this.tsbAbout.Size = new System.Drawing.Size(23, 22);
-            this.tsbAbout.Text = "About...";
-            this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
-            // 
             // tsbMineralSheet
             // 
             this.tsbMineralSheet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -178,10 +149,40 @@ namespace EVEMon
             this.tsbMineralSheet.Text = "Mineral Worksheet";
             this.tsbMineralSheet.Click += new System.EventHandler(this.tsbMineralSheet_Click);
             // 
+            // tsbSchedule
+            // 
+            this.tsbSchedule.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSchedule.Image = ((System.Drawing.Image)(resources.GetObject("tsbSchedule.Image")));
+            this.tsbSchedule.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSchedule.Name = "tsbSchedule";
+            this.tsbSchedule.Size = new System.Drawing.Size(23, 22);
+            this.tsbSchedule.Text = "Schedule";
+            this.tsbSchedule.Visible = false;
+            this.tsbSchedule.Click += new System.EventHandler(this.tsbSchedule_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbOptions
+            // 
+            this.tsbOptions.Image = ((System.Drawing.Image)(resources.GetObject("tsbOptions.Image")));
+            this.tsbOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbOptions.Name = "tsbOptions";
+            this.tsbOptions.Size = new System.Drawing.Size(76, 22);
+            this.tsbOptions.Text = "Options...";
+            this.tsbOptions.Click += new System.EventHandler(this.tsbOptions_Click);
+            // 
+            // tsbAbout
+            // 
+            this.tsbAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbAbout.Image = ((System.Drawing.Image)(resources.GetObject("tsbAbout.Image")));
+            this.tsbAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbAbout.Name = "tsbAbout";
+            this.tsbAbout.Size = new System.Drawing.Size(23, 22);
+            this.tsbAbout.Text = "About...";
+            this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
             // 
             // MainWindow
             // 

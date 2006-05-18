@@ -5,61 +5,48 @@ using System.Text.RegularExpressions;
 using System.Net;
 using System.IO;
 
+using EVEMon.Common;
+
 namespace EVEMon.Sales
 {
-    class MatariParser:IMineralParser
+    [DefaultMineralParser("matari")]
+    public class MatariParser: IMineralParser
     {
         private static Regex mineralLineScan = new Regex(@"\<table.*last.updated", RegexOptions.Compiled);
         private static Regex mineralTokenizer = new Regex(@"\<td.*?\>(?<name>\w*)\</td\>\<td.*?align.*?\>(?<price>(\d|\.|,)*)\</td\>\<td", RegexOptions.Compiled);
 
-        private SortedList<string, Single> _values;
+        #region IMineralParser Members
 
-        public MatariParser(string url)
+        public string Title
         {
-            ParsePage(url);
+            get { return "Matari Mineral Index"; }
         }
 
-        private void ParsePage(string url)
+        public IEnumerable<Pair<string, decimal>> GetPrices()
         {
-            WebRequest request = WebRequest.Create(url);
-            _values = new SortedList<string, Single>();
-            try
+            WebRequest request = WebRequest.Create("http://www.evegeek.com/mineralindex.php");
+            WebResponse response = request.GetResponse();
+            using (Stream s = response.GetResponseStream())
+            using (StreamReader pageStream = new StreamReader(s))
             {
-                WebResponse response = request.GetResponse();
-                using (StreamReader pageStream = new StreamReader(response.GetResponseStream()))
+                String phoenixContent = pageStream.ReadToEnd();
+
+                //scan for prices
+                Match m = mineralLineScan.Match(phoenixContent);
+
+                string mLine = m.Captures[0].Value;
+
+                MatchCollection mc = mineralTokenizer.Matches(mLine);
+
+                foreach (Match mineral in mc)
                 {
-                    String phoenixContent = pageStream.ReadToEnd();
-
-                    //scan for prices
-                    Match m = mineralLineScan.Match(phoenixContent);
-
-                    string mLine = m.Captures[0].Value;
-
-                    MatchCollection mc = mineralTokenizer.Matches(mLine);
-
-                    foreach (Match mineral in mc)
-                    {
-                        _values[mineral.Groups["name"].Value] = Single.Parse(mineral.Groups["price"].Value);
-
-                    }
+                    string name = mineral.Groups["name"].Value;
+                    Decimal price = Decimal.Parse(mineral.Groups["price"].Value);
+                    yield return new Pair<string, Decimal>(name, price);
                 }
             }
-            catch (Exception)
-            {
-
-            }
         }
 
-        public float this[string value]
-        {
-            get
-            {
-                if (_values.Keys.Contains(value))
-                    return _values[value];
-                else
-                    return 0f;
-            }
-        }
-
+        #endregion
     }
 }

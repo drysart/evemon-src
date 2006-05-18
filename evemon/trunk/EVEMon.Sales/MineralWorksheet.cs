@@ -12,34 +12,12 @@ namespace EVEMon.Sales
     delegate void TileUpdate(MineralTile mt, Single s);
     public partial class MineralWorksheet : EVEMonForm
     {
-        private MineralTile[] _tiles;
-        private SubtotalChangedDelegate tileChangeHandler;
+        private EventHandler<EventArgs> tileChangeHandler;
         private Settings m_settings;
+
         public MineralWorksheet()
         {
-            InitializeComponent();
-            
-            _tiles = new MineralTile[]{
-        this.mt_isogen, this.mt_megacyte, this.mt_mexallon,
-        this.mt_morphite, this.mt_nocxium, this.mt_pyerite,
-        this.mt_tritanium, this.mt_zydrine};
-
-            tileChangeHandler = new SubtotalChangedDelegate(TileSubtotalChanged);
-
-            foreach (MineralTile mt in _tiles)
-            {
-                mt.SubtotalChanged += tileChangeHandler;
-            }            
-        }
-
-        private void TileSubtotalChanged(MineralTile tile,  float newValue)
-        {
-            float total = 0;
-            foreach (MineralTile mt in _tiles)
-            {
-                total += mt.Subtotal;
-            }
-            tslTotal.Text = String.Format("{0:n2}", total);
+            InitializeComponent();      
         }
 
         public MineralWorksheet(Settings s)
@@ -48,9 +26,71 @@ namespace EVEMon.Sales
             m_settings = s;
         }
 
+        private IEnumerable<MineralTile> Tiles
+        {
+            get
+            {
+                foreach (Control c in this.tableLayoutPanel1.Controls)
+                {
+                    if (c is MineralTile)
+                    {
+                        yield return c as MineralTile;
+                    }
+                }
+            }
+        }
+
+        private void TileSubtotalChanged(object sender, EventArgs e)
+        {
+            Decimal total = 0;
+            foreach (MineralTile mt in Tiles)
+            {
+                total += mt.Subtotal;
+            }
+            tslTotal.Text = total.ToString("N") + " ISK";
+        }
+
         private void MineralWorksheet_Load(object sender, EventArgs e)
         {
+            tileChangeHandler = new EventHandler<EventArgs>(TileSubtotalChanged);
+            foreach (MineralTile mt in Tiles)
+            {
+                mt.SubtotalChanged += tileChangeHandler;
+            }
 
+            SortedList<string, Pair<string, string>> parsersSorted = new SortedList<string, Pair<string, string>>();
+
+            foreach (Pair<string, IMineralParser> p in MineralDataRequest.Parsers)
+            {
+                parsersSorted.Add(p.B.Title, new Pair<string, string>(p.A, p.B.Title));
+            }
+
+            foreach (Pair<string, string> p in parsersSorted.Values)
+            {
+                ToolStripMenuItem mi = new ToolStripMenuItem();
+                mi.Text = p.B;
+                mi.Tag = p.A;
+                mi.Click += new EventHandler(mi_Click);
+                tsddFetch.DropDownItems.Add(mi);
+            }
+        }
+
+        private void mi_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem mi = (ToolStripMenuItem)sender;
+            string s = (string)mi.Tag;
+
+            Dictionary<string, Decimal> prices = new Dictionary<string, decimal>();
+            foreach (Pair<string, Decimal> p in MineralDataRequest.GetPrices(s))
+            {
+                prices[p.A] = p.B;
+            }
+
+            foreach (MineralTile mt in Tiles)
+            {
+                if (prices.ContainsKey(mt.MineralName))
+                    mt.PricePerUnit = prices[mt.MineralName];
+            }
         }
 
         private bool m_pricesLocked = false;
@@ -63,14 +103,10 @@ namespace EVEMon.Sales
             set
             {
                 m_pricesLocked = value;
-                mt_isogen.PriceLocked = value;
-                mt_megacyte.PriceLocked = value;
-                mt_mexallon.PriceLocked = value;
-                mt_morphite.PriceLocked = value;
-                mt_nocxium.PriceLocked = value;
-                mt_pyerite.PriceLocked = value;
-                mt_tritanium.PriceLocked = value;
-                mt_zydrine.PriceLocked = value;
+                foreach (MineralTile mt in Tiles)
+                {
+                    mt.PriceLocked = value;
+                }
             }
         }
 
@@ -85,68 +121,21 @@ namespace EVEMon.Sales
                 btnLockPrices.Text = "Unlock Prices";
             }
         }
-        
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker worker = (BackgroundWorker)sender;
-
-            IMineralParser p = (IMineralParser)e.Argument;
-            
-            TileUpdate price = new TileUpdate(SetPrice);
-
-            foreach (MineralTile mt in _tiles)
-            {
-                this.Invoke(price, new object[]{mt, p[mt.MineralName]});
-            }
-        }
 
         private void SetPrice(MineralTile tile, Single price)
         {
-                tile.SellPricePer = price;
+            //TODO
+                //tile.PricePerUnit = price;
         }
 
-        
-
-        private bool m_subtotals = false;
-
-        public bool Subtotals
+        private void mt_pyerite_Load(object sender, EventArgs e)
         {
-            get { return m_subtotals; }
-            set { m_subtotals = value;
-                foreach(MineralTile mt in _tiles)
-                {
-                    mt.ShowSubtotals = m_subtotals;
-                }
-                 }
-        }
-        private void tsbSubtotals_Click(object sender, EventArgs e)
-        {
-            if (m_subtotals)
-            {
-                Subtotals = false;
-                tsbSubtotals.Text = "Show Subtotals";
-            }
-            else
-            {
-                Subtotals = true;
-                tsbSubtotals.Text = "Hide Subtotals";
-            }
+
         }
 
-        private void tsbHelp_Click(object sender, EventArgs e)
+        private void mt_mexallon_Load(object sender, EventArgs e)
         {
-            Instructions inst = new Instructions();
-            inst.Show();
-        }
 
-        private void matariMineralIndexToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            backgroundWorker1.RunWorkerAsync(new MatariParser("http://www.evegeek.com/mineralindex.php"));
-        }
-
-        private void phoenixIndustriesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            backgroundWorker1.RunWorkerAsync(new PhoenixParser("http://www.phoenix-industries.org"));
         }
     }
 }

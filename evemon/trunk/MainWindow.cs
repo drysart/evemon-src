@@ -639,39 +639,14 @@ namespace EVEMon
             }
         }
 
-        private WeakReference<MineralWorksheet> m_minSheet;
-
         private void tsbMineralSheet_Click(object sender, EventArgs e)
         {
-            MineralWorksheet min = null;
-
-            if (m_minSheet != null)
+            MineralWorksheet ws = new MineralWorksheet(m_settings);
+            ws.FormClosed += delegate
             {
-                min = m_minSheet.Target;
-                if (min != null)
-                {
-                    try
-                    {
-                        if (min.Visible)
-                            min.BringToFront();
-                        else
-                            min = null;
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        min = null;
-                        m_minSheet = null;
-                    }
-                }
-            }
-            if (min == null)
-            {
-                min = new MineralWorksheet(m_settings);
-                min.Show();
-                m_minSheet = new WeakReference<MineralWorksheet>(min);
-            }
+                ws.Dispose();
+            };
+            ws.Show();
         }
-
-
     }
 }

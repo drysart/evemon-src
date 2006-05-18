@@ -5,16 +5,15 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using System.Diagnostics;
+using System.Reflection;
+using System.IO;
 
 namespace EVEMon.Sales
 {
-    public delegate void SubtotalChangedDelegate(MineralTile sender, float newTotal);
-
     [Serializable]
     public partial class MineralTile : UserControl
     {
-        public event SubtotalChangedDelegate SubtotalChanged;
+        public event EventHandler<EventArgs> SubtotalChanged;
 
         public MineralTile()
         {
@@ -22,42 +21,6 @@ namespace EVEMon.Sales
         }
 
         private string m_mineralName;
-        private bool m_showSubtotals = false;
-
-        public bool ShowSubtotals
-        {
-            get { return m_showSubtotals; }
-            set { 
-                
-                m_showSubtotals = value;
-                if (m_showSubtotals)
-                {
-                    lblName.Text = Subtotal.ToString();
-                }
-                else
-                {
-                    lblName.Text = m_mineralName;
-                }
-            
-            }
-        }
-
-        public Single Subtotal
-        {
-            get
-            {
-                try
-                {
-                    return Int32.Parse(txtStock.Text, System.Globalization.NumberStyles.AllowThousands) * Single.Parse(txtLastSell.Text, System.Globalization.NumberStyles.AllowDecimalPoint |
-                        System.Globalization.NumberStyles.AllowThousands);
-                }
-                catch (FormatException)
-                {
-                    return 0;
-                }
-            }
-        }
-        
 
         public String MineralName
         {
@@ -68,11 +31,23 @@ namespace EVEMon.Sales
             set
             {
                 m_mineralName = value;
-                //try to do icon things
-                this.icon.Image = (Image)Minerals.ResourceManager.GetObject(value);
-                if (!m_showSubtotals)
+                groupBox1.Text = value;
+                Stream s = null;
+                Image i = null;
+                try
                 {
-                    lblName.Text = m_mineralName;
+                    Assembly asm = Assembly.GetExecutingAssembly();
+                    s = asm.GetManifestResourceStream("EVEMon.Sales.icons." + value + ".png");
+                    i = Image.FromStream(s, true, true);
+                    this.icon.Image = i;
+                }
+                catch
+                {
+                    if (i != null)
+                        i.Dispose();
+                    if (s != null)
+                        s.Dispose();
+                    this.icon.Image = null;
                 }
             }
         }
@@ -81,28 +56,23 @@ namespace EVEMon.Sales
         {
             get
             {
-                return Int32.Parse(txtStock.Text, System.Globalization.NumberStyles.AllowThousands);
+                return Int32.Parse(txtStock.Text);
             }
             set
             {
-                txtStock.Text = String.Format("{0}", value);
-                if(SubtotalChanged != null)
-                    FireSubtotalChanged();
+                txtStock.Text = value.ToString();
             }
         }
 
-        public float SellPricePer
+        public Decimal PricePerUnit
         {
             get
             {
-                return Single.Parse(txtLastSell.Text, System.Globalization.NumberStyles.AllowDecimalPoint |
-                    System.Globalization.NumberStyles.AllowThousands);
+                return Decimal.Parse(txtLastSell.Text);
             }
             set
             {
-                txtLastSell.Text = String.Format("{0}", value);
-                if (SubtotalChanged != null)
-                    FireSubtotalChanged();
+                txtLastSell.Text = value.ToString("N");
             }
         }
 
@@ -114,26 +84,47 @@ namespace EVEMon.Sales
             }
             set
             {
-                txtLastSell.TabStop = !value;
-                txtStock.TabStop = value;
                 txtLastSell.ReadOnly = value;
             }
         }
 
-        private void FireSubtotalChanged()
+        private Decimal m_subtotal = 0;
+
+        public Decimal Subtotal
         {
-            if (m_showSubtotals)
+            get
             {
-                lblName.Text = Subtotal.ToString();
+                return m_subtotal;
             }
-            SubtotalChanged(this, Subtotal);
+        }
+        
+        private void UpdateSubtotal()
+        {
+            try
+            {
+                Decimal pricePerUnit = Decimal.Parse(txtLastSell.Text);
+                int quantity = Int32.Parse(txtStock.Text);
+
+                m_subtotal = pricePerUnit * quantity;
+            }
+            catch
+            {
+                m_subtotal = 0;
+            }
+            tbSubtotal.Text = m_subtotal.ToString("N");
+
+            if (SubtotalChanged != null)
+                SubtotalChanged(this, new EventArgs());
         }
 
         private void txtLastSell_TextChanged(object sender, EventArgs e)
         {
-            FireSubtotalChanged();
+            UpdateSubtotal();
         }
 
-
+        private void txtStock_TextChanged(object sender, EventArgs e)
+        {
+            UpdateSubtotal();
+        }
     }
 }

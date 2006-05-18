@@ -39,18 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMineralParser.cs" />
-    <Compile Include="Instructions.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Instructions.Designer.cs">
-      <DependentUpon>Instructions.cs</DependentUpon>
-    </Compile>
     <Compile Include="MatariParser.cs" />
-    <Compile Include="Minerals.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Minerals.resx</DependentUpon>
-    </Compile>
     <Compile Include="MineralTile.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -65,15 +54,6 @@
     </Compile>
     <Compile Include="PhoenixParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Instructions.resx">
-      <DependentUpon>Instructions.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Minerals.resx">
-      <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Minerals.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="MineralTile.resx">
       <DependentUpon>MineralTile.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -109,28 +89,28 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="icons\Zydrine.png" />
+    <EmbeddedResource Include="icons\Zydrine.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="icons\Isogen.png" />
+    <EmbeddedResource Include="icons\Isogen.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="icons\Megacyte.png" />
+    <EmbeddedResource Include="icons\Megacyte.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="icons\Mexallon.png" />
+    <EmbeddedResource Include="icons\Mexallon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="icons\Morphite.png" />
+    <EmbeddedResource Include="icons\Morphite.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="icons\Nocxium.png" />
+    <EmbeddedResource Include="icons\Nocxium.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="icons\Pyerite.png" />
+    <EmbeddedResource Include="icons\Pyerite.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="icons\Tritanium.png" />
+    <EmbeddedResource Include="icons\Tritanium.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
