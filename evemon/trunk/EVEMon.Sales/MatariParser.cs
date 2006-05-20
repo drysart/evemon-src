@@ -59,7 +59,8 @@ namespace EVEMon.Sales
                 
                 try
                 {
-                    price = Decimal.Parse(mineral.Groups["price"].Value);
+                    //price = Decimal.Parse(mineral.Groups["price"].Value);
+                    price = Decimal.Parse(mineral.Groups["price"].Value, System.Globalization.NumberStyles.Currency);
                 }
                 catch (FormatException fe)
                 {
