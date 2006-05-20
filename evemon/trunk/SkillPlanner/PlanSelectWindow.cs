@@ -70,11 +70,28 @@ namespace EVEMon.SkillPlanner
 
         private void lbPlanList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lbPlanList.SelectionMode == SelectionMode.MultiExtended)
+            {
+                if (lbPlanList.SelectedIndices.Contains(0))
+                {
+                    lbPlanList.SelectionMode = SelectionMode.One;
+                    lbPlanList.SelectedIndex = 0;
+                }
+            }
+            else
+            {
+                if (lbPlanList.SelectedIndex != 0)
+                {
+                    lbPlanList.SelectionMode = SelectionMode.MultiExtended;
+                }
+            }
+
             btnOpen.Enabled = (lbPlanList.SelectedItem != null);
             tsbRenamePlan.Enabled = (lbPlanList.SelectedItem != null && lbPlanList.SelectedIndex > 0);
             tsbDeletePlan.Enabled = (lbPlanList.SelectedItem != null && lbPlanList.SelectedIndex > 0);
+            btnOpen.Text = (lbPlanList.SelectedItems.Count > 1 ? "Merge" : "Open");
 
-            if (lbPlanList.SelectedItem == null)
+            if (lbPlanList.SelectedItem == null || lbPlanList.SelectedItems.Count > 1)
             {
                 tsbMoveUp.Enabled = false;
                 tsbMoveDown.Enabled = false;
@@ -96,8 +113,27 @@ namespace EVEMon.SkillPlanner
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            if (lbPlanList.SelectedIndex == 0)
+            if (lbPlanList.SelectedItems.Count > 1)
+            {
+                m_result = new Plan();
+
+                foreach (object plan in lbPlanList.SelectedItems)
+                {
+                    string s = (string)plan;
+                    Plan p = m_settings.GetPlanByName(m_charKey, s);
+                    foreach (PlanEntry entry in p.Entries)
+                    {
+                        if (m_result.GetEntry(entry.SkillName, entry.Level) == null)
+                        {
+                            m_result.Entries.Add(entry);
+                        }
+                    }
+                }
+            }
+            else if (lbPlanList.SelectedIndex == 0)
+            {
                 m_result = null;
+            }
             else
             {
                 string s = (string)lbPlanList.SelectedItem;
@@ -254,6 +290,11 @@ namespace EVEMon.SkillPlanner
 
             m_settings.RemovePlanFor(m_charKey, planName);
             PopulatePlanList();
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

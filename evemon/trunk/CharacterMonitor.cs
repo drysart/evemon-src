@@ -1148,35 +1148,38 @@ namespace EVEMon
                     return;
                 p = psw.ResultPlan;
             }
-            if (p == null)
+            if (p == null || p.Name == null)
             {
-            AGAIN:
                 bool doAgain = true;
-                using (NewPlanWindow npw = new NewPlanWindow())
+                while (doAgain)
                 {
-                    DialogResult dr = npw.ShowDialog();
-                    if (dr == DialogResult.Cancel)
-                        return;
-                    string planName = npw.Result;
-
-                    p = new Plan();
-                    try
+                    using (NewPlanWindow npw = new NewPlanWindow())
                     {
-                        if (m_cfi == null)
-                            m_settings.AddPlanFor(m_grandCharacterInfo.Name, p, planName);
-                        else
-                            m_settings.AddPlanFor(m_cfi.Filename, p, planName);
-                        doAgain = false;
-                    }
-                    catch (ApplicationException err)
-                    {
-                        DialogResult xdr = MessageBox.Show(err.Message, "Failed to Add Plan", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
-                        if (xdr == DialogResult.Cancel)
+                        DialogResult dr = npw.ShowDialog();
+                        if (dr == DialogResult.Cancel)
                             return;
+                        string planName = npw.Result;
+
+                        if (p == null)
+                        {
+                            p = new Plan();
+                        }
+                        try
+                        {
+                            if (m_cfi == null)
+                                m_settings.AddPlanFor(m_grandCharacterInfo.Name, p, planName);
+                            else
+                                m_settings.AddPlanFor(m_cfi.Filename, p, planName);
+                            doAgain = false;
+                        }
+                        catch (ApplicationException err)
+                        {
+                            DialogResult xdr = MessageBox.Show(err.Message, "Failed to Add Plan", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                            if (xdr == DialogResult.Cancel)
+                                return;
+                        }
                     }
                 }
-                if (doAgain)
-                    goto AGAIN;
             }
 
             p.ShowEditor(m_settings, m_grandCharacterInfo);
