@@ -63,7 +63,7 @@ namespace EVEMon.Sales
             foreach (Match mineral in mc)
             {
                 string name = mineral.Groups["name"].Value;
-                price = Decimal.Parse(mineral.Groups["price"].Value, System.Globalization.NumberStyles.Currency);
+                Decimal price = Decimal.Parse(mineral.Groups["price"].Value, System.Globalization.NumberStyles.Currency);
                 yield return new Pair<string, Decimal>(name, price);
             }
         }
