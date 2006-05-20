@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Net;
 using System.IO;
+using System.Windows.Forms;
 
 using EVEMon.Common;
 
@@ -24,26 +25,28 @@ namespace EVEMon.Sales
 
         public IEnumerable<Pair<string, decimal>> GetPrices()
         {
-            WebRequest request = WebRequest.Create("http://www.evegeek.com/mineralindex.php");
-            WebResponse response = request.GetResponse();
-            using (Stream s = response.GetResponseStream())
-            using (StreamReader pageStream = new StreamReader(s))
+            string phoenixContent = null;
+            try
             {
-                String phoenixContent = pageStream.ReadToEnd();
+                phoenixContent = EVEMonWebRequest.GetUrlString("http://www.evegeek.com/mineralindex.php");
+            }
+            catch (EVEMonNetworkException ne)
+            {
+                throw new MineralParserException(ne.Message);
+            }
 
-                //scan for prices
-                Match m = mineralLineScan.Match(phoenixContent);
+            //scan for prices
+            Match m = mineralLineScan.Match(phoenixContent);
 
-                string mLine = m.Captures[0].Value;
+            string mLine = m.Captures[0].Value;
 
-                MatchCollection mc = mineralTokenizer.Matches(mLine);
+            MatchCollection mc = mineralTokenizer.Matches(mLine);
 
-                foreach (Match mineral in mc)
-                {
-                    string name = mineral.Groups["name"].Value;
-                    Decimal price = Decimal.Parse(mineral.Groups["price"].Value);
-                    yield return new Pair<string, Decimal>(name, price);
-                }
+            foreach (Match mineral in mc)
+            {
+                string name = mineral.Groups["name"].Value;
+                Decimal price = Decimal.Parse(mineral.Groups["price"].Value);
+                yield return new Pair<string, Decimal>(name, price);
             }
         }
 

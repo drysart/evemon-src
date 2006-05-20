@@ -81,9 +81,18 @@ namespace EVEMon.Sales
             string s = (string)mi.Tag;
 
             Dictionary<string, Decimal> prices = new Dictionary<string, decimal>();
-            foreach (Pair<string, Decimal> p in MineralDataRequest.GetPrices(s))
+            try
             {
-                prices[p.A] = p.B;
+                foreach (Pair<string, Decimal> p in MineralDataRequest.GetPrices(s))
+                {
+                    prices[p.A] = p.B;
+                }
+            }
+            catch (MineralParserException mpe)
+            {
+                MessageBox.Show("Failed to retrieve mineral pricing data:\n" + mpe.Message,
+                    "Failed to Retrieve Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             foreach (MineralTile mt in Tiles)

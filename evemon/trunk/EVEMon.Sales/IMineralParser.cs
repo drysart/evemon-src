@@ -73,4 +73,12 @@ namespace EVEMon.Sales
         string Title { get; }
         IEnumerable<Pair<string, Decimal>> GetPrices();
     }
+
+    public class MineralParserException : ApplicationException
+    {
+        public MineralParserException(string msg)
+            : base(msg)
+        {
+        }
+    }
 }

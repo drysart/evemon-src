@@ -23,36 +23,38 @@ namespace EVEMon.Sales
 
         public IEnumerable<Pair<string, decimal>> GetPrices()
         {
-            WebRequest request = WebRequest.Create("http://www.phoenix-industries.org/");
-            WebResponse response = request.GetResponse();
-            using (Stream s = response.GetResponseStream())
-            using (StreamReader sr = new StreamReader(s))
+            string data = null;
+            try
             {
-                string data = sr.ReadToEnd();
+                data = EVEMonWebRequest.GetUrlString("http://www.phoenix-industries.org/");
+            }
+            catch (EVEMonNetworkException ne)
+            {
+                throw new MineralParserException(ne.Message);
+            }
 
-                //scan for prices
-                Match m = mineralLineScan.Match(data);
+            //scan for prices
+            Match m = mineralLineScan.Match(data);
 
-                string mLine = m.Captures[0].Value;
-                //replacements
-                //Trit:1.75 Pye:4.19 Mex:8.84 Iso:130.00 Nocx:333.46 Zyd:4151.80 Meg:4451.80 Morp:13082.00 Ice:1.00
-                mLine = mLine.Replace("Trit", "Tritanium");
-                mLine = mLine.Replace("Pye", "Pyerite");
-                mLine = mLine.Replace("Mex", "Mexallon");
-                mLine = mLine.Replace("Iso", "Isogen");
-                mLine = mLine.Replace("Nocx", "Nocxium");
-                mLine = mLine.Replace("Zyd", "Zydrine");
-                mLine = mLine.Replace("Meg", "Megacyte");
-                mLine = mLine.Replace("Morp", "Morphite");
+            string mLine = m.Captures[0].Value;
+            //replacements
+            //Trit:1.75 Pye:4.19 Mex:8.84 Iso:130.00 Nocx:333.46 Zyd:4151.80 Meg:4451.80 Morp:13082.00 Ice:1.00
+            mLine = mLine.Replace("Trit", "Tritanium");
+            mLine = mLine.Replace("Pye", "Pyerite");
+            mLine = mLine.Replace("Mex", "Mexallon");
+            mLine = mLine.Replace("Iso", "Isogen");
+            mLine = mLine.Replace("Nocx", "Nocxium");
+            mLine = mLine.Replace("Zyd", "Zydrine");
+            mLine = mLine.Replace("Meg", "Megacyte");
+            mLine = mLine.Replace("Morp", "Morphite");
 
-                MatchCollection mc = mineralTokenizer.Matches(mLine);
+            MatchCollection mc = mineralTokenizer.Matches(mLine);
 
-                foreach (Match mineral in mc)
-                {
-                    string name = mineral.Groups["name"].Value;
-                    Decimal price = Decimal.Parse(mineral.Groups["price"].Value);
-                    yield return new Pair<string, Decimal>(name, price);
-                }
+            foreach (Match mineral in mc)
+            {
+                string name = mineral.Groups["name"].Value;
+                Decimal price = Decimal.Parse(mineral.Groups["price"].Value);
+                yield return new Pair<string, Decimal>(name, price);
             }
         }
 
