@@ -59,11 +59,13 @@ namespace EVEMon.Sales
             mLine = mLine.Replace("Morp", "Morphite");
 
             MatchCollection mc = mineralTokenizer.Matches(mLine);
-
+            Decimal price = 0;
             foreach (Match mineral in mc)
             {
                 string name = mineral.Groups["name"].Value;
-                Decimal price = Decimal.Parse(mineral.Groups["price"].Value, System.Globalization.NumberStyles.Currency);
+                System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
+                System.Globalization.NumberFormatInfo numInfo = culture.NumberFormat;
+                price = Decimal.Parse(mineral.Groups["price"].Value, System.Globalization.NumberStyles.Currency, numInfo);
                 yield return new Pair<string, Decimal>(name, price);
             }
         }
