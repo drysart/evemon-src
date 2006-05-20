@@ -70,6 +70,8 @@ namespace EVEMon
             this.ttToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tmrThrobber = new System.Windows.Forms.Timer(this.components);
             this.lbSkills = new EVEMon.NoFlickerListBox();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblSPPerHour = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbCharImage)).BeginInit();
             this.pnlTraining.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -83,6 +85,7 @@ namespace EVEMon
             this.flowLayoutPanel2.SuspendLayout();
             this.cmsMoreOptions.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // pbCharImage
@@ -218,8 +221,8 @@ namespace EVEMon
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel6, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel3, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 3);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
@@ -574,9 +577,36 @@ namespace EVEMon
             this.lbSkills.MouseEnter += new System.EventHandler(this.lbSkills_MouseEnter);
             this.lbSkills.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseClick);
             this.lbSkills.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbSkills_DrawItem);
+            this.lbSkills.SelectedIndexChanged += new System.EventHandler(this.lbSkills_SelectedIndexChanged);
             this.lbSkills.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.lbSkills_MeasureItem);
             this.lbSkills.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseMove);
             this.lbSkills.MouseLeave += new System.EventHandler(this.lbSkills_MouseLeave);
+            // 
+            // flowLayoutPanel6
+            // 
+            this.flowLayoutPanel6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel6.AutoSize = true;
+            this.flowLayoutPanel6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel6.Controls.Add(this.label1);
+            this.flowLayoutPanel6.Controls.Add(this.lblSPPerHour);
+            this.flowLayoutPanel6.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(115, 39);
+            this.flowLayoutPanel6.TabIndex = 15;
+            this.flowLayoutPanel6.WrapContents = false;
+            // 
+            // lblSPPerHour
+            // 
+            this.lblSPPerHour.AutoSize = true;
+            this.lblSPPerHour.Location = new System.Drawing.Point(0, 13);
+            this.lblSPPerHour.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.lblSPPerHour.Name = "lblSPPerHour";
+            this.lblSPPerHour.Size = new System.Drawing.Size(35, 13);
+            this.lblSPPerHour.TabIndex = 1;
+            this.lblSPPerHour.Text = "label2";
             // 
             // CharacterMonitor
             // 
@@ -612,6 +642,8 @@ namespace EVEMon
             this.cmsMoreOptions.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            this.flowLayoutPanel6.ResumeLayout(false);
+            this.flowLayoutPanel6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -660,5 +692,7 @@ namespace EVEMon
         private System.Windows.Forms.ToolStripMenuItem miChangeInfo;
         private System.Windows.Forms.ContextMenuStrip cmsMoreOptions;
         private System.Windows.Forms.ToolStripMenuItem miManualImplants;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
+        private System.Windows.Forms.Label lblSPPerHour;
     }
 }

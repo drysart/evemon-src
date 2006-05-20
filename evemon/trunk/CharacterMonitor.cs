@@ -324,6 +324,9 @@ namespace EVEMon
                     {
                         m_skillTrainingName = gs.Name + " " + GrandSkill.GetRomanSkillNumber(gs.TrainingToLevel);
                         lblTrainingSkill.Text = m_skillTrainingName;
+                        double spPerHour = 60 * (m_grandCharacterInfo.GetEffectiveAttribute(gs.PrimaryAttribute) +
+                            (m_grandCharacterInfo.GetEffectiveAttribute(gs.SecondaryAttribute) / 2));
+                        lblSPPerHour.Text = Convert.ToInt32(Math.Round(spPerHour)).ToString() + " SP/Hour";
                         m_estimatedCompletion = gs.EstimatedCompletion;
                         CalcSkillRemainText();
                         pnlTraining.Visible = true;
@@ -1612,6 +1615,11 @@ namespace EVEMon
                     }
                 }
             }
+        }
+
+        private void lbSkills_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }     
     }
 
