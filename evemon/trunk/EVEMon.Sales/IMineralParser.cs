@@ -66,11 +66,33 @@ namespace EVEMon.Sales
             IMineralParser p = sm_parsers[source];
             return p.GetPrices();
         }
+
+        public static string GetCourtesyText(string source)
+        {
+            if (!sm_parsers.ContainsKey(source))
+                throw new ArgumentException("that is not a registered mineraldatasource", "source");
+
+            IMineralParser p = sm_parsers[source];
+            return p.CourtesyText;
+        }
+
+        public static string GetCourtesyUrl(string source)
+        {
+            if (!sm_parsers.ContainsKey(source))
+                throw new ArgumentException("that is not a registered mineraldatasource", "source");
+
+            IMineralParser p = sm_parsers[source];
+            return p.CourtesyUrl;
+        }
     }
 
     public interface IMineralParser
     {
         string Title { get; }
+
+        string CourtesyUrl { get; }
+        string CourtesyText { get; }
+
         IEnumerable<Pair<string, Decimal>> GetPrices();
     }
 

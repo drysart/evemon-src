@@ -75,6 +75,8 @@ namespace EVEMon.Sales
             }
         }
 
+        private string m_courtesyUrl = String.Empty;
+
         private void mi_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem mi = (ToolStripMenuItem)sender;
@@ -100,6 +102,10 @@ namespace EVEMon.Sales
                 if (prices.ContainsKey(mt.MineralName))
                     mt.PricePerUnit = prices[mt.MineralName];
             }
+
+            tslCourtesy.Text = "Mineral Prices Courtesy of " + MineralDataRequest.GetCourtesyText(s);
+            m_courtesyUrl = MineralDataRequest.GetCourtesyUrl(s);
+            tslCourtesy.Visible = true;
         }
 
         private bool m_pricesLocked = false;
@@ -147,6 +153,23 @@ namespace EVEMon.Sales
         private void mt_mexallon_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void tslCourtesy_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process p = System.Diagnostics.Process.Start(m_courtesyUrl);
+                p.Dispose();
+            }
+            catch
+            {
+            }
+        }
+
+        private void mt_MineralPriceChanged(object sender, EventArgs e)
+        {
+            tslCourtesy.Visible = false;
         }
     }
 }

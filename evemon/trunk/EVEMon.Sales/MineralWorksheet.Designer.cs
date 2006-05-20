@@ -45,6 +45,7 @@ namespace EVEMon.Sales
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tslTotal = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tslCourtesy = new System.Windows.Forms.ToolStripStatusLabel();
             this.mineralTile1 = new EVEMon.Sales.MineralTile();
             this.mineralTile2 = new EVEMon.Sales.MineralTile();
             this.mineralTile3 = new EVEMon.Sales.MineralTile();
@@ -130,6 +131,7 @@ namespace EVEMon.Sales
             this.mt_tritanium.Quantity = 0;
             this.mt_tritanium.Size = new System.Drawing.Size(261, 109);
             this.mt_tritanium.TabIndex = 1;
+            this.mt_tritanium.MineralPriceChanged += new System.EventHandler<System.EventArgs>(this.mt_MineralPriceChanged);
             // 
             // mt_nocxium
             // 
@@ -148,6 +150,7 @@ namespace EVEMon.Sales
             this.mt_nocxium.Quantity = 0;
             this.mt_nocxium.Size = new System.Drawing.Size(261, 109);
             this.mt_nocxium.TabIndex = 5;
+            this.mt_nocxium.MineralPriceChanged += new System.EventHandler<System.EventArgs>(this.mt_MineralPriceChanged);
             // 
             // mt_morphite
             // 
@@ -166,6 +169,7 @@ namespace EVEMon.Sales
             this.mt_morphite.Quantity = 0;
             this.mt_morphite.Size = new System.Drawing.Size(261, 109);
             this.mt_morphite.TabIndex = 8;
+            this.mt_morphite.MineralPriceChanged += new System.EventHandler<System.EventArgs>(this.mt_MineralPriceChanged);
             // 
             // mt_zydrine
             // 
@@ -184,6 +188,7 @@ namespace EVEMon.Sales
             this.mt_zydrine.Quantity = 0;
             this.mt_zydrine.Size = new System.Drawing.Size(261, 109);
             this.mt_zydrine.TabIndex = 6;
+            this.mt_zydrine.MineralPriceChanged += new System.EventHandler<System.EventArgs>(this.mt_MineralPriceChanged);
             // 
             // mt_isogen
             // 
@@ -202,6 +207,7 @@ namespace EVEMon.Sales
             this.mt_isogen.Quantity = 0;
             this.mt_isogen.Size = new System.Drawing.Size(261, 109);
             this.mt_isogen.TabIndex = 4;
+            this.mt_isogen.MineralPriceChanged += new System.EventHandler<System.EventArgs>(this.mt_MineralPriceChanged);
             // 
             // mt_megacyte
             // 
@@ -220,6 +226,7 @@ namespace EVEMon.Sales
             this.mt_megacyte.Quantity = 0;
             this.mt_megacyte.Size = new System.Drawing.Size(261, 109);
             this.mt_megacyte.TabIndex = 7;
+            this.mt_megacyte.MineralPriceChanged += new System.EventHandler<System.EventArgs>(this.mt_MineralPriceChanged);
             // 
             // mt_pyerite
             // 
@@ -238,7 +245,7 @@ namespace EVEMon.Sales
             this.mt_pyerite.Quantity = 0;
             this.mt_pyerite.Size = new System.Drawing.Size(261, 109);
             this.mt_pyerite.TabIndex = 2;
-            this.mt_pyerite.Load += new System.EventHandler(this.mt_pyerite_Load);
+            this.mt_pyerite.MineralPriceChanged += new System.EventHandler<System.EventArgs>(this.mt_MineralPriceChanged);
             // 
             // mt_mexallon
             // 
@@ -257,13 +264,14 @@ namespace EVEMon.Sales
             this.mt_mexallon.Quantity = 0;
             this.mt_mexallon.Size = new System.Drawing.Size(261, 109);
             this.mt_mexallon.TabIndex = 3;
-            this.mt_mexallon.Load += new System.EventHandler(this.mt_mexallon_Load);
+            this.mt_mexallon.MineralPriceChanged += new System.EventHandler<System.EventArgs>(this.mt_MineralPriceChanged);
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.tslTotal});
+            this.tslTotal,
+            this.tslCourtesy});
             this.statusStrip1.Location = new System.Drawing.Point(0, 660);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(654, 22);
@@ -283,6 +291,17 @@ namespace EVEMon.Sales
             this.tslTotal.Name = "tslTotal";
             this.tslTotal.Size = new System.Drawing.Size(64, 17);
             this.tslTotal.Text = "0.00 ISK";
+            // 
+            // tslCourtesy
+            // 
+            this.tslCourtesy.Image = ((System.Drawing.Image)(resources.GetObject("tslCourtesy.Image")));
+            this.tslCourtesy.IsLink = true;
+            this.tslCourtesy.Margin = new System.Windows.Forms.Padding(15, 3, 0, 2);
+            this.tslCourtesy.Name = "tslCourtesy";
+            this.tslCourtesy.Size = new System.Drawing.Size(163, 17);
+            this.tslCourtesy.Text = "Mineral Prices Courtesy of ---";
+            this.tslCourtesy.Visible = false;
+            this.tslCourtesy.Click += new System.EventHandler(this.tslCourtesy_Click);
             // 
             // mineralTile1
             // 
@@ -391,6 +410,7 @@ namespace EVEMon.Sales
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel tslTotal;
+        private System.Windows.Forms.ToolStripStatusLabel tslCourtesy;
 
     }
 }

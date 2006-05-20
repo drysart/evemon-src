@@ -21,6 +21,16 @@ namespace EVEMon.Sales
             get { return "Phoenix Industries"; }
         }
 
+        public string CourtesyUrl
+        {
+            get { return "http://www.phoenix-industries.org/"; }
+        }
+
+        public string CourtesyText
+        {
+            get { return "Phoenix Industries"; }
+        }
+
         public IEnumerable<Pair<string, decimal>> GetPrices()
         {
             string data = null;

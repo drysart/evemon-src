@@ -14,6 +14,7 @@ namespace EVEMon.Sales
     public partial class MineralTile : UserControl
     {
         public event EventHandler<EventArgs> SubtotalChanged;
+        public event EventHandler<EventArgs> MineralPriceChanged;
 
         public MineralTile()
         {
@@ -121,6 +122,8 @@ namespace EVEMon.Sales
         private void txtLastSell_TextChanged(object sender, EventArgs e)
         {
             UpdateSubtotal();
+            if (MineralPriceChanged != null)
+                MineralPriceChanged(this, new EventArgs());
         }
 
         private void txtStock_TextChanged(object sender, EventArgs e)

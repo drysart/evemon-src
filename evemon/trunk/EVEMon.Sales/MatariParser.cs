@@ -23,6 +23,16 @@ namespace EVEMon.Sales
             get { return "Matari Mineral Index"; }
         }
 
+        public string CourtesyUrl
+        {
+            get { return "http://www.evegeek.com/"; }
+        }
+
+        public string CourtesyText
+        {
+            get { return "EVE[geek]"; }
+        }
+
         public IEnumerable<Pair<string, decimal>> GetPrices()
         {
             string phoenixContent = null;
