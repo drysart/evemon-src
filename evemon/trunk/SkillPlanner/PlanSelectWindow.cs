@@ -87,8 +87,8 @@ namespace EVEMon.SkillPlanner
             }
 
             btnOpen.Enabled = (lbPlanList.SelectedItem != null);
-            tsbRenamePlan.Enabled = (lbPlanList.SelectedItem != null && lbPlanList.SelectedIndex > 0);
-            tsbDeletePlan.Enabled = (lbPlanList.SelectedItem != null && lbPlanList.SelectedIndex > 0);
+            tsbRenamePlan.Enabled = (lbPlanList.SelectedItem != null && lbPlanList.SelectedIndex > 0 && lbPlanList.SelectedItems.Count == 1);
+            tsbDeletePlan.Enabled = (lbPlanList.SelectedItem != null && lbPlanList.SelectedIndex > 0 && lbPlanList.SelectedItems.Count == 1);
             btnOpen.Text = (lbPlanList.SelectedItems.Count > 1 ? "Merge" : "Open");
 
             if (lbPlanList.SelectedItem == null || lbPlanList.SelectedItems.Count > 1)
