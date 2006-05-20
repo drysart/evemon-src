@@ -51,6 +51,7 @@
     <Compile Include="EVEMonForm.designer.cs">
       <DependentUpon>EVEMonForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EVEMonWebRequest.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="PlanTextOptions.cs" />
     <Compile Include="EveSession.cs" />

@@ -246,6 +246,50 @@ namespace EVEMon.Common
 
         private string InternalGetUrl(string url, string refer)
         {
+            WebRequestState wrs = new WebRequestState();
+            wrs.LogDelegate = NetworkLogEvent;
+            if (m_cookies == null)
+                m_cookies = new CookieContainer();
+            wrs.CookieContainer = m_cookies;
+
+        AGAIN:
+            if (!String.IsNullOrEmpty(refer))
+                wrs.Referer = refer;
+
+            wrs.CookieContainer = m_cookies;
+            HttpWebResponse resp;
+            string res = EVEMonWebRequest.GetUrlString(url, wrs, out resp);
+            if (res == null)
+            {
+                return String.Empty;
+            }
+
+            if (res.Contains("document.onload=window.location.href='"))
+            {
+                Match m = Regex.Match(res, @"document\.onload=window\.location\.href='(.*?)';");
+                string newUrl = m.Groups[1].Value;
+
+                if (NetworkLogEvent != null)
+                {
+                    NetworkLogEventArgs args = new NetworkLogEventArgs();
+                    args.NetworkLogEventType = NetworkLogEventType.ParsedRedirect;
+                    args.Url = url;
+                    args.Referer = refer;
+                    args.Cookies = resp.Cookies;
+                    args.RedirectTo = newUrl;
+                    NetworkLogEvent(this, args);
+                }
+
+                refer = url;
+                url = newUrl;
+                goto AGAIN;
+            }
+
+            return res;
+        }
+
+        private string oldInternalGetUrl(string url, string refer)
+        {
             if (String.IsNullOrEmpty(refer))
                 refer = "http://myeve.eve-online.com/news.asp";
 
@@ -397,11 +441,12 @@ namespace EVEMon.Common
 
         private bool WebLogin()
         {
-            GetUrl("https://myeve.eve-online.com/login.asp?username=" +
+            if (GetUrl("https://myeve.eve-online.com/login.asp?username=" +
                 System.Web.HttpUtility.UrlEncode(m_username) +
                 "&password=" +
                 System.Web.HttpUtility.UrlEncode(m_password) +
-                "&login=Login&Check=OK&r=&t=", null);
+                "&login=Login&Check=OK&r=&t=", null) == null)
+                return false;
             string s = GetUrl("http://myeve.eve-online.com/character/skilltree.asp", null);
             Regex re = new Regex(@"<a href=""/character/skilltree.asp\?characterID=(\d+)"".*?<br>([^<>]+?)<\/td>", RegexOptions.IgnoreCase);
             if (re.IsMatch(s))
@@ -480,7 +525,8 @@ namespace EVEMon.Common
                 });
             }
             Pair<HttpWebRequest, GetImageCallback> p = new Pair<HttpWebRequest, GetImageCallback>();
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
+            //HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest wr = EVEMonWebRequest.GetWebRequest(url);
             p.A = wr;
             p.B = callback;
             wr.BeginGetResponse(new AsyncCallback(GotImage), p);

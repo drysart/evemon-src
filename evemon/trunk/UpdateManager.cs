@@ -71,12 +71,12 @@ namespace EVEMon
                         }
                     }
 
-                    XmlDocument xdoc = new XmlDocument();
+                    XmlDocument xdoc;
                     try
                     {
-                        xdoc.Load(UPDATE_URL + "?ver=" + currentVersion.ToString());
+                        xdoc = EVEMonWebRequest.LoadXml(UPDATE_URL + "?ver=" + currentVersion.ToString());
                     }
-                    catch (System.Net.WebException)
+                    catch
                     {
                         return;
                     }
