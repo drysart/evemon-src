@@ -52,10 +52,19 @@ namespace EVEMon.Sales
 
             MatchCollection mc = mineralTokenizer.Matches(mLine);
 
+            Decimal price = 0;
             foreach (Match mineral in mc)
             {
                 string name = mineral.Groups["name"].Value;
-                Decimal price = Decimal.Parse(mineral.Groups["price"].Value);
+                
+                try
+                {
+                    price = Decimal.Parse(mineral.Groups["price"].Value);
+                }
+                catch (FormatException fe)
+                {
+                    throw new MineralParserException(fe.Message + " (value was : " + mineral.Groups["price"].Value + ")");
+                }
                 yield return new Pair<string, Decimal>(name, price);
             }
         }
