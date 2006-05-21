@@ -11,7 +11,7 @@
 Name "EVEMon"
 OutFile "${OUTDIR}\EVEMon-install-${VERSION}.exe"
 InstallDir "$PROGRAMFILES\EVEMon\"
-InstallDirRegKey HKLM "Software\EVEMon" "InstallDir"
+InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\EVEMon" "UninstallString"
 
 VIAddVersionKey "ProductName" "EVEMon Installer"
 VIAddVersionKey "CompanyName" "evercrest.com"
