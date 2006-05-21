@@ -234,8 +234,17 @@ Section "un.Uninstaller Section"
 
   ; Just to be sure it gets cleaned up if it was locked...
   Delete /REBOOTOK "$INSTDIR\EVEMon.WinHook.dll"
+  IfRebootFlag rmDirWithReboot rmDirWithoutReboot
 
+  rmDirWithoutReboot:
+  RMDir $INSTDIR
+  Goto afterRmDir
+
+  rmDirWithReboot:
   RMDir /REBOOTOK $INSTDIR
+  Goto afterRmDir
+
+  afterRmDir:
 
   !insertmacro MUI_STARTMENU_GETFOLDER EVEMon $MUI_TEMP
   Delete "$SMPROGRAMS\$MUI_TEMP\EVEMon.lnk"
