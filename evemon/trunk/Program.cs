@@ -39,6 +39,7 @@ namespace EVEMon
 
             Plan.PlannerWindowFactory = new SkillPlanner.PlannerWindowFactory();
             EveSession.MainThread = System.Threading.Thread.CurrentThread;
+            InstallerDeleter.Schedule();
 
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
