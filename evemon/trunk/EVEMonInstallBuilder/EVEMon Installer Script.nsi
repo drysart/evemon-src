@@ -54,8 +54,8 @@ Var MUI_TEMP
 !include "NETFrameworkCheck.nsh"
 
 Function .onInit
-  StrCmp "$INSTDIR", "$PROGRAMFILES\EVEMon\" checkForExeInDir
-  StrCmp "$INSTDIR", "$PROGRAMFILES\EVEMon" checkForExeInDir
+  StrCmp "$INSTDIR" "$PROGRAMFILES\EVEMon\" checkForExeInDir
+  StrCmp "$INSTDIR" "$PROGRAMFILES\EVEMon" checkForExeInDir
   Goto noCheckForExeInDir
 
   checkForExeInDir:

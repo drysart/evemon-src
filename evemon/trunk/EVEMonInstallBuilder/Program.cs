@@ -40,7 +40,7 @@ namespace EVEMonInstallBuilder
                 string param =
                     "/DVERSION=" + ver + " " +
                     "\"/DOUTDIR=" + desktopDir + "\" " +
-                    //"/PAUSE "+
+                    "/PAUSE "+
                     "\""+projectDir+"\\bin\\Release\\EVEMon Installer Script.nsi\"";
                 //System.Windows.Forms.MessageBox.Show(param);
                 System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo(
