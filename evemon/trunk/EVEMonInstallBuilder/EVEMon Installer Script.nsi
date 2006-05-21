@@ -53,6 +53,18 @@ Var MUI_TEMP
 
 !include "NETFrameworkCheck.nsh"
 
+Function .onInit
+  StrCmp "$INSTDIR", "$PROGRAMFILES\EVEMon\" checkForExeInDir
+  StrCmp "$INSTDIR", "$PROGRAMFILES\EVEMon" checkForExeInDir
+  Goto noCheckForExeInDir
+
+  checkForExeInDir:
+  IfFileExists "$EXEDIR\EVEMon.exe" 0 noCheckForExeInDir
+  StrCpy $INSTDIR "$EXEDIR"
+
+  noCheckForExeInDir:
+FunctionEnd
+
 Function EnsureNotRunning
   IfFileExists "$INSTDIR\EVEMon.exe" 0 lbl_Done
   IntOp $1 0 + 0
