@@ -367,14 +367,7 @@ namespace EVEMon.SkillPlanner
                 return;
             }
 
-            EveAttributeScratchpad scratchpad = new EveAttributeScratchpad();
-            TimeSpan res = TimeSpan.Zero;
-            foreach (PlanEntry pe in m_plan.Entries)
-            {
-                GrandSkill gs = pe.Skill;
-                res += gs.GetTrainingTimeOfLevelOnly(pe.Level, true, scratchpad);
-                scratchpad.ApplyALevelOf(pe.Skill);
-            }
+            TimeSpan res = m_plan.GetTotalTime(null);
             slblStatusText.Text = String.Format("{0} Skill{1} Planned ({2} Unique Skill{3}). Total training time: {4}",
                 m_plan.Entries.Count,
                 m_plan.Entries.Count == 1 ? "" : "s",
