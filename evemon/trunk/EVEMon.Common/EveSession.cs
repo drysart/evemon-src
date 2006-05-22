@@ -442,9 +442,9 @@ namespace EVEMon.Common
         private bool WebLogin()
         {
             if (GetUrl("https://myeve.eve-online.com/login.asp?username=" +
-                System.Web.HttpUtility.UrlEncode(m_username) +
+                System.Web.HttpUtility.UrlEncode(m_username, Encoding.GetEncoding("iso-8859-1")) +
                 "&password=" +
-                System.Web.HttpUtility.UrlEncode(m_password) +
+                System.Web.HttpUtility.UrlEncode(m_password, Encoding.GetEncoding("iso-8859-1")) +
                 "&login=Login&Check=OK&r=&t=", null) == null)
                 return false;
             string s = GetUrl("http://myeve.eve-online.com/character/skilltree.asp", null);
