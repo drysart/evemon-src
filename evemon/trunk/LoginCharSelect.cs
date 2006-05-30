@@ -157,8 +157,10 @@ namespace EVEMon
             if (s == null)
             {
                 SetNoCharacter();
-                MessageBox.Show("Your login information could not be verified. Please " +
-                    "ensure it is entered correctly.\n\nThe error message returned was: "+errm, "Unable to Log In",
+                //MessageBox.Show("Your login information could not be verified. Please " +
+                //    "ensure it is entered correctly.\n\nThe error message returned was: "+errm, "Unable to Log In",
+                //    MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show(errm, "Unable to Log In",
                     MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
