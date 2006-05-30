@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 
 namespace EVEMon.Common
 {
-    public class EveSession
+    public class xEveSession
     {
         private List<Pair<string, int>> m_storedCharacterList = null;
 
@@ -86,7 +86,8 @@ namespace EVEMon.Common
             {
                 if (!WebLogin() || !firstAttempt)
                 {
-                    callback(this, null);
+                    //callback(this, null);
+                    callback(null, null);
                     return;
                 }
                 firstAttempt = false;
@@ -121,7 +122,8 @@ namespace EVEMon.Common
             catch { }
             if (xdoc == null)
             {
-                callback(this, null);
+                //callback(this, null);
+                callback(null, null);
                 return;
             }
 
@@ -133,7 +135,8 @@ namespace EVEMon.Common
             ib.Amount = 3;
             result.AttributeBonuses.Bonuses.Add(ib);
 #endif
-            callback(this, result);
+            //callback(this, result);
+            callback(null, result);
         }
 
         private SerializableCharacterInfo ProcessCharacterXml(XmlDocument xdoc, int characterId)
@@ -184,7 +187,7 @@ namespace EVEMon.Common
         private string m_username;
         private string m_password;
 
-        private EveSession(string username, string password)
+        private xEveSession(string username, string password)
         {
             m_username = username;
             m_password = password;
@@ -582,7 +585,7 @@ namespace EVEMon.Common
                 {
                     try
                     {
-                        EveSession s = new EveSession(username, password);
+                        EveSession s = null; // new EveSession(username, password);
                         m_sessions[hkey] = new WeakReference<EveSession>(s);
                         result = s;
                     }
@@ -711,7 +714,8 @@ namespace EVEMon.Common
             ThreadPool.QueueUserWorkItem(new WaitCallback(delegate
             {
                 int timeLeftInCache = this.UpdateGrandCharacterInfo(grandCharacterInfo, invokeControl);
-                callback(this, timeLeftInCache);
+                //callback(this, timeLeftInCache);
+                callback(null, timeLeftInCache);
             }));
         }
 

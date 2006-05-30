@@ -476,33 +476,39 @@ namespace EVEMon
 
         private void GetCharIdAndUpdate()
         {
-            ThreadPool.QueueUserWorkItem(delegate
+#if DEBUG_SINGLETHREAD
+            GetCharIdAndUpdateInternal(null);
+#else
+            ThreadPool.QueueUserWorkItem(new WaitCallback(GetCharIdAndUpdateInternal));
+#endif
+        }
+
+        private void GetCharIdAndUpdateInternal(object state)
+        {
+            int gotCharId = -1;
+            try
             {
-                int gotCharId = -1;
-                try
+                m_session = EveSession.GetSession(m_cli.Username, m_cli.Password);
+                gotCharId = m_session.GetCharacterId(m_cli.CharacterName);
+            }
+            catch { }
+            if (gotCharId < 0)
+            {
+                this.Invoke(new MethodInvoker(delegate
                 {
-                    m_session = EveSession.GetSession(m_cli.Username, m_cli.Password);
-                    gotCharId = m_session.GetCharacterId(m_cli.CharacterName);
-                }
-                catch { }
-                if (gotCharId < 0)
-                {
-                    this.Invoke(new MethodInvoker(delegate
-                    {
-                        ttToolTip.SetToolTip(pbThrobber, "Could not get character data!\nClick to try again.");
-                        tmrUpdate.Interval = 1000 * 60 * 30;
-                        tmrUpdate.Enabled = true;
-                        SetErrorThrobber();
-                    }));
-                    return;
-                }
+                    ttToolTip.SetToolTip(pbThrobber, "Could not get character data!\nClick to try again.");
+                    tmrUpdate.Interval = 1000 * 60 * 30;
+                    tmrUpdate.Enabled = true;
+                    SetErrorThrobber();
+                }));
+                return;
+            }
 
-                m_charId = gotCharId;
-                m_grandCharacterInfo.CharacterId = gotCharId;
-                GetCharacterImage();
+            m_charId = gotCharId;
+            m_grandCharacterInfo.CharacterId = gotCharId;
+            GetCharacterImage();
 
-                UpdateGrandCharacterInfo();
-            });
+            UpdateGrandCharacterInfo();
         }
 
         private void UpdateGrandCharacterInfo()

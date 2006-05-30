@@ -53,6 +53,7 @@
     </Compile>
     <Compile Include="EVEMonWebRequest.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="NewEveSession.cs" />
     <Compile Include="PlanTextOptions.cs" />
     <Compile Include="EveSession.cs" />
     <Compile Include="GrandCharacterInfo.cs" />

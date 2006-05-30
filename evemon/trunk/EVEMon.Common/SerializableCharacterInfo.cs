@@ -124,6 +124,15 @@ namespace EVEMon.Common
             m_attributes.SetOwner(this);
         }
 
+        private int m_timeLeftInCache = -1;
+
+        [XmlIgnore]
+        public int TimeLeftInCache
+        {
+            get { return m_timeLeftInCache; }
+            set { m_timeLeftInCache = value; }
+        }
+
         private string m_name = String.Empty;
 
         [XmlAttribute("name")]
