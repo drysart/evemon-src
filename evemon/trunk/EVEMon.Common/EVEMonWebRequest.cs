@@ -76,7 +76,7 @@ namespace EVEMon.Common
                 resp = null;
                 return null;
             }
-            if (resp.StatusCode == HttpStatusCode.Redirect)
+            if (resp.StatusCode == HttpStatusCode.Redirect && wrs.AllowRedirects)
             {
                 string loc = resp.GetResponseHeader("Location");
                 Uri x = new Uri(url);
@@ -275,6 +275,14 @@ namespace EVEMon.Common
         {
             get { return m_logDelegate; }
             set { m_logDelegate = value; }
+        }
+
+        private bool m_allowRedirects = true;
+
+        public bool AllowRedirects
+        {
+            get { return m_allowRedirects; }
+            set { m_allowRedirects = value; }
         }
 
         private const int MAX_REDIRECTS = 6;

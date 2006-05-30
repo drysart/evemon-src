@@ -149,15 +149,16 @@ namespace EVEMon
             }
 
             EveSession s = null;
+            string errm;
             using (IDisposable d = BusyDialog.GetScope())
             {
-                s = EveSession.GetSession(tbUsername.Text, tbPassword.Text);
+                s = EveSession.GetSession(tbUsername.Text, tbPassword.Text, out errm);
             }
             if (s == null)
             {
                 SetNoCharacter();
                 MessageBox.Show("Your login information could not be verified. Please " +
-                    "ensure it is entered correctly.", "Unable to Log In",
+                    "ensure it is entered correctly.\n\nThe error message returned was: "+errm, "Unable to Log In",
                     MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }

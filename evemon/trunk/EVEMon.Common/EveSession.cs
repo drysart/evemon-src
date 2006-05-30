@@ -113,22 +113,17 @@ namespace EVEMon.Common
                 sit = null;
             }
 
-            firstAttempt = true;
-            BAGAIN:
-            string data = GetUrl("http://myeve.eve-online.com/character/xml.asp?characterID=" +
-                                    charId.ToString(), null);
-            if (!data.Contains("<charactersheet>"))
+            XmlDocument xdoc = null;
+            try
             {
-                if (!WebLogin() || !firstAttempt)
-                {
-                    callback(this, null);
-                    return;
-                }
-                firstAttempt = false;
-                goto BAGAIN;
+                xdoc = InternalGetCharXml(charId.ToString());
             }
-            XmlDocument xdoc = new XmlDocument();
-            xdoc.LoadXml(data);
+            catch { }
+            if (xdoc == null)
+            {
+                callback(this, null);
+                return;
+            }
 
             SerializableCharacterInfo result = ProcessCharacterXml(xdoc, charId);
             result.SkillInTraining = sit;
@@ -195,7 +190,7 @@ namespace EVEMon.Common
             m_password = password;
 
             if (!WebLogin())
-                throw new ApplicationException("Unable to log in");
+                throw new ApplicationException(m_loginFailMessage);
         }
 
         private static Thread m_mainThread;
@@ -439,7 +434,117 @@ namespace EVEMon.Common
             WebLogin();
         }
 
+        private string m_loginFailMessage = String.Empty;
+
         private bool WebLogin()
+        {
+            try
+            {
+                XmlDocument xdoc = InternalGetCharXml(String.Empty);
+                if (xdoc != null)
+                {
+                    m_storedCharacterList = new List<Pair<string, int>>();
+                    foreach (XmlElement n in xdoc.SelectNodes("/charactersheet/characters/character"))
+                    {
+                        string charId = n.GetAttribute("characterID");
+                        string charName = n.GetAttribute("name");
+                        m_storedCharacterList.Add(new Pair<string, int>(charName, Convert.ToInt32(charId)));
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception x)
+            {
+                m_loginFailMessage = x.Message;
+                return false;
+            }
+        }
+
+        private XmlDocument InternalGetCharXml(string charId)
+        {
+            if (m_cookies != null)
+            {
+                WebRequestState xs = new WebRequestState();
+                xs.LogDelegate = NetworkLogEvent;
+                xs.CookieContainer = m_cookies;
+                xs.AllowRedirects = false;
+                HttpWebResponse xr = null;
+                string curl = "http://myeve.eve-online.com/character/xml.asp";
+                if (!String.IsNullOrEmpty(charId))
+                    curl += "?characterID=" + charId;
+                string ms = EVEMonWebRequest.GetUrlString(curl, xs, out xr);
+                if (xr.StatusCode == HttpStatusCode.OK)
+                {
+                    XmlDocument xdoc = new XmlDocument();
+                    xdoc.LoadXml(ms);
+                    return xdoc;
+                }
+            }
+
+            WebRequestState wrs = new WebRequestState();
+            wrs.LogDelegate = NetworkLogEvent;
+            if (m_cookies == null)
+                m_cookies = new CookieContainer();
+            wrs.CookieContainer = m_cookies;
+            wrs.AllowRedirects = false;
+            HttpWebResponse resp = null;
+            string s = EVEMonWebRequest.GetUrlString(
+                "https://myeve.eve-online.com/login.asp?username=" +
+                System.Web.HttpUtility.UrlEncode(m_username, Encoding.GetEncoding("iso-8859-1")) +
+                "&password=" +
+                System.Web.HttpUtility.UrlEncode(m_password, Encoding.GetEncoding("iso-8859-1")) +
+                "&login=Login&Check=OK&r=&t=", wrs, out resp);
+            string loc = resp.Headers[HttpResponseHeader.Location];
+            Match sidm = null;
+            if (!String.IsNullOrEmpty(loc))
+                sidm = Regex.Match(loc, @"sid=(\d+)");
+            if (sidm!=null && sidm.Success)
+            {
+                string sid = sidm.Groups[1].Value;
+                WebRequestState xwrs = new WebRequestState();
+                xwrs.CookieContainer = m_cookies;
+                xwrs.AllowRedirects = false;
+                resp = null;
+                string curl = "http://myeve.eve-online.com/character/xml.asp?sid=" + sid;
+                if (!String.IsNullOrEmpty(charId))
+                    curl += "&characterID=" + charId;
+                string xs = EVEMonWebRequest.GetUrlString(curl, xwrs, out resp);
+                if (resp.StatusCode == HttpStatusCode.OK)
+                {
+                    XmlDocument xdoc = new XmlDocument();
+                    try
+                    {
+                        xdoc.LoadXml(xs);
+                    }
+                    catch
+                    {
+                        throw new ApplicationException("Got invalid character xml");
+                    }
+                    return xdoc;
+                }
+                else
+                {
+                    throw new ApplicationException("Could not get character xml, HTTP code " + resp.StatusCode.ToString());
+                }
+            }
+            else
+            {
+                if (s.Contains("Login credentials incorrect"))
+                {
+                    throw new ApplicationException("Login Credentials Incorrect (invalid username/password)");
+                }
+                else
+                {
+                    throw new ApplicationException("Did not get sid for login");
+                }
+            }
+        }
+
+        private bool oldWebLogin()
         {
             if (GetUrl("https://myeve.eve-online.com/login.asp?username=" +
                 System.Web.HttpUtility.UrlEncode(m_username, Encoding.GetEncoding("iso-8859-1")) +
@@ -458,6 +563,12 @@ namespace EVEMon.Common
 
         public static EveSession GetSession(string username, string password)
         {
+            string junk;
+            return GetSession(username, password, out junk);
+        }
+
+        public static EveSession GetSession(string username, string password, out string errMessage)
+        {
             lock (m_sessions)
             {
                 string hkey = username + ":" + password;
@@ -466,6 +577,7 @@ namespace EVEMon.Common
                 {
                     result = m_sessions[hkey].Target;
                 }
+                errMessage = String.Empty;
                 if (result == null)
                 {
                     try
@@ -474,7 +586,10 @@ namespace EVEMon.Common
                         m_sessions[hkey] = new WeakReference<EveSession>(s);
                         result = s;
                     }
-                    catch (ApplicationException) { }
+                    catch (ApplicationException ex)
+                    {
+                        errMessage = ex.Message;
+                    }
                 }
                 return result;
             }
