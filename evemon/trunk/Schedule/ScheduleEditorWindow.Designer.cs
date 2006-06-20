@@ -33,30 +33,30 @@ namespace EVEMon.Schedule
             this.tsbAddEntry = new System.Windows.Forms.ToolStripButton();
             this.tsbDeleteEntry = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lblEntryDescription = new System.Windows.Forms.Label();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.lbEntries = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblEntryDescription = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.nudMonth = new System.Windows.Forms.DomainUpDown();
             this.nudDay = new System.Windows.Forms.NumericUpDown();
-            this.cbMonth = new System.Windows.Forms.ComboBox();
             this.nudYear = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.cbViewType = new System.Windows.Forms.ComboBox();
             this.ssStatusBar = new System.Windows.Forms.StatusStrip();
             this.tsslStatusBarText = new System.Windows.Forms.ToolStripStatusLabel();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.calControl = new EVEMon.Schedule.CalendarControl();
             this.toolStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudYear)).BeginInit();
             this.ssStatusBar.SuspendLayout();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -107,14 +107,27 @@ namespace EVEMon.Schedule
             this.splitContainer1.SplitterDistance = 175;
             this.splitContainer1.TabIndex = 2;
             // 
-            // lblEntryDescription
+            // splitContainer2
             // 
-            this.lblEntryDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblEntryDescription.Location = new System.Drawing.Point(0, 0);
-            this.lblEntryDescription.Name = "lblEntryDescription";
-            this.lblEntryDescription.Size = new System.Drawing.Size(171, 136);
-            this.lblEntryDescription.TabIndex = 2;
-            this.lblEntryDescription.Text = "label3";
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer2.Location = new System.Drawing.Point(2, 2);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.lbEntries);
+            this.splitContainer2.Panel1.Controls.Add(this.label1);
+            this.splitContainer2.Panel1MinSize = 200;
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.lblEntryDescription);
+            this.splitContainer2.Panel2MinSize = 100;
+            this.splitContainer2.Size = new System.Drawing.Size(171, 437);
+            this.splitContainer2.SplitterDistance = 297;
+            this.splitContainer2.TabIndex = 3;
             // 
             // lbEntries
             // 
@@ -137,10 +150,19 @@ namespace EVEMon.Schedule
             this.label1.TabIndex = 0;
             this.label1.Text = "Schedule Entries:";
             // 
+            // lblEntryDescription
+            // 
+            this.lblEntryDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblEntryDescription.Location = new System.Drawing.Point(0, 0);
+            this.lblEntryDescription.Name = "lblEntryDescription";
+            this.lblEntryDescription.Size = new System.Drawing.Size(171, 136);
+            this.lblEntryDescription.TabIndex = 2;
+            this.lblEntryDescription.Text = "label3";
+            // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.nudMonth);
             this.panel1.Controls.Add(this.nudDay);
-            this.panel1.Controls.Add(this.cbMonth);
             this.panel1.Controls.Add(this.nudYear);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.cbViewType);
@@ -150,17 +172,22 @@ namespace EVEMon.Schedule
             this.panel1.Size = new System.Drawing.Size(533, 27);
             this.panel1.TabIndex = 1;
             // 
+            // nudMonth
+            // 
+            this.nudMonth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudMonth.Location = new System.Drawing.Point(382, 3);
+            this.nudMonth.Name = "nudMonth";
+            this.nudMonth.Size = new System.Drawing.Size(93, 21);
+            this.nudMonth.TabIndex = 5;
+            this.nudMonth.Wrap = true;
+            this.nudMonth.SelectedItemChanged += new System.EventHandler(this.changedMonth);
+            // 
             // nudDay
             // 
             this.nudDay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nudDay.Location = new System.Drawing.Point(338, 3);
             this.nudDay.Maximum = new decimal(new int[] {
-            31,
-            0,
-            0,
-            0});
-            this.nudDay.Minimum = new decimal(new int[] {
-            1,
+            32,
             0,
             0,
             0});
@@ -172,17 +199,7 @@ namespace EVEMon.Schedule
             0,
             0,
             0});
-            // 
-            // cbMonth
-            // 
-            this.cbMonth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbMonth.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMonth.FormattingEnabled = true;
-            this.cbMonth.Location = new System.Drawing.Point(382, 3);
-            this.cbMonth.MaxDropDownItems = 12;
-            this.cbMonth.Name = "cbMonth";
-            this.cbMonth.Size = new System.Drawing.Size(93, 21);
-            this.cbMonth.TabIndex = 3;
+            this.nudDay.ValueChanged += new System.EventHandler(this.changedDay);
             // 
             // nudYear
             // 
@@ -206,6 +223,7 @@ namespace EVEMon.Schedule
             0,
             0,
             0});
+            this.nudYear.ValueChanged += new System.EventHandler(this.changedYear);
             // 
             // label2
             // 
@@ -245,38 +263,15 @@ namespace EVEMon.Schedule
             this.tsslStatusBarText.Size = new System.Drawing.Size(42, 17);
             this.tsslStatusBarText.Text = "Ready.";
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer2.Location = new System.Drawing.Point(2, 2);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.lbEntries);
-            this.splitContainer2.Panel1.Controls.Add(this.label1);
-            this.splitContainer2.Panel1MinSize = 200;
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.lblEntryDescription);
-            this.splitContainer2.Panel2MinSize = 100;
-            this.splitContainer2.Size = new System.Drawing.Size(171, 437);
-            this.splitContainer2.SplitterDistance = 297;
-            this.splitContainer2.TabIndex = 3;
-            // 
             // calControl
             // 
             this.calControl.CalendarType = EVEMon.Schedule.CalendarType.Month;
+            this.calControl.Date = System.DateTime.Now;
             this.calControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.calControl.Location = new System.Drawing.Point(0, 27);
-            this.calControl.Month = 4;
             this.calControl.Name = "calControl";
             this.calControl.Size = new System.Drawing.Size(533, 414);
             this.calControl.TabIndex = 0;
-            this.calControl.Year = 2006;
             // 
             // ScheduleEditorWindow
             // 
@@ -294,16 +289,16 @@ namespace EVEMon.Schedule
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudYear)).EndInit();
             this.ssStatusBar.ResumeLayout(false);
             this.ssStatusBar.PerformLayout();
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel1.PerformLayout();
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -322,7 +317,7 @@ namespace EVEMon.Schedule
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbViewType;
         private System.Windows.Forms.NumericUpDown nudDay;
-        private System.Windows.Forms.ComboBox cbMonth;
+        private System.Windows.Forms.DomainUpDown nudMonth;
         private System.Windows.Forms.NumericUpDown nudYear;
         private System.Windows.Forms.Label lblEntryDescription;
         private System.Windows.Forms.StatusStrip ssStatusBar;

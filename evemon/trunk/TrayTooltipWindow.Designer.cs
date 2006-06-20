@@ -41,6 +41,7 @@ namespace EVEMon
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "TrayTooltipWindow";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "TrayTooltipWindow";
             this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TrayTooltipWindow_FormClosed);

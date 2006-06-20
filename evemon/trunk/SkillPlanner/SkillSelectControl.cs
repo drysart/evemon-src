@@ -104,14 +104,29 @@ namespace EVEMon.SkillPlanner
             }
 
             tvSkillList.Nodes.Clear();
+            tvSkillList.ImageList = skill_lvl;
             foreach (GrandSkillGroup gsg in m_grandCharacterInfo.SkillGroups.Values)
             {
-                TreeNode gtn = new TreeNode(gsg.Name);
+                TreeNode gtn = new TreeNode(gsg.Name, 6, 6);
                 foreach (GrandSkill gs in gsg)
                 {
                     if (sf(gs) && (gs.Public || cbShowNonPublic.Checked))
                     {
-                        TreeNode stn = new TreeNode(gs.Name);
+                        // The folling is here for when/if skillbooks ever get an 'Owned' flag
+                        // 'Owned' flag - for those pesky skills you can't train yet but
+                        //                have gone and bought the book for already anyway.
+                        TreeNode stn;
+                        //if (gs.Level == 0)
+                        //{
+                        //    if (gs.Owned)
+                        //        stn = new TreeNode(gs.Name + " (" + gs.Rank + ")", 7, 7);
+                        //    else
+                        //        stn = new TreeNode(gs.Name + " (" + gs.Rank + ")", 0, 0);
+                        //}
+                        //else
+                        //{
+                            stn = new TreeNode(gs.Name + " (" + gs.Rank + ")", gs.Level, gs.Level);
+                        //}
                         stn.Tag = gs;
                         gtn.Nodes.Add(stn);
                     }

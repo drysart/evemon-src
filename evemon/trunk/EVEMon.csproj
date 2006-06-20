@@ -474,9 +474,25 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EVEMon.WinHook.dll">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="gpl.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SkillPlanner\icons\book.ico" />
+    <Content Include="SkillPlanner\icons\lvl1.ico" />
+    <Content Include="SkillPlanner\icons\lvl1v2.ico" />
+    <Content Include="SkillPlanner\icons\lvl2.ico" />
+    <Content Include="SkillPlanner\icons\lvl2v2.ico" />
+    <Content Include="SkillPlanner\icons\lvl3.ico" />
+    <Content Include="SkillPlanner\icons\lvl3v2.ico" />
+    <Content Include="SkillPlanner\icons\lvl4.ico" />
+    <Content Include="SkillPlanner\icons\lvl4v2.ico" />
+    <Content Include="SkillPlanner\icons\lvl5.ico" />
+    <Content Include="SkillPlanner\icons\lvl5v2.ico" />
+    <Content Include="SkillPlanner\icons\Not_own.ico" />
+    <Content Include="SkillPlanner\icons\owned.ico" />
     <Content Include="SkillTrained.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

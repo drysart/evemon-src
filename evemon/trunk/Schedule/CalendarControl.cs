@@ -19,8 +19,7 @@ namespace EVEMon.Schedule
             SetStyle(ControlStyles.Opaque, true);
             SetStyle(ControlStyles.ResizeRedraw, true);
 
-            m_month = DateTime.Now.Month;
-            m_year = DateTime.Now.Year;
+            m_date = DateTime.Now;
         }
 
         private DayOfWeek m_firstDayOfWeek;
@@ -39,35 +38,21 @@ namespace EVEMon.Schedule
             }
         }
 
-        private int m_month;
-        private int m_year;
+        private DateTime m_date;
 
-        public int Month
+        public DateTime Date
         {
-            get { return m_month; }
+            get { return m_date; }
             set
             {
-                if (m_month != value)
+                if (m_date != value)
                 {
-                    m_month = value;
+                    m_date = value;
                     this.Invalidate();
                 }
             }
         }
-
-        public int Year
-        {
-            get { return m_year; }
-            set
-            {
-                if (m_year != value)
-                {
-                    m_year = value;
-                    this.Invalidate();
-                }
-            }
-        }
-
+        
         private void CalendarControl_Load(object sender, EventArgs e)
         {
             m_firstDayOfWeek = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
@@ -86,6 +71,8 @@ namespace EVEMon.Schedule
                 default:
                 case CalendarType.Month:
                     PaintMonthCalendar(e);
+                    HighlightDay(e);
+                    HighlightToday(e);
                     break;
             }
         }
@@ -129,7 +116,7 @@ namespace EVEMon.Schedule
 
             CalculateCellMetrics();
 
-            DateTime mdt = new DateTime(m_year, m_month, 1);
+            DateTime mdt = new DateTime(m_date.Year, m_date.Month, 1);
             string ymDesc = mdt.ToString("y");
 
             DayOfWeek firstDayDow = mdt.DayOfWeek;
@@ -193,7 +180,7 @@ namespace EVEMon.Schedule
                             }
                             if (daysRunning)
                             {
-                                if (mdt.Month == m_month)
+                                if (mdt.Month == m_date.Month)
                                 {
                                     isValidDay = true;
                                     dayNum = mdt.Day;
@@ -220,6 +207,40 @@ namespace EVEMon.Schedule
                         }
                     }
                 }
+            }
+        }
+
+        private void HighlightDay(PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+
+            CalculateCellMetrics();
+            DateTime mdt = new DateTime(m_date.Year, m_date.Month, 1);
+
+            int box_number = m_date.Day + (((int)mdt.DayOfWeek + 6) % 7) - 1;
+            int x_co = box_number % 7;
+            int y_co = (int)Math.Floor(box_number / 7.0);
+            Rectangle cellRect = new Rectangle(m_calTopLeft.X + (m_cellSize.Width * x_co),
+                m_calTopLeft.Y + HEADER_HEIGHT + DAY_HEADER_HEIGHT + (m_cellSize.Height * y_co), m_cellSize.Width, m_cellSize.Height);
+            g.DrawRectangle(Pens.DeepSkyBlue, cellRect);
+        }
+
+        private void HighlightToday(PaintEventArgs e)
+        {
+            DateTime today = DateTime.Now;
+            DateTime mdt = new DateTime(m_date.Year, m_date.Month, 1);
+            if (today.Month == mdt.Month && today.Year == mdt.Year)
+            {
+                Graphics g = e.Graphics;
+
+                CalculateCellMetrics();
+
+                int box_number = today.Day + (((int)mdt.DayOfWeek + 6) % 7) - 1;
+                int x_co = box_number % 7;
+                int y_co = (int)Math.Floor(box_number / 7.0);
+                Rectangle cellRect = new Rectangle(m_calTopLeft.X + (m_cellSize.Width * x_co),
+                    m_calTopLeft.Y + HEADER_HEIGHT + DAY_HEADER_HEIGHT + (m_cellSize.Height * y_co), m_cellSize.Width, m_cellSize.Height);
+                g.DrawRectangle(Pens.Violet, cellRect);
             }
         }
     }

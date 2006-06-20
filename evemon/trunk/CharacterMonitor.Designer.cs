@@ -41,11 +41,13 @@ namespace EVEMon
             this.lblIntelligence = new System.Windows.Forms.Label();
             this.pnlTraining = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblSPPerHour = new System.Windows.Forms.Label();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.lblTrainingSkill = new System.Windows.Forms.Label();
             this.lblTrainingRemain = new System.Windows.Forms.Label();
             this.lblTrainingEst = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             this.pnlCharData = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -70,11 +72,10 @@ namespace EVEMon
             this.ttToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tmrThrobber = new System.Windows.Forms.Timer(this.components);
             this.lbSkills = new EVEMon.NoFlickerListBox();
-            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblSPPerHour = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbCharImage)).BeginInit();
             this.pnlTraining.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.pnlCharData.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -85,7 +86,6 @@ namespace EVEMon
             this.flowLayoutPanel2.SuspendLayout();
             this.cmsMoreOptions.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
-            this.flowLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // pbCharImage
@@ -232,6 +232,43 @@ namespace EVEMon
             this.tableLayoutPanel2.Size = new System.Drawing.Size(392, 39);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
+            // flowLayoutPanel6
+            // 
+            this.flowLayoutPanel6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel6.AutoSize = true;
+            this.flowLayoutPanel6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel6.Controls.Add(this.label1);
+            this.flowLayoutPanel6.Controls.Add(this.lblSPPerHour);
+            this.flowLayoutPanel6.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(115, 39);
+            this.flowLayoutPanel6.TabIndex = 15;
+            this.flowLayoutPanel6.WrapContents = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(112, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Currently Training:";
+            // 
+            // lblSPPerHour
+            // 
+            this.lblSPPerHour.AutoSize = true;
+            this.lblSPPerHour.Location = new System.Drawing.Point(0, 13);
+            this.lblSPPerHour.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.lblSPPerHour.Name = "lblSPPerHour";
+            this.lblSPPerHour.Size = new System.Drawing.Size(35, 13);
+            this.lblSPPerHour.TabIndex = 1;
+            this.lblSPPerHour.Text = "label2";
+            // 
             // flowLayoutPanel3
             // 
             this.flowLayoutPanel3.AutoSize = true;
@@ -278,17 +315,6 @@ namespace EVEMon
             this.lblTrainingEst.Size = new System.Drawing.Size(11, 13);
             this.lblTrainingEst.TabIndex = 3;
             this.lblTrainingEst.Text = ".";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Currently Training:";
             // 
             // tmrUpdate
             // 
@@ -367,19 +393,19 @@ namespace EVEMon
             this.miHitEveO,
             this.miChangeInfo});
             this.cmsThrobberMenu.Name = "cmsThrobberMenu";
-            this.cmsThrobberMenu.Size = new System.Drawing.Size(217, 48);
+            this.cmsThrobberMenu.Size = new System.Drawing.Size(206, 48);
             // 
             // miHitEveO
             // 
             this.miHitEveO.Name = "miHitEveO";
-            this.miHitEveO.Size = new System.Drawing.Size(216, 22);
+            this.miHitEveO.Size = new System.Drawing.Size(205, 22);
             this.miHitEveO.Text = "Get data from EVE Online";
             this.miHitEveO.Click += new System.EventHandler(this.miHitEveO_Click);
             // 
             // miChangeInfo
             // 
             this.miChangeInfo.Name = "miChangeInfo";
-            this.miChangeInfo.Size = new System.Drawing.Size(216, 22);
+            this.miChangeInfo.Size = new System.Drawing.Size(205, 22);
             this.miChangeInfo.Text = "Change login information...";
             this.miChangeInfo.Click += new System.EventHandler(this.miChangeInfo_Click);
             // 
@@ -467,12 +493,12 @@ namespace EVEMon
             this.cmsMoreOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miManualImplants});
             this.cmsMoreOptions.Name = "cmsMoreOptions";
-            this.cmsMoreOptions.Size = new System.Drawing.Size(176, 26);
+            this.cmsMoreOptions.Size = new System.Drawing.Size(165, 26);
             // 
             // miManualImplants
             // 
             this.miManualImplants.Name = "miManualImplants";
-            this.miManualImplants.Size = new System.Drawing.Size(175, 22);
+            this.miManualImplants.Size = new System.Drawing.Size(164, 22);
             this.miManualImplants.Text = "Manual Implants...";
             this.miManualImplants.Click += new System.EventHandler(this.miManualImplants_Click);
             // 
@@ -577,36 +603,10 @@ namespace EVEMon
             this.lbSkills.MouseEnter += new System.EventHandler(this.lbSkills_MouseEnter);
             this.lbSkills.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseClick);
             this.lbSkills.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbSkills_DrawItem);
-            this.lbSkills.SelectedIndexChanged += new System.EventHandler(this.lbSkills_SelectedIndexChanged);
             this.lbSkills.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.lbSkills_MeasureItem);
             this.lbSkills.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseMove);
             this.lbSkills.MouseLeave += new System.EventHandler(this.lbSkills_MouseLeave);
-            // 
-            // flowLayoutPanel6
-            // 
-            this.flowLayoutPanel6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanel6.AutoSize = true;
-            this.flowLayoutPanel6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel6.Controls.Add(this.label1);
-            this.flowLayoutPanel6.Controls.Add(this.lblSPPerHour);
-            this.flowLayoutPanel6.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel6.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
-            this.flowLayoutPanel6.Size = new System.Drawing.Size(115, 39);
-            this.flowLayoutPanel6.TabIndex = 15;
-            this.flowLayoutPanel6.WrapContents = false;
-            // 
-            // lblSPPerHour
-            // 
-            this.lblSPPerHour.AutoSize = true;
-            this.lblSPPerHour.Location = new System.Drawing.Point(0, 13);
-            this.lblSPPerHour.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.lblSPPerHour.Name = "lblSPPerHour";
-            this.lblSPPerHour.Size = new System.Drawing.Size(35, 13);
-            this.lblSPPerHour.TabIndex = 1;
-            this.lblSPPerHour.Text = "label2";
+//            this.lbSkills.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseWheel);
             // 
             // CharacterMonitor
             // 
@@ -625,6 +625,8 @@ namespace EVEMon
             this.pnlTraining.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel6.ResumeLayout(false);
+            this.flowLayoutPanel6.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
             this.pnlCharData.ResumeLayout(false);
@@ -642,8 +644,6 @@ namespace EVEMon
             this.cmsMoreOptions.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
-            this.flowLayoutPanel6.ResumeLayout(false);
-            this.flowLayoutPanel6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

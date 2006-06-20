@@ -779,7 +779,7 @@ namespace EVEMon
         private void GetCharacterImage()
         {
             m_tryImageAgainTime = DateTime.MaxValue;
-            EveSession.GetCharaterImageAsync(m_charId, new GetImageCallback(GotCharacterImage));
+            EveSession.GetCharacterImageAsync(m_charId, new GetImageCallback(GotCharacterImage));
         }
 
         private enum SaveFormat
@@ -1196,6 +1196,8 @@ namespace EVEMon
             cmsMoreOptions.Show(btnMoreOptions,
                 btnMoreOptions.PointToClient(Control.MousePosition), ToolStripDropDownDirection.Default);
         }
+
+
 
        private void lbSkills_MouseMove(object sender, MouseEventArgs e)
         {
@@ -1625,11 +1627,6 @@ namespace EVEMon
                 }
             }
         }
-
-        private void lbSkills_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }     
     }
 
     public delegate void SkillTrainingCompletedHandler(object sender, SkillTrainingCompletedEventArgs e);

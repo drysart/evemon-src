@@ -28,6 +28,7 @@ namespace EVEMon.SkillPlanner
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SkillSelectControl));
             this.cbFilter = new System.Windows.Forms.ComboBox();
             this.tbSearch = new System.Windows.Forms.TextBox();
@@ -43,6 +44,7 @@ namespace EVEMon.SkillPlanner
             this.lvSortedSkillList = new System.Windows.Forms.ListView();
             this.chName = new System.Windows.Forms.ColumnHeader();
             this.chSortKey = new System.Windows.Forms.ColumnHeader();
+            this.skill_lvl = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbSearchImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -197,10 +199,14 @@ namespace EVEMon.SkillPlanner
             this.chName,
             this.chSortKey});
             this.lvSortedSkillList.FullRowSelect = true;
+            this.lvSortedSkillList.LargeImageList = this.skill_lvl;
             this.lvSortedSkillList.Location = new System.Drawing.Point(30, 184);
             this.lvSortedSkillList.Name = "lvSortedSkillList";
-            this.lvSortedSkillList.Size = new System.Drawing.Size(100, 89);
+            this.lvSortedSkillList.Size = new System.Drawing.Size(100, 100);
+            this.lvSortedSkillList.SmallImageList = this.skill_lvl;
+            this.lvSortedSkillList.StateImageList = this.skill_lvl;
             this.lvSortedSkillList.TabIndex = 28;
+            this.lvSortedSkillList.TileSize = new System.Drawing.Size(16, 16);
             this.lvSortedSkillList.UseCompatibleStateImageBehavior = false;
             this.lvSortedSkillList.View = System.Windows.Forms.View.Details;
             this.lvSortedSkillList.Visible = false;
@@ -213,6 +219,24 @@ namespace EVEMon.SkillPlanner
             // chSortKey
             // 
             this.chSortKey.Text = "Sort";
+            // 
+            // skill_lvl
+            // 
+            this.skill_lvl.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("skill_lvl.ImageStream")));
+            this.skill_lvl.TransparentColor = System.Drawing.Color.Transparent;
+            this.skill_lvl.Images.SetKeyName(0, "Not_own.ico");
+            this.skill_lvl.Images.SetKeyName(1, "lvl1.ico");
+            this.skill_lvl.Images.SetKeyName(2, "lvl2.ico");
+            this.skill_lvl.Images.SetKeyName(3, "lvl3.ico");
+            this.skill_lvl.Images.SetKeyName(4, "lvl4.ico");
+            this.skill_lvl.Images.SetKeyName(5, "lvl5.ico");
+            this.skill_lvl.Images.SetKeyName(6, "book.ico");
+            this.skill_lvl.Images.SetKeyName(7, "owned.ico");
+            this.skill_lvl.Images.SetKeyName(8, "lvl1v2.ico");
+            this.skill_lvl.Images.SetKeyName(9, "lvl2v2.ico");
+            this.skill_lvl.Images.SetKeyName(10, "lvl3v2.ico");
+            this.skill_lvl.Images.SetKeyName(11, "lvl4v2.ico");
+            this.skill_lvl.Images.SetKeyName(12, "lvl5v2.ico");
             // 
             // SkillSelectControl
             // 
@@ -256,5 +280,6 @@ namespace EVEMon.SkillPlanner
         private System.Windows.Forms.ListView lvSortedSkillList;
         private System.Windows.Forms.ColumnHeader chName;
         private System.Windows.Forms.ColumnHeader chSortKey;
+        private System.Windows.Forms.ImageList skill_lvl;
     }
 }

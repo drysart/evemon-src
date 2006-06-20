@@ -186,7 +186,10 @@ namespace EVEMon.IGBService
                     }
                     else
                     {
-                        p.SaveAsText(sw, new PlanTextOptions(), MarkupType.Html);
+                        PlanTextOptions x = new PlanTextOptions();
+                        x.EntryStartDate = true;
+                        x.EntryFinishDate = true;
+                        p.SaveAsText(sw, x, MarkupType.Html);
                     }
                     //foreach (PlanEntry pe in p.Entries)
                     //{
