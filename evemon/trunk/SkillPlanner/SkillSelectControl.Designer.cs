@@ -225,18 +225,13 @@ namespace EVEMon.SkillPlanner
             this.skill_lvl.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("skill_lvl.ImageStream")));
             this.skill_lvl.TransparentColor = System.Drawing.Color.Transparent;
             this.skill_lvl.Images.SetKeyName(0, "Not_own.ico");
-            this.skill_lvl.Images.SetKeyName(1, "lvl1.ico");
-            this.skill_lvl.Images.SetKeyName(2, "lvl2.ico");
-            this.skill_lvl.Images.SetKeyName(3, "lvl3.ico");
-            this.skill_lvl.Images.SetKeyName(4, "lvl4.ico");
-            this.skill_lvl.Images.SetKeyName(5, "lvl5.ico");
+            this.skill_lvl.Images.SetKeyName(1, "lvl1v3.ico");
+            this.skill_lvl.Images.SetKeyName(2, "lvl2v3.ico");
+            this.skill_lvl.Images.SetKeyName(3, "lvl3v3.ico");
+            this.skill_lvl.Images.SetKeyName(4, "lvl4v3.ico");
+            this.skill_lvl.Images.SetKeyName(5, "lvl5v3.ico");
             this.skill_lvl.Images.SetKeyName(6, "book.ico");
             this.skill_lvl.Images.SetKeyName(7, "owned.ico");
-            this.skill_lvl.Images.SetKeyName(8, "lvl1v2.ico");
-            this.skill_lvl.Images.SetKeyName(9, "lvl2v2.ico");
-            this.skill_lvl.Images.SetKeyName(10, "lvl3v2.ico");
-            this.skill_lvl.Images.SetKeyName(11, "lvl4v2.ico");
-            this.skill_lvl.Images.SetKeyName(12, "lvl5v2.ico");
             // 
             // SkillSelectControl
             // 

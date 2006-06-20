@@ -481,6 +481,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SkillPlanner\icons\book.ico" />
+    <Content Include="SkillPlanner\icons\lvl2v3.ico" />
+    <Content Include="SkillPlanner\icons\lvl3v3.ico" />
+    <Content Include="SkillPlanner\icons\lvl4v3.ico" />
+    <Content Include="SkillPlanner\icons\lvl5v3.ico" />
+    <Content Include="SkillPlanner\icons\lvl1v3.ico" />
     <Content Include="SkillPlanner\icons\lvl1.ico" />
     <Content Include="SkillPlanner\icons\lvl1v2.ico" />
     <Content Include="SkillPlanner\icons\lvl2.ico" />
