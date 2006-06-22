@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -386,11 +386,11 @@ namespace EVEMon.Common
             wrs.AllowRedirects = false;
             HttpWebResponse resp = null;
             string s = EVEMonWebRequest.GetUrlString(
-                "https://myeve.eve-online.com/login.asp?username="+
+                "https://myeve.eve-online.com/login.asp?username=" +
                 System.Web.HttpUtility.UrlEncode(m_username, Encoding.GetEncoding("iso-8859-1")) +
                 "&password=" +
                 System.Web.HttpUtility.UrlEncode(m_password, Encoding.GetEncoding("iso-8859-1")) +
-                "&login=Login&Check=OK&r=&t=", wrs, out resp);
+                "&login=Login&Check=OK&r=&t=/ingameboard.asp&remember=1", wrs, out resp);
             string loc = resp.Headers[HttpResponseHeader.Location];
             Match sidm = null;
             if (!String.IsNullOrEmpty(loc))
@@ -399,6 +399,11 @@ namespace EVEMon.Common
             {
                 string sid = sidm.Groups[1].Value;
                 m_requestSid = sid;
+
+                HttpWebResponse resp1 = null;
+                String fs = EVEMonWebRequest.GetUrlString(
+                "http://myeve.eve-online.com/login.asp", wrs, out resp1); 
+
                 return;
             }
             else if (s.Contains("Login credentials incorrect"))
