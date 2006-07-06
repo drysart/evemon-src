@@ -56,7 +56,8 @@ namespace EVEMon
 
         public static Image[] ThrobberImages
         {
-            get {
+            get
+            {
                 if (m_throbberImages == null)
                     InitializeThrobberImages();
                 return m_throbberImages;
@@ -356,7 +357,10 @@ namespace EVEMon
 
         private void UpdateSkillHeaderStats()
         {
-            lblSkillHeader.Text = String.Format("{0} Known Skills ({1} Total SP):", m_grandCharacterInfo.KnownSkillCount, m_grandCharacterInfo.SkillPointTotal.ToString("#,##0"));
+            if (this.Visible == true)
+            {
+                lblSkillHeader.Text = String.Format("{0} Known Skills ({1} Total SP):", m_grandCharacterInfo.KnownSkillCount, m_grandCharacterInfo.SkillPointTotal.ToString("#,##0"));
+            }
         }
 
         void m_grandCharacterInfo_AttributeChanged(object sender, EventArgs e)
@@ -513,8 +517,8 @@ namespace EVEMon
 
         private void UpdateGrandCharacterInfo()
         {
-            m_session.UpdateGrandCharacterInfoAsync(m_grandCharacterInfo, Program.MainWindow, 
-                new UpdateGrandCharacterInfoCallback(delegate (EveSession s, int timeLeftInCache)
+            m_session.UpdateGrandCharacterInfoAsync(m_grandCharacterInfo, Program.MainWindow,
+                new UpdateGrandCharacterInfoCallback(delegate(EveSession s, int timeLeftInCache)
                 {
                     this.Invoke(new MethodInvoker(delegate
                     {
@@ -556,28 +560,31 @@ namespace EVEMon
 
         private void CalcSkillRemainText()
         {
-            DateTime now = DateTime.Now;
-            if (m_estimatedCompletion != DateTime.MaxValue)
+            if (this.ttToolTip.Active == true)
             {
-                lblTrainingRemain.Text = TimeSpanDescriptive(m_estimatedCompletion);
-                if (m_estimatedCompletion > now)
+                DateTime now = DateTime.Now;
+                if (m_estimatedCompletion != DateTime.MaxValue)
                 {
-                    lblTrainingEst.Text = m_estimatedCompletion.ToString();
-                    SetShortData(m_cli.CharacterName + ": " +
-                        TimeSpanDescriptiveShort(m_estimatedCompletion),
-                        m_estimatedCompletion - now);
+                    lblTrainingRemain.Text = TimeSpanDescriptive(m_estimatedCompletion);
+                    if (m_estimatedCompletion > now)
+                    {
+                        lblTrainingEst.Text = m_estimatedCompletion.ToString();
+                        SetShortData(m_cli.CharacterName + ": " +
+                            TimeSpanDescriptiveShort(m_estimatedCompletion),
+                            m_estimatedCompletion - now);
+                    }
+                    else
+                    {
+                        lblTrainingEst.Text = String.Empty;
+                        SetShortData(m_cli.CharacterName + ": Done", TimeSpan.Zero);
+                    }
                 }
                 else
                 {
+                    lblTrainingRemain.Text = String.Empty;
                     lblTrainingEst.Text = String.Empty;
-                    SetShortData(m_cli.CharacterName + ": Done", TimeSpan.Zero);
+                    SetShortData(String.Empty, TimeSpan.Zero);
                 }
-            }
-            else
-            {
-                lblTrainingRemain.Text = String.Empty;
-                lblTrainingEst.Text = String.Empty;
-                SetShortData(String.Empty, TimeSpan.Zero);
             }
         }
 
@@ -721,22 +728,25 @@ namespace EVEMon
 
         private void UpdateNextUpdateLabel()
         {
-            if (m_throbberRunning)
+            if (this.Visible == true)
             {
-                lblUpdateTimer.Visible = false;
-                return;
-            }
+                if (m_throbberRunning)
+                {
+                    lblUpdateTimer.Visible = false;
+                    return;
+                }
 
-            TimeSpan ts = m_nextScheduledUpdateAt - DateTime.Now;
-            if (ts < TimeSpan.Zero || ts > TimeSpan.FromMinutes(60))
-            {
-                lblUpdateTimer.Visible = false;
-            }
-            else
-            {
-                lblUpdateTimer.Text =
-                    String.Format("{0:d2}:{1:d2}", ts.Minutes, ts.Seconds);
-                lblUpdateTimer.Visible = true;
+                TimeSpan ts = m_nextScheduledUpdateAt - DateTime.Now;
+                if (ts < TimeSpan.Zero || ts > TimeSpan.FromMinutes(60))
+                {
+                    lblUpdateTimer.Visible = false;
+                }
+                else
+                {
+                    lblUpdateTimer.Text =
+                        String.Format("{0:d2}:{1:d2}", ts.Minutes, ts.Seconds);
+                    lblUpdateTimer.Visible = true;
+                }
             }
         }
 
@@ -744,6 +754,7 @@ namespace EVEMon
 
         private void tmrTick_Tick(object sender, EventArgs e)
         {
+
             CalcSkillRemainText();
             UpdateNextUpdateLabel();
 
@@ -764,6 +775,7 @@ namespace EVEMon
                     }
                 }
             }
+
 
             if (m_estimatedCompletion < DateTime.Now && m_skillTrainingName != m_lastCompletedSkill)
             {
@@ -843,7 +855,7 @@ namespace EVEMon
                 foreach (SerializableSkillGroup sg in ci.SkillGroups)
                 {
                     sw.WriteLine("{0}, {1} Skill{2}, {3} Points",
-                        sg.Name, sg.Skills.Count, sg.Skills.Count>1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
+                        sg.Name, sg.Skills.Count, sg.Skills.Count > 1 ? "s" : "", sg.GetTotalPoints().ToString("#,##0"));
                     foreach (SerializableSkill s in sg.Skills)
                     {
                         string skillDesc = s.Name + " " + GrandSkill.GetRomanSkillNumber(s.Level) + " (" + s.Rank.ToString() + ")";
@@ -1015,7 +1027,7 @@ namespace EVEMon
                 }
 
                 Image i;
-                if (m_groupCollapsed.ContainsKey(sg) && m_groupCollapsed[sg]==true)
+                if (m_groupCollapsed.ContainsKey(sg) && m_groupCollapsed[sg] == true)
                     i = CharacterMonitor.ExpandImage;
                 else
                     i = CharacterMonitor.CollapseImage;
@@ -1039,7 +1051,7 @@ namespace EVEMon
                     double percentComplete = 1.0f;
                     if (s.Level == 0)
                     {
-                        int NextLevel = s.Level+1;
+                        int NextLevel = s.Level + 1;
                         percentComplete = Convert.ToDouble(s.CurrentSkillPoints) / Convert.ToDouble(s.GetPointsRequiredForLevel(NextLevel));
                     }
                     else if (s.Level < 5)
@@ -1085,7 +1097,7 @@ namespace EVEMon
                     {
                         //if (bn > s.Level)
                         //    break;
-                        Rectangle brect = new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT + 2 + (bWidth*(bn-1)) + (bn-1),
+                        Rectangle brect = new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT + 2 + (bWidth * (bn - 1)) + (bn - 1),
                             e.Bounds.Top + PAD_TOP + 2, bWidth, BOX_HEIGHT - 3);
                         if (bn <= s.Level)
                             g.FillRectangle(Brushes.Black, brect);
@@ -1199,7 +1211,7 @@ namespace EVEMon
 
 
 
-       private void lbSkills_MouseMove(object sender, MouseEventArgs e)
+        private void lbSkills_MouseMove(object sender, MouseEventArgs e)
         {
             /*int index = lbSkills.IndexFromPoint(e.X, e.Y);
             object item;
@@ -1292,13 +1304,13 @@ namespace EVEMon
 
                     if (sg.GetTotalPoints() < TotalPoints)
                     {
-                        percentDonePoints = (Convert.ToDouble(sg.GetTotalPoints()) / Convert.ToDouble(TotalPoints)*100);
+                        percentDonePoints = (Convert.ToDouble(sg.GetTotalPoints()) / Convert.ToDouble(TotalPoints) * 100);
                         percentDoneSkills = Convert.ToDouble(sg.KnownCount) / Convert.ToDouble(sg.Count);
                         PointsRemaining = TotalPoints - sg.GetTotalPoints();
 
                         string SkillGroupStats = String.Format("Points Completed: {0}/{1} ({2}%)\nSkills Known: {3}/{4} ({5})",
                             sg.GetTotalPoints().ToString("#,##0"), TotalPoints.ToString("#,##0"),
-                            percentDonePoints.ToString("N3"), sg.KnownCount.ToString("#"), 
+                            percentDonePoints.ToString("N3"), sg.KnownCount.ToString("#"),
                             sg.Count.ToString("#"), percentDoneSkills.ToString("P0"));
 
                         ttToolTip.Active = true;
@@ -1307,10 +1319,10 @@ namespace EVEMon
                     else // we must have learned all the skills in this group to level 5
                     {//I wish I could test this :)
                         string Done = String.Format("Skill Group completed: {0}/{1} (100%)\nSkills: {2}/{3} (100%)",
-                        sg.GetTotalPoints().ToString("#,##0"),TotalPoints.ToString("#,##0"),sg.KnownCount.ToString("#"),sg.Count.ToString("#"));
+                        sg.GetTotalPoints().ToString("#,##0"), TotalPoints.ToString("#,##0"), sg.KnownCount.ToString("#"), sg.Count.ToString("#"));
 
                         ttToolTip.Active = true;
-                        ttToolTip.SetToolTip(lbSkills,Done);
+                        ttToolTip.SetToolTip(lbSkills, Done);
                     }
                 }
                 else if (item is GrandSkill)
@@ -1327,7 +1339,7 @@ namespace EVEMon
 
                     if (CurrentSP > s.GetPointsRequiredForLevel(s.Level))
                     { //We must have completed some, but not all, of level II, III or IV
-                        NextLevel = s.Level+1;
+                        NextLevel = s.Level + 1;
 
                         pointsInThisLevel = CurrentSP - reqToThisLevel;
                         reqToNextLevel = s.GetPointsRequiredForLevel(NextLevel);
@@ -1421,7 +1433,7 @@ namespace EVEMon
                 //void m_grandCharacterInfo_SkillChanged(object sender, SkillChangedEventArgs e)
             }
             lbSkills.Invalidate(lbSkills.GetItemRectangle(lbSkills.Items.IndexOf(gsg)));
-        }  
+        }
 
         private bool m_throbberRunning = false;
         private bool m_throbberError = true;
@@ -1631,7 +1643,7 @@ namespace EVEMon
 
     public delegate void SkillTrainingCompletedHandler(object sender, SkillTrainingCompletedEventArgs e);
 
-    public class SkillTrainingCompletedEventArgs: EventArgs
+    public class SkillTrainingCompletedEventArgs : EventArgs
     {
         private string m_skillName;
 
