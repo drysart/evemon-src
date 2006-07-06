@@ -560,8 +560,7 @@ namespace EVEMon
 
         private void CalcSkillRemainText()
         {
-            if (this.ttToolTip.Active == true)
-            {
+            
                 DateTime now = DateTime.Now;
                 if (m_estimatedCompletion != DateTime.MaxValue)
                 {
@@ -585,7 +584,7 @@ namespace EVEMon
                     lblTrainingEst.Text = String.Empty;
                     SetShortData(String.Empty, TimeSpan.Zero);
                 }
-            }
+            
         }
 
         public static string TimeSpanDescriptiveMedium(TimeSpan ts)
@@ -1638,6 +1637,11 @@ namespace EVEMon
                     }
                 }
             }
+        }
+
+        public void ForceUpdate()
+        {
+            CalcSkillRemainText();
         }
     }
 

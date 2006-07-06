@@ -55,40 +55,41 @@ namespace EVEMon.Common
 
         public static Stream GetUrlStream(string url, WebRequestState wrs, out HttpWebResponse resp)
         {
-        AGAIN:
-            if (wrs.RedirectsRemain-- <= 0)
+            while (--wrs.RedirectsRemain > 0)
             {
-                wrs.RedirectsRemain = 0;
-                wrs.RequestError = RequestError.MaxRedirectsExceeded;
-                resp = null;
-                return null;
-            }
+#if DEBUG
+                Console.WriteLine("Debug:  Redirects Remaining: {0}", wrs.RedirectsRemain);
+#endif
+                HttpWebRequest req = GetWebRequest(url, wrs);
+                try
+                {
+                    resp = (HttpWebResponse)req.GetResponse();
+                }
+                catch (WebException ex)
+                {
+                    wrs.RequestError = RequestError.WebException;
+                    wrs.WebException = ex;
+                    resp = null;
+                    return null;
+                }
+                if (resp.StatusCode == HttpStatusCode.Redirect && wrs.AllowRedirects)
+                {
+                    string loc = resp.GetResponseHeader("Location");
+                    Uri x = new Uri(url);
+                    Uri newUri = new Uri(x, loc);
 
-            HttpWebRequest req = GetWebRequest(url, wrs);
-            try
-            {
-                resp = (HttpWebResponse)req.GetResponse();
+                    wrs.Referer = url;
+                    url = newUri.ToString();
+                    resp.Close();
+                }
+                return resp.GetResponseStream();
             }
-            catch (WebException ex)
-            {
-                wrs.RequestError = RequestError.WebException;
-                wrs.WebException = ex;
-                resp = null;
-                return null;
-            }
-            if (resp.StatusCode == HttpStatusCode.Redirect && wrs.AllowRedirects)
-            {
-                string loc = resp.GetResponseHeader("Location");
-                Uri x = new Uri(url);
-                Uri newUri = new Uri(x, loc);
+            //did not get an answer before running out of redirects.
+            wrs.RedirectsRemain = 0;
+            wrs.RequestError = RequestError.MaxRedirectsExceeded;
+            resp = null;
+            return null;
 
-                wrs.Referer = url;
-                url = newUri.ToString();
-                resp.Close();
-                goto AGAIN;
-            }
-
-            return resp.GetResponseStream();
         }
 
         public static Image GetUrlImage(string url)

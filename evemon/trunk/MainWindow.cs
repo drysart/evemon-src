@@ -449,16 +449,15 @@ namespace EVEMon
             {
                 niMinimizeIcon.Visible = false;
 
-                //prevent empty label bug -- uncomment if someone is able to reproduce it.
-                /*TabPage tp = this.tcCharacterTabs.SelectedTab;
+                TabPage tp = this.tcCharacterTabs.SelectedTab;
                 if (tp != null)
                 {
                     CharacterMonitor current = tp.Controls[0] as CharacterMonitor;
                     if (current != null)
                     {
-                        current.CalcSkillRemainText();
+                        current.ForceUpdate();
                     }
-                }*/
+                }
             }
 //            if (this.WindowState == FormWindowState.Normal)
                 //lbSkills.Width = this.ClientSize.Width - (lbSkills.Left * 2);
@@ -667,7 +666,9 @@ namespace EVEMon
                 bool vis = (p == tcCharacterTabs.SelectedTab);
                 CharacterMonitor cm = p.Controls[0] as CharacterMonitor;
                 if (cm != null)
+                {
                     cm.CurrentlyVisible = vis;
+                }
             }
         }
     }
