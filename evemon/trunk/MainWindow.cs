@@ -448,6 +448,17 @@ namespace EVEMon
             else
             {
                 niMinimizeIcon.Visible = false;
+
+                //prevent empty label bug -- uncomment if someone is able to reproduce it.
+                /*TabPage tp = this.tcCharacterTabs.SelectedTab;
+                if (tp != null)
+                {
+                    CharacterMonitor current = tp.Controls[0] as CharacterMonitor;
+                    if (current != null)
+                    {
+                        current.CalcSkillRemainText();
+                    }
+                }*/
             }
 //            if (this.WindowState == FormWindowState.Normal)
                 //lbSkills.Width = this.ClientSize.Width - (lbSkills.Left * 2);
