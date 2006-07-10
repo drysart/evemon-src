@@ -216,16 +216,7 @@ namespace EVEMon.Common
     {
         static WebRequestState()
         {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            Version currentVersion = new Version("0.0.0.0");
-            foreach (Attribute a in Assembly.GetExecutingAssembly().GetCustomAttributes(false))
-            {
-                if (a is AssemblyFileVersionAttribute)
-                {
-                    AssemblyFileVersionAttribute ava = a as AssemblyFileVersionAttribute;
-                    currentVersion = new Version(ava.Version);
-                }
-            }
+            Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
             sm_appVersion = "EVEMon/" + currentVersion.ToString();
             sm_userAgent = USER_AGENT_BASE + " " + sm_appVersion;
         }

@@ -23,17 +23,7 @@ namespace EVEMonInstallBuilder
                 string desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
                 Assembly exeAsm = Assembly.LoadFrom("../../../bin/"+config+"/EVEMon.exe");
-                string ver = String.Empty;
-                foreach (Attribute a in exeAsm.GetCustomAttributes(false))
-                {
-                    if (a is AssemblyFileVersionAttribute)
-                    {
-                        AssemblyFileVersionAttribute ava = a as AssemblyFileVersionAttribute;
-                        ver = ava.Version;
-                    }
-                }
-                if (String.IsNullOrEmpty(ver))
-                    throw new ApplicationException("no version");
+                string ver = exeAsm.GetName().Version.ToString();
 
                 ProcessInstallScripts(projectDir);
 

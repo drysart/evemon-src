@@ -1,8 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Threading;
+using System.Windows.Forms;
+
 using EVEMon.Common;
+using EVEMon.NetworkLogger;
+using EVEMon.SkillPlanner;
+using EVEMon.WindowRelocator;
 
 namespace EVEMon
 {
@@ -24,7 +27,7 @@ namespace EVEMon
 #endif
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             foreach (string targ in Environment.GetCommandLineArgs())
             {
                 if (targ == "-netlog")
@@ -37,11 +40,11 @@ namespace EVEMon
 
             m_settingKey = String.Empty;
 
-            Plan.PlannerWindowFactory = new SkillPlanner.PlannerWindowFactory();
-            EveSession.MainThread = System.Threading.Thread.CurrentThread;
+            Plan.PlannerWindowFactory = new PlannerWindowFactory();
+            EveSession.MainThread = Thread.CurrentThread;
             InstallerDeleter.Schedule();
 
-            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
             //Application.Run(new Form1(ca));
@@ -66,7 +69,7 @@ namespace EVEMon
 
         private static void StartNetlog()
         {
-            m_logger = EVEMon.NetworkLogger.Logger.StartLogging();
+            m_logger = Logger.StartLogging();
         }
 
         private static bool m_relocatorRunning = false;
@@ -83,23 +86,19 @@ namespace EVEMon
             if (state)
             {
                 m_relocatorRunning = true;
-                EVEMon.WindowRelocator.Relocator.Start(Program.Settings.RelocateTargetScreen);
+                Relocator.Start(Settings.RelocateTargetScreen);
             }
             else
             {
                 m_relocatorRunning = false;
-                EVEMon.WindowRelocator.Relocator.Stop();
+                Relocator.Stop();
             }
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            try
-            {
-                ShowError((Exception)e.ExceptionObject);
-                Application.Exit();
-            }
-            catch { }
+            ShowError(e.ExceptionObject as Exception);
+            Environment.Exit(1);
         }
 
         public static string SettingKey
@@ -115,16 +114,6 @@ namespace EVEMon
         private static string m_settingKey;
         private static Settings s_settings;
         private static bool m_showWindowOnError = true;
-
-        private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
-        {
-            ShowError(e.Exception);
-            try
-            {
-                Application.Exit();
-            }
-            catch { }
-        }
 
         private static void ShowError(Exception e)
         {
