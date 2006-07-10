@@ -28,12 +28,12 @@ namespace EVEMon
         /// </summary>
         private void InitializeComponent()
         {
-            this.verticalFlowPanel1 = new EVEMon.Common.VerticalFlowPanel();
+            this.verticalFlowPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.verticalFlowPanel2 = new EVEMon.Common.VerticalFlowPanel();
+            this.verticalFlowPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.tlpSpecifiedAuth = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -53,9 +53,10 @@ namespace EVEMon
             // 
             this.verticalFlowPanel1.AutoSize = true;
             this.verticalFlowPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.verticalFlowPanel1.Controls.Add(this.flowLayoutPanel1);
             this.verticalFlowPanel1.Controls.Add(this.groupBox1);
+            this.verticalFlowPanel1.Controls.Add(this.flowLayoutPanel1);
             this.verticalFlowPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.verticalFlowPanel1.Location = new System.Drawing.Point(0, 0);
             this.verticalFlowPanel1.Name = "verticalFlowPanel1";
             this.verticalFlowPanel1.Padding = new System.Windows.Forms.Padding(12);
@@ -115,11 +116,12 @@ namespace EVEMon
             // 
             this.verticalFlowPanel2.AutoSize = true;
             this.verticalFlowPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.verticalFlowPanel2.Controls.Add(this.tlpSpecifiedAuth);
-            this.verticalFlowPanel2.Controls.Add(this.rbSuppliedAuth);
-            this.verticalFlowPanel2.Controls.Add(this.rbSystemDefault);
             this.verticalFlowPanel2.Controls.Add(this.rbNoAuth);
+            this.verticalFlowPanel2.Controls.Add(this.rbSystemDefault);
+            this.verticalFlowPanel2.Controls.Add(this.rbSuppliedAuth);
+            this.verticalFlowPanel2.Controls.Add(this.tlpSpecifiedAuth);
             this.verticalFlowPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.verticalFlowPanel2.Location = new System.Drawing.Point(3, 17);
             this.verticalFlowPanel2.Name = "verticalFlowPanel2";
             this.verticalFlowPanel2.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
@@ -252,9 +254,9 @@ namespace EVEMon
 
         #endregion
 
-        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel1;
+        private System.Windows.Forms.FlowLayoutPanel verticalFlowPanel1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel2;
+        private System.Windows.Forms.FlowLayoutPanel verticalFlowPanel2;
         private System.Windows.Forms.TableLayoutPanel tlpSpecifiedAuth;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

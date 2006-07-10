@@ -58,7 +58,7 @@ namespace EVEMon
             this.label8 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.verticalFlowPanel1 = new EVEMon.Common.VerticalFlowPanel();
+            this.verticalFlowPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.cbRelocateEveWindow = new System.Windows.Forms.CheckBox();
@@ -72,10 +72,10 @@ namespace EVEMon
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.verticalFlowPanel3 = new EVEMon.Common.VerticalFlowPanel();
+            this.verticalFlowPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.verticalFlowPanel4 = new EVEMon.Common.VerticalFlowPanel();
-            this.vfpCustomProxySettings = new EVEMon.Common.VerticalFlowPanel();
+            this.verticalFlowPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.vfpCustomProxySettings = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label10 = new System.Windows.Forms.Label();
             this.tbProxyHttpHost = new System.Windows.Forms.TextBox();
@@ -87,7 +87,7 @@ namespace EVEMon
             this.rbCustomProxy = new System.Windows.Forms.RadioButton();
             this.rbDefaultProxy = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.verticalFlowPanel2 = new EVEMon.Common.VerticalFlowPanel();
+            this.verticalFlowPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -483,10 +483,11 @@ namespace EVEMon
             // 
             this.verticalFlowPanel1.AutoSize = true;
             this.verticalFlowPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.verticalFlowPanel1.Controls.Add(this.groupBox5);
-            this.verticalFlowPanel1.Controls.Add(this.groupBox2);
             this.verticalFlowPanel1.Controls.Add(this.groupBox1);
+            this.verticalFlowPanel1.Controls.Add(this.groupBox2);
+            this.verticalFlowPanel1.Controls.Add(this.groupBox5);
             this.verticalFlowPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.verticalFlowPanel1.Location = new System.Drawing.Point(3, 3);
             this.verticalFlowPanel1.Name = "verticalFlowPanel1";
             this.verticalFlowPanel1.Size = new System.Drawing.Size(466, 460);
@@ -661,6 +662,7 @@ namespace EVEMon
             // 
             this.verticalFlowPanel3.Controls.Add(this.groupBox6);
             this.verticalFlowPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.verticalFlowPanel3.Location = new System.Drawing.Point(3, 3);
             this.verticalFlowPanel3.Name = "verticalFlowPanel3";
             this.verticalFlowPanel3.Size = new System.Drawing.Size(466, 460);
@@ -682,10 +684,11 @@ namespace EVEMon
             // 
             this.verticalFlowPanel4.AutoSize = true;
             this.verticalFlowPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.verticalFlowPanel4.Controls.Add(this.vfpCustomProxySettings);
-            this.verticalFlowPanel4.Controls.Add(this.rbCustomProxy);
             this.verticalFlowPanel4.Controls.Add(this.rbDefaultProxy);
+            this.verticalFlowPanel4.Controls.Add(this.rbCustomProxy);
+            this.verticalFlowPanel4.Controls.Add(this.vfpCustomProxySettings);
             this.verticalFlowPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.verticalFlowPanel4.Location = new System.Drawing.Point(3, 17);
             this.verticalFlowPanel4.Name = "verticalFlowPanel4";
             this.verticalFlowPanel4.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
@@ -696,9 +699,10 @@ namespace EVEMon
             // 
             this.vfpCustomProxySettings.AutoSize = true;
             this.vfpCustomProxySettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.vfpCustomProxySettings.Controls.Add(this.tableLayoutPanel3);
             this.vfpCustomProxySettings.Controls.Add(this.label13);
+            this.vfpCustomProxySettings.Controls.Add(this.tableLayoutPanel3);
             this.vfpCustomProxySettings.Enabled = false;
+            this.vfpCustomProxySettings.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.vfpCustomProxySettings.Location = new System.Drawing.Point(35, 49);
             this.vfpCustomProxySettings.Margin = new System.Windows.Forms.Padding(25, 3, 3, 3);
             this.vfpCustomProxySettings.Name = "vfpCustomProxySettings";
@@ -848,9 +852,10 @@ namespace EVEMon
             // 
             this.verticalFlowPanel2.AutoSize = true;
             this.verticalFlowPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.verticalFlowPanel2.Controls.Add(this.groupBox3);
             this.verticalFlowPanel2.Controls.Add(this.groupBox4);
+            this.verticalFlowPanel2.Controls.Add(this.groupBox3);
             this.verticalFlowPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.verticalFlowPanel2.Location = new System.Drawing.Point(3, 3);
             this.verticalFlowPanel2.Name = "verticalFlowPanel2";
             this.verticalFlowPanel2.Size = new System.Drawing.Size(466, 460);
@@ -1061,8 +1066,8 @@ namespace EVEMon
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel8;
-        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel1;
-        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel2;
+        private System.Windows.Forms.FlowLayoutPanel verticalFlowPanel1;
+        private System.Windows.Forms.FlowLayoutPanel verticalFlowPanel2;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.CheckBox cbRelocateEveWindow;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
@@ -1072,10 +1077,10 @@ namespace EVEMon
         private System.Windows.Forms.Button btnIdentifyScreens;
         private System.Windows.Forms.FlowLayoutPanel flpScreenSelect;
         private System.Windows.Forms.TabPage tabPage3;
-        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel3;
+        private System.Windows.Forms.FlowLayoutPanel verticalFlowPanel3;
         private System.Windows.Forms.GroupBox groupBox6;
-        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel4;
-        private EVEMon.Common.VerticalFlowPanel vfpCustomProxySettings;
+        private System.Windows.Forms.FlowLayoutPanel verticalFlowPanel4;
+        private System.Windows.Forms.FlowLayoutPanel vfpCustomProxySettings;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox tbProxyHttpPort;

@@ -29,7 +29,7 @@ namespace EVEMon
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.verticalFlowPanel1 = new EVEMon.Common.VerticalFlowPanel();
+            this.verticalFlowPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -56,10 +56,11 @@ namespace EVEMon
             // 
             this.verticalFlowPanel1.AutoSize = true;
             this.verticalFlowPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.verticalFlowPanel1.Controls.Add(this.flowLayoutPanel1);
-            this.verticalFlowPanel1.Controls.Add(this.tableLayoutPanel1);
             this.verticalFlowPanel1.Controls.Add(this.label1);
+            this.verticalFlowPanel1.Controls.Add(this.tableLayoutPanel1);
+            this.verticalFlowPanel1.Controls.Add(this.flowLayoutPanel1);
             this.verticalFlowPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.verticalFlowPanel1.Location = new System.Drawing.Point(0, 0);
             this.verticalFlowPanel1.Name = "verticalFlowPanel1";
             this.verticalFlowPanel1.Padding = new System.Windows.Forms.Padding(12);
@@ -195,7 +196,7 @@ namespace EVEMon
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel1;
+        private System.Windows.Forms.FlowLayoutPanel verticalFlowPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;

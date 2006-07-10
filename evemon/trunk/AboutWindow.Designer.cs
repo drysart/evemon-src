@@ -40,7 +40,7 @@ namespace EVEMon
             this.llHomePage = new System.Windows.Forms.LinkLabel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.verticalFlowPanel1 = new EVEMon.Common.VerticalFlowPanel();
+            this.verticalFlowPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -178,10 +178,11 @@ namespace EVEMon
             // 
             this.verticalFlowPanel1.AutoSize = true;
             this.verticalFlowPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.verticalFlowPanel1.Controls.Add(this.tableLayoutPanel1);
-            this.verticalFlowPanel1.Controls.Add(this.label5);
             this.verticalFlowPanel1.Controls.Add(this.flowLayoutPanel2);
+            this.verticalFlowPanel1.Controls.Add(this.label5);
+            this.verticalFlowPanel1.Controls.Add(this.tableLayoutPanel1);
             this.verticalFlowPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.verticalFlowPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.verticalFlowPanel1.Location = new System.Drawing.Point(9, 9);
             this.verticalFlowPanel1.Name = "verticalFlowPanel1";
             this.verticalFlowPanel1.Size = new System.Drawing.Size(366, 301);
@@ -264,7 +265,7 @@ namespace EVEMon
         private System.Windows.Forms.LinkLabel llHomePage;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
-        private EVEMon.Common.VerticalFlowPanel verticalFlowPanel1;
+        private System.Windows.Forms.FlowLayoutPanel verticalFlowPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
