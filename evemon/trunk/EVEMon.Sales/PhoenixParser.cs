@@ -40,6 +40,7 @@ namespace EVEMon.Sales
             }
             catch (EVEMonNetworkException ne)
             {
+                ExceptionHandler.LogException(ne, true);
                 throw new MineralParserException(ne.Message);
             }
 

@@ -28,11 +28,12 @@ namespace EVEMon.SkillPlanner
             {
                 m_rootCategory = ItemCategory.GetRootCategory();
             }
-            catch (InvalidCastException)
+            catch (InvalidCastException err)
             {
                 // This occurs when we're in the designer. DesignMode doesn't get set
                 // when the control is a subcontrol of a user control, so we should handle
                 // this here :(
+                ExceptionHandler.LogException(err, true);
                 return;
             }
 

@@ -68,8 +68,9 @@ namespace EVEMon
                     {
                         xdoc = EVEMonWebRequest.LoadXml(UPDATE_URL + "?ver=" + currentVersion.ToString());
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        ExceptionHandler.LogException(e, true);
                         return;
                     }
 

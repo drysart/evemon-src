@@ -42,6 +42,7 @@ namespace EVEMon.Sales
             }
             catch (EVEMonNetworkException ne)
             {
+                ExceptionHandler.LogException(ne, true);
                 throw new MineralParserException(ne.Message);
             }
 
@@ -65,6 +66,7 @@ namespace EVEMon.Sales
                 }
                 catch (FormatException fe)
                 {
+                    ExceptionHandler.LogException(fe, true);
                     throw new MineralParserException(fe.Message + " (value was : " + mineral.Groups["price"].Value + ")");
                 }
                 yield return new Pair<string, Decimal>(name, price);

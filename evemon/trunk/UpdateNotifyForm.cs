@@ -74,15 +74,19 @@ namespace EVEMon
             {
                 System.Diagnostics.Process.Start(fn, args);
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogRethrowException(e);
                 if (System.IO.File.Exists(fn))
                 {
                     try
                     {
                         System.IO.File.Delete(fn);
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        ExceptionHandler.LogException(e, false);
+                    }
                 }
                 throw;
             }

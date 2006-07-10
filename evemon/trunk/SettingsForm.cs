@@ -71,8 +71,9 @@ namespace EVEMon
             {
                 httpSetting.Port = Convert.ToInt32(tbProxyHttpPort.Text);
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 httpSetting.Port = 0;
             }
             s.HttpProxy = httpSetting;

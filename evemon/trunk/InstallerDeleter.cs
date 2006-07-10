@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading;
 using System.IO;
 
+using EVEMon.Common;
+
 namespace EVEMon
 {
     public static class InstallerDeleter
@@ -28,7 +30,10 @@ namespace EVEMon
                 {
                     File.Delete(s);
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    ExceptionHandler.LogException(e, false);
+                }
             }
         }
     }

@@ -444,7 +444,10 @@ namespace EVEMon.SkillPlanner
                                 alreadyAdded.Add(ct);
                             }
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            ExceptionHandler.LogException(e, false);
+                        }
                     }
 
                     for (int i = 0; i < ColumnPreference.ColumnCount; i++)

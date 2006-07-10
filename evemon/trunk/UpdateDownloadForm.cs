@@ -8,6 +8,8 @@ using System.Net;
 using System.Text;
 using System.Windows.Forms;
 
+using EVEMon.Common;
+
 namespace EVEMon
 {
     public partial class UpdateDownloadForm : EVEMon.Common.EVEMonForm
@@ -44,8 +46,9 @@ namespace EVEMon
                 m_request = (HttpWebRequest)WebRequest.Create(m_url);
                 m_request.BeginGetResponse(new AsyncCallback(GotResponse), null);
             }
-            catch
+            catch (Exception ex)
             {
+                ExceptionHandler.LogException(ex, true);
                 DialogResult = DialogResult.Cancel;
                 this.Close();
             }
@@ -73,8 +76,9 @@ namespace EVEMon
                 UpdateStatusText();
                 BeginRead();
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 DialogResult = DialogResult.Cancel;
                 this.Close();
             }
@@ -93,8 +97,9 @@ namespace EVEMon
                     ar = m_netStream.BeginRead(m_buffer, 0, m_buffer.Length, new AsyncCallback(EndRead), null);
                 }
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 DialogResult = DialogResult.Cancel;
                 this.Close();
             }
@@ -131,8 +136,9 @@ namespace EVEMon
                         BeginRead();
                 }
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 DialogResult = DialogResult.Cancel;
                 this.Close();
             }
@@ -149,13 +155,13 @@ namespace EVEMon
                 m_response.Close();
                 m_response = null;
                 DialogResult = DialogResult.OK;
-                this.Close();
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 DialogResult = DialogResult.Cancel;
-                this.Close();
             }
+            Close();
         }
 
         private void UpdateStatusText()
@@ -188,7 +194,10 @@ namespace EVEMon
                 {
                     m_targetFile.Close();
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.LogException(ex, false);
+                }
             }
             if (m_netStream != null)
             {
@@ -196,7 +205,10 @@ namespace EVEMon
                 {
                     m_netStream.Close();
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.LogException(ex, false);
+                }
             }
             if (m_response != null)
             {
@@ -204,7 +216,10 @@ namespace EVEMon
                 {
                     m_response.Close();
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.LogException(ex, false);
+                }
             }
             if (DialogResult == DialogResult.Cancel && File.Exists(m_fileName))
             {
@@ -212,7 +227,10 @@ namespace EVEMon
                 {
                     File.Delete(m_fileName);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    ExceptionHandler.LogException(ex, false);
+                }
             }
         }
 

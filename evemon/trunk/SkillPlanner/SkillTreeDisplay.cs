@@ -261,8 +261,9 @@ namespace EVEMon.SkillPlanner
                 }
                 return r;
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogRethrowException(e);
                 r.Dispose();
                 throw;
             }

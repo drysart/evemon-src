@@ -65,8 +65,9 @@ namespace EVEMon
                         isOk = true;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    ExceptionHandler.LogException(ex, true);
                     isLoginOk = false;
                 }   
             }

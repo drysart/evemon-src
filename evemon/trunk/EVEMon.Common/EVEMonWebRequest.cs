@@ -67,6 +67,7 @@ namespace EVEMon.Common
                 }
                 catch (WebException ex)
                 {
+                    ExceptionHandler.LogException(ex, true);
                     wrs.RequestError = RequestError.WebException;
                     wrs.WebException = ex;
                     resp = null;
@@ -113,12 +114,14 @@ namespace EVEMon.Common
             }
             catch (WebException ex)
             {
+                ExceptionHandler.LogException(ex, true);
                 wrs.RequestError = RequestError.WebException;
                 wrs.WebException = ex;
                 return null;
             }
-            catch
+            catch (Exception ex)
             {
+                ExceptionHandler.LogRethrowException(ex);
                 if (s != null)
                     s.Dispose();
                 throw;
@@ -154,6 +157,7 @@ namespace EVEMon.Common
             }
             catch (WebException ex)
             {
+                ExceptionHandler.LogException(ex, true);
                 if (s != null)
                     s.Dispose();
                 wrs.RequestError = RequestError.WebException;
@@ -161,8 +165,9 @@ namespace EVEMon.Common
                 resp = null;
                 return null;
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogRethrowException(e);
                 if (s != null)
                     s.Dispose();
                 throw;

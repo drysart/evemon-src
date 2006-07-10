@@ -207,6 +207,7 @@ namespace EVEMon.SkillPlanner
             }
             catch (Exception ex)
             {
+                ExceptionHandler.LogException(ex, true);
                 m_plan.Entries.Clear();
                 foreach (PlanEntry xpe in m_originalOrder)
                 {

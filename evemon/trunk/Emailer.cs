@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Net;
 using System.Net.Mail;
@@ -71,8 +72,9 @@ namespace EVEMon
                 cli.Send(msg);
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 return false;
             }
         }

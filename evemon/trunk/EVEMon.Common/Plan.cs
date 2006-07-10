@@ -615,8 +615,9 @@ namespace EVEMon.Common
                             return;
                         }
                     }
-                    catch (ObjectDisposedException)
+                    catch (ObjectDisposedException e)
                     {
+                        ExceptionHandler.LogException(e, false);
                     }
                 }
                 m_plannerWindow = null;
@@ -639,8 +640,9 @@ namespace EVEMon.Common
                     {
                         npw.Close();
                     }
-                    catch (ObjectDisposedException)
+                    catch (ObjectDisposedException e)
                     {
+                        ExceptionHandler.LogException(e, false);
                     }
                 }
                 m_plannerWindow = null;

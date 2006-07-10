@@ -251,8 +251,9 @@ namespace EVEMon.IGBService
                         m_listener.Start();
                         BeginAcceptTcpClient(false);
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        ExceptionHandler.LogException(e, true);
                         m_listener = null;
                     }
                 }
@@ -296,7 +297,10 @@ namespace EVEMon.IGBService
                 if (!ar.CompletedSynchronously)
                     BeginAcceptTcpClient(true);
             }
-            catch { }
+            catch (Exception e)
+            {
+                ExceptionHandler.LogException(e, false);
+            }
         }
 
         private void OnClientConnected(TcpClient newClient, bool acquireLock)
@@ -315,7 +319,10 @@ namespace EVEMon.IGBService
                     {
                         newClient.Close();
                     }
-                    catch (SocketException) { }
+                    catch (SocketException e)
+                    {
+                        ExceptionHandler.LogException(e, false);
+                    }
                 }
             }
             finally
@@ -426,8 +433,9 @@ namespace EVEMon.IGBService
                         BeginRead(true);
                 }
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 Close();
             }
         }
@@ -447,7 +455,10 @@ namespace EVEMon.IGBService
                 {
                     m_client.Close();
                 }
-                catch (SocketException) { }
+                catch (SocketException e)
+                {
+                    ExceptionHandler.LogException(e, false);
+                }
                 OnClosed();
             }
         }

@@ -165,8 +165,10 @@ namespace EVEMon.SkillPlanner
                     {
                         loadedPlan = (Plan)xs.Deserialize(s);
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        ExceptionHandler.LogException(ex, true);
+                        
                         s.Seek(0, SeekOrigin.Begin);
                         using (System.IO.Compression.GZipStream gzs = new System.IO.Compression.GZipStream(s, System.IO.Compression.CompressionMode.Decompress))
                         {
@@ -174,8 +176,9 @@ namespace EVEMon.SkillPlanner
                             {
                                 loadedPlan = (Plan)xs.Deserialize(gzs);
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                ExceptionHandler.LogException(e, true);
                                 throw new ApplicationException("Could not determine input file format.");
                             }
                         }
@@ -198,6 +201,7 @@ namespace EVEMon.SkillPlanner
             }
             catch (Exception err)
             {
+                ExceptionHandler.LogException(err, true);
                 MessageBox.Show("There was an error loading the saved plan:\n" + err.Message,
                     "Could Not Load Plan", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;

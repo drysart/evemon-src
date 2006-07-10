@@ -52,12 +52,20 @@ namespace EVEMon
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                ExceptionHandler.LogException(ex, false);
+            }
+            
             try
             {
                 textBox1.Text = m_exception.ToString();
             }
-            catch { textBox1.Text = "Error retrieving error data. Wow, things are *really* screwed up!"; }
+            catch (Exception ex)
+            {
+                ExceptionHandler.LogException(ex, true);
+                textBox1.Text = "Error retrieving error data. Wow, things are *really* screwed up!";
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)

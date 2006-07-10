@@ -495,7 +495,10 @@ namespace EVEMon
                 m_session = EveSession.GetSession(m_cli.Username, m_cli.Password);
                 gotCharId = m_session.GetCharacterId(m_cli.CharacterName);
             }
-            catch { }
+            catch (Exception e)
+            {
+                ExceptionHandler.LogException(e, false);
+            }
             if (gotCharId < 0)
             {
                 this.Invoke(new MethodInvoker(delegate
@@ -937,6 +940,7 @@ namespace EVEMon
             }
             catch (Exception ex)
             {
+                ExceptionHandler.LogException(ex, true);
                 MessageBox.Show(
                     "Failed to save:\n" + ex.Message, "Could not save", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1191,6 +1195,7 @@ namespace EVEMon
                         }
                         catch (ApplicationException err)
                         {
+                            ExceptionHandler.LogException(err, true);
                             DialogResult xdr = MessageBox.Show(err.Message, "Failed to Add Plan", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                             if (xdr == DialogResult.Cancel)
                                 return;

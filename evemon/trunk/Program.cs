@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -117,7 +118,11 @@ namespace EVEMon
 
         private static void ShowError(Exception e)
         {
-            if (m_showWindowOnError)
+            if (Debugger.IsAttached)
+            {
+                Debugger.Break();
+            }
+            else if (m_showWindowOnError)
             {
                 m_showWindowOnError = false;
                 using (UnhandledExceptionWindow f = new UnhandledExceptionWindow(e))

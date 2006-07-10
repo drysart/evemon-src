@@ -92,6 +92,7 @@ namespace EVEMon.Sales
             }
             catch (MineralParserException mpe)
             {
+                ExceptionHandler.LogException(mpe, true);
                 MessageBox.Show("Failed to retrieve mineral pricing data:\n" + mpe.Message,
                     "Failed to Retrieve Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -162,8 +163,9 @@ namespace EVEMon.Sales
                 System.Diagnostics.Process p = System.Diagnostics.Process.Start(m_courtesyUrl);
                 p.Dispose();
             }
-            catch
+            catch (Exception ex)
             {
+                ExceptionHandler.LogException(ex, false);
             }
         }
 

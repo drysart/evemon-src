@@ -634,8 +634,9 @@ namespace EVEMon
                         else
                             sched = null;
                     }
-                    catch (ObjectDisposedException)
+                    catch (ObjectDisposedException ex)
                     {
+                        ExceptionHandler.LogException(ex, true);
                         sched = null;
                         m_scheduler = null;
                     }

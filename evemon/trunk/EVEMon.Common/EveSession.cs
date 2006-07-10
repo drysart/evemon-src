@@ -119,7 +119,11 @@ namespace EVEMon.Common
             {
                 xdoc = InternalGetCharXml(charId.ToString());
             }
-            catch { }
+            catch (Exception e)
+            {
+                ExceptionHandler.LogException(e, false);
+            }
+            
             if (xdoc == null)
             {
                 //callback(this, null);
@@ -401,6 +405,7 @@ namespace EVEMon.Common
             }
             catch (WebException err)
             {
+                ExceptionHandler.LogException(err, true);
                 if (NetworkLogEvent != null)
                 {
                     NetworkLogEventArgs args = new NetworkLogEventArgs();
@@ -417,6 +422,7 @@ namespace EVEMon.Common
             }
             catch (Exception err)
             {
+                ExceptionHandler.LogRethrowException(err);
                 if (NetworkLogEvent != null)
                 {
                     NetworkLogEventArgs args = new NetworkLogEventArgs();
@@ -462,6 +468,7 @@ namespace EVEMon.Common
             }
             catch (Exception x)
             {
+                ExceptionHandler.LogException(x, true);
                 m_loginFailMessage = x.Message;
                 return false;
             }
@@ -523,8 +530,9 @@ namespace EVEMon.Common
                     {
                         xdoc.LoadXml(xs);
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        ExceptionHandler.LogException(e, true);
                         throw new ApplicationException("Got invalid character xml");
                     }
                     return xdoc;
@@ -591,6 +599,7 @@ namespace EVEMon.Common
                     }
                     catch (ApplicationException ex)
                     {
+                        ExceptionHandler.LogException(ex, true);
                         errMessage = ex.Message;
                     }
                 }
@@ -627,7 +636,10 @@ namespace EVEMon.Common
                     {
                         i = Image.FromFile(ImageCacheDirectory + "/" + cacheName, true);
                     }
-                    catch { }
+                    catch (Exception e)
+                    {
+                        ExceptionHandler.LogException(e, false);
+                    }
                     if (i != null)
                     {
                         callback(null, i);
@@ -703,8 +715,9 @@ namespace EVEMon.Common
                 Image i = Image.FromStream(ms, true, true);
                 callback(null, i);
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 callback(null, null);
             }
         }

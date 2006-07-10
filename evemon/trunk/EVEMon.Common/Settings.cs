@@ -140,7 +140,10 @@ namespace EVEMon.Common
                 {
                     v = new Version(value);
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    ExceptionHandler.LogException(e, false);
+                }
                 m_ignoreUpdateVersion = v.ToString();
             }
         }
@@ -531,8 +534,9 @@ namespace EVEMon.Common
                     return r;
                 }
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 Settings rr = LoadFromKeyFromIsoStorage(key);
                 m_instance = rr;
                 return rr;
@@ -581,8 +585,9 @@ namespace EVEMon.Common
                     }
                 }
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException e)
             {
+                ExceptionHandler.LogException(e, true);
                 Settings s = new Settings();
                 s.SetKey(key);
                 return s;

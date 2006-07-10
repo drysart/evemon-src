@@ -864,6 +864,7 @@ namespace EVEMon.SkillPlanner
             }
             catch (IOException err)
             {
+                ExceptionHandler.LogException(err, true);
                 MessageBox.Show("There was an error writing out the file:\n\n" + err.Message,
                     "Save Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

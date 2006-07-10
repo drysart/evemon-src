@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
+using EVEMon.Common;
+
 namespace EVEMon
 {
     public partial class TrayTooltipWindow : Form
@@ -325,7 +327,10 @@ namespace EVEMon
                     }
                 }
             }
-            catch { }
+            catch (Exception e)
+            {
+                ExceptionHandler.LogException(e, false);
+            }
             return CallNextHookEx(IntPtr.Zero, nCode, wParam, lParam);
         }
 

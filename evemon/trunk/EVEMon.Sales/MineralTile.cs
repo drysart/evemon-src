@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
 
+using EVEMon.Common;
+
 namespace EVEMon.Sales
 {
     [Serializable]
@@ -42,8 +44,9 @@ namespace EVEMon.Sales
                     i = Image.FromStream(s, true, true);
                     this.icon.Image = i;
                 }
-                catch
+                catch (Exception e)
                 {
+                    ExceptionHandler.LogException(e, true);
                     if (i != null)
                         i.Dispose();
                     if (s != null)
@@ -109,8 +112,9 @@ namespace EVEMon.Sales
 
                 m_subtotal = pricePerUnit * quantity;
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 m_subtotal = 0;
             }
             tbSubtotal.Text = m_subtotal.ToString("N");

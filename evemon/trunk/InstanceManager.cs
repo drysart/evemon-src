@@ -48,7 +48,10 @@ namespace EVEMon
             {
                 m_semaphore.Release();
             }
-            catch (SemaphoreFullException) { }
+            catch (SemaphoreFullException e)
+            {
+                ExceptionHandler.LogException(e, false);
+            }
         }
     }
 }

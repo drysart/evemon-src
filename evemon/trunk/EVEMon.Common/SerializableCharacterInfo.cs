@@ -333,8 +333,9 @@ namespace EVEMon.Common
                     return (SerializableCharacterInfo)xs.Deserialize(nxr);
                 }
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 return null;
             }
         }

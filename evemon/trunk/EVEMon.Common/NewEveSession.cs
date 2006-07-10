@@ -46,17 +46,12 @@ namespace EVEMon.Common
                     }
                     catch (Exception ex)
                     {
+                        ExceptionHandler.LogException(ex, true);
                         errMessage = ex.Message;
                     }
                 }
                 return result;
             }
-        }
-
-        [Obsolete("spelled wrong")]
-        public static void GetCharaterImageAsync(int charId, GetImageCallback callback)
-        {
-            GetImageAsync("http://img.eve.is/serv.asp?s=512&c=" + charId.ToString(), false, callback);
         }
 
         public static void GetCharacterImageAsync(int charId, GetImageCallback callback)
@@ -89,7 +84,10 @@ namespace EVEMon.Common
                         callback(null, i);
                         return;
                     }
-                    catch { }
+                    catch (Exception e)
+                    {
+                        ExceptionHandler.LogException(e, false);
+                    }
                 }
                 GetImageCallback origCallback = callback;
                 callback = new GetImageCallback(delegate(EveSession s, Image i)
@@ -128,8 +126,9 @@ namespace EVEMon.Common
                 Image i = Image.FromStream(ms, true, true);
                 callback(null, i);
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 callback(null, null);
             }
         }
@@ -236,7 +235,10 @@ namespace EVEMon.Common
                     if (wrs.RequestError == RequestError.None && resp.StatusCode == HttpStatusCode.OK)
                         return txt;
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    ExceptionHandler.LogException(e, false);
+                }
             }
             return String.Empty;
         }
@@ -275,8 +277,9 @@ namespace EVEMon.Common
                 {
                     xdoc.LoadXml(xtxt);
                 }
-                catch
+                catch (Exception e)
                 {
+                    ExceptionHandler.LogException(e, true);
                     return null;
                 }
 
@@ -287,8 +290,9 @@ namespace EVEMon.Common
                 sci.SkillInTraining = sit;
                 return sci;
             }
-            catch
+            catch (Exception e)
             {
+                ExceptionHandler.LogException(e, true);
                 return null;
             }
         }

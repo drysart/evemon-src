@@ -81,7 +81,10 @@ namespace EVEMon.NetworkLogger
             {
                 m_fileStream.Close();
             }
-            catch { }
+            catch (Exception e)
+            {
+                ExceptionHandler.LogException(e, false);
+            }
         }
 
         #endregion
