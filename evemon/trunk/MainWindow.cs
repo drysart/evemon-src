@@ -22,8 +22,6 @@ namespace EVEMon
         public MainWindow()
         {
             InitializeComponent();
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
-            this.MainWindow_Resize(this, null);
         }
 
         private Settings m_settings;
