@@ -340,10 +340,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="bee.jpg" />
-    <EmbeddedResource Include="Collapse_large.png" />
     <Resource Include="eve.exe_I006b_040f.ico" />
     <Resource Include="EVEMon-all.ico" />
-    <EmbeddedResource Include="Expand_large.png" />
     <EmbeddedResource Include="throbber.png" />
   </ItemGroup>
   <ItemGroup>

@@ -22,6 +22,8 @@ namespace EVEMon
 
         #region Component Designer generated code
 
+        private System.Drawing.Drawing2D.GraphicsPath mousePath;
+
         /// <summary> 
         /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
@@ -591,6 +593,8 @@ namespace EVEMon
             // 
             // lbSkills
             // 
+            mousePath = new System.Drawing.Drawing2D.GraphicsPath();
+
             this.lbSkills.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbSkills.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.lbSkills.FormattingEnabled = true;
@@ -600,13 +604,13 @@ namespace EVEMon
             this.lbSkills.Name = "lbSkills";
             this.lbSkills.Size = new System.Drawing.Size(392, 310);
             this.lbSkills.TabIndex = 12;
+            this.lbSkills.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseWheel);
             this.lbSkills.MouseEnter += new System.EventHandler(this.lbSkills_MouseEnter);
             this.lbSkills.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseClick);
             this.lbSkills.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbSkills_DrawItem);
             this.lbSkills.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.lbSkills_MeasureItem);
             this.lbSkills.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseMove);
             this.lbSkills.MouseLeave += new System.EventHandler(this.lbSkills_MouseLeave);
-//            this.lbSkills.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.lbSkills_MouseWheel);
             // 
             // CharacterMonitor
             // 

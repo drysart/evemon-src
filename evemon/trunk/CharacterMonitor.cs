@@ -778,7 +778,6 @@ namespace EVEMon
                 }
             }
 
-
             if (m_estimatedCompletion < DateTime.Now && m_skillTrainingName != m_lastCompletedSkill)
             {
                 m_lastCompletedSkill = m_skillTrainingName;
@@ -946,203 +945,21 @@ namespace EVEMon
             }
         }
 
-        private static Image m_collapseImage = null;
-        private static Image m_expandImage = null;
-
-        public static Image CollapseImage
-        {
-            get
-            {
-                if (m_collapseImage == null)
-                {
-                    // Do not use a "using" block because Image.FromStream requires that
-                    // the stream be left open.
-                    Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                        "EVEMon.Collapse_large.png");
-                    m_collapseImage = Image.FromStream(s, true, true);
-                }
-                return m_collapseImage;
-            }
-        }
-
-        public static Image ExpandImage
-        {
-            get
-            {
-                if (m_expandImage == null)
-                {
-                    // Do not use a "using" block because Image.FromStream requires that
-                    // the stream be left open.
-                    Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                        "EVEMon.Expand_large.png");
-                    m_expandImage = Image.FromStream(s, true, true);
-                }
-                return m_expandImage;
-            }
-        }
-
         private Dictionary<GrandSkillGroup, bool> m_groupCollapsed = new Dictionary<GrandSkillGroup, bool>();
-
-        private const int SKILL_HEADER_HEIGHT = 21;
-        private const int SKILL_DETAIL_HEIGHT = 31;
-
-        private const int SG_COLLAPSER_PAD_RIGHT = 6;
 
         private void lbSkills_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0)
                 return;
             object item = lbSkills.Items[e.Index];
-            Graphics g = e.Graphics;
-
+            
             if (item is GrandSkillGroup)
             {
-                GrandSkillGroup sg = (GrandSkillGroup)item;
-
-                using (Brush b = new SolidBrush(Color.FromArgb(75, 75, 75)))
-                {
-                    g.FillRectangle(b, e.Bounds);
-                }
-                using (Pen p = new Pen(Color.FromArgb(100, 100, 100)))
-                {
-                    g.DrawLine(p, e.Bounds.Left, e.Bounds.Top, e.Bounds.Right + 1, e.Bounds.Top);
-                }
-                using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
-                {
-                    Size titleSizeInt = TextRenderer.MeasureText(g, sg.Name, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
-                    Point titleTopLeftInt = new Point(e.Bounds.Left + 3,
-                        e.Bounds.Top + ((e.Bounds.Height / 2) - (titleSizeInt.Height / 2)));
-                    Point detailTopLeftInt = new Point(titleTopLeftInt.X + titleSizeInt.Width, titleTopLeftInt.Y);
-
-                    string trainingStr = String.Empty;
-                    if (m_grandCharacterInfo.CurrentlyTrainingSkill != null &&
-                        m_grandCharacterInfo.CurrentlyTrainingSkill.SkillGroup == sg)
-                    {
-                        trainingStr = ", 1 training";
-                    }
-                    string detailText = String.Format(", {0} Skill{1}, {2} Points{3}",
-                        sg.KnownCount,
-                        sg.KnownCount > 1 ? "s" : "",
-                        sg.GetTotalPoints().ToString("#,##0"),
-                        trainingStr);
-                    TextRenderer.DrawText(g, sg.Name, boldf, titleTopLeftInt, Color.White);
-                    TextRenderer.DrawText(g, detailText, lbSkills.Font, detailTopLeftInt, Color.White);
-                }
-
-                Image i;
-                if (m_groupCollapsed.ContainsKey(sg) && m_groupCollapsed[sg] == true)
-                    i = CharacterMonitor.ExpandImage;
-                else
-                    i = CharacterMonitor.CollapseImage;
-
-                g.DrawImageUnscaled(i, new Point(e.Bounds.Right - i.Width - SG_COLLAPSER_PAD_RIGHT,
-                    (SKILL_HEADER_HEIGHT / 2) - (i.Height / 2) + e.Bounds.Top));
+                ((GrandSkillGroup)item).Draw(e);
             }
             else if (item is GrandSkill)
             {
-                GrandSkill s = (GrandSkill)item;
-
-                if (m_grandCharacterInfo.CurrentlyTrainingSkill == s)
-                    g.FillRectangle(Brushes.LightSteelBlue, e.Bounds);
-                else if ((e.Index % 2) == 0)
-                    g.FillRectangle(Brushes.White, e.Bounds);
-                else
-                    g.FillRectangle(Brushes.LightGray, e.Bounds);
-
-                using (Font boldf = new Font(lbSkills.Font, FontStyle.Bold))
-                {
-                    double percentComplete = 1.0f;
-                    if (s.Level == 0)
-                    {
-                        int NextLevel = s.Level + 1;
-                        percentComplete = Convert.ToDouble(s.CurrentSkillPoints) / Convert.ToDouble(s.GetPointsRequiredForLevel(NextLevel));
-                    }
-                    else if (s.Level < 5)
-                    {
-                        int pointsToNextLevel = s.GetPointsRequiredForLevel(Math.Min(s.Level + 1, 5));
-                        int pointsToThisLevel = s.GetPointsRequiredForLevel(s.Level);
-                        int pointsDelta = pointsToNextLevel - pointsToThisLevel;
-                        percentComplete = Convert.ToDouble(s.CurrentSkillPoints - pointsToThisLevel) / Convert.ToDouble(pointsDelta);
-                    }
-
-                    string skillName = s.Name + " " + GrandSkill.GetRomanSkillNumber(s.Level);
-                    string rankText = " (Rank " + s.Rank.ToString() + ")";
-                    string spText = "SP: " + s.CurrentSkillPoints.ToString("#,##0") + "/" +
-                        s.GetPointsRequiredForLevel(Math.Min(s.Level + 1, 5)).ToString("#,##0");
-                    string levelText = "Level " + s.Level.ToString();
-                    string pctText = percentComplete.ToString("0%") + " Done";
-
-                    int PAD_TOP = 2;
-                    int PAD_LEFT = 6;
-                    int PAD_RIGHT = 7;
-                    int LINE_VPAD = 0;
-
-                    Size skillNameSize = TextRenderer.MeasureText(g, skillName, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
-                    Size levelTextSize = TextRenderer.MeasureText(g, levelText, lbSkills.Font, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
-                    Size pctTextSize = TextRenderer.MeasureText(g, pctText, lbSkills.Font, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
-
-                    TextRenderer.DrawText(g, skillName, boldf, new Point(e.Bounds.Left + PAD_LEFT, e.Bounds.Top + PAD_TOP), Color.Black);
-                    TextRenderer.DrawText(g, rankText, lbSkills.Font,
-                        new Point(e.Bounds.Left + PAD_LEFT + skillNameSize.Width, e.Bounds.Top + PAD_TOP), Color.Black);
-                    TextRenderer.DrawText(g, spText, lbSkills.Font,
-                        new Point(e.Bounds.Left + PAD_LEFT, e.Bounds.Top + PAD_TOP + skillNameSize.Height + LINE_VPAD), Color.Black);
-
-                    // Boxes
-                    int BOX_WIDTH = 57;
-                    int BOX_HEIGHT = 14;
-                    int SUBBOX_HEIGHT = 8;
-                    int BOX_HPAD = 6;
-                    int BOX_VPAD = 2;
-                    g.DrawRectangle(Pens.Black,
-                        new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT, e.Bounds.Top + PAD_TOP, BOX_WIDTH, BOX_HEIGHT));
-                    int bWidth = (BOX_WIDTH - 4 - 3) / 5;
-                    for (int bn = 1; bn <= 5; bn++)
-                    {
-                        //if (bn > s.Level)
-                        //    break;
-                        Rectangle brect = new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT + 2 + (bWidth * (bn - 1)) + (bn - 1),
-                            e.Bounds.Top + PAD_TOP + 2, bWidth, BOX_HEIGHT - 3);
-                        if (bn <= s.Level)
-                            g.FillRectangle(Brushes.Black, brect);
-                        else
-                            g.FillRectangle(Brushes.DarkGray, brect);
-                    }
-
-                    // Percent Bar
-                    g.DrawRectangle(Pens.Black,
-                        new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT, e.Bounds.Top + PAD_TOP + BOX_HEIGHT + BOX_VPAD, BOX_WIDTH, SUBBOX_HEIGHT));
-                    Rectangle pctBarRect = new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT + 2,
-                        e.Bounds.Top + PAD_TOP + BOX_HEIGHT + BOX_VPAD + 2,
-                        BOX_WIDTH - 3, SUBBOX_HEIGHT - 3);
-                    g.FillRectangle(Brushes.DarkGray, pctBarRect);
-                    int fillWidth = Convert.ToInt32(
-                        Math.Round(Convert.ToDouble(pctBarRect.Width) * percentComplete));
-                    if (fillWidth > 0)
-                    {
-                        Rectangle fillRect = new Rectangle(pctBarRect.X, pctBarRect.Y,
-                            fillWidth, pctBarRect.Height);
-                        g.FillRectangle(Brushes.Black, fillRect);
-                    }
-
-                    TextRenderer.DrawText(g, levelText, lbSkills.Font,
-                        new Point(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT - BOX_HPAD - levelTextSize.Width, e.Bounds.Top + PAD_TOP), Color.Black);
-                    TextRenderer.DrawText(g, pctText, lbSkills.Font,
-                        new Point(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT - BOX_HPAD - pctTextSize.Width, e.Bounds.Top + PAD_TOP + levelTextSize.Height + LINE_VPAD), Color.Black);
-
-
-                    //Size skillNameSizeInt = TextRenderer.MeasureText(g, skillName, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
-                    //Point skillNameTopLeftInt = new Point(e.Bounds.Left + 6,
-                    //    e.Bounds.Top + ((e.Bounds.Height / 2) - (skillNameSizeInt.Height / 2)));
-                    //Point detailTopLeftInt = new Point(skillNameTopLeftInt.X + skillNameSizeInt.Width, skillNameTopLeftInt.Y);
-
-                    //TextRenderer.DrawText(g, skillName, boldf, skillNameTopLeftInt, Color.Black);
-                    //TextRenderer.DrawText(g, " (Rank " + s.Rank.ToString() + ")", lbSkills.Font, detailTopLeftInt, Color.Black);
-
-                    //string skillPoints = String.Format("{0}/{1}", s.CurrentSkillPoints.ToString("#,##0"), s.GetPointsRequiredForLevel(5).ToString("#,##0"));
-                    //Size skillPointSizeInt = TextRenderer.MeasureText(g, skillPoints, lbSkills.Font, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
-                    //Point skillPointTopLeftInt = new Point(e.Bounds.Right - skillPointSizeInt.Width - 6, skillNameTopLeftInt.Y);
-                    //TextRenderer.DrawText(g, skillPoints, lbSkills.Font, skillPointTopLeftInt, Color.Black);
-                }
+                ((GrandSkill)item).Draw(e);
             }
         }
 
@@ -1152,9 +969,66 @@ namespace EVEMon
                 return;
             object item = lbSkills.Items[e.Index];
             if (item is GrandSkillGroup)
-                e.ItemHeight = SKILL_HEADER_HEIGHT;
+                e.ItemHeight = GrandSkillGroup.Height;
             else if (item is GrandSkill)
-                e.ItemHeight = SKILL_DETAIL_HEIGHT;
+                e.ItemHeight = GrandSkill.Height;
+        }
+
+        private void lbSkills_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            // Update the drawing based upon the mouse wheel scrolling.
+            int numberOfItemLinesToMove = e.Delta * SystemInformation.MouseWheelScrollLines / 120;
+            int numberOfPixelsToMove = 0;
+            int direction = numberOfItemLinesToMove / Math.Abs(numberOfItemLinesToMove);
+            for (int i = 1; i <= Math.Abs(numberOfItemLinesToMove); i++)
+            {
+                object item = null;
+                if (direction == Math.Abs(direction))
+                {
+                    // Going up
+                    if (lbSkills.TopIndex - i >= 0)
+                    {
+                        item = lbSkills.Items[lbSkills.TopIndex - i];
+                    }
+                }
+                else
+                {
+                    // Going down
+                    int h = 0; // height of items from current topindex inclusive
+                    for (int j = lbSkills.TopIndex + i - 1; j < lbSkills.Items.Count; j++)
+                    {
+                        if (lbSkills.Items[j] is GrandSkillGroup)
+                            h += GrandSkillGroup.Height;
+                        else if (lbSkills.Items[j] is GrandSkill)
+                            h += GrandSkill.Height;
+                    }
+                    if (h > lbSkills.ClientSize.Height)
+                    {
+                        item = lbSkills.Items[lbSkills.TopIndex + i - 1];
+                    }
+                }
+                if (item != null)
+                {
+                    if (item is GrandSkillGroup)
+                    {
+                        numberOfPixelsToMove += GrandSkillGroup.Height;
+                    }
+                    else if (item is GrandSkill)
+                    {
+                        numberOfPixelsToMove += GrandSkill.Height;
+                    }
+                }
+            }
+            numberOfPixelsToMove = numberOfPixelsToMove * direction;
+            if (numberOfPixelsToMove != 0) // why is it this block seems to have no effect?
+            {
+                System.Drawing.Drawing2D.Matrix translateMatrix = new System.Drawing.Drawing2D.Matrix();
+                translateMatrix.Translate(0, numberOfPixelsToMove);
+                mousePath.Transform(translateMatrix);
+                lbSkills.Invalidate();
+            }
+            // I think I need to reduce the section of the display that gets invalidated... 
+            // but then we get annoying flicker if I do.... hmmmmm.
         }
 
         private void btnPlan_Click(object sender, EventArgs e)
@@ -1212,9 +1086,7 @@ namespace EVEMon
             cmsMoreOptions.Show(btnMoreOptions,
                 btnMoreOptions.PointToClient(Control.MousePosition), ToolStripDropDownDirection.Default);
         }
-
-
-
+        
         private void lbSkills_MouseMove(object sender, MouseEventArgs e)
         {
             /*int index = lbSkills.IndexFromPoint(e.X, e.Y);
@@ -1271,29 +1143,14 @@ namespace EVEMon
                 if (item is GrandSkillGroup)
                 {
                     GrandSkillGroup sg = (GrandSkillGroup)item;
-
-                    bool isCollapsed;
-                    if (m_groupCollapsed.ContainsKey(sg) && m_groupCollapsed[sg] == true)
-                        isCollapsed = true;
-                    else
-                        isCollapsed = false;
-                    Image btnImage;
-                    if (isCollapsed)
-                        btnImage = CharacterMonitor.ExpandImage;
-                    else
-                        btnImage = CharacterMonitor.CollapseImage;
-                    Size btnSize = btnImage.Size;
                     Rectangle itemRect = lbSkills.GetItemRectangle(lbSkills.Items.IndexOf(item));
-                    Point btnPoint = new Point(itemRect.Right - btnImage.Width - SG_COLLAPSER_PAD_RIGHT,
-                        (SKILL_HEADER_HEIGHT / 2) - (btnImage.Height / 2) + itemRect.Top);
-                    Rectangle buttonRect = new Rectangle(btnPoint, btnSize);
+                    Rectangle buttonRect = sg.GetButtonRectangle(itemRect);
                     if (buttonRect.Contains(e.Location))
                     {
                         ToggleGroupExpandCollapse(sg);
                         return;
                     }
 
-                    //GrandSkill s (GrandSkill)item;
                     int TotalPoints = 0;
                     int PointsRemaining = 0;
                     double percentDonePoints = 0.0;
@@ -1401,28 +1258,20 @@ namespace EVEMon
 
         private void ToggleGroupExpandCollapse(GrandSkillGroup gsg)
         {
-            bool isCollapsed;
-            if (m_groupCollapsed.ContainsKey(gsg) && m_groupCollapsed[gsg] == true)
-                isCollapsed = true;
+            bool toCollapse;
+            if (gsg.isCollapsed)
+                toCollapse = false;
             else
-                isCollapsed = false;
-
-            m_groupCollapsed[gsg] = !isCollapsed;
-            if (!isCollapsed)
+                toCollapse = true;
+            m_groupCollapsed[gsg] = toCollapse;
+            gsg.isCollapsed = m_groupCollapsed[gsg];
+            if (toCollapse)
             {
                 // Remove the skills in the group from the list
-                for (int i = 0; i < lbSkills.Items.Count; i++)
+                foreach (GrandSkill gs in gsg)
                 {
-                    object o = lbSkills.Items[i];
-                    if (o is GrandSkill)
-                    {
-                        GrandSkill gs = (GrandSkill)o;
-                        if (gs.SkillGroup == gsg)
-                        {
-                            lbSkills.Items.RemoveAt(i);
-                            i--;
-                        }
-                    }
+                    if (gs.Known)
+                        lbSkills.Items.RemoveAt(lbSkills.Items.IndexOf(gs));
                 }
             }
             else

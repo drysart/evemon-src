@@ -443,7 +443,7 @@ namespace EVEMon.Common
         private void UpdateGrandCharacterInfoAsyncCaller(object state)
         {
             UpdateGCIArgs args = (UpdateGCIArgs)state;
-
+            System.GC.Collect();
             int timeLeftInCache = this.UpdateGrandCharacterInfo(args.GrandCharacterInfo, args.InvokeControl);
             args.UpdateGrandCharacterInfoCallback(null, timeLeftInCache);
         }

@@ -8,6 +8,38 @@ namespace EVEMon
 {
     public class NoFlickerListBox: System.Windows.Forms.ListBox
     {
+/*      // This code that has been rem'd out is what I'm currently working on....
+        // it does some odd stuff atm.
+        public NoFlickerListBox()
+        {
+            //SetStyle(ControlStyles.UserPaint, true);
+            //SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            //SetStyle(ControlStyles.DoubleBuffer, true);
+            //SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            //SetStyle(ControlStyles.ContainerControl, true);
+        }
+
+        //protected internal override void OnPreRender() // ??
+        //{
+        //}
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            /*if (this != null)
+            {
+                for (int i = this.TopIndex; i < this.TopIndex + 4; i++)
+                {
+
+                }
+                base.OnPaint(e);
+            //}
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            base.OnPaintBackground(e);
+        }*/
+
         private enum WM
         {
             WM_NULL       = 0x0000,

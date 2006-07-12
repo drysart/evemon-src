@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO.Compression;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace EVEMon.Common
 {
@@ -881,7 +883,6 @@ namespace EVEMon.Common
         #endregion
     }
 
-
     public class GrandEveAttributes
     {
         private int[] m_values = new int[5] { 0, 0, 0, 0, 0 };
@@ -1045,6 +1046,128 @@ namespace EVEMon.Common
 
             gs_Changed(this, new EventArgs());
         }
+
+        #region Appearance in List box
+
+        private static Image m_collapseImage = null;
+        private static Image m_expandImage = null;
+        private bool m_collapsed = false;
+
+        public bool isCollapsed
+        {
+            get { return m_collapsed; }
+            set 
+            { 
+                if (m_collapsed != value)
+                {
+                    m_collapsed = value; 
+                } 
+            }
+        }
+
+        public static Image CollapseImage
+        {
+            get
+            {
+                if (m_collapseImage == null)
+                {
+                    // Do not use a "using" block because Image.FromStream requires that
+                    // the stream be left open.
+                    Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                        "EVEMon.Common.Collapse_large.png");
+                    m_collapseImage = Image.FromStream(s, true, true);
+                }
+                return m_collapseImage;
+            }
+        }
+
+        public static Image ExpandImage
+        {
+            get
+            {
+                if (m_expandImage == null)
+                {
+                    // Do not use a "using" block because Image.FromStream requires that
+                    // the stream be left open.
+                    Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                        "EVEMon.Common.Expand_large.png");
+                    m_expandImage = Image.FromStream(s, true, true);
+                }
+                return m_expandImage;
+            }
+        }
+
+        private const int SKILL_HEADER_HEIGHT = 21;
+
+        private const int SG_COLLAPSER_PAD_RIGHT = 6;
+
+        public static int Height
+        {
+            get { return SKILL_HEADER_HEIGHT; }
+        }
+
+        public void Draw(DrawItemEventArgs e)
+        {
+            Font fontr = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            Graphics g = e.Graphics;
+            bool hastrainingskill = false;
+            foreach (GrandSkill gs in m_skills.Values)
+            {
+                if (gs.Known)
+                    hastrainingskill = hastrainingskill || gs.InTraining;
+            }
+
+            using (Brush b = new SolidBrush(Color.FromArgb(75, 75, 75)))
+            {
+                g.FillRectangle(b, e.Bounds);
+            }
+            using (Pen p = new Pen(Color.FromArgb(100, 100, 100)))
+            {
+                g.DrawLine(p, e.Bounds.Left, e.Bounds.Top, e.Bounds.Right + 1, e.Bounds.Top);
+            }
+            using (Font boldf = new Font(fontr, FontStyle.Bold))
+            {
+                Size titleSizeInt = TextRenderer.MeasureText(g, this.Name, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+                Point titleTopLeftInt = new Point(e.Bounds.Left + 3,
+                    e.Bounds.Top + ((e.Bounds.Height / 2) - (titleSizeInt.Height / 2)));
+                Point detailTopLeftInt = new Point(titleTopLeftInt.X + titleSizeInt.Width, titleTopLeftInt.Y);
+
+                string trainingStr = String.Empty;
+                if (hastrainingskill)
+                {
+                    trainingStr = ", 1 training";
+                }
+                string detailText = String.Format(", {0} Skill{1}, {2} Points{3}",
+                    this.KnownCount,
+                    this.KnownCount > 1 ? "s" : "",
+                    this.GetTotalPoints().ToString("#,##0"),
+                    trainingStr);
+                TextRenderer.DrawText(g, this.Name, boldf, titleTopLeftInt, Color.White);
+                TextRenderer.DrawText(g, detailText, fontr, detailTopLeftInt, Color.White);
+            }
+            Image i;
+            if (isCollapsed == true)
+                i = GrandSkillGroup.ExpandImage;
+            else
+                i = GrandSkillGroup.CollapseImage;
+            g.DrawImageUnscaled(i, new Point(e.Bounds.Right - i.Width - SG_COLLAPSER_PAD_RIGHT,
+                (SKILL_HEADER_HEIGHT / 2) - (i.Height / 2) + e.Bounds.Top));
+        }
+
+        public Rectangle GetButtonRectangle (Rectangle itemRect)
+        {
+            Image btnImage;
+            if (isCollapsed)
+                btnImage = GrandSkillGroup.ExpandImage;
+            else
+                btnImage = GrandSkillGroup.CollapseImage;
+            Size btnSize = btnImage.Size;
+            Point btnPoint = new Point(itemRect.Right - btnImage.Width - SG_COLLAPSER_PAD_RIGHT,
+                (SKILL_HEADER_HEIGHT / 2) - (btnImage.Height / 2) + itemRect.Top);
+            return new Rectangle(btnPoint, btnSize);
+        }
+
+        #endregion
     }
 
     public class GrandSkill
@@ -1555,6 +1678,108 @@ namespace EVEMon.Common
         {
             return this.Name;
         }
+
+        #region Appearance in List Box
+
+        private const int SKILL_DETAIL_HEIGHT = 31;
+
+        public static int Height
+        {
+            get { return SKILL_DETAIL_HEIGHT; }
+        }
+
+        public void Draw(DrawItemEventArgs e)
+        {
+            Font fontr = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            Graphics g = e.Graphics;
+
+            if (m_inTraining)
+                g.FillRectangle(Brushes.LightSteelBlue, e.Bounds);
+            else if ((e.Index % 2) == 0)
+                g.FillRectangle(Brushes.White, e.Bounds);
+            else
+                g.FillRectangle(Brushes.LightGray, e.Bounds);
+
+            using (Font boldf = new Font(fontr, FontStyle.Bold)) 
+            {
+                double percentComplete = 1.0f;
+                if (this.Level == 0)
+                {
+                    int NextLevel = this.Level + 1;
+                    percentComplete = Convert.ToDouble(m_currentSkillPoints) / Convert.ToDouble(GetPointsRequiredForLevel(NextLevel));
+                }
+                else if (this.Level < 5)
+                {
+                    int pointsToNextLevel = this.GetPointsRequiredForLevel(Math.Min(this.Level + 1, 5));
+                    int pointsToThisLevel = this.GetPointsRequiredForLevel(this.Level);
+                    int pointsDelta = pointsToNextLevel - pointsToThisLevel;
+                    percentComplete = Convert.ToDouble(this.CurrentSkillPoints - pointsToThisLevel) / Convert.ToDouble(pointsDelta);
+                }
+
+                string skillName = this.Name + " " + GrandSkill.GetRomanSkillNumber(this.Level);
+                string rankText = " (Rank " + this.Rank.ToString() + ")";
+                string spText = "SP: " + this.CurrentSkillPoints.ToString("#,##0") + "/" +
+                    this.GetPointsRequiredForLevel(Math.Min(this.Level + 1, 5)).ToString("#,##0");
+                string levelText = "Level " + this.Level.ToString();
+                string pctText = percentComplete.ToString("0%") + " Done";
+
+                int PAD_TOP = 2;
+                int PAD_LEFT = 6;
+                int PAD_RIGHT = 7;
+                int LINE_VPAD = 0;
+
+                Size skillNameSize = TextRenderer.MeasureText(g, skillName, boldf, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+                Size levelTextSize = TextRenderer.MeasureText(g, levelText, fontr, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+                Size pctTextSize = TextRenderer.MeasureText(g, pctText, fontr, new Size(0, 0), TextFormatFlags.NoPadding | TextFormatFlags.NoClipping);
+
+                TextRenderer.DrawText(g, skillName, boldf, new Point(e.Bounds.Left + PAD_LEFT, e.Bounds.Top + PAD_TOP), Color.Black);
+                TextRenderer.DrawText(g, rankText, fontr,
+                    new Point(e.Bounds.Left + PAD_LEFT + skillNameSize.Width, e.Bounds.Top + PAD_TOP), Color.Black);
+                TextRenderer.DrawText(g, spText, fontr,
+                    new Point(e.Bounds.Left + PAD_LEFT, e.Bounds.Top + PAD_TOP + skillNameSize.Height + LINE_VPAD), Color.Black);
+
+                // Boxes
+                int BOX_WIDTH = 57;
+                int BOX_HEIGHT = 14;
+                int SUBBOX_HEIGHT = 8;
+                int BOX_HPAD = 6;
+                int BOX_VPAD = 2;
+                g.DrawRectangle(Pens.Black,
+                    new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT, e.Bounds.Top + PAD_TOP, BOX_WIDTH, BOX_HEIGHT));
+                int bWidth = (BOX_WIDTH - 4 - 3) / 5;
+                for (int bn = 1; bn <= 5; bn++)
+                {
+                    Rectangle brect = new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT + 2 + (bWidth * (bn - 1)) + (bn - 1),
+                        e.Bounds.Top + PAD_TOP + 2, bWidth, BOX_HEIGHT - 3);
+                    if (bn <= this.Level)
+                        g.FillRectangle(Brushes.Black, brect);
+                    else
+                        g.FillRectangle(Brushes.DarkGray, brect);
+                }
+
+                // Percent Bar
+                g.DrawRectangle(Pens.Black,
+                    new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT, e.Bounds.Top + PAD_TOP + BOX_HEIGHT + BOX_VPAD, BOX_WIDTH, SUBBOX_HEIGHT));
+                Rectangle pctBarRect = new Rectangle(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT + 2,
+                    e.Bounds.Top + PAD_TOP + BOX_HEIGHT + BOX_VPAD + 2,
+                    BOX_WIDTH - 3, SUBBOX_HEIGHT - 3);
+                g.FillRectangle(Brushes.DarkGray, pctBarRect);
+                int fillWidth = Convert.ToInt32(
+                    Math.Round(Convert.ToDouble(pctBarRect.Width) * percentComplete));
+                if (fillWidth > 0)
+                {
+                    Rectangle fillRect = new Rectangle(pctBarRect.X, pctBarRect.Y,
+                        fillWidth, pctBarRect.Height);
+                    g.FillRectangle(Brushes.Black, fillRect);
+                }
+                TextRenderer.DrawText(g, levelText, fontr,
+                    new Point(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT - BOX_HPAD - levelTextSize.Width, e.Bounds.Top + PAD_TOP), Color.Black);
+                TextRenderer.DrawText(g, pctText, fontr,
+                    new Point(e.Bounds.Right - BOX_WIDTH - PAD_RIGHT - BOX_HPAD - pctTextSize.Width, e.Bounds.Top + PAD_TOP + levelTextSize.Height + LINE_VPAD), Color.Black);
+            }
+        }
+
+        #endregion
     }
 
     [Flags]
