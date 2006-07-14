@@ -101,6 +101,14 @@ namespace EVEMon.SkillPlanner
                         return (gs.PrerequisitesMet && gs.Level < 5);
                     };
                     break;
+
+                case 6: // partially trained skils
+                    sf = delegate(GrandSkill gs)
+                    {
+                        return (gs.IsPartiallyTrained());
+                    };
+                    break;
+
             }
 
             tvSkillList.Nodes.Clear();

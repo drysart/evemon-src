@@ -1375,6 +1375,13 @@ namespace EVEMon.Common
             return result;
         }
 
+        public bool IsPartiallyTrained()
+        {
+            int csp = this.CurrentSkillPoints;
+            int lvl = CalculateLevel();
+            return (csp > GetPointsRequiredForLevel(lvl));
+        }
+
         public IEnumerable<Prereq> Prereqs
         {
             get
