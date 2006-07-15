@@ -448,11 +448,14 @@ namespace EVEMon.Common
             args.UpdateGrandCharacterInfoCallback(null, timeLeftInCache);
         }
 
-        private const int DEFAULT_RETRY_INTERVAL = 60 * 5;
+        private const int DEFAULT_RETRY_INTERVAL = 60 * 5*1000;
 
         public int UpdateGrandCharacterInfo(GrandCharacterInfo grandCharacterInfo, Control invokeControl)
         {
             SerializableCharacterInfo sci = GetCharacterInfo(grandCharacterInfo.CharacterId);
+
+            if (sci == null) return DEFAULT_RETRY_INTERVAL;
+
             invokeControl.Invoke(new MethodInvoker(delegate
             {
                 grandCharacterInfo.AssignFromSerializableCharacterInfo(sci);
