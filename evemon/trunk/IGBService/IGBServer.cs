@@ -189,6 +189,9 @@ namespace EVEMon.IGBService
                         PlanTextOptions x = new PlanTextOptions();
                         x.EntryStartDate = true;
                         x.EntryFinishDate = true;
+                        x.FooterTotalTime = true;
+                        x.FooterCount = true;
+                        x.FooterDate = true;
                         p.SaveAsText(sw, x, MarkupType.Html);
                     }
                     //foreach (PlanEntry pe in p.Entries)
