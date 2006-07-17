@@ -563,6 +563,14 @@ namespace EVEMon.Common
                     gs.Known = true;
                 }
             }
+            if (ci.SkillInTraining != null)
+            {
+                GrandSkill newTrainingSkill = this.GetSkill(ci.SkillInTraining.SkillName);
+                if (newTrainingSkill != null)
+                {
+                    newTrainingSkill.SetTrainingInfo(ci.SkillInTraining.TrainingToLevel, ci.SkillInTraining.EstimatedCompletion);
+                }
+            }
             this.ResumeEvents();
         }
 

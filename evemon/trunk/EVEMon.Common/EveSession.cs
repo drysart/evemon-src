@@ -792,12 +792,6 @@ namespace EVEMon.Common
             invokeControl.Invoke(new MethodInvoker(delegate
             {
                 grandCharacterInfo.AssignFromSerializableCharacterInfo(result);
-
-                grandCharacterInfo.CancelCurrentSkillTraining();
-                if (newTrainingSkill != null)
-                {
-                    newTrainingSkill.SetTrainingInfo(trainingToLevel, estimatedCompletion);
-                }
             }));
 
             return timeLeftInCache;

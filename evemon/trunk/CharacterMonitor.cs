@@ -974,12 +974,15 @@ namespace EVEMon
                 e.ItemHeight = GrandSkill.Height;
         }
 
+        private System.Drawing.Drawing2D.GraphicsPath mousePath;
+
         private void lbSkills_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             // Update the drawing based upon the mouse wheel scrolling.
             int numberOfItemLinesToMove = e.Delta * SystemInformation.MouseWheelScrollLines / 120;
-            int numberOfPixelsToMove = 0;
+            int Lines = numberOfItemLinesToMove;
             int direction = numberOfItemLinesToMove / Math.Abs(numberOfItemLinesToMove);
+            int[] numberOfPixelsToMove = new int[numberOfItemLinesToMove * direction];
             for (int i = 1; i <= Math.Abs(numberOfItemLinesToMove); i++)
             {
                 object item = null;
@@ -987,9 +990,7 @@ namespace EVEMon
                 {
                     // Going up
                     if (lbSkills.TopIndex - i >= 0)
-                    {
                         item = lbSkills.Items[lbSkills.TopIndex - i];
-                    }
                 }
                 else
                 {
@@ -1003,32 +1004,33 @@ namespace EVEMon
                             h += GrandSkill.Height;
                     }
                     if (h > lbSkills.ClientSize.Height)
-                    {
                         item = lbSkills.Items[lbSkills.TopIndex + i - 1];
-                    }
                 }
                 if (item != null)
                 {
                     if (item is GrandSkillGroup)
-                    {
-                        numberOfPixelsToMove += GrandSkillGroup.Height;
-                    }
+                        numberOfPixelsToMove[i - 1] = GrandSkillGroup.Height * direction;
                     else if (item is GrandSkill)
-                    {
-                        numberOfPixelsToMove += GrandSkill.Height;
-                    }
+                        numberOfPixelsToMove[i - 1] = GrandSkill.Height * direction;
                 }
+                else
+                    Lines -= direction;
             }
-            numberOfPixelsToMove = numberOfPixelsToMove * direction;
-            if (numberOfPixelsToMove != 0) // why is it this block seems to have no effect?
+            if (Lines != 0)
             {
-                System.Drawing.Drawing2D.Matrix translateMatrix = new System.Drawing.Drawing2D.Matrix();
-                translateMatrix.Translate(0, numberOfPixelsToMove);
-                mousePath.Transform(translateMatrix);
+                // The Array 'numberOfPixelsToMove' contains the number of pixels the
+                // list box 'lbSkills' needs to scroll for each line... the question
+                // is, how to tell it that and get it to do so smoothly.
+                /* // This doesn't work...
+                for (int i = 0; i < Math.Abs(Lines); i++)
+                {
+                    System.Drawing.Drawing2D.Matrix translateMatrix = new System.Drawing.Drawing2D.Matrix();
+                    translateMatrix.Translate(0, numberOfPixelsToMove[i]);
+                    mousePath.Transform(translateMatrix);
+                } */
                 lbSkills.Invalidate();
+                // invalidate is a temporary fix that does give limited functionality for purpose.
             }
-            // I think I need to reduce the section of the display that gets invalidated... 
-            // but then we get annoying flicker if I do.... hmmmmm.
         }
 
         private void btnPlan_Click(object sender, EventArgs e)

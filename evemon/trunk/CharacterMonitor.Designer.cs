@@ -22,8 +22,6 @@ namespace EVEMon
 
         #region Component Designer generated code
 
-        private System.Drawing.Drawing2D.GraphicsPath mousePath;
-
         /// <summary> 
         /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
@@ -593,7 +591,7 @@ namespace EVEMon
             // 
             // lbSkills
             // 
-            mousePath = new System.Drawing.Drawing2D.GraphicsPath();
+            this.mousePath = new System.Drawing.Drawing2D.GraphicsPath();
 
             this.lbSkills.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbSkills.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;

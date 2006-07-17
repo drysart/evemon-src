@@ -448,7 +448,7 @@ namespace EVEMon.Common
             args.UpdateGrandCharacterInfoCallback(null, timeLeftInCache);
         }
 
-        private const int DEFAULT_RETRY_INTERVAL = 60 * 5*1000;
+        private const int DEFAULT_RETRY_INTERVAL = 60 * 5 * 1000;
 
         public int UpdateGrandCharacterInfo(GrandCharacterInfo grandCharacterInfo, Control invokeControl)
         {
@@ -459,15 +459,6 @@ namespace EVEMon.Common
             invokeControl.Invoke(new MethodInvoker(delegate
             {
                 grandCharacterInfo.AssignFromSerializableCharacterInfo(sci);
-                grandCharacterInfo.CancelCurrentSkillTraining();
-                if (sci.SkillInTraining != null)
-                {
-                    GrandSkill newTrainingSkill = grandCharacterInfo.GetSkill(sci.SkillInTraining.SkillName);
-                    if (newTrainingSkill != null)
-                    {
-                        newTrainingSkill.SetTrainingInfo(sci.SkillInTraining.TrainingToLevel, sci.SkillInTraining.EstimatedCompletion);
-                    }
-                }
             }));
 
             return sci.TimeLeftInCache;
