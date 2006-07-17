@@ -1185,6 +1185,7 @@ namespace EVEMon.Common
         private string m_name;
         private int m_id;
         private string m_description;
+        private string m_descriptionNl;
         private EveAttribute m_primaryAttribute;
         private EveAttribute m_secondaryAttribute;
         private int m_rank;
@@ -1203,6 +1204,7 @@ namespace EVEMon.Common
             m_name = name;
             m_id = id;
             m_description = description;
+            m_descriptionNl = description;
             m_primaryAttribute = a1;
             m_secondaryAttribute = a2;
             m_rank = rank;
@@ -1342,6 +1344,11 @@ namespace EVEMon.Common
         public string Description
         {
             get { return m_description; }
+        }
+       
+        public string DescriptionNl
+        {
+            get { return m_descriptionNl.Replace(@".", ".\n"); }
         }
 
         public EveAttribute PrimaryAttribute
