@@ -77,6 +77,8 @@ namespace EVEMon
                 httpSetting.Port = 0;
             }
             s.HttpProxy = httpSetting;
+
+            m_settings.StatusUpdateInterval = (int)numericStatusInterval.Value;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -136,6 +138,8 @@ namespace EVEMon
             tbProxyHttpHost.Text = m_settings.HttpProxy.Host;
             tbProxyHttpPort.Text = m_settings.HttpProxy.Port.ToString();
             btnProxyHttpAuth.Tag = m_settings.HttpProxy.Clone();
+
+            numericStatusInterval.Value = m_settings.StatusUpdateInterval;
 
             UpdateDisables();
         }

@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
+using System.Net.Sockets;
 using EVEMon.Sales;
 
 using EVEMon.Common;
@@ -103,6 +104,7 @@ namespace EVEMon
             m_settings_RunIGBServerChanged(null, null);
             m_settings.RelocateEveWindowChanged += new EventHandler<EventArgs>(m_settings_RelocateEveWindowChanged);
             m_settings_RelocateEveWindowChanged(null, null);
+            m_settings.StatusUpdateIntervalChanged += new EventHandler<EventArgs>(m_settings_StatusUpdateIntervalChanged);
 
             TipWindow.ShowTip("startup",
                 "Getting Started",
@@ -542,7 +544,15 @@ namespace EVEMon
             DateTime now = DateTime.Now.ToUniversalTime();
             DateTimeFormatInfo fi = CultureInfo.CurrentCulture.DateTimeFormat;
             lblStatus.Text = "Current EVE Time: " + now.ToString(fi.ShortDatePattern+" HH:mm");
-            tmrClock.Interval = ((60-now.Minute) * 1000) + (1000-now.Millisecond);
+            if (m_serverOnline && (m_serverUsers != 0))
+            {
+                lblStatus.Text = lblStatus.Text + " // Tranquility Server Online (" + m_serverUsers + " Pilots)";
+            }
+            else if (!m_serverOnline) 
+            {
+                lblStatus.Text = lblStatus.Text + " // Tranquility Server Offline";
+            }
+            tmrClock.Interval = 1000*60*1;//1 minutes
             tmrClock.Enabled = true;
         }
 
@@ -671,6 +681,58 @@ namespace EVEMon
                     cm.CurrentlyVisible = vis;
                 }
             }
+        }
+
+        private int m_serverUsers = 0;
+        private bool m_serverOnline = true;
+
+        void m_settings_StatusUpdateIntervalChanged(object sender, EventArgs e)
+        {
+            tmrServerStatus.Enabled = false;
+            int newInterval = m_settings.StatusUpdateInterval * 60000;
+            if (tmrServerStatus.Interval > newInterval)
+            {
+                tmrServerStatus.Interval = newInterval;
+            }
+            tmrServerStatus.Enabled = true;
+        }
+
+        private void tmrServerStatus_Tick(object sender, EventArgs e)
+        {
+            tmrServerStatus.Enabled = false;
+            TcpClient conn = new TcpClient("87.237.38.200", 26000);
+            if (conn.Connected)
+            {
+                m_serverOnline = true;
+                NetworkStream stream = conn.GetStream();
+                byte[] data = {0x23, 0x00, 0x00, 0x00, 0x7E, 0x00, 0x00, 0x00,
+                               0x00, 0x14, 0x06, 0x04, 0xE8, 0x99, 0x02, 0x00,
+                               0x05, 0x8B, 0x00, 0x08, 0x0A, 0xCD, 0xCC, 0xCC,
+                               0xCC, 0xCC, 0xCC, 0x00, 0x40, 0x05, 0x49, 0x0F,
+                               0x10, 0x05, 0x42, 0x6C, 0x6F, 0x6F, 0x64};
+                stream.Write(data, 0, data.Length);
+                byte[] response = new byte[256];
+                int bytes = stream.Read(response, 0, 256);
+                if (bytes > 21)
+                {
+                    m_serverUsers = response[21] * 256 + response[20];
+                }
+                else
+                {
+                    m_serverUsers = 0;
+                }
+            }
+            else
+            {
+                m_serverOnline = false;
+                m_serverUsers = 0;
+            }
+            conn.Close();
+            tmrServerStatus.Interval = m_settings.StatusUpdateInterval * 60000;
+            tmrServerStatus.Enabled = true;
+            tmrClock.Enabled = false;
+            tmrClock.Interval = 1;
+            tmrClock.Enabled = true;
         }
     }
 }

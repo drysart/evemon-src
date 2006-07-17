@@ -34,6 +34,8 @@ namespace EVEMon
         private int m_charId;
         private FileSystemWatcher m_fsw = null;
 
+        private Dictionary<GrandSkillGroup, bool> m_groupCollapsed = new Dictionary<GrandSkillGroup, bool>();
+
         public CharacterMonitor(Settings s, CharLoginInfo cli)
             : this()
         {
@@ -154,6 +156,24 @@ namespace EVEMon
                 m_grandCharacterInfo.AssignFromSerializableCharacterInfo(m_sci);
                 m_sci = null;
             }
+
+            foreach (GrandSkillGroup gsg in m_grandCharacterInfo.SkillGroups.Values)
+            {
+                foreach (Pair<string, string> grp in m_settings.CollapsedGroups)
+                {
+                    if ((grp.A == m_grandCharacterInfo.Name) && (grp.B == gsg.Name))
+                    {
+                        m_groupCollapsed.Add(gsg, true);
+                        foreach (GrandSkill gs in gsg)
+                        {
+                            if (gs.Known)
+                                lbSkills.Items.RemoveAt(lbSkills.Items.IndexOf(gs));
+                        }
+                        gsg.isCollapsed = true;
+                    }
+                }
+            }
+
             tmrTick.Enabled = true;
 
             m_settings.WorksafeChanged += new EventHandler<EventArgs>(m_settings_WorksafeChanged);
@@ -945,8 +965,6 @@ namespace EVEMon
             }
         }
 
-        private Dictionary<GrandSkillGroup, bool> m_groupCollapsed = new Dictionary<GrandSkillGroup, bool>();
-
         private void lbSkills_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0)
@@ -1275,6 +1293,9 @@ namespace EVEMon
                     if (gs.Known)
                         lbSkills.Items.RemoveAt(lbSkills.Items.IndexOf(gs));
                 }
+
+                Pair<string, string> grp = new Pair<string,string> (m_grandCharacterInfo.Name, gsg.Name);
+                m_settings.CollapsedGroups.Add(grp);
             }
             else
             {
@@ -1285,6 +1306,13 @@ namespace EVEMon
                 }
                 SkillChangedEventArgs args = new SkillChangedEventArgs(skillList.ToArray());
                 m_grandCharacterInfo_SkillChanged(this, args);
+                foreach (Pair<string, string> grp in m_settings.CollapsedGroups) {
+                    if ((grp.A == m_grandCharacterInfo.Name) && (grp.B == gsg.Name))
+                    {
+                        m_settings.CollapsedGroups.Remove(grp);
+                        break;
+                    }
+                }
                 //void m_grandCharacterInfo_SkillChanged(object sender, SkillChangedEventArgs e)
             }
             lbSkills.Invalidate(lbSkills.GetItemRectangle(lbSkills.Items.IndexOf(gsg)));

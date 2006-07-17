@@ -46,6 +46,7 @@ namespace EVEMon
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbOptions = new System.Windows.Forms.ToolStripButton();
             this.tsbAbout = new System.Windows.Forms.ToolStripButton();
+            this.tmrServerStatus = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -185,6 +186,12 @@ namespace EVEMon
             this.tsbAbout.Text = "About...";
             this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
             // 
+            // tmrServerStatus
+            // 
+            this.tmrServerStatus.Enabled = true;
+            this.tmrServerStatus.Interval = 1000;
+            this.tmrServerStatus.Tick += new System.EventHandler(this.tmrServerStatus_Tick);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -227,5 +234,6 @@ namespace EVEMon
         private System.Windows.Forms.ToolStripButton tsbAbout;
         private System.Windows.Forms.ToolStripButton tsbMineralSheet;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.Timer tmrServerStatus;
     }
 }

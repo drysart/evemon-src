@@ -367,6 +367,13 @@ namespace EVEMon.Common
             get { return m_confirmedTips; }
         }
 
+        private List<Pair<string, string>> m_collapsedGroups = new List<Pair<string, string>>();
+
+        public List<Pair<string, string>> CollapsedGroups
+        {
+            get { return m_collapsedGroups; }
+        }
+
         private PlanTextOptions m_defaultCopyOptions = new PlanTextOptions();
         private PlanTextOptions m_defaultSaveOptions = new PlanTextOptions();
 
@@ -472,6 +479,22 @@ namespace EVEMon.Common
             get { return m_httpProxy; }
             set { m_httpProxy = value; }
         }
+
+        private int m_statusUpdateInterval = 5;
+
+        public int StatusUpdateInterval
+        {
+            get { return m_statusUpdateInterval; }
+            set {m_statusUpdateInterval = value; OnStatusUpdateIntervalChanged(); }
+        }
+
+        private void OnStatusUpdateIntervalChanged()
+        {
+            if (StatusUpdateIntervalChanged != null)
+                StatusUpdateIntervalChanged(this, new EventArgs());
+        }
+
+        public event EventHandler<EventArgs> StatusUpdateIntervalChanged;
 
         ////////////////////////////////////////////////////////////////////////////////////
 
