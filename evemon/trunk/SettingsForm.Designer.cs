@@ -98,6 +98,7 @@ namespace EVEMon
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
             this.label15 = new System.Windows.Forms.Label();
+            this.cbCheckTranquilityStatus = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpEmailSettings.SuspendLayout();
             this.tlpEmailAuthTable.SuspendLayout();
@@ -656,12 +657,13 @@ namespace EVEMon
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.cbCheckTranquilityStatus);
             this.groupBox7.Controls.Add(this.label15);
             this.groupBox7.Controls.Add(this.label14);
             this.groupBox7.Controls.Add(this.numericStatusInterval);
             this.groupBox7.Location = new System.Drawing.Point(3, 225);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(359, 49);
+            this.groupBox7.Size = new System.Drawing.Size(362, 75);
             this.groupBox7.TabIndex = 7;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Tranquility Status";
@@ -669,7 +671,7 @@ namespace EVEMon
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(15, 21);
+            this.label14.Location = new System.Drawing.Point(12, 49);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(107, 13);
             this.label14.TabIndex = 1;
@@ -677,7 +679,7 @@ namespace EVEMon
             // 
             // numericStatusInterval
             // 
-            this.numericStatusInterval.Location = new System.Drawing.Point(128, 19);
+            this.numericStatusInterval.Location = new System.Drawing.Point(125, 47);
             this.numericStatusInterval.Maximum = new decimal(new int[] {
             60,
             0,
@@ -996,14 +998,26 @@ namespace EVEMon
             this.flowLayoutPanel8.Size = new System.Drawing.Size(162, 29);
             this.flowLayoutPanel8.TabIndex = 6;
             // 
-            // label15
-            // 
+            // label15            
+            //
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(190, 21);
+            this.label15.Location = new System.Drawing.Point(187, 49);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(44, 13);
             this.label15.TabIndex = 2;
             this.label15.Text = "minutes";
+            //
+            // cbCheckTranquilityStatus
+            //
+            this.cbCheckTranquilityStatus.AutoSize = true;
+            this.cbCheckTranquilityStatus.Location = new System.Drawing.Point(15, 21);
+            this.cbCheckTranquilityStatus.Name = "cbCheckTranquilityStatus";
+            this.cbCheckTranquilityStatus.Size = new System.Drawing.Size(161, 17);
+            this.cbCheckTranquilityStatus.TabIndex = 3;
+            this.cbCheckTranquilityStatus.Text = "Check for Tranquility Status";
+            this.cbCheckTranquilityStatus.UseVisualStyleBackColor = true;
+            this.cbCheckTranquilityStatus.CheckedChanged += new System.EventHandler(this.cbCheckTranquilityStatus_CheckedChanged);
+            //
             // 
             // SettingsForm
             // 
@@ -1157,5 +1171,6 @@ namespace EVEMon
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.NumericUpDown numericStatusInterval;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.CheckBox cbCheckTranquilityStatus;
     }
 }

@@ -480,6 +480,14 @@ namespace EVEMon.Common
             set { m_httpProxy = value; }
         }
 
+        private bool m_checkTranquilityStatus = true;
+
+        public bool CheckTranquilityStatus
+        {
+            get { return m_checkTranquilityStatus; }
+            set { m_checkTranquilityStatus = value; OnStatusUpdateIntervalChanged(); }
+        }
+
         private int m_statusUpdateInterval = 5;
 
         public int StatusUpdateInterval

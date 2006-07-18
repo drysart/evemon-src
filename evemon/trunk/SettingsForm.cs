@@ -78,6 +78,7 @@ namespace EVEMon
             }
             s.HttpProxy = httpSetting;
 
+            m_settings.CheckTranquilityStatus = cbCheckTranquilityStatus.Checked;
             m_settings.StatusUpdateInterval = (int)numericStatusInterval.Value;
         }
 
@@ -139,6 +140,7 @@ namespace EVEMon
             tbProxyHttpPort.Text = m_settings.HttpProxy.Port.ToString();
             btnProxyHttpAuth.Tag = m_settings.HttpProxy.Clone();
 
+            cbCheckTranquilityStatus.Checked = m_settings.CheckTranquilityStatus;
             numericStatusInterval.Value = m_settings.StatusUpdateInterval;
 
             UpdateDisables();
@@ -159,6 +161,7 @@ namespace EVEMon
             isValid = isValid && ValidateProxySetting(tbProxyHttpHost.Text, tbProxyHttpPort.Text);
 
             btnOk.Enabled = isValid;
+            numericStatusInterval.Enabled = cbCheckTranquilityStatus.Checked;
         }
 
         private bool ValidateProxySetting(string host, string port)
@@ -230,6 +233,11 @@ namespace EVEMon
                     btnProxyHttpAuth.Tag = f.ProxySetting.Clone();
                 }
             }
+        }
+
+        private void cbCheckTranquilityStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateDisables();
         }
     }
 }
