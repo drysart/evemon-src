@@ -713,6 +713,7 @@ namespace EVEMon
              tmrServerStatus.Enabled = false;
             if (m_settings.CheckTranquilityStatus)
              {
+                try{
                 TcpClient conn = new TcpClient("87.237.38.200", 26000);
                 if (conn.Connected)
                 {
@@ -735,18 +736,23 @@ namespace EVEMon
                         m_serverUsers = 0;
                     }
                  }
+                    conn.Close();
+                }
+                catch(Exception)
+                {
+                    m_serverOnline = false;
+                    m_serverUsers = 0;
+                }
+            }
                  else
                  {
                     m_serverOnline = false;
                      m_serverUsers = 0;
                  }
-                conn.Close();
                 tmrServerStatus.Interval = m_settings.StatusUpdateInterval * 60000;
                 tmrServerStatus.Enabled = true;
-             }
-             tmrClock.Enabled = false;
-             tmrClock.Interval = 1;
              tmrClock.Enabled = true;
+             }
         }
     }
-}
+
