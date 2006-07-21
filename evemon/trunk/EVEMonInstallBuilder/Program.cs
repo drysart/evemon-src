@@ -22,7 +22,7 @@ namespace EVEMonInstallBuilder
                 string projectDir = String.Join(" ", args);
                 string desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
-                Assembly exeAsm = Assembly.LoadFrom("../../../bin/"+config+"/EVEMon.exe");
+                Assembly exeAsm = Assembly.LoadFrom("../../../bin/x86/"+config+"/EVEMon.exe");
                 string ver = exeAsm.GetName().Version.ToString();
 
                 ProcessInstallScripts(projectDir);
@@ -31,7 +31,7 @@ namespace EVEMonInstallBuilder
                     "/DVERSION=" + ver + " " +
                     "\"/DOUTDIR=" + desktopDir + "\" " +
                     "/PAUSE "+
-                    "\""+projectDir+"\\bin\\Release\\EVEMon Installer Script.nsi\"";
+                    "\""+projectDir+"bin\\x86\\Release\\EVEMon Installer Script.nsi\"";
                 //System.Windows.Forms.MessageBox.Show(param);
                 System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo(
                     "C:/Program Files/NSIS/makensis.exe", param);
