@@ -471,15 +471,58 @@ namespace EVEMon
             }
         }
 
-        private DateTime m_tryImageAgainTime = DateTime.MaxValue;
-
         private void GotCharacterImage(EveSession sender, Image i)
         {
-            pbCharImage.Image = i;
+            string cacheDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EVEMon";
+            string cacheFileName = cacheDir + "\\" + this.GrandCharacterInfo.CharacterId.ToString() + ".png";
             if (i == null)
-                m_tryImageAgainTime = DateTime.Now + TimeSpan.FromSeconds(10);
+            {
+                if (File.Exists(cacheFileName))
+                {
+                    try
+                    {
+                        FileStream fs = new FileStream(cacheFileName, FileMode.Open);
+                        i = Image.FromStream(fs, true);
+                        fs.Close();
+                        fs.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        ExceptionHandler.LogException(e, false);
+                    }
+                }
+                if (i == null)
+                {
+                    i = pbCharImage.InitialImage;
+                    try
+                    {
+                        FileStream fs = new FileStream(cacheFileName, FileMode.Create);
+                        i.Save(fs, System.Drawing.Imaging.ImageFormat.Png);
+                        fs.Close();
+                        fs.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        ExceptionHandler.LogException(e, false);
+                    }
+                }
+            }
             else
-                m_tryImageAgainTime = DateTime.MaxValue;
+            {
+                try
+                {
+                    FileStream fs = new FileStream(cacheFileName, FileMode.Create);
+                    i.Save(fs, System.Drawing.Imaging.ImageFormat.Png);
+                    fs.Close();
+                    fs.Dispose();
+                }
+                catch (Exception e)
+                {
+                    ExceptionHandler.LogException(e, false);
+                }
+            }
+            pbCharImage.Image = i;
+            updating_pic = false;
         }
 
         private DateTime m_lastUpdate = DateTime.MinValue;
@@ -803,16 +846,47 @@ namespace EVEMon
                 m_lastCompletedSkill = m_skillTrainingName;
                 OnSkillTrainingComplete(m_cli.CharacterName, m_skillTrainingName);
             }
-            if (m_tryImageAgainTime <= DateTime.Now && pbCharImage.Image == null)
+            if (updating_pic == false && pbCharImage.Image == null)
             {
+                updating_pic = true;
                 GetCharacterImage();
             }
         }
 
+        private bool updating_pic = false;
+
         private void GetCharacterImage()
         {
-            m_tryImageAgainTime = DateTime.MaxValue;
-            EveSession.GetCharacterImageAsync(m_charId, new GetImageCallback(GotCharacterImage));
+            if (pbCharImage.Image == null)
+            {
+                string cacheDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\EVEMon";
+                string cacheFileName = cacheDir + "\\" + this.GrandCharacterInfo.CharacterId.ToString() + ".png";
+                if (File.Exists(cacheFileName))
+                {
+                    try
+                    {
+                        FileStream fs = new FileStream(cacheFileName, FileMode.Open);
+                        pbCharImage.Image = Image.FromStream(fs, true);
+                        fs.Close();
+                        fs.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        ExceptionHandler.LogException(e, false);
+                    }
+                    updating_pic = false;
+                }
+                if (pbCharImage.Image == null)
+                {
+                    EveSession.GetCharacterImageAsync(this.GrandCharacterInfo.CharacterId, new GetImageCallback(GotCharacterImage));
+                }
+            }
+        }
+
+        private void UpdateCharacterImage()
+        {
+            pbCharImage.Image = null;
+            EveSession.GetCharacterImageAsync(this.GrandCharacterInfo.CharacterId, new GetImageCallback(GotCharacterImage));
         }
 
         private enum SaveFormat
@@ -1526,6 +1600,16 @@ namespace EVEMon
         public void ForceUpdate()
         {
             CalcSkillRemainText();
+        }
+
+        private void mi_UpdatePicture_Click(object sender, EventArgs e)
+        {
+            UpdateCharacterImage();
+        }
+
+        private void pbCharImage_Click(object sender, EventArgs e)
+        {
+            cmsPictureOptions.Show(Control.MousePosition);
         }
     }
 

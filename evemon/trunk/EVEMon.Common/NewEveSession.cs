@@ -1,4 +1,4 @@
-    using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -64,7 +64,7 @@ namespace EVEMon.Common
             get
             {
                 string cacheDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                    "/EVEMon/cache/images";
+                    "\\EVEMon\\cache\\images";
                 if (!Directory.Exists(cacheDir))
                     Directory.CreateDirectory(cacheDir);
                 return cacheDir;
@@ -75,12 +75,16 @@ namespace EVEMon.Common
         {
             if (useCache)
             {
-                string cacheFileName = ImageCacheDirectory + "/" + GetCacheName(url);
+                string cacheFileName = ImageCacheDirectory + "\\" + GetCacheName(url);
                 if (File.Exists(cacheFileName))
                 {
                     try
                     {
-                        Image i = Image.FromFile(cacheFileName, true);
+                        FileStream fs = new FileStream(cacheFileName, FileMode.Open);
+                        Image i = Image.FromStream(fs, true);
+                        fs.Close();
+                        fs.Dispose();
+
                         callback(null, i);
                         return;
                     }
@@ -136,12 +140,24 @@ namespace EVEMon.Common
         private static void AddImageToCache(string url, Image i)
         {
             string cacheName = GetCacheName(url);
-            using (StreamWriter sw = new StreamWriter(ImageCacheDirectory + "/file.map", true))
+            using (StreamWriter sw = new StreamWriter(ImageCacheDirectory + "\\file.map", true))
             {
                 sw.WriteLine(String.Format("{0} {1}", cacheName, url));
+                sw.Close();
+                //sw.Dispose();
             }
-            string fn = ImageCacheDirectory + "/" + cacheName;
-            i.Save(fn);
+            string fn = ImageCacheDirectory + "\\" + cacheName;
+            try
+            {
+                FileStream fs = new FileStream(fn, FileMode.Create);
+                i.Save(fs, System.Drawing.Imaging.ImageFormat.Png);
+                fs.Close();
+                //fs.Dispose();
+            }
+            catch (Exception e)
+            {
+                ExceptionHandler.LogException(e, false);
+            }
         }
 
         private static string GetCacheName(string url)

@@ -1007,7 +1007,7 @@ namespace EVEMon.SkillPlanner
 
                 lblShipClass.Text = s.Type + " > " + s.Race;
                 lblShipName.Text = s.Name;
-                lblShipDescription.Text = Regex.Replace(s.Description, "<.+?>", String.Empty, RegexOptions.Singleline);
+                lblShipDescription.Text = Regex.Replace(s.Description, "<. +?>", String.Empty, RegexOptions.Singleline);
 
                 bool allKnown = true;
                 allKnown = SetShipSkillLabel(0, lblShipSkill1, s.RequiredSkills) && allKnown;

@@ -71,6 +71,8 @@ namespace EVEMon
             this.sfdSaveDialog = new System.Windows.Forms.SaveFileDialog();
             this.ttToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tmrThrobber = new System.Windows.Forms.Timer(this.components);
+            this.cmsPictureOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.updatePicture = new System.Windows.Forms.ToolStripMenuItem();
             this.lbSkills = new EVEMon.NoFlickerListBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbCharImage)).BeginInit();
             this.pnlTraining.SuspendLayout();
@@ -86,10 +88,12 @@ namespace EVEMon
             this.flowLayoutPanel2.SuspendLayout();
             this.cmsMoreOptions.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.cmsPictureOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // pbCharImage
             // 
+            this.pbCharImage.InitialImage = global::EVEMon.Properties.Resources.default_char_pic;
             this.pbCharImage.Location = new System.Drawing.Point(0, 0);
             this.pbCharImage.Margin = new System.Windows.Forms.Padding(0, 0, 3, 3);
             this.pbCharImage.MinimumSize = new System.Drawing.Size(128, 128);
@@ -99,6 +103,7 @@ namespace EVEMon
             this.pbCharImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbCharImage.TabIndex = 0;
             this.pbCharImage.TabStop = false;
+            this.pbCharImage.Click += new System.EventHandler(this.pbCharImage_Click);
             // 
             // lblCharacterName
             // 
@@ -589,10 +594,22 @@ namespace EVEMon
             // 
             this.tmrThrobber.Tick += new System.EventHandler(this.tmrThrobber_Tick);
             // 
+            // cmsPictureOptions
+            // 
+            this.cmsPictureOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.updatePicture});
+            this.cmsPictureOptions.Name = "contextMenuStrip1";
+            this.cmsPictureOptions.Size = new System.Drawing.Size(146, 26);
+            // 
+            // updatePicture
+            // 
+            this.updatePicture.Name = "updatePicture";
+            this.updatePicture.Size = new System.Drawing.Size(145, 22);
+            this.updatePicture.Text = "Update Picture";
+            this.updatePicture.Click += new System.EventHandler(this.mi_UpdatePicture_Click);
+            // 
             // lbSkills
             // 
-            this.mousePath = new System.Drawing.Drawing2D.GraphicsPath();
-
             this.lbSkills.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbSkills.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.lbSkills.FormattingEnabled = true;
@@ -646,6 +663,7 @@ namespace EVEMon
             this.cmsMoreOptions.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            this.cmsPictureOptions.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -696,5 +714,7 @@ namespace EVEMon
         private System.Windows.Forms.ToolStripMenuItem miManualImplants;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
         private System.Windows.Forms.Label lblSPPerHour;
+        private System.Windows.Forms.ToolStripMenuItem updatePicture;
+        private System.Windows.Forms.ContextMenuStrip cmsPictureOptions;
     }
 }

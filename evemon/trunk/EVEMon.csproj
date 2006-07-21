@@ -477,6 +477,7 @@
     <Content Include="gpl.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\default char pic.png" />
     <Content Include="SkillPlanner\icons\book.ico" />
     <Content Include="SkillPlanner\icons\lvl2v3.ico" />
     <Content Include="SkillPlanner\icons\lvl3v3.ico" />
