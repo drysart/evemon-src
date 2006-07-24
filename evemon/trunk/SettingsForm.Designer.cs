@@ -72,6 +72,7 @@ namespace EVEMon
             this.cbScreenList = new System.Windows.Forms.ComboBox();
             this.btnIdentifyScreens = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.cbShowBalloonTips = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.numericStatusInterval = new System.Windows.Forms.NumericUpDown();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -137,7 +138,7 @@ namespace EVEMon
             this.cbMinimizeToTray.AutoSize = true;
             this.cbMinimizeToTray.Location = new System.Drawing.Point(12, 3);
             this.cbMinimizeToTray.Name = "cbMinimizeToTray";
-            this.cbMinimizeToTray.Size = new System.Drawing.Size(105, 17);
+            this.cbMinimizeToTray.Size = new System.Drawing.Size(103, 17);
             this.cbMinimizeToTray.TabIndex = 0;
             this.cbMinimizeToTray.Text = "Minimize to Tray";
             this.cbMinimizeToTray.UseVisualStyleBackColor = true;
@@ -170,7 +171,7 @@ namespace EVEMon
             this.cbRunIGBServer.AutoSize = true;
             this.cbRunIGBServer.Location = new System.Drawing.Point(12, 3);
             this.cbRunIGBServer.Name = "cbRunIGBServer";
-            this.cbRunIGBServer.Size = new System.Drawing.Size(219, 17);
+            this.cbRunIGBServer.Size = new System.Drawing.Size(217, 17);
             this.cbRunIGBServer.TabIndex = 3;
             this.cbRunIGBServer.Text = "Run IGB Mini-server on http://localhost/";
             this.cbRunIGBServer.UseVisualStyleBackColor = true;
@@ -180,7 +181,7 @@ namespace EVEMon
             this.cbWorksafeMode.AutoSize = true;
             this.cbWorksafeMode.Location = new System.Drawing.Point(12, 49);
             this.cbWorksafeMode.Name = "cbWorksafeMode";
-            this.cbWorksafeMode.Size = new System.Drawing.Size(273, 17);
+            this.cbWorksafeMode.Size = new System.Drawing.Size(271, 17);
             this.cbWorksafeMode.TabIndex = 2;
             this.cbWorksafeMode.Text = "Run in \"safe for work\" mode (no portraits or colors)";
             this.cbWorksafeMode.UseVisualStyleBackColor = true;
@@ -190,7 +191,7 @@ namespace EVEMon
             this.cbTitleToTime.AutoSize = true;
             this.cbTitleToTime.Location = new System.Drawing.Point(12, 26);
             this.cbTitleToTime.Name = "cbTitleToTime";
-            this.cbTitleToTime.Size = new System.Drawing.Size(179, 17);
+            this.cbTitleToTime.Size = new System.Drawing.Size(177, 17);
             this.cbTitleToTime.TabIndex = 1;
             this.cbTitleToTime.Text = "Set window title to training time";
             this.cbTitleToTime.UseVisualStyleBackColor = true;
@@ -198,9 +199,9 @@ namespace EVEMon
             // cbPlaySoundOnSkillComplete
             // 
             this.cbPlaySoundOnSkillComplete.AutoSize = true;
-            this.cbPlaySoundOnSkillComplete.Location = new System.Drawing.Point(12, 3);
+            this.cbPlaySoundOnSkillComplete.Location = new System.Drawing.Point(12, 26);
             this.cbPlaySoundOnSkillComplete.Name = "cbPlaySoundOnSkillComplete";
-            this.cbPlaySoundOnSkillComplete.Size = new System.Drawing.Size(218, 17);
+            this.cbPlaySoundOnSkillComplete.Size = new System.Drawing.Size(216, 17);
             this.cbPlaySoundOnSkillComplete.TabIndex = 5;
             this.cbPlaySoundOnSkillComplete.Text = "Play sound when skill training completes";
             this.cbPlaySoundOnSkillComplete.UseVisualStyleBackColor = true;
@@ -312,7 +313,7 @@ namespace EVEMon
             this.cbEmailServerRequireSsl.AutoSize = true;
             this.cbEmailServerRequireSsl.Location = new System.Drawing.Point(85, 30);
             this.cbEmailServerRequireSsl.Name = "cbEmailServerRequireSsl";
-            this.cbEmailServerRequireSsl.Size = new System.Drawing.Size(116, 17);
+            this.cbEmailServerRequireSsl.Size = new System.Drawing.Size(114, 17);
             this.cbEmailServerRequireSsl.TabIndex = 6;
             this.cbEmailServerRequireSsl.Text = "Connect using SSL";
             this.cbEmailServerRequireSsl.UseVisualStyleBackColor = true;
@@ -322,7 +323,7 @@ namespace EVEMon
             this.cbEmailAuthRequired.AutoSize = true;
             this.cbEmailAuthRequired.Location = new System.Drawing.Point(85, 53);
             this.cbEmailAuthRequired.Name = "cbEmailAuthRequired";
-            this.cbEmailAuthRequired.Size = new System.Drawing.Size(127, 17);
+            this.cbEmailAuthRequired.Size = new System.Drawing.Size(125, 17);
             this.cbEmailAuthRequired.TabIndex = 7;
             this.cbEmailAuthRequired.Text = "Server requires login";
             this.cbEmailAuthRequired.UseVisualStyleBackColor = true;
@@ -403,7 +404,7 @@ namespace EVEMon
             this.cbSendEmail.AutoSize = true;
             this.cbSendEmail.Location = new System.Drawing.Point(12, 3);
             this.cbSendEmail.Name = "cbSendEmail";
-            this.cbSendEmail.Size = new System.Drawing.Size(217, 17);
+            this.cbSendEmail.Size = new System.Drawing.Size(215, 17);
             this.cbSendEmail.TabIndex = 0;
             this.cbSendEmail.Text = "Send email when skill training completes";
             this.cbSendEmail.UseVisualStyleBackColor = true;
@@ -589,7 +590,7 @@ namespace EVEMon
             this.cbRelocateEveWindow.AutoSize = true;
             this.cbRelocateEveWindow.Location = new System.Drawing.Point(12, 3);
             this.cbRelocateEveWindow.Name = "cbRelocateEveWindow";
-            this.cbRelocateEveWindow.Size = new System.Drawing.Size(216, 17);
+            this.cbRelocateEveWindow.Size = new System.Drawing.Size(214, 17);
             this.cbRelocateEveWindow.TabIndex = 0;
             this.cbRelocateEveWindow.Text = "Relocate windowed EVE to fill a monitor";
             this.cbRelocateEveWindow.UseVisualStyleBackColor = true;
@@ -667,7 +668,27 @@ namespace EVEMon
             this.groupBox7.TabIndex = 7;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Tranquility Status";
-            // 
+            //
+            // cbCheckTranquilityStatus
+            //
+            this.cbCheckTranquilityStatus.AutoSize = true;
+            this.cbCheckTranquilityStatus.Location = new System.Drawing.Point(15, 21);
+            this.cbCheckTranquilityStatus.Name = "cbCheckTranquilityStatus";
+            this.cbCheckTranquilityStatus.Size = new System.Drawing.Size(159, 17);
+            this.cbCheckTranquilityStatus.TabIndex = 3;
+            this.cbCheckTranquilityStatus.Text = "Check for Tranquility Status";
+            this.cbCheckTranquilityStatus.UseVisualStyleBackColor = true;
+            this.cbCheckTranquilityStatus.CheckedChanged += new System.EventHandler(this.cbCheckTranquilityStatus_CheckedChanged);
+            //
+            // label15
+            //
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(187, 49);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(44, 13);
+            this.label15.TabIndex = 2;
+            this.label15.Text = "minutes";
+            //
             // label14
             // 
             this.label14.AutoSize = true;
@@ -678,7 +699,7 @@ namespace EVEMon
             this.label14.Text = "Update Status Every";
             // 
             // numericStatusInterval
-            // 
+            //
             this.numericStatusInterval.Location = new System.Drawing.Point(125, 47);
             this.numericStatusInterval.Maximum = new decimal(new int[] {
             60,
@@ -752,7 +773,7 @@ namespace EVEMon
             this.rbDefaultProxy.AutoSize = true;
             this.rbDefaultProxy.Location = new System.Drawing.Point(13, 3);
             this.rbDefaultProxy.Name = "rbDefaultProxy";
-            this.rbDefaultProxy.Size = new System.Drawing.Size(249, 17);
+            this.rbDefaultProxy.Size = new System.Drawing.Size(248, 17);
             this.rbDefaultProxy.TabIndex = 2;
             this.rbDefaultProxy.TabStop = true;
             this.rbDefaultProxy.Text = "Use system default proxy (from Control Panel)";
@@ -763,7 +784,7 @@ namespace EVEMon
             this.rbCustomProxy.AutoSize = true;
             this.rbCustomProxy.Location = new System.Drawing.Point(13, 26);
             this.rbCustomProxy.Name = "rbCustomProxy";
-            this.rbCustomProxy.Size = new System.Drawing.Size(157, 17);
+            this.rbCustomProxy.Size = new System.Drawing.Size(156, 17);
             this.rbCustomProxy.TabIndex = 3;
             this.rbCustomProxy.TabStop = true;
             this.rbCustomProxy.Text = "Use custom proxy settings:";
@@ -922,22 +943,23 @@ namespace EVEMon
             this.groupBox4.Controls.Add(this.flowLayoutPanel5);
             this.groupBox4.Location = new System.Drawing.Point(3, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(368, 43);
+            this.groupBox4.Size = new System.Drawing.Size(368, 66);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Sound Alert";
+            this.groupBox4.Text = "Alerts";
             // 
             // flowLayoutPanel5
             // 
             this.flowLayoutPanel5.AutoSize = true;
             this.flowLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel5.Controls.Add(this.cbShowBalloonTips);
             this.flowLayoutPanel5.Controls.Add(this.cbPlaySoundOnSkillComplete);
             this.flowLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel5.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
             this.flowLayoutPanel5.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(362, 23);
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(362, 46);
             this.flowLayoutPanel5.TabIndex = 6;
             // 
             // groupBox3
@@ -947,7 +969,7 @@ namespace EVEMon
             this.groupBox3.AutoSize = true;
             this.groupBox3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox3.Controls.Add(this.flowLayoutPanel6);
-            this.groupBox3.Location = new System.Drawing.Point(3, 52);
+            this.groupBox3.Location = new System.Drawing.Point(3, 75);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(368, 270);
             this.groupBox3.TabIndex = 6;
@@ -997,27 +1019,16 @@ namespace EVEMon
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
             this.flowLayoutPanel8.Size = new System.Drawing.Size(162, 29);
             this.flowLayoutPanel8.TabIndex = 6;
-            // 
-            // label15            
             //
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(187, 49);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(44, 13);
-            this.label15.TabIndex = 2;
-            this.label15.Text = "minutes";
+            // cbShowBalloonTips
             //
-            // cbCheckTranquilityStatus
-            //
-            this.cbCheckTranquilityStatus.AutoSize = true;
-            this.cbCheckTranquilityStatus.Location = new System.Drawing.Point(15, 21);
-            this.cbCheckTranquilityStatus.Name = "cbCheckTranquilityStatus";
-            this.cbCheckTranquilityStatus.Size = new System.Drawing.Size(161, 17);
-            this.cbCheckTranquilityStatus.TabIndex = 3;
-            this.cbCheckTranquilityStatus.Text = "Check for Tranquility Status";
-            this.cbCheckTranquilityStatus.UseVisualStyleBackColor = true;
-            this.cbCheckTranquilityStatus.CheckedChanged += new System.EventHandler(this.cbCheckTranquilityStatus_CheckedChanged);
-            //
+            this.cbShowBalloonTips.AutoSize = true;
+            this.cbShowBalloonTips.Location = new System.Drawing.Point(12, 3);
+            this.cbShowBalloonTips.Name = "cbShowBalloonTips";
+            this.cbShowBalloonTips.Size = new System.Drawing.Size(242, 17);
+            this.cbShowBalloonTips.TabIndex = 6;
+            this.cbShowBalloonTips.Text = "Show balloon tip when skill training completes";
+            this.cbShowBalloonTips.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -1172,5 +1183,6 @@ namespace EVEMon
         private System.Windows.Forms.NumericUpDown numericStatusInterval;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.CheckBox cbCheckTranquilityStatus;
+        private System.Windows.Forms.CheckBox cbShowBalloonTips;
     }
 }

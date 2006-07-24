@@ -54,6 +54,7 @@ namespace EVEMon
             s.RunIGBServer = cbRunIGBServer.Checked;
             s.RelocateEveWindow = cbRelocateEveWindow.Checked;
             s.RelocateTargetScreen = cbScreenList.SelectedIndex;
+            s.EnableBalloonTips = cbShowBalloonTips.Checked;
             s.PlaySoundOnSkillComplete = cbPlaySoundOnSkillComplete.Checked;
             s.EnableEmailAlert = cbSendEmail.Checked;
             s.EmailServer = tbMailServer.Text;
@@ -124,6 +125,7 @@ namespace EVEMon
                 cbScreenList.SelectedIndex = m_settings.RelocateTargetScreen;
             else
                 cbScreenList.SelectedIndex = 0;
+            cbShowBalloonTips.Checked = m_settings.EnableBalloonTips;
             cbPlaySoundOnSkillComplete.Checked = m_settings.PlaySoundOnSkillComplete;
             cbSendEmail.Checked = m_settings.EnableEmailAlert;
             tbMailServer.Text = m_settings.EmailServer;

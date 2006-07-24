@@ -66,6 +66,14 @@ namespace EVEMon.Common
             set { m_enableEmailAlert = value; }
         }
 
+        private bool m_enableBalloonTips = true;
+
+        public bool EnableBalloonTips
+        {
+            get { return m_enableBalloonTips; }
+            set { m_enableBalloonTips = value; }
+        }
+
         private string m_emailServer;
 
         public string EmailServer

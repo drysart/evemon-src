@@ -329,24 +329,27 @@ namespace EVEMon
                 if (m_settings.PlaySoundOnSkillComplete)
                     MP3Player.Play("SkillTrained.mp3", true);
 
-                string sa = e.CharacterName + " has finished learning " + e.SkillName + ".";
-                m_completedSkills.Add(sa);
+                if (m_settings.EnableBalloonTips)
+                {
+                    string sa = e.CharacterName + " has finished learning " + e.SkillName + ".";
+                    m_completedSkills.Add(sa);
 
-                niAlertIcon.Text = "Skill Training Completed";
-                niAlertIcon.BalloonTipTitle = "Skill Training Completed";
-                if (m_completedSkills.Count == 1)
-                    niAlertIcon.BalloonTipText = sa;
-                else
-                    niAlertIcon.BalloonTipText = m_completedSkills.Count.ToString() + " skills completed. Click for more info.";
-                niAlertIcon.BalloonTipIcon = ToolTipIcon.Info;
-                niAlertIcon.Visible = true;
-                niAlertIcon.ShowBalloonTip(30000);
+                    niAlertIcon.Text = "Skill Training Completed";
+                    niAlertIcon.BalloonTipTitle = "Skill Training Completed";
+                    if (m_completedSkills.Count == 1)
+                        niAlertIcon.BalloonTipText = sa;
+                    else
+                        niAlertIcon.BalloonTipText = m_completedSkills.Count.ToString() + " skills completed. Click for more info.";
+                    niAlertIcon.BalloonTipIcon = ToolTipIcon.Info;
+                    niAlertIcon.Visible = true;
+                    niAlertIcon.ShowBalloonTip(30000);
+                    tmrAlertRefresh.Enabled = false;
+                    tmrAlertRefresh.Interval = 60000;
+                    tmrAlertRefresh.Enabled = true;
+                }
+
                 if (m_settings.EnableEmailAlert)
                     Emailer.SendAlertMail(m_settings, e.SkillName, e.CharacterName);
-
-                tmrAlertRefresh.Enabled = false;
-                tmrAlertRefresh.Interval = 60000;
-                tmrAlertRefresh.Enabled = true;
             }));
         }
 
@@ -475,7 +478,7 @@ namespace EVEMon
         private void tmrAlertRefresh_Tick(object sender, EventArgs e)
         {
             tmrAlertRefresh.Enabled = false;
-            if (niAlertIcon.Visible)
+            if (m_settings.EnableBalloonTips && niAlertIcon.Visible)
             {
                 niAlertIcon.ShowBalloonTip(30000);
                 tmrAlertRefresh.Interval = 60000;
