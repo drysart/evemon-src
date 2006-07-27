@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-
 using EVEMon.Common.Schedule;
 
 namespace EVEMon.Common
@@ -14,10 +13,6 @@ namespace EVEMon.Common
     [XmlRoot("logindata2")]
     public class Settings
     {
-        public Settings()
-        {
-        }
-
         private string m_username;
 
         public string Username
@@ -184,17 +179,8 @@ namespace EVEMon.Common
             }
         }
 
-        private string GetInternalPlanName(string charName, string planName)
-        {
-            if (planName == PLAN_DEFAULT)
-                return charName;
-            else
-                return charName + "::" + planName;
-        }
-
         public Plan GetPlanByName(string charName, string planName)
         {
-            string pn = GetInternalPlanName(charName, planName);
             foreach (Pair<string, Plan> x in m_plans)
             {
                 if (planName == PLAN_DEFAULT && x.A == charName)
@@ -722,11 +708,6 @@ namespace EVEMon.Common
     public class CharLoginInfo
     {
         private string m_username;
-        
-        public CharLoginInfo()
-        {          
-            
-        }
 
         public string Username
         {

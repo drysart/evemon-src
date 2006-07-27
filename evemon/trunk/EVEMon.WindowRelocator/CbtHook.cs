@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -101,9 +99,6 @@ namespace EVEMon.WindowRelocator
 
         [DllImport("user32", SetLastError=true)]
         private static extern bool UnhookWindowsHookEx(IntPtr hhk);
-
-        [DllImport("user32")]
-        private static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
         #region IDisposable Members
 

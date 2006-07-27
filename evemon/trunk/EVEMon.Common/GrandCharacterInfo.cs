@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-
+using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
+using System.Text;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
-using System.IO.Compression;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace EVEMon.Common
 {
@@ -75,9 +74,7 @@ namespace EVEMon.Common
                         allSkills[gs.Name] = gs;
                     }
 
-                    GrandSkillGroup gsg = new GrandSkillGroup(
-                        this,
-                        sgel.GetAttribute("n"),
+                    GrandSkillGroup gsg = new GrandSkillGroup(sgel.GetAttribute("n"),
                         skills);
                     this.m_skillGroups[gsg.Name] = gsg;
                 }
@@ -90,11 +87,6 @@ namespace EVEMon.Common
 
         private delegate void InternalEvent();
 
-
-        private void FireEvent(InternalEvent evt)
-        {
-            FireEvent(evt, null);
-        }
 
         private void FireEvent(InternalEvent evt, string coalesceKey)
         {
@@ -946,13 +938,11 @@ namespace EVEMon.Common
 
     public class GrandSkillGroup: IEnumerable<GrandSkill>
     {
-        private GrandCharacterInfo m_owner;
         private string m_name;
         private Dictionary<string, GrandSkill> m_skills = new Dictionary<string, GrandSkill>();
 
-        public GrandSkillGroup(GrandCharacterInfo gci, string name, IEnumerable<GrandSkill> skills)
+        public GrandSkillGroup(string name, IEnumerable<GrandSkill> skills)
         {
-            m_owner = gci;
             m_name = name;
             foreach (GrandSkill gs in skills)
             {
@@ -1117,7 +1107,7 @@ namespace EVEMon.Common
 
         public void Draw(DrawItemEventArgs e)
         {
-            Font fontr = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            Font fontr = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((0)));
             Graphics g = e.Graphics;
             bool hastrainingskill = false;
             foreach (GrandSkill gs in m_skills.Values)
@@ -1155,7 +1145,7 @@ namespace EVEMon.Common
                 TextRenderer.DrawText(g, detailText, fontr, detailTopLeftInt, Color.White);
             }
             Image i;
-            if (isCollapsed == true)
+            if (isCollapsed)
                 i = GrandSkillGroup.ExpandImage;
             else
                 i = GrandSkillGroup.CollapseImage;
@@ -1713,7 +1703,7 @@ namespace EVEMon.Common
 
         public void Draw(DrawItemEventArgs e)
         {
-            Font fontr = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            Font fontr = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((0)));
             Graphics g = e.Graphics;
 
             if (m_inTraining)
@@ -1840,10 +1830,6 @@ namespace EVEMon.Common
         public void AdjustAttributeBonus(EveAttribute attribute, int adjustmentAmount)
         {
             m_attributeBonuses[(int)attribute] += adjustmentAmount;
-        }
-
-        public EveAttributeScratchpad()
-        {
         }
 
         public void ApplyALevelOf(GrandSkill gs)

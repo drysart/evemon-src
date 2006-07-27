@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace EVEMon.WindowRelocator
 {
@@ -31,9 +30,6 @@ namespace EVEMon.WindowRelocator
 
         [DllImport("user32")]
         private extern static IntPtr GetForegroundWindow();
-
-        [DllImport("user32")]
-        private extern static int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
         [DllImport("user32")]
         private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
@@ -73,7 +69,6 @@ namespace EVEMon.WindowRelocator
 
         private static Rectangle GetClientRectInScreenCoords(IntPtr hWnd)
         {
-            Rectangle winRect = GetWindowRect(hWnd);
             RECT cr;
             GetClientRect(hWnd, out cr);
             POINT pt = new POINT();
@@ -155,7 +150,6 @@ namespace EVEMon.WindowRelocator
             {
                 IntPtr fgWin = GetForegroundWindow();
                 StringBuilder sb = new StringBuilder(512);
-                int titleLen = GetWindowText(fgWin, sb, 512);
                 if (sb.ToString() == "EVE")
                 {
                     Rectangle r = GetWindowRect(fgWin);

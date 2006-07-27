@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing.Drawing2D;
-
+using System.Windows.Forms;
 using EVEMon.Common;
 
 namespace EVEMon.SkillPlanner
@@ -122,7 +118,7 @@ namespace EVEMon.SkillPlanner
         }
 
         private List<List<SkillInfo>> m_layoutData = new List<List<SkillInfo>>();
-        private Dictionary<GrandSkill, SkillInfo> m_alreadyInLayout = null;
+        //private Dictionary<GrandSkill, SkillInfo> m_alreadyInLayout = null;
 
         private void BuildTree()
         {
@@ -136,7 +132,7 @@ namespace EVEMon.SkillPlanner
         private void SetupTree()
         {
             ResetLayoutData();
-            m_alreadyInLayout = new Dictionary<GrandSkill, SkillInfo>();
+            //m_alreadyInLayout = new Dictionary<GrandSkill, SkillInfo>();
 
             if (m_rootSkill != null)
             {
@@ -753,7 +749,7 @@ namespace EVEMon.SkillPlanner
             base.OnMouseClick(e);
 
             GrandSkill clickedSkill = null;
-            using (Graphics g = this.CreateGraphics())
+            using (this.CreateGraphics())
             {
                 foreach (List<SkillInfo> lsi in m_layoutData)
                 {

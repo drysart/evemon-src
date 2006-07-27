@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Windows.Forms;
-
 using EVEMon.Common;
 
 namespace EVEMon.SkillPlanner
@@ -101,7 +98,7 @@ namespace EVEMon.SkillPlanner
                             this.Invoke(new MethodInvoker(delegate
                             {
                                 if (itemSelectControl1.SelectedItem == i)
-                                    GotItemImage(sess, img);
+                                    GotItemImage(img);
                             }));
                         });
                 }
@@ -148,7 +145,7 @@ namespace EVEMon.SkillPlanner
             return isKnown;
         }
 
-        private void GotItemImage(EveSession sess, Image i)
+        private void GotItemImage(Image i)
         {
             if (i != null)
                 pbItemIcon.Image = i;

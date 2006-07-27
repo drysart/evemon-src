@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
-using System.Threading;
-using System.Reflection;
-using System.Net;
 using System.IO;
+using System.Net;
+using System.Reflection;
 using System.Xml;
 
 namespace EVEMon.Common

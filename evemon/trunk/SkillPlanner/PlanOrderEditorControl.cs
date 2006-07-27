@@ -1,15 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.IO;
-using System.Reflection;
-using System.Xml.Serialization;
-
 using EVEMon.Common;
 
 namespace EVEMon.SkillPlanner
@@ -68,7 +62,6 @@ namespace EVEMon.SkillPlanner
                 {
                     //lvSkills.Items.Clear();
                     int itemIndex = 0;
-                    DateTime lastEnd = DateTime.MinValue;
                     foreach (PlanEntry pe in m_plan.Entries)
                     {
                         ListViewItem lvi = new ListViewItem();
@@ -308,6 +301,7 @@ namespace EVEMon.SkillPlanner
              */
         }
 
+/*
         private bool CheckPrereqs(GrandSkill gs, int checkLevel, Dictionary<string, int> known, ref string failMessage)
         {
             //if (gs.PrerequisitesMet)
@@ -331,6 +325,7 @@ namespace EVEMon.SkillPlanner
             }
             return true;
         }
+*/
 
         private void lvSkills_ListViewItemsDragged(object sender, EventArgs e)
         {

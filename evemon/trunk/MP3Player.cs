@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
-using System.Threading;
+using System.Text;
 using System.Windows.Forms;
 
 namespace EVEMon
@@ -79,7 +77,7 @@ namespace EVEMon
             {
                 if (m.Msg == MM_MCINOTIFY)
                 {
-                    MP3Player.Notify(ref m);
+                    MP3Player.Notify();
                     return true;
                 }
                 return false;
@@ -88,10 +86,10 @@ namespace EVEMon
             #endregion
         }
 
-        private static void Notify(ref Message m)
+        private static void Notify()
         {
             string cmd = "close MediaFile";
-            int result = mciSendString(cmd, null, 0, IntPtr.Zero);
+            mciSendString(cmd, null, 0, IntPtr.Zero);
             m_isOpen = false;
         }
     }

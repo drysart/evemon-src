@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
@@ -135,7 +134,7 @@ namespace EVEMon.Common
                 using (Stream s = asm.GetManifestResourceStream("EVEMon.Common.eve-items2.xml.gz"))
                 using (GZipStream zs = new GZipStream(s, CompressionMode.Decompress))
                 {
-                    using (IDisposable d = StringTable.GetInstanceScope())
+                    using (StringTable.GetInstanceScope())
                     {
                         XmlSerializer xs = new XmlSerializer(typeof(ItemCategory));
                         rootCat = xs.Deserialize(zs) as ItemCategory;

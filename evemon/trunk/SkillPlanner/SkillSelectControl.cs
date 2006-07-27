@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-
 using EVEMon.Common;
 
 namespace EVEMon.SkillPlanner
@@ -280,7 +275,6 @@ namespace EVEMon.SkillPlanner
                             return "-";
                         else
                         {
-                            int nextLevel = gs.Level + 1;
                             return
                                 GrandSkill.GetRomanSkillNumber(5) + ": " +
                                 GrandSkill.TimeSpanToDescriptiveText(ts, DescriptiveTextOptions.Default);

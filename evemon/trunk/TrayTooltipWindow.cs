@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.Runtime.InteropServices;
-
+using System.Windows.Forms;
 using EVEMon.Common;
 
 namespace EVEMon
@@ -243,23 +239,6 @@ namespace EVEMon
 
         private int hHook = 0;
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct POINT
-        {
-            public int x;
-            public int y;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct MSLLHOOKSTRUCT 
-        {
-            public POINT pt;
-            public int mouseData;
-            public int flags;
-            public int time;
-            public IntPtr dwExtraInfo;
-        }
-
         [DllImport("user32", SetLastError = true)]
         private static extern int SetWindowsHookEx(int idHook, LowLevelMouseDelegate lpfn, IntPtr hInstance, int threadId);
 
@@ -268,10 +247,6 @@ namespace EVEMon
 
         [DllImport("user32")]
         static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
-
-        public LowLevelMouseHook()
-        {
-        }
 
         ~LowLevelMouseHook()
         {

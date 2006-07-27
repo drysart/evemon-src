@@ -1,18 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Serialization;
 using System.Xml.XPath;
 using System.Xml.Xsl;
-using System.Xml.Serialization;
-
 using EVEMon.Common;
 using EVEMon.SkillPlanner;
 
@@ -377,7 +374,7 @@ namespace EVEMon
 
         private void UpdateSkillHeaderStats()
         {
-            if (this.Visible == true)
+            if (this.Visible)
             {
                 lblSkillHeader.Text = String.Format("{0} Known Skills ({1} Total SP):", m_grandCharacterInfo.KnownSkillCount, m_grandCharacterInfo.SkillPointTotal.ToString("#,##0"));
             }
@@ -525,7 +522,7 @@ namespace EVEMon
             updating_pic = false;
         }
 
-        private DateTime m_lastUpdate = DateTime.MinValue;
+        //private DateTime m_lastUpdate = DateTime.MinValue;
         private DateTime m_nextScheduledUpdateAt = DateTime.MinValue;
 
         private void tmrUpdate_Tick(object sender, EventArgs e)
@@ -588,7 +585,7 @@ namespace EVEMon
                 {
                     this.Invoke(new MethodInvoker(delegate
                     {
-                        m_lastUpdate = DateTime.Now;
+                        //m_lastUpdate = DateTime.Now;
                         m_nextScheduledUpdateAt = DateTime.Now + TimeSpan.FromMilliseconds(timeLeftInCache);
                         ttToolTip.SetToolTip(pbThrobber, "Click to update now.");
                         tmrUpdate.Interval = timeLeftInCache;
@@ -793,7 +790,7 @@ namespace EVEMon
 
         private void UpdateNextUpdateLabel()
         {
-            if (this.Visible == true)
+            if (this.Visible)
             {
                 if (m_throbberRunning)
                 {
@@ -1066,8 +1063,6 @@ namespace EVEMon
                 e.ItemHeight = GrandSkill.Height;
         }
 
-        private System.Drawing.Drawing2D.GraphicsPath mousePath;
-
         private void lbSkills_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             // Update the drawing based upon the mouse wheel scrolling.
@@ -1246,7 +1241,7 @@ namespace EVEMon
                     }
 
                     int TotalPoints = 0;
-                    int PointsRemaining = 0;
+                    //int PointsRemaining = 0;
                     double percentDonePoints = 0.0;
                     double percentDoneSkills = 0.0;
                     //TimeSpan timeSpent = 0;
@@ -1261,7 +1256,7 @@ namespace EVEMon
                     {
                         percentDonePoints = (Convert.ToDouble(sg.GetTotalPoints()) / Convert.ToDouble(TotalPoints) * 100);
                         percentDoneSkills = Convert.ToDouble(sg.KnownCount) / Convert.ToDouble(sg.Count);
-                        PointsRemaining = TotalPoints - sg.GetTotalPoints();
+                        //PointsRemaining = TotalPoints - sg.GetTotalPoints();
 
                         string SkillGroupStats = String.Format("Points Completed: {0}/{1} ({2}%)\nSkills Known: {3}/{4} ({5})",
                             sg.GetTotalPoints().ToString("#,##0"), TotalPoints.ToString("#,##0"),
@@ -1501,7 +1496,7 @@ namespace EVEMon
                 if (o is GrandSkillGroup)
                 {
                     GrandSkillGroup gsg = (GrandSkillGroup)o;
-                    bool isCollapsed = (m_groupCollapsed.ContainsKey(gsg) && m_groupCollapsed[gsg] == true);
+                    bool isCollapsed = (m_groupCollapsed.ContainsKey(gsg) && m_groupCollapsed[gsg]);
                     if (setCollapsed == null)
                     {
                         setCollapsed = !isCollapsed;
@@ -1609,7 +1604,7 @@ namespace EVEMon
 
         private void pbCharImage_Click(object sender, EventArgs e)
         {
-            cmsPictureOptions.Show(Control.MousePosition);
+            cmsPictureOptions.Show(MousePosition);
         }
     }
 

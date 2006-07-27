@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Net;
-using System.IO;
-using System.Windows.Forms;
-
 using EVEMon.Common;
 
 namespace EVEMon.Sales

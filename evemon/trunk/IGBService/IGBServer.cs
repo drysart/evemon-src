@@ -1,15 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Threading;
-using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Sockets;
-
-using EVEMon;
+using System.Text.RegularExpressions;
 using EVEMon.Common;
-using EVEMon.SkillPlanner;
 
 namespace EVEMon.IGBService
 {
@@ -104,7 +99,6 @@ namespace EVEMon.IGBService
                 headerStr = headerStr.Replace("\r", "");
 
             bool first = true;
-            string requestVerb = "ERR";
             string requestUrl = String.Empty;
             foreach (string tline in headerStr.Split('\n'))
             {
@@ -113,7 +107,6 @@ namespace EVEMon.IGBService
                     Match m = Regex.Match(tline, @"^(GET|POST) (.+) HTTP/(.*)$");
                     if (m.Success)
                     {
-                        requestVerb = m.Groups[1].Value;
                         requestUrl = m.Groups[2].Value;
                     }
                     first = false;
@@ -261,11 +254,6 @@ namespace EVEMon.IGBService
                     }
                 }
             }
-        }
-
-        private void BeginAcceptTcpClient()
-        {
-            BeginAcceptTcpClient(true);
         }
 
         private void BeginAcceptTcpClient(bool acquireLock)
@@ -422,8 +410,6 @@ namespace EVEMon.IGBService
         {
             try
             {
-                bool inLock = ar.CompletedSynchronously;
-
                 int bytesRead = m_stream.EndRead(ar);
                 if (bytesRead<=0)
                 {

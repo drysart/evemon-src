@@ -1,9 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using EVEMon.Common;
 
@@ -113,9 +109,6 @@ namespace EVEMon.Sales
 
         private bool PricesLocked
         {
-            get{
-                return m_pricesLocked;
-            }
             set
             {
                 m_pricesLocked = value;
@@ -138,22 +131,6 @@ namespace EVEMon.Sales
                 PricesLocked = true;
                 btnLockPrices.Text = "Unlock Prices";
             }
-        }
-
-        private void SetPrice(MineralTile tile, Single price)
-        {
-            //TODO
-                //tile.PricePerUnit = price;
-        }
-
-        private void mt_pyerite_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void mt_mexallon_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void tslCourtesy_Click(object sender, EventArgs e)

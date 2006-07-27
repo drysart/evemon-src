@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
 using System.IO;
 using System.IO.Compression;
+using System.Reflection;
 using System.Xml.Serialization;
 
 namespace EVEMon.Common

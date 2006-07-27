@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-
 using EVEMon.Common;
 
 namespace EVEMon
@@ -27,13 +23,11 @@ namespace EVEMon
 
         private bool CharOk
         {
-            get { return m_charOk; }
             set { m_charOk = value; CheckValidation(); }
         }
 
         private bool FileOk
         {
-            get { return m_fileOk; }
             set { m_fileOk = value; CheckValidation(); }
         }
 
@@ -150,7 +144,7 @@ namespace EVEMon
 
             EveSession s = null;
             string errm;
-            using (IDisposable d = BusyDialog.GetScope())
+            using (BusyDialog.GetScope())
             {
                 s = EveSession.GetSession(tbUsername.Text, tbPassword.Text, out errm);
             }

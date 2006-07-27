@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
-
 using EVEMon.Common;
 
 namespace EVEMon
@@ -18,14 +15,15 @@ namespace EVEMon
             return m_instanceManager;
         }
 
-        private RegisteredWaitHandle m_waitHandle;
+        //private RegisteredWaitHandle m_waitHandle;
         private Semaphore m_semaphore;
         private bool m_createdNew;
 
         private InstanceManager()
         {
             m_semaphore = new Semaphore(0, 1, "EVEMonInstance", out m_createdNew);
-            m_waitHandle = ThreadPool.RegisterWaitForSingleObject(m_semaphore,
+            //m_waitHandle = 
+            ThreadPool.RegisterWaitForSingleObject(m_semaphore,
                                 new WaitOrTimerCallback(SemaphoreReleased), null, -1, false);
         }
 

@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using System.Xml.Serialization;
-
-using EVEMon;
 using EVEMon.Common;
 
 namespace EVEMon.SkillPlanner
@@ -312,28 +308,28 @@ namespace EVEMon.SkillPlanner
                 lblAttributes.Text = "Primary: " + m_selectedSkill.PrimaryAttribute.ToString() + ", " +
                     "Secondary: " + m_selectedSkill.SecondaryAttribute.ToString();
 
-                int plannedTo = 0;
+                //int plannedTo = 0;
                 bool anyPlan = false;
                 bool tPlan;
                 tPlan = SetPlanLabel(lblLevel1Time, 1);
-                if (tPlan)
-                    plannedTo = 1;
+                //if (tPlan)
+                    //plannedTo = 1;
                 anyPlan = anyPlan || tPlan;
                 tPlan = SetPlanLabel(lblLevel2Time, 2);
-                if (tPlan)
-                    plannedTo = 2;
+                //if (tPlan)
+                    //plannedTo = 2;
                 anyPlan = anyPlan || tPlan;
                 tPlan = SetPlanLabel(lblLevel3Time, 3);
-                if (tPlan)
-                    plannedTo = 3;
+                //if (tPlan)
+                    //plannedTo = 3;
                 anyPlan = anyPlan || tPlan;
                 tPlan = SetPlanLabel(lblLevel4Time, 4);
-                if (tPlan)
-                    plannedTo = 4;
+                //if (tPlan)
+                    //plannedTo = 4;
                 anyPlan = anyPlan || tPlan;
                 tPlan = SetPlanLabel(lblLevel5Time, 5);
-                if (tPlan)
-                    plannedTo = 5;
+                //if (tPlan)
+                    //plannedTo = 5;
                 anyPlan = anyPlan || tPlan;
                 //btnCancelPlan.Enabled = anyPlan;
 
@@ -741,7 +737,7 @@ namespace EVEMon.SkillPlanner
             }
             // XXX: apply plan change
 
-            List<PlanEntry> nonLearningEntries = new List<PlanEntry>();
+           // List<PlanEntry> nonLearningEntries = new List<PlanEntry>();
             m_plan.SuppressEvents();
             try
             {

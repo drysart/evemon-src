@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-using System.Threading;
 using System.Reflection;
-
+using System.Threading;
+using System.Xml;
 using EVEMon.Common;
 
 namespace EVEMon
@@ -100,8 +97,8 @@ namespace EVEMon
                         {
                             // Use ThreadPool to avoid deadlock if the callback tries to
                             // call Stop() on the UpdateManager.
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(delegate(object o)
-                            {
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(delegate
+                                                                              {
                                 OnUpdateAvailable(updateUrl, updateMessage, newestVersion,
                                     currentVersion, canAutoInstall, installArgs, installUrl);
                             }));

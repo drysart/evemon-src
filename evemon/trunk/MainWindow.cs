@@ -1,20 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using System.Globalization;
-using System.Runtime.InteropServices;
-using System.IO;
-using System.Reflection;
 using System.Net.Sockets;
-using EVEMon.Sales;
-
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
 using EVEMon.Common;
+using EVEMon.Sales;
 
 namespace EVEMon
 {
@@ -32,8 +24,6 @@ namespace EVEMon
         {
             m_settings = s;
         }
-
-        private Image[] m_throbberImages;
 
         private IGBService.IGBServer m_igbServer;
 
@@ -81,11 +71,6 @@ namespace EVEMon
             {
                 RemoveCharFileInfo(cfi);
             }
-        }
-
-        void m_shiftTest_WindowCreated(object sender, EventArgs e)
-        {
-            System.Media.SystemSounds.Beep.Play();
         }
 
         private void MainWindow_Shown(object sender, EventArgs e)

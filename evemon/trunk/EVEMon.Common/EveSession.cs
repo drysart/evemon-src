@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
-using System.Threading;
-using System.Net;
 using System.IO;
+using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -224,7 +224,7 @@ namespace EVEMon.Common
                 //    f.ShowDialog();
                 //}
 
-                using (IDisposable d = BusyDialog.GetScope())
+                using (BusyDialog.GetScope())
                 {
                     mi.Invoke();
                 }
@@ -288,154 +288,6 @@ namespace EVEMon.Common
             }
 
             return res;
-        }
-
-        private string oldInternalGetUrl(string url, string refer)
-        {
-            if (String.IsNullOrEmpty(refer))
-                refer = "http://myeve.eve-online.com/news.asp";
-
-            if (m_cookies == null)
-                m_cookies = new CookieContainer();
-
-            int maxRedirects = 6;
-        AGAIN:
-            if (maxRedirects-- <= 0)
-                return String.Empty;
-
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
-            wr.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1 EVEMon/0.0";
-            wr.Referer = refer;
-            wr.CookieContainer = m_cookies;
-            wr.AllowAutoRedirect = false;
-            wr.Accept = "text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5";
-            wr.Headers[HttpRequestHeader.AcceptLanguage] = "en-us,en;q=0.5";
-            wr.Headers[HttpRequestHeader.AcceptEncoding] = "gzip,deflate";
-            wr.Headers[HttpRequestHeader.AcceptCharset] = "ISO-8859-1,utf-8;q=0.7,*;q=0.7";
-            wr.KeepAlive = true;
-            wr.Headers[HttpRequestHeader.Pragma] = "no-cache";
-
-            //wr.KeepAlive = false;
-            //wr.ProtocolVersion = HttpVersion.Version10;
-
-            if (NetworkLogEvent != null)
-            {
-                NetworkLogEventArgs args = new NetworkLogEventArgs();
-                args.NetworkLogEventType = NetworkLogEventType.BeginGetUrl;
-                args.Url = url;
-                args.Referer = refer;
-                args.Cookies = m_cookies.GetCookies(new Uri(url));
-                //args.Cookies = m_cookies;
-                NetworkLogEvent(this, args);
-            }
-
-            HttpWebResponse resp = null;
-            try
-            {
-                resp = (HttpWebResponse)wr.GetResponse();
-                m_cookies.Add(resp.Cookies);
-
-                if (resp.StatusCode == HttpStatusCode.Redirect)
-                {
-                    string loc = resp.GetResponseHeader("Location");
-                    Uri x = new Uri(url);
-                    Uri newUri = new Uri(x, loc);
-
-                    if (NetworkLogEvent != null)
-                    {
-                        NetworkLogEventArgs args = new NetworkLogEventArgs();
-                        args.NetworkLogEventType = NetworkLogEventType.Redirected;
-                        args.Url = url;
-                        args.Referer = refer;
-                        args.Cookies = resp.Cookies;
-                        args.RedirectTo = newUri.ToString();
-                        NetworkLogEvent(this, args);
-                    }
-
-                    refer = url;
-                    url = newUri.ToString();
-                    resp.Close();
-                    goto AGAIN;
-                }
-
-                string res = String.Empty;
-                using (Stream rs = resp.GetResponseStream())
-                using (StreamReader sreader = new StreamReader(rs, Encoding.GetEncoding("iso-8859-1")))
-                {
-                    res = sreader.ReadToEnd();
-                    sreader.Close();
-                    rs.Close();
-                    resp.Close();
-
-                    if (NetworkLogEvent != null)
-                    {
-                        NetworkLogEventArgs args = new NetworkLogEventArgs();
-                        args.NetworkLogEventType = NetworkLogEventType.GotUrlSuccess;
-                        args.Url = url;
-                        args.Referer = refer;
-                        args.Cookies = resp.Cookies;
-                        args.Data = res;
-                        args.StatusCode = resp.StatusCode;
-                        NetworkLogEvent(this, args);
-                    }
-                }
-
-                if (res.Contains("document.onload=window.location.href='"))
-                {
-                    Match m = Regex.Match(res, @"document\.onload=window\.location\.href='(.*?)';");
-                    string newUrl = m.Groups[1].Value;
-
-                    if (NetworkLogEvent != null)
-                    {
-                        NetworkLogEventArgs args = new NetworkLogEventArgs();
-                        args.NetworkLogEventType = NetworkLogEventType.ParsedRedirect;
-                        args.Url = url;
-                        args.Referer = refer;
-                        args.Cookies = resp.Cookies;
-                        args.RedirectTo = newUrl;
-                        NetworkLogEvent(this, args);
-                    }
-
-                    refer = url;
-                    url = newUrl;
-                    goto AGAIN;
-                }
-
-                return res;
-            }
-            catch (WebException err)
-            {
-                ExceptionHandler.LogException(err, true);
-                if (NetworkLogEvent != null)
-                {
-                    NetworkLogEventArgs args = new NetworkLogEventArgs();
-                    args.NetworkLogEventType = NetworkLogEventType.GotUrlFailure;
-                    args.Url = url;
-                    args.Referer = refer;
-                    if (resp != null)
-                        args.Cookies = resp.Cookies;
-                    args.Exception = err;
-                    NetworkLogEvent(this, args);
-                }
-                Thread.Sleep(TimeSpan.FromSeconds(3));
-                goto AGAIN;
-            }
-            catch (Exception err)
-            {
-                ExceptionHandler.LogRethrowException(err);
-                if (NetworkLogEvent != null)
-                {
-                    NetworkLogEventArgs args = new NetworkLogEventArgs();
-                    args.NetworkLogEventType = NetworkLogEventType.GotUrlFailure;
-                    args.Url = url;
-                    args.Referer = refer;
-                    if (resp != null)
-                        args.Cookies = resp.Cookies;
-                    args.Exception = err;
-                    NetworkLogEvent(this, args);
-                }
-                throw;
-            }
         }
 
         public void ReLogin()
@@ -553,21 +405,6 @@ namespace EVEMon.Common
                     throw new ApplicationException("Did not get sid for login");
                 }
             }
-        }
-
-        private bool oldWebLogin()
-        {
-            if (GetUrl("https://myeve.eve-online.com/login.asp?username=" +
-                System.Web.HttpUtility.UrlEncode(m_username, Encoding.GetEncoding("iso-8859-1")) +
-                "&password=" +
-                System.Web.HttpUtility.UrlEncode(m_password, Encoding.GetEncoding("iso-8859-1")) +
-                "&login=Login&Check=OK&r=&t=", null) == null)
-                return false;
-            string s = GetUrl("http://myeve.eve-online.com/character/skilltree.asp", null);
-            Regex re = new Regex(@"<a href=""/character/skilltree.asp\?characterID=(\d+)"".*?<br>([^<>]+?)<\/td>", RegexOptions.IgnoreCase);
-            if (re.IsMatch(s))
-                return true;
-            return false;
         }
 
         private static Dictionary<string, WeakReference<EveSession>> m_sessions = new Dictionary<string, WeakReference<EveSession>>();
@@ -736,10 +573,6 @@ namespace EVEMon.Common
 
         public int UpdateGrandCharacterInfo(GrandCharacterInfo grandCharacterInfo, Control invokeControl)
         {
-            GrandSkill newTrainingSkill = null;
-            int trainingToLevel = -1;
-            DateTime estimatedCompletion = DateTime.MaxValue;
-
             bool firstAttempt = true;
         AGAIN:
             string htmld = GetUrl("http://myeve.eve-online.com/character/skilltree.asp?characterID=" +
@@ -753,20 +586,6 @@ namespace EVEMon.Common
                 }
                 firstAttempt = false;
                 goto AGAIN;
-            }
-
-            int cti = htmld.IndexOf("Currently training to: ");
-            if (cti != -1)
-            {
-                string bsubstr = ReverseString(htmld.Substring(cti - 400, 400));
-                string s1 = Regex.Match(bsubstr, @"knaR>i< / (.+?)>""xp11:ezis-tnof").Groups[1].Value;
-                string skillName = ReverseString(s1);
-                string fsubstr = htmld.Substring(cti, 800);
-                trainingToLevel = Convert.ToInt32(Regex.Match(fsubstr, @"Currently training to: <\/font><strong>level (\d) </st").Groups[1].Value);
-                string timeLeft = Regex.Match(fsubstr, @"Time left: <\/font><strong>(.+?)<\/strong>").Groups[1].Value;
-                estimatedCompletion = DateTime.Now + ConvertTimeStringToTimeSpan(timeLeft);
-
-                newTrainingSkill = grandCharacterInfo.GetSkill(skillName);
             }
 
             firstAttempt = true;
@@ -914,35 +733,30 @@ namespace EVEMon.Common
         public string _adjustedIntelligence
         {
             get { return this.AdjustedIntelligence.ToString("#.00"); }
-            set { /* ignored */ }
         }
 
         [XmlElement("adjustedCharisma")]
         public string _adjustedCharisma
         {
             get { return this.AdjustedCharisma.ToString("#.00"); }
-            set { /* ignored */ }
         }
 
         [XmlElement("adjustedPerception")]
         public string _adjustedPerception
         {
             get { return this.AdjustedPerception.ToString("#.00"); }
-            set { /* ignored */ }
         }
         
         [XmlElement("adjustedMemory")]
         public string _adjustedMemory
         {
             get { return this.AdjustedMemory.ToString("#.00"); }
-            set { /* ignored */ }
         }
         
         [XmlElement("adjustedWillpower")]
         public string _adjustedWillpower
         {
             get { return this.AdjustedWillpower.ToString("#.00"); }
-            set { /* ignored */ }
         }
 
         public double GetAttributeAdjustment(EveAttribute eveAttribute, SerializableEveAttributeAdjustment adjustment)
@@ -1074,7 +888,6 @@ namespace EVEMon.Common
                 }
                 return cook;
             }
-            set { }
         }
 
         private Exception m_exception;
@@ -1094,7 +907,6 @@ namespace EVEMon.Common
                 else
                     return null;
             }
-            set { }
         }
 
         private string m_redirectTo;

@@ -313,12 +313,6 @@ namespace EVEMon.Common
             }
         }
 
-        private SerializableCharacterInfo ProcessCharacterXml(XmlDocument xdoc, int charId)
-        {
-            int junk;
-            return ProcessCharacterXml(xdoc, charId, out junk);
-        }
-
         private SerializableCharacterInfo ProcessCharacterXml(XmlDocument xdoc, int charId, out int cacheExpires)
         {
             XmlSerializer xs = new XmlSerializer(typeof(SerializableCharacterInfo));
@@ -421,7 +415,7 @@ namespace EVEMon.Common
                 m_requestSid = sid;
 
                 HttpWebResponse resp1 = null;
-                String fs = EVEMonWebRequest.GetUrlString(
+                EVEMonWebRequest.GetUrlString(
                 "http://myeve.eve-online.com/login.asp", wrs, out resp1); 
 
                 return;

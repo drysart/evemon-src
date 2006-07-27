@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Net;
 using System.Net.Mail;
-
 using EVEMon.Common;
 
 namespace EVEMon
