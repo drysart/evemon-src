@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using EVEMon.Common;
+using Microsoft.Win32;
 
 namespace EVEMon
 {
@@ -141,7 +142,30 @@ namespace EVEMon
             cbCheckTranquilityStatus.Checked = m_settings.CheckTranquilityStatus;
             numericStatusInterval.Value = m_settings.StatusUpdateInterval;
 
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            if (rk.GetValue("EVEMon") == null)
+            {
+                cbRunAtStartup.Checked = false;
+            }
+            else
+            {
+                cbRunAtStartup.Checked = true;
+            }
+
             UpdateDisables();
+        }
+
+        private void cbRunAtStartup_CheckedChanged(object sender, EventArgs e)
+        {
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            if ((sender as CheckBox).Checked)
+            {
+                rk.SetValue("EVEMon", Application.ExecutablePath.ToString());
+            }
+            else
+            {
+                rk.DeleteValue("EVEMon", false);
+            }
         }
 
         private void cbSendEmail_CheckedChanged(object sender, EventArgs e)

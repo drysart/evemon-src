@@ -61,6 +61,7 @@ namespace EVEMon
             this.verticalFlowPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.cbCloseToTray = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -100,7 +101,7 @@ namespace EVEMon
             this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
-            this.cbCloseToTray = new System.Windows.Forms.CheckBox();
+            this.cbRunAtStartup = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpEmailSettings.SuspendLayout();
             this.tlpEmailAuthTable.SuspendLayout();
@@ -180,7 +181,7 @@ namespace EVEMon
             // cbWorksafeMode
             // 
             this.cbWorksafeMode.AutoSize = true;
-            this.cbWorksafeMode.Location = new System.Drawing.Point(12, 72);
+            this.cbWorksafeMode.Location = new System.Drawing.Point(12, 95);
             this.cbWorksafeMode.Name = "cbWorksafeMode";
             this.cbWorksafeMode.Size = new System.Drawing.Size(271, 17);
             this.cbWorksafeMode.TabIndex = 2;
@@ -190,7 +191,7 @@ namespace EVEMon
             // cbTitleToTime
             // 
             this.cbTitleToTime.AutoSize = true;
-            this.cbTitleToTime.Location = new System.Drawing.Point(12, 49);
+            this.cbTitleToTime.Location = new System.Drawing.Point(12, 72);
             this.cbTitleToTime.Name = "cbTitleToTime";
             this.cbTitleToTime.Size = new System.Drawing.Size(177, 17);
             this.cbTitleToTime.TabIndex = 1;
@@ -512,7 +513,7 @@ namespace EVEMon
             this.groupBox1.Controls.Add(this.flowLayoutPanel2);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(362, 112);
+            this.groupBox1.Size = new System.Drawing.Size(362, 135);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Window Settings";
@@ -523,6 +524,7 @@ namespace EVEMon
             this.flowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel2.Controls.Add(this.cbMinimizeToTray);
             this.flowLayoutPanel2.Controls.Add(this.cbCloseToTray);
+            this.flowLayoutPanel2.Controls.Add(this.cbRunAtStartup);
             this.flowLayoutPanel2.Controls.Add(this.cbTitleToTime);
             this.flowLayoutPanel2.Controls.Add(this.cbWorksafeMode);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -530,8 +532,18 @@ namespace EVEMon
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(356, 92);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(356, 115);
             this.flowLayoutPanel2.TabIndex = 3;
+            // 
+            // cbCloseToTray
+            // 
+            this.cbCloseToTray.AutoSize = true;
+            this.cbCloseToTray.Location = new System.Drawing.Point(12, 26);
+            this.cbCloseToTray.Name = "cbCloseToTray";
+            this.cbCloseToTray.Size = new System.Drawing.Size(90, 17);
+            this.cbCloseToTray.TabIndex = 3;
+            this.cbCloseToTray.Text = "Close to Tray";
+            this.cbCloseToTray.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -540,7 +552,7 @@ namespace EVEMon
             this.groupBox2.AutoSize = true;
             this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox2.Controls.Add(this.flowLayoutPanel3);
-            this.groupBox2.Location = new System.Drawing.Point(3, 121);
+            this.groupBox2.Location = new System.Drawing.Point(3, 144);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(362, 43);
             this.groupBox2.TabIndex = 5;
@@ -565,7 +577,7 @@ namespace EVEMon
             this.groupBox5.AutoSize = true;
             this.groupBox5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox5.Controls.Add(this.flowLayoutPanel1);
-            this.groupBox5.Location = new System.Drawing.Point(3, 170);
+            this.groupBox5.Location = new System.Drawing.Point(3, 193);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(362, 72);
             this.groupBox5.TabIndex = 6;
@@ -664,7 +676,7 @@ namespace EVEMon
             this.groupBox7.Controls.Add(this.label15);
             this.groupBox7.Controls.Add(this.label14);
             this.groupBox7.Controls.Add(this.numericStatusInterval);
-            this.groupBox7.Location = new System.Drawing.Point(3, 248);
+            this.groupBox7.Location = new System.Drawing.Point(3, 271);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(362, 75);
             this.groupBox7.TabIndex = 7;
@@ -1032,15 +1044,15 @@ namespace EVEMon
             this.flowLayoutPanel8.Size = new System.Drawing.Size(162, 29);
             this.flowLayoutPanel8.TabIndex = 6;
             // 
-            // cbCloseToTray
+            // cbRunAtStartup
             // 
-            this.cbCloseToTray.AutoSize = true;
-            this.cbCloseToTray.Location = new System.Drawing.Point(12, 26);
-            this.cbCloseToTray.Name = "cbCloseToTray";
-            this.cbCloseToTray.Size = new System.Drawing.Size(90, 17);
-            this.cbCloseToTray.TabIndex = 3;
-            this.cbCloseToTray.Text = "Close to Tray";
-            this.cbCloseToTray.UseVisualStyleBackColor = true;
+            this.cbRunAtStartup.AutoSize = true;
+            this.cbRunAtStartup.Location = new System.Drawing.Point(12, 49);
+            this.cbRunAtStartup.Name = "cbRunAtStartup";
+            this.cbRunAtStartup.Size = new System.Drawing.Size(138, 17);
+            this.cbRunAtStartup.TabIndex = 4;
+            this.cbRunAtStartup.Text = "Run EVEMon at Startup";
+            this.cbRunAtStartup.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -1197,5 +1209,6 @@ namespace EVEMon
         private System.Windows.Forms.CheckBox cbCheckTranquilityStatus;
         private System.Windows.Forms.CheckBox cbShowBalloonTips;
         private System.Windows.Forms.CheckBox cbCloseToTray;
+        private System.Windows.Forms.CheckBox cbRunAtStartup;
     }
 }
