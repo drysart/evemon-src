@@ -455,9 +455,12 @@ namespace EVEMon
 
         private void niMinimizeIcon_Click(object sender, EventArgs e)
         {
-            this.Visible = true;
-            this.WindowState = FormWindowState.Normal;
-            this.Activate();
+            if ((e as MouseEventArgs).Button != MouseButtons.Right)
+            {
+                this.Visible = true;
+                this.WindowState = FormWindowState.Normal;
+                this.Activate();
+            }
         }
 
         private void tmrAlertRefresh_Tick(object sender, EventArgs e)
@@ -507,6 +510,16 @@ namespace EVEMon
             }
         }
 
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (m_settings.CloseToTray && this.Visible == true)
+            {
+                e.Cancel = true;
+                niMinimizeIcon.Visible = true;
+                this.Visible = false;
+            }
+        }
+
         private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
             UpdateManager um = UpdateManager.GetInstance();
@@ -514,8 +527,6 @@ namespace EVEMon
             um.UpdateAvailable -= new UpdateAvailableHandler(um_UpdateAvailable);
 
             m_settings.RunIGBServerChanged -= new EventHandler<EventArgs>(m_settings_RunIGBServerChanged);
-
-            m_igbServer.Stop();
         }
 
         private void tsbAbout_Click(object sender, EventArgs e)
@@ -741,6 +752,20 @@ namespace EVEMon
                 tmrServerStatus.Enabled = true;
              tmrClock.Enabled = true;
              }
+
+        private void restoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Visible = true;
+            this.WindowState = FormWindowState.Normal;
+            this.Activate();
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        
         }
     }
 

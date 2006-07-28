@@ -72,7 +72,8 @@ namespace EVEMon
             this.cbScreenList = new System.Windows.Forms.ComboBox();
             this.btnIdentifyScreens = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.cbShowBalloonTips = new System.Windows.Forms.CheckBox();
+            this.cbCheckTranquilityStatus = new System.Windows.Forms.CheckBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.numericStatusInterval = new System.Windows.Forms.NumericUpDown();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -94,12 +95,12 @@ namespace EVEMon
             this.verticalFlowPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.cbShowBalloonTips = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label15 = new System.Windows.Forms.Label();
-            this.cbCheckTranquilityStatus = new System.Windows.Forms.CheckBox();
+            this.cbCloseToTray = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpEmailSettings.SuspendLayout();
             this.tlpEmailAuthTable.SuspendLayout();
@@ -179,7 +180,7 @@ namespace EVEMon
             // cbWorksafeMode
             // 
             this.cbWorksafeMode.AutoSize = true;
-            this.cbWorksafeMode.Location = new System.Drawing.Point(12, 49);
+            this.cbWorksafeMode.Location = new System.Drawing.Point(12, 72);
             this.cbWorksafeMode.Name = "cbWorksafeMode";
             this.cbWorksafeMode.Size = new System.Drawing.Size(271, 17);
             this.cbWorksafeMode.TabIndex = 2;
@@ -189,7 +190,7 @@ namespace EVEMon
             // cbTitleToTime
             // 
             this.cbTitleToTime.AutoSize = true;
-            this.cbTitleToTime.Location = new System.Drawing.Point(12, 26);
+            this.cbTitleToTime.Location = new System.Drawing.Point(12, 49);
             this.cbTitleToTime.Name = "cbTitleToTime";
             this.cbTitleToTime.Size = new System.Drawing.Size(177, 17);
             this.cbTitleToTime.TabIndex = 1;
@@ -511,7 +512,7 @@ namespace EVEMon
             this.groupBox1.Controls.Add(this.flowLayoutPanel2);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(362, 89);
+            this.groupBox1.Size = new System.Drawing.Size(362, 112);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Window Settings";
@@ -521,6 +522,7 @@ namespace EVEMon
             this.flowLayoutPanel2.AutoSize = true;
             this.flowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel2.Controls.Add(this.cbMinimizeToTray);
+            this.flowLayoutPanel2.Controls.Add(this.cbCloseToTray);
             this.flowLayoutPanel2.Controls.Add(this.cbTitleToTime);
             this.flowLayoutPanel2.Controls.Add(this.cbWorksafeMode);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -528,7 +530,7 @@ namespace EVEMon
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 17);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(356, 69);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(356, 92);
             this.flowLayoutPanel2.TabIndex = 3;
             // 
             // groupBox2
@@ -538,7 +540,7 @@ namespace EVEMon
             this.groupBox2.AutoSize = true;
             this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox2.Controls.Add(this.flowLayoutPanel3);
-            this.groupBox2.Location = new System.Drawing.Point(3, 98);
+            this.groupBox2.Location = new System.Drawing.Point(3, 121);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(362, 43);
             this.groupBox2.TabIndex = 5;
@@ -563,7 +565,7 @@ namespace EVEMon
             this.groupBox5.AutoSize = true;
             this.groupBox5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox5.Controls.Add(this.flowLayoutPanel1);
-            this.groupBox5.Location = new System.Drawing.Point(3, 147);
+            this.groupBox5.Location = new System.Drawing.Point(3, 170);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(362, 72);
             this.groupBox5.TabIndex = 6;
@@ -662,15 +664,15 @@ namespace EVEMon
             this.groupBox7.Controls.Add(this.label15);
             this.groupBox7.Controls.Add(this.label14);
             this.groupBox7.Controls.Add(this.numericStatusInterval);
-            this.groupBox7.Location = new System.Drawing.Point(3, 225);
+            this.groupBox7.Location = new System.Drawing.Point(3, 248);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(362, 75);
             this.groupBox7.TabIndex = 7;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Tranquility Status";
-            //
+            // 
             // cbCheckTranquilityStatus
-            //
+            // 
             this.cbCheckTranquilityStatus.AutoSize = true;
             this.cbCheckTranquilityStatus.Location = new System.Drawing.Point(15, 21);
             this.cbCheckTranquilityStatus.Name = "cbCheckTranquilityStatus";
@@ -679,16 +681,16 @@ namespace EVEMon
             this.cbCheckTranquilityStatus.Text = "Check for Tranquility Status";
             this.cbCheckTranquilityStatus.UseVisualStyleBackColor = true;
             this.cbCheckTranquilityStatus.CheckedChanged += new System.EventHandler(this.cbCheckTranquilityStatus_CheckedChanged);
-            //
+            // 
             // label15
-            //
+            // 
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(187, 49);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(44, 13);
             this.label15.TabIndex = 2;
             this.label15.Text = "minutes";
-            //
+            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -699,7 +701,7 @@ namespace EVEMon
             this.label14.Text = "Update Status Every";
             // 
             // numericStatusInterval
-            //
+            // 
             this.numericStatusInterval.Location = new System.Drawing.Point(125, 47);
             this.numericStatusInterval.Maximum = new decimal(new int[] {
             60,
@@ -962,6 +964,16 @@ namespace EVEMon
             this.flowLayoutPanel5.Size = new System.Drawing.Size(362, 46);
             this.flowLayoutPanel5.TabIndex = 6;
             // 
+            // cbShowBalloonTips
+            // 
+            this.cbShowBalloonTips.AutoSize = true;
+            this.cbShowBalloonTips.Location = new System.Drawing.Point(12, 3);
+            this.cbShowBalloonTips.Name = "cbShowBalloonTips";
+            this.cbShowBalloonTips.Size = new System.Drawing.Size(242, 17);
+            this.cbShowBalloonTips.TabIndex = 6;
+            this.cbShowBalloonTips.Text = "Show balloon tip when skill training completes";
+            this.cbShowBalloonTips.UseVisualStyleBackColor = true;
+            // 
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -1019,16 +1031,16 @@ namespace EVEMon
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
             this.flowLayoutPanel8.Size = new System.Drawing.Size(162, 29);
             this.flowLayoutPanel8.TabIndex = 6;
-            //
-            // cbShowBalloonTips
-            //
-            this.cbShowBalloonTips.AutoSize = true;
-            this.cbShowBalloonTips.Location = new System.Drawing.Point(12, 3);
-            this.cbShowBalloonTips.Name = "cbShowBalloonTips";
-            this.cbShowBalloonTips.Size = new System.Drawing.Size(242, 17);
-            this.cbShowBalloonTips.TabIndex = 6;
-            this.cbShowBalloonTips.Text = "Show balloon tip when skill training completes";
-            this.cbShowBalloonTips.UseVisualStyleBackColor = true;
+            // 
+            // cbCloseToTray
+            // 
+            this.cbCloseToTray.AutoSize = true;
+            this.cbCloseToTray.Location = new System.Drawing.Point(12, 26);
+            this.cbCloseToTray.Name = "cbCloseToTray";
+            this.cbCloseToTray.Size = new System.Drawing.Size(90, 17);
+            this.cbCloseToTray.TabIndex = 3;
+            this.cbCloseToTray.Text = "Close to Tray";
+            this.cbCloseToTray.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -1184,5 +1196,6 @@ namespace EVEMon
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.CheckBox cbCheckTranquilityStatus;
         private System.Windows.Forms.CheckBox cbShowBalloonTips;
+        private System.Windows.Forms.CheckBox cbCloseToTray;
     }
 }

@@ -43,6 +43,7 @@ namespace EVEMon
         private void ApplyToSettings(Settings s)
         {
             s.MinimizeToTray = cbMinimizeToTray.Checked;
+            s.CloseToTray = cbCloseToTray.Checked;
             s.TitleToTime = cbTitleToTime.Checked;
             s.WorksafeMode = cbWorksafeMode.Checked;
             s.RunIGBServer = cbRunIGBServer.Checked;
@@ -111,6 +112,7 @@ namespace EVEMon
             tabControl1.SelectedTab = tabControl1.TabPages[0];
 
             cbMinimizeToTray.Checked = m_settings.MinimizeToTray;
+            cbCloseToTray.Checked = m_settings.CloseToTray;
             cbTitleToTime.Checked = m_settings.TitleToTime;
             cbWorksafeMode.Checked = m_settings.WorksafeMode;
             cbRunIGBServer.Checked = m_settings.RunIGBServer;

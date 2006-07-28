@@ -47,8 +47,12 @@ namespace EVEMon
             this.tsbOptions = new System.Windows.Forms.ToolStripButton();
             this.tsbAbout = new System.Windows.Forms.ToolStripButton();
             this.tmrServerStatus = new System.Windows.Forms.Timer(this.components);
+            this.trayIconToolStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.trayIconToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcCharacterTabs
@@ -63,6 +67,7 @@ namespace EVEMon
             // 
             // niMinimizeIcon
             // 
+            this.niMinimizeIcon.ContextMenuStrip = this.trayIconToolStrip;
             this.niMinimizeIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("niMinimizeIcon.Icon")));
             this.niMinimizeIcon.Click += new System.EventHandler(this.niMinimizeIcon_Click);
             this.niMinimizeIcon.MouseMove += new System.Windows.Forms.MouseEventHandler(this.niMinimizeIcon_MouseMove);
@@ -192,6 +197,28 @@ namespace EVEMon
             this.tmrServerStatus.Interval = 1000;
             this.tmrServerStatus.Tick += new System.EventHandler(this.tmrServerStatus_Tick);
             // 
+            // trayIconToolStrip
+            // 
+            this.trayIconToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.restoreToolStripMenuItem,
+            this.closeToolStripMenuItem});
+            this.trayIconToolStrip.Name = "trayIconToolStrip";
+            this.trayIconToolStrip.Size = new System.Drawing.Size(153, 70);
+            // 
+            // restoreToolStripMenuItem
+            // 
+            this.restoreToolStripMenuItem.Name = "restoreToolStripMenuItem";
+            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.restoreToolStripMenuItem.Text = "Restore";
+            this.restoreToolStripMenuItem.Click += new System.EventHandler(this.restoreToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -206,11 +233,13 @@ namespace EVEMon
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainWindow_FormClosed);
             this.Resize += new System.EventHandler(this.MainWindow_Resize);
             this.Shown += new System.EventHandler(this.MainWindow_Shown);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.trayIconToolStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -235,5 +264,8 @@ namespace EVEMon
         private System.Windows.Forms.ToolStripButton tsbMineralSheet;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.Timer tmrServerStatus;
+        private System.Windows.Forms.ContextMenuStrip trayIconToolStrip;
+        private System.Windows.Forms.ToolStripMenuItem restoreToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
     }
 }

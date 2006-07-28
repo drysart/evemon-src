@@ -69,6 +69,14 @@ namespace EVEMon.Common
             set { m_enableBalloonTips = value; }
         }
 
+        private bool m_closeToTray = false;
+
+        public bool CloseToTray
+        {
+            get { return m_closeToTray; }
+            set { m_closeToTray = value; }
+        }
+
         private string m_emailServer;
 
         public string EmailServer
@@ -76,7 +84,7 @@ namespace EVEMon.Common
             get { return m_emailServer; }
             set { m_emailServer = value; }
         }
-        
+
         private bool m_emailServerRequiresSsl = false;
 
         public bool EmailServerRequiresSsl
