@@ -62,6 +62,7 @@ namespace EVEMon
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.cbCloseToTray = new System.Windows.Forms.CheckBox();
+            this.cbRunAtStartup = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -101,7 +102,6 @@ namespace EVEMon
             this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
-            this.cbRunAtStartup = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpEmailSettings.SuspendLayout();
             this.tlpEmailAuthTable.SuspendLayout();
@@ -544,6 +544,17 @@ namespace EVEMon
             this.cbCloseToTray.TabIndex = 3;
             this.cbCloseToTray.Text = "Close to Tray";
             this.cbCloseToTray.UseVisualStyleBackColor = true;
+            // 
+            // cbRunAtStartup
+            // 
+            this.cbRunAtStartup.AutoSize = true;
+            this.cbRunAtStartup.Location = new System.Drawing.Point(12, 49);
+            this.cbRunAtStartup.Name = "cbRunAtStartup";
+            this.cbRunAtStartup.Size = new System.Drawing.Size(138, 17);
+            this.cbRunAtStartup.TabIndex = 4;
+            this.cbRunAtStartup.Text = "Run EVEMon at Startup";
+            this.cbRunAtStartup.UseVisualStyleBackColor = true;
+            this.cbRunAtStartup.CheckedChanged += new System.EventHandler(this.cbRunAtStartup_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -1043,16 +1054,6 @@ namespace EVEMon
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
             this.flowLayoutPanel8.Size = new System.Drawing.Size(162, 29);
             this.flowLayoutPanel8.TabIndex = 6;
-            // 
-            // cbRunAtStartup
-            // 
-            this.cbRunAtStartup.AutoSize = true;
-            this.cbRunAtStartup.Location = new System.Drawing.Point(12, 49);
-            this.cbRunAtStartup.Name = "cbRunAtStartup";
-            this.cbRunAtStartup.Size = new System.Drawing.Size(138, 17);
-            this.cbRunAtStartup.TabIndex = 4;
-            this.cbRunAtStartup.Text = "Run EVEMon at Startup";
-            this.cbRunAtStartup.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
