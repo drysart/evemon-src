@@ -18,17 +18,20 @@ namespace EVEMon
         }
 
         private Settings m_settings;
+        private bool startMinimized;
 
-        public MainWindow(Settings s)
+        public MainWindow(Settings s, bool startMinimized)
             : this()
         {
             m_settings = s;
+            this.startMinimized = startMinimized;
         }
 
         private IGBService.IGBServer m_igbServer;
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
+            this.Visible = false;
 #if DEBUG
             this.tsbSchedule.Visible = true;
 #endif
@@ -70,6 +73,13 @@ namespace EVEMon
             foreach (CharFileInfo cfi in invalidFiles)
             {
                 RemoveCharFileInfo(cfi);
+            }
+
+            if (startMinimized)
+            {
+                this.ShowInTaskbar = false;
+                this.WindowState = FormWindowState.Minimized;
+                this.Visible = true;
             }
         }
 
@@ -459,7 +469,13 @@ namespace EVEMon
             {
                 this.Visible = true;
                 this.WindowState = FormWindowState.Normal;
+                this.ShowInTaskbar = true;
                 this.Activate();
+            }
+
+            if (m_tooltipWindow.IsAlive && m_tooltipWindow.Target != null)
+            {
+                m_tooltipWindow.Target.Visible = false;
             }
         }
 
@@ -557,7 +573,7 @@ namespace EVEMon
 
         private void niMinimizeIcon_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!m_inMinIconMouseMove)
+            if (!m_inMinIconMouseMove && trayIconToolStrip.Visible == false)
             {
                 m_inMinIconMouseMove = true;
                 try
@@ -764,7 +780,6 @@ namespace EVEMon
         {
             Application.Exit();
         }
-
         
         }
     }

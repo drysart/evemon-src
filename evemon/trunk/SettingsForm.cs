@@ -160,7 +160,7 @@ namespace EVEMon
             RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             if ((sender as CheckBox).Checked)
             {
-                rk.SetValue("EVEMon", Application.ExecutablePath.ToString());
+                rk.SetValue("EVEMon", String.Format("{0} {1}", Application.ExecutablePath.ToString(), "-startMinimized"));
             }
             else
             {

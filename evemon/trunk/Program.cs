@@ -28,6 +28,8 @@ namespace EVEMon
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            bool startMinimized = false;
+
             foreach (string targ in Environment.GetCommandLineArgs())
             {
                 if (targ == "-netlog")
@@ -35,6 +37,11 @@ namespace EVEMon
                     StartNetlog();
                     if (m_logger == null)
                         return;
+                }
+
+                if (targ == "-startMinimized")
+                {
+                    startMinimized = true;
                 }
             }
 
@@ -49,7 +56,7 @@ namespace EVEMon
 
             //Application.Run(new Form1(ca));
             s_settings = Settings.LoadFromKey(m_settingKey);
-            Application.Run(new MainWindow(s_settings));
+            Application.Run(new MainWindow(s_settings, startMinimized));
             s_settings.Save();
 
             SetRelocatorState(false);
