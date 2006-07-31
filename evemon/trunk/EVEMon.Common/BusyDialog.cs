@@ -81,14 +81,14 @@ namespace EVEMon.Common
         {
             public ScopeController()
             {
-                BusyDialog.IncrementDisplay();
+                IncrementDisplay();
             }
 
             #region IDisposable Members
 
             public void Dispose()
             {
-                BusyDialog.DecrementDisplay();
+                DecrementDisplay();
             }
 
             #endregion

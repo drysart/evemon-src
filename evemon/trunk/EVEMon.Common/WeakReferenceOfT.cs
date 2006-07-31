@@ -1,4 +1,4 @@
-using WeakReference=System.WeakReference;
+using System;
 
 namespace EVEMon.Common
 {

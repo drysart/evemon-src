@@ -1,10 +1,11 @@
 using System;
 using System.Windows.Forms;
+using EVEMon.Common;
 using EVEMon.Common.Schedule;
 
 namespace EVEMon.Schedule
 {
-    public partial class EditScheduleEntryWindow : EVEMon.Common.EVEMonForm
+    public partial class EditScheduleEntryWindow : EVEMonForm
     {
         public EditScheduleEntryWindow()
         {

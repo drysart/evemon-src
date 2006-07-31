@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using EVEMon.Common;
 
@@ -92,12 +94,12 @@ namespace EVEMon.SkillPlanner
         private void OptionChange()
         {
             UpdateOptions();
-            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
-            using (System.IO.StreamWriter sw = new System.IO.StreamWriter(ms))
+            using (MemoryStream ms = new MemoryStream())
+            using (StreamWriter sw = new StreamWriter(ms))
             {
                 m_plan.SaveAsText(sw, m_planTextOptions, m_isForCopy);
                 sw.Flush();
-                string s = System.Text.Encoding.Default.GetString(ms.ToArray());
+                string s = Encoding.Default.GetString(ms.ToArray());
                 tbPreview.Text = s;
             }
         }

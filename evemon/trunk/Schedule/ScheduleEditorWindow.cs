@@ -5,7 +5,7 @@ using EVEMon.Common;
 
 namespace EVEMon.Schedule
 {
-    public partial class ScheduleEditorWindow : EVEMon.Common.EVEMonForm
+    public partial class ScheduleEditorWindow : EVEMonForm
     {
         public ScheduleEditorWindow()
         {

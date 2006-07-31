@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using EVEMon.Common;
@@ -164,7 +165,7 @@ namespace EVEMon.SkillPlanner
                         ExceptionHandler.LogException(ex, true);
                         
                         s.Seek(0, SeekOrigin.Begin);
-                        using (System.IO.Compression.GZipStream gzs = new System.IO.Compression.GZipStream(s, System.IO.Compression.CompressionMode.Decompress))
+                        using (GZipStream gzs = new GZipStream(s, CompressionMode.Decompress))
                         {
                             try
                             {

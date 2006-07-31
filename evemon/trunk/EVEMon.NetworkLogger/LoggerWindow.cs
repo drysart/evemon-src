@@ -1,9 +1,10 @@
 using System;
 using System.Windows.Forms;
+using EVEMon.Common;
 
 namespace EVEMon.NetworkLogger
 {
-    public partial class LoggerWindow : EVEMon.Common.EVEMonForm
+    public partial class LoggerWindow : EVEMonForm
     {
         public LoggerWindow()
         {

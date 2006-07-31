@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -494,7 +495,7 @@ namespace EVEMon
                     try
                     {
                         FileStream fs = new FileStream(cacheFileName, FileMode.Create);
-                        i.Save(fs, System.Drawing.Imaging.ImageFormat.Png);
+                        i.Save(fs, ImageFormat.Png);
                         fs.Close();
                         fs.Dispose();
                     }
@@ -509,7 +510,7 @@ namespace EVEMon
                 try
                 {
                     FileStream fs = new FileStream(cacheFileName, FileMode.Create);
-                    i.Save(fs, System.Drawing.Imaging.ImageFormat.Png);
+                    i.Save(fs, ImageFormat.Png);
                     fs.Close();
                     fs.Dispose();
                 }
@@ -982,7 +983,7 @@ namespace EVEMon
                     outerStream = new MemoryStream(32767);
                 try
                 {
-                    using (XmlTextWriter xtw = new XmlTextWriter(outerStream, System.Text.Encoding.UTF8))
+                    using (XmlTextWriter xtw = new XmlTextWriter(outerStream, Encoding.UTF8))
                     {
                         if (saveFormat == SaveFormat.Xml)
                         {
@@ -1063,7 +1064,7 @@ namespace EVEMon
                 e.ItemHeight = GrandSkill.Height;
         }
 
-        private void lbSkills_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void lbSkills_MouseWheel(object sender, MouseEventArgs e)
         {
             // Update the drawing based upon the mouse wheel scrolling.
             int numberOfItemLinesToMove = e.Delta * SystemInformation.MouseWheelScrollLines / 120;
@@ -1173,7 +1174,7 @@ namespace EVEMon
         private void btnMoreOptions_Click(object sender, EventArgs e)
         {
             cmsMoreOptions.Show(btnMoreOptions,
-                btnMoreOptions.PointToClient(Control.MousePosition), ToolStripDropDownDirection.Default);
+                btnMoreOptions.PointToClient(MousePosition), ToolStripDropDownDirection.Default);
         }
         
         private void lbSkills_MouseMove(object sender, MouseEventArgs e)
@@ -1453,7 +1454,7 @@ namespace EVEMon
             }
             else
             {
-                cmsThrobberMenu.Show(Control.MousePosition);
+                cmsThrobberMenu.Show(MousePosition);
             }
         }
 

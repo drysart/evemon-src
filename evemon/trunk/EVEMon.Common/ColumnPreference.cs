@@ -76,7 +76,7 @@ namespace EVEMon.Common
 
         public ColumnPreference()
         {
-            m_prefs = new bool[ColumnPreference.ColumnCount];
+            m_prefs = new bool[ColumnCount];
             for (int i = 0; i < m_prefs.Length; i++)
                 m_prefs[i] = false;
 

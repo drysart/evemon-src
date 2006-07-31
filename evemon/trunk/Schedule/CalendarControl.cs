@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace EVEMon.Schedule
@@ -51,7 +52,7 @@ namespace EVEMon.Schedule
         
         private void CalendarControl_Load(object sender, EventArgs e)
         {
-            m_firstDayOfWeek = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+            m_firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -140,7 +141,7 @@ namespace EVEMon.Schedule
                         g.FillRectangle(db, cellRect);
                         g.DrawRectangle(Pens.Black, cellRect);
 
-                        string dayName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.DayNames[(int)cDow];
+                        string dayName = CultureInfo.CurrentCulture.DateTimeFormat.DayNames[(int)cDow];
                         TextRenderer.DrawText(g, dayName, boldf,
                             new Rectangle(cellRect.Left + 1, cellRect.Top + 1, cellRect.Width - 2, cellRect.Height - 2),
                             Color.Black, Color.Transparent,

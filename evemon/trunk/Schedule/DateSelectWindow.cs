@@ -1,9 +1,10 @@
 using System;
 using System.Windows.Forms;
+using EVEMon.Common;
 
 namespace EVEMon.Schedule
 {
-    public partial class DateSelectWindow : EVEMon.Common.EVEMonForm
+    public partial class DateSelectWindow : EVEMonForm
     {
         public DateSelectWindow()
         {

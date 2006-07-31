@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using EVEMon.Common;
 
@@ -43,7 +45,7 @@ namespace EVEMon
             if (cbAutoInstall.Enabled && cbAutoInstall.Checked)
             {
                 Uri i = new Uri(m_args.AutoInstallUrl);
-                string fn = System.IO.Path.GetFileName(i.AbsolutePath);
+                string fn = Path.GetFileName(i.AbsolutePath);
                 using (UpdateDownloadForm f = new UpdateDownloadForm(
                     m_args.AutoInstallUrl, fn))
                 {
@@ -56,7 +58,7 @@ namespace EVEMon
             }
             else
             {
-                System.Diagnostics.Process.Start(m_args.UpdateUrl);
+                Process.Start(m_args.UpdateUrl);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -66,16 +68,16 @@ namespace EVEMon
         {
             try
             {
-                System.Diagnostics.Process.Start(fn, args);
+                Process.Start(fn, args);
             }
             catch (Exception e)
             {
                 ExceptionHandler.LogRethrowException(e);
-                if (System.IO.File.Exists(fn))
+                if (File.Exists(fn))
                 {
                     try
                     {
-                        System.IO.File.Delete(fn);
+                        File.Delete(fn);
                     }
                     catch
                     {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -793,7 +794,7 @@ namespace EVEMon.SkillPlanner
             {
                 m_plan.SaveAsText(sw, pto, true);
                 sw.Flush();
-                string s = System.Text.Encoding.Default.GetString(ms.ToArray());
+                string s = Encoding.Default.GetString(ms.ToArray());
                 Clipboard.SetText(s);
             }
 
@@ -842,7 +843,7 @@ namespace EVEMon.SkillPlanner
                     switch ((SaveType)sfdSave.FilterIndex)
                     {
                         case SaveType.Emp:
-                            using (System.IO.Compression.GZipStream gzs = new System.IO.Compression.GZipStream(fs, System.IO.Compression.CompressionMode.Compress))
+                            using (GZipStream gzs = new GZipStream(fs, CompressionMode.Compress))
                             {
                                 SerializePlanTo(gzs);
                             }

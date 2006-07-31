@@ -4,7 +4,7 @@ using EVEMon.Common;
 
 namespace EVEMon
 {
-    public partial class ProxyAuthenticationWindow : EVEMon.Common.EVEMonForm
+    public partial class ProxyAuthenticationWindow : EVEMonForm
     {
         public ProxyAuthenticationWindow()
         {

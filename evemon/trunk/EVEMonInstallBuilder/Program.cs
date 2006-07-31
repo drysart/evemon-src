@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace EVEMonInstallBuilder
 {
@@ -32,10 +34,10 @@ namespace EVEMonInstallBuilder
                     "/PAUSE "+
                     "\""+projectDir+"bin\\x86\\Release\\EVEMon Installer Script.nsi\"";
                 //System.Windows.Forms.MessageBox.Show(param);
-                System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo(
+                ProcessStartInfo psi = new ProcessStartInfo(
                     "C:/Program Files/NSIS/makensis.exe", param);
                 psi.WorkingDirectory = projectDir;
-                System.Diagnostics.Process makensisProcess = System.Diagnostics.Process.Start(psi);
+                Process makensisProcess = Process.Start(psi);
                 makensisProcess.WaitForExit();
                 int exitCode = makensisProcess.ExitCode;
                 makensisProcess.Dispose();
@@ -44,7 +46,7 @@ namespace EVEMonInstallBuilder
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
                 return 1;
             }
         }

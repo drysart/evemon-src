@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using EVEMon.Common;
+using EVEMon.WindowRelocator;
 using Microsoft.Win32;
 
 namespace EVEMon
@@ -224,7 +225,7 @@ namespace EVEMon
 
         private void btnIdentifyScreens_Click(object sender, EventArgs e)
         {
-            EVEMon.WindowRelocator.IdentifyScreenForm.Display();
+            IdentifyScreenForm.Display();
         }
 
         private void cbRelocateEveWindow_CheckedChanged(object sender, EventArgs e)

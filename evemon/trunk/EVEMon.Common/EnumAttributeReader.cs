@@ -9,7 +9,7 @@ namespace EVEMon.Common
         public static TAttribute GetAttribute(TEnum value)
         {
             // Unfortunately this can't be done at compile time...
-            if (!typeof(TEnum).IsSubclassOf(typeof(System.Enum)))
+            if (!typeof(TEnum).IsSubclassOf(typeof(Enum)))
                 throw new InvalidOperationException("TEnum must be a subclass of System.Enum");
 
             MemberInfo[] memInfo = typeof(TEnum).GetMember(value.ToString());

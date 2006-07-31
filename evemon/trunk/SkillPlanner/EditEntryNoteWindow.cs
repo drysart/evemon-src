@@ -1,9 +1,10 @@
 using System;
 using System.Windows.Forms;
+using EVEMon.Common;
 
 namespace EVEMon.SkillPlanner
 {
-    public partial class EditEntryNoteWindow : EVEMon.Common.EVEMonForm
+    public partial class EditEntryNoteWindow : EVEMonForm
     {
         public EditEntryNoteWindow()
         {

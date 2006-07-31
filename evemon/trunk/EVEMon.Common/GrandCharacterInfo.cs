@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -876,7 +877,7 @@ namespace EVEMon.Common
 
         #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return m_inner.GetEnumerator();
         }
@@ -1030,7 +1031,7 @@ namespace EVEMon.Common
 
         #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
@@ -1146,9 +1147,9 @@ namespace EVEMon.Common
             }
             Image i;
             if (isCollapsed)
-                i = GrandSkillGroup.ExpandImage;
+                i = ExpandImage;
             else
-                i = GrandSkillGroup.CollapseImage;
+                i = CollapseImage;
             g.DrawImageUnscaled(i, new Point(e.Bounds.Right - i.Width - SG_COLLAPSER_PAD_RIGHT,
                 (SKILL_HEADER_HEIGHT / 2) - (i.Height / 2) + e.Bounds.Top));
         }
@@ -1157,9 +1158,9 @@ namespace EVEMon.Common
         {
             Image btnImage;
             if (isCollapsed)
-                btnImage = GrandSkillGroup.ExpandImage;
+                btnImage = ExpandImage;
             else
-                btnImage = GrandSkillGroup.CollapseImage;
+                btnImage = CollapseImage;
             Size btnSize = btnImage.Size;
             Point btnPoint = new Point(itemRect.Right - btnImage.Width - SG_COLLAPSER_PAD_RIGHT,
                 (SKILL_HEADER_HEIGHT / 2) - (btnImage.Height / 2) + itemRect.Top);
@@ -1729,7 +1730,7 @@ namespace EVEMon.Common
                     percentComplete = Convert.ToDouble(this.CurrentSkillPoints - pointsToThisLevel) / Convert.ToDouble(pointsDelta);
                 }
 
-                string skillName = this.Name + " " + GrandSkill.GetRomanSkillNumber(this.Level);
+                string skillName = this.Name + " " + GetRomanSkillNumber(this.Level);
                 string rankText = " (Rank " + this.Rank.ToString() + ")";
                 string spText = "SP: " + this.CurrentSkillPoints.ToString("#,##0") + "/" +
                     this.GetPointsRequiredForLevel(Math.Min(this.Level + 1, 5)).ToString("#,##0");

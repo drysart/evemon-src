@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -672,12 +673,12 @@ namespace EVEMon.Common
             return true;
         }
 
-        public void SaveAsText(System.IO.StreamWriter sw, PlanTextOptions pto, bool includeForumMarkup)
+        public void SaveAsText(StreamWriter sw, PlanTextOptions pto, bool includeForumMarkup)
         {
             SaveAsText(sw, pto, includeForumMarkup ? MarkupType.Forum : MarkupType.None);
         }
 
-        public void SaveAsText(System.IO.StreamWriter sw, PlanTextOptions pto, MarkupType markupType)
+        public void SaveAsText(StreamWriter sw, PlanTextOptions pto, MarkupType markupType)
         {
             MethodInvoker writeLine = delegate
             {

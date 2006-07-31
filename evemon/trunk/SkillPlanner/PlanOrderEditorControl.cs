@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using EVEMon.Common;
 
@@ -128,7 +130,7 @@ namespace EVEMon.SkillPlanner
             {
                 DateTime start = DateTime.Now;
                 int skillPointTotal = m_plan.GrandCharacterInfo.SkillPointTotal;
-                System.Globalization.NumberFormatInfo nfi = System.Globalization.NumberFormatInfo.CurrentInfo;
+                NumberFormatInfo nfi = NumberFormatInfo.CurrentInfo;
 
                 for (int i = 0; i < lvSkills.Items.Count; i++)
                 {
@@ -486,7 +488,7 @@ namespace EVEMon.SkillPlanner
         {
             // Because this occurs before the reordering happens, we have to delay the
             // Order update a bit...
-            System.Threading.ThreadPool.QueueUserWorkItem(delegate
+            ThreadPool.QueueUserWorkItem(delegate
             {
                 this.Invoke(new MethodInvoker(delegate
                 {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Xml;
 using EVEMon.Common;
 
 namespace EVEMon
@@ -204,9 +205,9 @@ namespace EVEMon
                 FileOk = true;
 
                 //anders - find the real character.  This probably burns too much time to stay here, but I like it
-                System.Xml.XmlDocument xdoc = new System.Xml.XmlDocument();
+                XmlDocument xdoc = new XmlDocument();
                 xdoc.Load(ofdOpenXml.FileName);
-                System.Xml.XmlElement cElement = SerializableCharacterInfo.FindCharacterElement(xdoc);
+                XmlElement cElement = SerializableCharacterInfo.FindCharacterElement(xdoc);
                 tbFileCharName.Text = cElement.Attributes["name"].Value;
             }
         }

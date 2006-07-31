@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Web;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -150,7 +153,7 @@ namespace EVEMon.Common
             try
             {
                 FileStream fs = new FileStream(fn, FileMode.Create);
-                i.Save(fs, System.Drawing.Imaging.ImageFormat.Png);
+                i.Save(fs, ImageFormat.Png);
                 fs.Close();
                 //fs.Dispose();
             }
@@ -168,8 +171,8 @@ namespace EVEMon.Common
             {
                 ext = "." + extensionMatch.Groups[1];
             }
-            byte[] hash = System.Security.Cryptography.MD5.Create().ComputeHash(
-                System.Text.Encoding.UTF8.GetBytes(url));
+            byte[] hash = MD5.Create().ComputeHash(
+                Encoding.UTF8.GetBytes(url));
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < hash.Length; i++)
             {
@@ -401,9 +404,9 @@ namespace EVEMon.Common
             HttpWebResponse resp = null;
             string s = EVEMonWebRequest.GetUrlString(
                 "https://myeve.eve-online.com/login.asp?username=" +
-                System.Web.HttpUtility.UrlEncode(m_username, Encoding.GetEncoding("iso-8859-1")) +
+                HttpUtility.UrlEncode(m_username, Encoding.GetEncoding("iso-8859-1")) +
                 "&password=" +
-                System.Web.HttpUtility.UrlEncode(m_password, Encoding.GetEncoding("iso-8859-1")) +
+                HttpUtility.UrlEncode(m_password, Encoding.GetEncoding("iso-8859-1")) +
                 "&login=Login&Check=OK&r=&t=/ingameboard.asp&remember=1", wrs, out resp);
             string loc = resp.Headers[HttpResponseHeader.Location];
             Match sidm = null;
@@ -453,7 +456,7 @@ namespace EVEMon.Common
         private void UpdateGrandCharacterInfoAsyncCaller(object state)
         {
             UpdateGCIArgs args = (UpdateGCIArgs)state;
-            System.GC.Collect();
+            GC.Collect();
             int timeLeftInCache = this.UpdateGrandCharacterInfo(args.GrandCharacterInfo, args.InvokeControl);
             args.UpdateGrandCharacterInfoCallback(null, timeLeftInCache);
         }

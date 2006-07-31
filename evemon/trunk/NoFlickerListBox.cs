@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace EVEMon
 {
-    public class NoFlickerListBox: System.Windows.Forms.ListBox
+    public class NoFlickerListBox: ListBox
     {
 /*      // This code that has been rem'd out is what I'm currently working on....
         // it does some odd stuff atm.

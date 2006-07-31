@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Timer=System.Threading.Timer;
 
 namespace EVEMon.WindowRelocator
 {
@@ -103,7 +104,7 @@ namespace EVEMon.WindowRelocator
                 sc.Bounds.Height + hDiff, true);
         }
 
-        private static System.Threading.Timer m_timer = null;
+        private static Timer m_timer = null;
         private static object m_lockObj = new object();
 
         private static void m_hook_WindowCreated(object sender, EventArgs e)
@@ -123,7 +124,7 @@ namespace EVEMon.WindowRelocator
         private static void SetupTimer()
         {
             if (m_timer == null)
-                m_timer = new System.Threading.Timer(new TimerCallback(TimerCallbackProc));
+                m_timer = new Timer(new TimerCallback(TimerCallbackProc));
             m_timer.Change(250, Timeout.Infinite);
         }
 

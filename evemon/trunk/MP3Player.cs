@@ -77,7 +77,7 @@ namespace EVEMon
             {
                 if (m.Msg == MM_MCINOTIFY)
                 {
-                    MP3Player.Notify();
+                    Notify();
                     return true;
                 }
                 return false;

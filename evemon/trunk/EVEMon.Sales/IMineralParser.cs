@@ -34,7 +34,7 @@ namespace EVEMon.Sales
                 {
                     IMineralParser mp = Activator.CreateInstance(tt) as IMineralParser;
                     if (mp!=null)
-                        MineralDataRequest.RegisterDataSource(dmpa.Name, mp);
+                        RegisterDataSource(dmpa.Name, mp);
                 }
             }
         }

@@ -6,7 +6,7 @@ using EVEMon.Common;
 
 namespace EVEMon
 {
-    public partial class ManualImplantWindow : EVEMon.Common.EVEMonForm
+    public partial class ManualImplantWindow : EVEMonForm
     {
         public ManualImplantWindow()
         {

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -76,7 +77,7 @@ namespace EVEMon
                 public static APPBARDATA Create()
                 {
                     APPBARDATA appBarData = new APPBARDATA();
-                    appBarData.cbSize = Marshal.SizeOf(typeof(NativeMethods.APPBARDATA));
+                    appBarData.cbSize = Marshal.SizeOf(typeof(APPBARDATA));
                     return appBarData;
                 }
                 public int cbSize;
@@ -163,7 +164,7 @@ namespace EVEMon
 
         private void PositionWindow()
         {
-            Point mp = Control.MousePosition;
+            Point mp = MousePosition;
             NativeMethods.APPBARDATA appBarData = NativeMethods.APPBARDATA.Create();
             NativeMethods.SHAppBarMessage(NativeMethods.ABM_GETTASKBARPOS, ref appBarData);
             NativeMethods.RECT taskBarLocation = appBarData.rc;
@@ -264,7 +265,7 @@ namespace EVEMon
         {
             //IntPtr hinst = Marshal.GetHINSTANCE(this.GetType().Module);
             //IntPtr hinst = Marshal.GetHINSTANCE(System.Diagnostics.Process.GetCurrentProcess().MainModule.M);
-            IntPtr hinst = GetModuleHandle(System.Diagnostics.Process.GetCurrentProcess().MainModule.ModuleName);
+            IntPtr hinst = GetModuleHandle(Process.GetCurrentProcess().MainModule.ModuleName);
             m_delegate = new LowLevelMouseDelegate(OnMouseProc);
 
             hHook = SetWindowsHookEx(WH_MOUSE_LL,

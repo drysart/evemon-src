@@ -4,7 +4,7 @@ using EVEMon.Common;
 
 namespace EVEMon
 {
-    public partial class ChangeLoginWindow : EVEMon.Common.EVEMonForm
+    public partial class ChangeLoginWindow : EVEMonForm
     {
         public ChangeLoginWindow()
         {

@@ -6,7 +6,7 @@ using EVEMon.Common;
 
 namespace EVEMon
 {
-    public partial class UpdateDownloadForm : EVEMon.Common.EVEMonForm
+    public partial class UpdateDownloadForm : EVEMonForm
     {
         public UpdateDownloadForm()
         {

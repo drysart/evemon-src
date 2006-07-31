@@ -5,7 +5,7 @@ using EVEMon.Common;
 
 namespace EVEMon.SkillPlanner
 {
-    public partial class PlanSortWindow : EVEMon.Common.EVEMonForm
+    public partial class PlanSortWindow : EVEMonForm
     {
         public PlanSortWindow()
         {

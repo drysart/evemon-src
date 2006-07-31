@@ -28,7 +28,7 @@ namespace EVEMon.Common
                 if (sm_scopedInstance == null)
                 {
                     m_disposes = true;
-                    sm_scopedInstance = StringTable.GetInstance();
+                    sm_scopedInstance = GetInstance();
                 }
                 else
                 {
@@ -82,7 +82,7 @@ namespace EVEMon.Common
 
         public static string GetSharedString(string value)
         {
-            StringTable st = StringTable.GetInstance();
+            StringTable st = GetInstance();
             if (st.Table.ContainsKey(value))
                 return st.Table[value];
             st.Table[value] = value;

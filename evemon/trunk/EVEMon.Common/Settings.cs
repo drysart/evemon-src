@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Text;
 using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 using EVEMon.Common.Schedule;
 
@@ -539,7 +540,7 @@ namespace EVEMon.Common
 
         public static Settings GetInstance()
         {
-            return Settings.LoadFromKey(String.Empty);
+            return LoadFromKey(String.Empty);
         }
 
         public static Settings LoadFromKey(string key)
@@ -549,9 +550,9 @@ namespace EVEMon.Common
 
             try
             {
-                if (File.Exists(Settings.SettingsFileName))
+                if (File.Exists(SettingsFileName))
                 {
-                    using (FileStream fs = new FileStream(Settings.SettingsFileName, FileMode.Open, FileAccess.Read))
+                    using (FileStream fs = new FileStream(SettingsFileName, FileMode.Open, FileAccess.Read))
                     {
                         XmlSerializer xs = new XmlSerializer(typeof(Settings));
                         Settings result = (Settings)xs.Deserialize(fs);
@@ -662,7 +663,7 @@ namespace EVEMon.Common
         {
             if (!m_neverSave)
             {
-                string fn = Settings.SettingsFileName;
+                string fn = SettingsFileName;
 
                 //using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForDomain())
                 //using (IsolatedStorageFileStream s = new IsolatedStorageFileStream(StoreFileName(m_key), FileMode.Create, store))
@@ -872,7 +873,7 @@ namespace EVEMon.Common
     {
         #region IXmlSerializable Members
 
-        public System.Xml.Schema.XmlSchema GetSchema()
+        public XmlSchema GetSchema()
         {
             return null;
         }

@@ -1,5 +1,8 @@
 using System;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 using EVEMon.Common;
@@ -13,7 +16,7 @@ namespace EVEMon.NetworkLogger
             using (LoggerWindow f = new LoggerWindow())
             {
                 f.ShowDialog();
-                if (f.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+                if (f.DialogResult == DialogResult.Cancel)
                     return null;
 
                 Logger l = new Logger(f.FileName, f.LoggingLevel);
@@ -24,7 +27,7 @@ namespace EVEMon.NetworkLogger
         private Logger(string filename, LoggingLevel logLevel)
         {
             m_fileStream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None);
-            m_xmlWriter = new XmlTextWriter(m_fileStream, System.Text.Encoding.UTF8);
+            m_xmlWriter = new XmlTextWriter(m_fileStream, Encoding.UTF8);
             m_xmlWriter.Formatting = Formatting.Indented;
             m_xmlWriter.IndentChar = '\t';
             m_xmlWriter.Indentation = 1;
@@ -43,15 +46,15 @@ namespace EVEMon.NetworkLogger
             {
                 case LoggingLevel.NoUsernameOrPassword:
                     if (e.Url.Contains("username="))
-                        e.Url = System.Text.RegularExpressions.Regex.Replace(e.Url, "username=([^&]*)", "username=REMOVED");
+                        e.Url = Regex.Replace(e.Url, "username=([^&]*)", "username=REMOVED");
                     if (e.Referer.Contains("username="))
-                        e.Referer = System.Text.RegularExpressions.Regex.Replace(e.Referer, "username=([^&]*)", "username=REMOVED");
+                        e.Referer = Regex.Replace(e.Referer, "username=([^&]*)", "username=REMOVED");
                     goto case LoggingLevel.NoPassword;
                 case LoggingLevel.NoPassword:
                     if (e.Url.Contains("password="))
-                        e.Url = System.Text.RegularExpressions.Regex.Replace(e.Url, "password=([^&]*)", "password=REMOVED");
+                        e.Url = Regex.Replace(e.Url, "password=([^&]*)", "password=REMOVED");
                     if (e.Referer.Contains("password="))
-                        e.Referer = System.Text.RegularExpressions.Regex.Replace(e.Referer, "password=([^&]*)", "password=REMOVED");
+                        e.Referer = Regex.Replace(e.Referer, "password=([^&]*)", "password=REMOVED");
                     break;
             }
 

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Web;
 using EVEMon.Common;
 
 namespace EVEMon.IGBService
@@ -94,7 +97,7 @@ namespace EVEMon.IGBService
                 return;
 
             Dictionary<string, string> headers = new Dictionary<string,string>();
-            string headerStr = System.Text.Encoding.UTF8.GetString(newBuf);
+            string headerStr = Encoding.UTF8.GetString(newBuf);
             if (headerStr.IndexOf('\r')!=-1)
                 headerStr = headerStr.Replace("\r", "");
 
@@ -159,10 +162,10 @@ namespace EVEMon.IGBService
             }
             if (requestUrl.StartsWith("/viewplan.x?p="))
             {
-                string planName = System.Web.HttpUtility.UrlDecode(requestUrl.Substring(14));
+                string planName = HttpUtility.UrlDecode(requestUrl.Substring(14));
                 sw.WriteLine("<html><head><title>Plan</title></head><body>");
                 sw.WriteLine(String.Format("<h1>Plan: {0}</h1>",
-                    System.Web.HttpUtility.HtmlEncode(planName)));
+                    HttpUtility.HtmlEncode(planName)));
 
                 Plan p = Program.Settings.GetPlanByName(headers["eve.charname"], planName);
                 if (p == null)
@@ -206,8 +209,8 @@ namespace EVEMon.IGBService
                 foreach (string s in Program.Settings.GetPlansForCharacter(headers["eve.charname"]))
                 {
                     sw.WriteLine(String.Format("<a href=\"/viewplan.x?p={0}\">{1}</a><br>", 
-                        System.Web.HttpUtility.UrlEncode(s),
-                        System.Web.HttpUtility.HtmlEncode(s)));
+                        HttpUtility.UrlEncode(s),
+                        HttpUtility.HtmlEncode(s)));
                 }
 
                 sw.WriteLine("</body></html>");
@@ -259,7 +262,7 @@ namespace EVEMon.IGBService
         private void BeginAcceptTcpClient(bool acquireLock)
         {
             if (acquireLock)
-                System.Threading.Monitor.Enter(this);
+                Monitor.Enter(this);
             try
             {
                 IAsyncResult ar;
@@ -273,7 +276,7 @@ namespace EVEMon.IGBService
             finally
             {
                 if (acquireLock)
-                    System.Threading.Monitor.Exit(this);
+                    Monitor.Exit(this);
             }
         }
 
@@ -297,7 +300,7 @@ namespace EVEMon.IGBService
         private void OnClientConnected(TcpClient newClient, bool acquireLock)
         {
             if (acquireLock)
-                System.Threading.Monitor.Enter(this);
+                Monitor.Enter(this);
             try
             {
                 if (m_running && ClientConnected != null)
@@ -319,7 +322,7 @@ namespace EVEMon.IGBService
             finally
             {
                 if (acquireLock)
-                    System.Threading.Monitor.Exit(this);
+                    Monitor.Exit(this);
             }
         }
 
@@ -388,7 +391,7 @@ namespace EVEMon.IGBService
         private void BeginRead(bool acquireLock)
         {
             if (acquireLock)
-                System.Threading.Monitor.Enter(this);
+                Monitor.Enter(this);
             try
             {
                 IAsyncResult ar;
@@ -402,7 +405,7 @@ namespace EVEMon.IGBService
             finally
             {
                 if (acquireLock)
-                    System.Threading.Monitor.Exit(this);
+                    Monitor.Exit(this);
             }
         }
 
@@ -467,7 +470,7 @@ namespace EVEMon.IGBService
 
         public void Write(string str)
         {
-            byte[] outbuf = System.Text.Encoding.UTF8.GetBytes(str);
+            byte[] outbuf = Encoding.UTF8.GetBytes(str);
             m_stream.Write(outbuf, 0, outbuf.Length);
         }
     }

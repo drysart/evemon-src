@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using EVEMon.Common;
 
@@ -55,9 +56,9 @@ namespace EVEMon.Sales
                 
                 try
                 {
-                    System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
-                    System.Globalization.NumberFormatInfo numInfo = culture.NumberFormat;
-                    price = Decimal.Parse(mineral.Groups["price"].Value, System.Globalization.NumberStyles.Currency, numInfo);
+                    CultureInfo culture = new CultureInfo("en-US");
+                    NumberFormatInfo numInfo = culture.NumberFormat;
+                    price = Decimal.Parse(mineral.Groups["price"].Value, NumberStyles.Currency, numInfo);
                 }
                 catch (FormatException fe)
                 {

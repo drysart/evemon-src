@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using EVEMon.Common;
 
@@ -137,7 +138,7 @@ namespace EVEMon.Sales
         {
             try
             {
-                System.Diagnostics.Process p = System.Diagnostics.Process.Start(m_courtesyUrl);
+                Process p = Process.Start(m_courtesyUrl);
                 p.Dispose();
             }
             catch (Exception ex)
