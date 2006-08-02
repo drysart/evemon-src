@@ -182,17 +182,71 @@ namespace EVEMon.SkillPlanner
 
                 using (NewPlanWindow npw = new NewPlanWindow())
                 {
-                    npw.Text = "Load Plan";
-                    npw.Result = Path.GetFileNameWithoutExtension(ofdOpenDialog.FileName);
-                    DialogResult xdr = npw.ShowDialog();
-                    if (xdr == DialogResult.Cancel)
-                        return;
-                    string planName = npw.Result;
-                    loadedPlan.GrandCharacterInfo = m_grandCharacterInfo;
+                    
+                    string oldPlanName = "";
+                    string newPlanName = "";
+                    while (newPlanName=="")
+                    {
+                        npw.Text = "Load Plan";
+                        npw.Result = Path.GetFileNameWithoutExtension(ofdOpenDialog.FileName);
+                        DialogResult xdr = npw.ShowDialog();
+                        if (xdr == DialogResult.Cancel)
+                            return;
+                        string planName = npw.Result;
 
-                    m_settings.AddPlanFor(m_charKey, loadedPlan, planName);
-                }
-                
+                        Plan oldPlan = m_settings.GetPlanByName(m_charKey, planName);
+                        if (oldPlan == null)
+                        {
+                            // No plan of the same name, so no replacement necessary
+                            oldPlanName = "";
+                            newPlanName = planName;
+                        }
+                        else
+                        {
+                            // Should we try replacing the original plan?
+                            string message = "Plan with name '" + planName +  "' already exists. Replace plan '" + planName + "'?";
+                            string caption = "Replace Plan '" + planName + "'";
+                            DialogResult result;
+
+                            // Display the MessageBox.
+                            result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (result == DialogResult.Yes)
+                            {
+                                // Rename the original plan for removal once we've loaded the new one
+                                oldPlanName = planName + "_BACKUP";
+                                m_settings.RenamePlanFor(m_charKey, planName, oldPlanName);
+                                newPlanName = planName;
+                            }
+                            else
+                            {
+                                // User does not want to replace original plan, so get them to choose a new name
+                                oldPlanName = "";
+                                newPlanName = "";
+                            }
+                        }
+                    }
+
+                    // Now we have a valid name for the new plan, and potentially an old plan to be removed.
+                    try
+                    {
+                        m_settings.AddPlanFor(m_charKey, loadedPlan, newPlanName);
+                    }
+                    catch (ApplicationException err)
+                    {
+                        ExceptionHandler.LogException(err, true);
+                        // Rename the old plan to it's original name
+                        if (oldPlanName != "")
+                            m_settings.RenamePlanFor(m_charKey, oldPlanName, newPlanName);
+
+                        MessageBox.Show("Could not add the plan:\n" + err.Message,
+                            "Could Not Add Plan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                         return;
+                    }
+
+                    // We have successfully loaded the plan so remove the old one for good if needed
+                    if (oldPlanName != "")
+                        m_settings.RemovePlanFor(m_charKey, oldPlanName);
+                 }                
             }
             catch (Exception err)
             {
