@@ -78,6 +78,9 @@ namespace EVEMon
 
             m_settings.CheckTranquilityStatus = cbCheckTranquilityStatus.Checked;
             m_settings.StatusUpdateInterval = (int)numericStatusInterval.Value;
+
+            m_settings.DisableXMLAutoUpdate = cbAutomaticEOSkillUpdate.Checked;
+            m_settings.DisableEVEMonVersionCheck = cbAutomaticallySearchForNewVersions.Checked;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -143,6 +146,9 @@ namespace EVEMon
             cbCheckTranquilityStatus.Checked = m_settings.CheckTranquilityStatus;
             numericStatusInterval.Value = m_settings.StatusUpdateInterval;
 
+            cbAutomaticallySearchForNewVersions.Checked = m_settings.DisableEVEMonVersionCheck;
+            cbAutomaticEOSkillUpdate.Checked = m_settings.DisableXMLAutoUpdate;
+
             RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             if (rk.GetValue("EVEMon") == null)
             {
@@ -152,8 +158,7 @@ namespace EVEMon
             {
                 cbRunAtStartup.Checked = true;
             }
-
-            UpdateDisables();
+           UpdateDisables();
         }
 
         private void cbRunAtStartup_CheckedChanged(object sender, EventArgs e)

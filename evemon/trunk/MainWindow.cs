@@ -85,9 +85,12 @@ namespace EVEMon
 
         private void MainWindow_Shown(object sender, EventArgs e)
         {
-            UpdateManager um = UpdateManager.GetInstance();
-            um.UpdateAvailable += new UpdateAvailableHandler(um_UpdateAvailable);
-            um.Start();
+            if (m_settings.DisableEVEMonVersionCheck == false)
+            {
+                UpdateManager um = UpdateManager.GetInstance();
+                um.UpdateAvailable += new UpdateAvailableHandler(um_UpdateAvailable);
+                um.Start();
+            }
 
 #if !DEBUG
             InstanceManager im = InstanceManager.GetInstance();
@@ -539,8 +542,11 @@ namespace EVEMon
         private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
             UpdateManager um = UpdateManager.GetInstance();
-            um.Stop();
-            um.UpdateAvailable -= new UpdateAvailableHandler(um_UpdateAvailable);
+            if (m_settings.DisableEVEMonVersionCheck == false && um.IsRunning)
+            {
+                um.Stop();
+                um.UpdateAvailable -= new UpdateAvailableHandler(um_UpdateAvailable);
+            }
 
             m_settings.RunIGBServerChanged -= new EventHandler<EventArgs>(m_settings_RunIGBServerChanged);
         }
@@ -686,21 +692,21 @@ namespace EVEMon
         private bool m_serverOnline = true;
 
         void m_settings_StatusUpdateIntervalChanged(object sender, EventArgs e)
-         {
-             tmrServerStatus.Enabled = false;
+        {
+            tmrServerStatus.Enabled = false;
             if (m_settings.CheckTranquilityStatus)
-             {
+            {
                 int newInterval = m_settings.StatusUpdateInterval * 60000;
                 if (tmrServerStatus.Interval > newInterval)
                 {
                     tmrServerStatus.Interval = newInterval;
                 }
                 tmrServerStatus.Enabled = true;
-             }
+            }
             tmrClock.Enabled = false;
             tmrClock.Interval = 1;
             tmrClock.Enabled = true;
-         }
+        }
 
         private void tmrClock_Tick(object sender, EventArgs e)
         {
@@ -729,6 +735,7 @@ namespace EVEMon
             if (m_settings.CheckTranquilityStatus)
              {
                 try{
+                //this is causing EVEMon to freeze up when Tranquility is down.
                 TcpClient conn = new TcpClient("87.237.38.200", 26000);
                 if (conn.Connected)
                 {

@@ -25,6 +25,13 @@ namespace EVEMon
         private object m_lockObject = new object();
         private bool m_running = false;
 
+        public bool IsRunning
+        {
+            get { return m_running; }
+            set { m_running = value; }
+        }
+	
+
         public void Start()
         {
             lock (m_lockObject)

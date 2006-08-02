@@ -62,6 +62,22 @@ namespace EVEMon.Common
             set { m_enableEmailAlert = value; }
         }
 
+        private bool m_DisableXMLAutoUpdate;
+
+        public bool DisableXMLAutoUpdate
+        {
+            get { return m_DisableXMLAutoUpdate; }
+            set { m_DisableXMLAutoUpdate = value; }
+        }
+
+        private bool m_DisableEVEMonVersionCheck;
+
+        public bool DisableEVEMonVersionCheck
+        {
+            get { return m_DisableEVEMonVersionCheck; }
+            set { m_DisableEVEMonVersionCheck = value; }
+        }	
+
         private bool m_enableBalloonTips = true;
 
         public bool EnableBalloonTips

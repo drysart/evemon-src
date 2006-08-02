@@ -143,9 +143,16 @@ namespace EVEMon
                 SerializableCharacterInfo sci = m_settings.GetCharacterInfo(m_cli.CharacterName);
                 if (sci != null)
                     m_grandCharacterInfo.AssignFromSerializableCharacterInfo(sci);
-
-                tmrUpdate.Interval = 10;
-                tmrUpdate.Enabled = true;
+                if (m_settings.DisableXMLAutoUpdate == false)
+                {
+                    tmrUpdate.Interval = 10;
+                    tmrUpdate.Enabled = true;
+                }
+                else
+                {
+                    tmrUpdate.Enabled = false;
+                    pbThrobber.Visible = false;
+                }
             }
             else
             {

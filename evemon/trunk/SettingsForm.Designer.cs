@@ -73,11 +73,6 @@ namespace EVEMon
             this.label9 = new System.Windows.Forms.Label();
             this.cbScreenList = new System.Windows.Forms.ComboBox();
             this.btnIdentifyScreens = new System.Windows.Forms.Button();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.cbCheckTranquilityStatus = new System.Windows.Forms.CheckBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.numericStatusInterval = new System.Windows.Forms.NumericUpDown();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.verticalFlowPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -100,8 +95,25 @@ namespace EVEMon
             this.cbShowBalloonTips = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
+            this.cbAutomaticallySearchForNewVersions = new System.Windows.Forms.CheckBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel12 = new System.Windows.Forms.FlowLayoutPanel();
+            this.cbAutomaticEOSkillUpdate = new System.Windows.Forms.CheckBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.cbCheckTranquilityStatus = new System.Windows.Forms.CheckBox();
+            this.numericStatusInterval = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpEmailSettings.SuspendLayout();
             this.tlpEmailAuthTable.SuspendLayout();
@@ -117,8 +129,6 @@ namespace EVEMon
             this.flowLayoutPanel1.SuspendLayout();
             this.flpScreenSelect.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericStatusInterval)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.verticalFlowPanel3.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -131,8 +141,17 @@ namespace EVEMon
             this.flowLayoutPanel5.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.flowLayoutPanel11.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.flowLayoutPanel10.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.flowLayoutPanel12.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericStatusInterval)).BeginInit();
             this.flowLayoutPanel7.SuspendLayout();
             this.flowLayoutPanel8.SuspendLayout();
+            this.flowLayoutPanel9.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbMinimizeToTray
@@ -472,6 +491,7 @@ namespace EVEMon
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -496,7 +516,6 @@ namespace EVEMon
             this.verticalFlowPanel1.Controls.Add(this.groupBox1);
             this.verticalFlowPanel1.Controls.Add(this.groupBox2);
             this.verticalFlowPanel1.Controls.Add(this.groupBox5);
-            this.verticalFlowPanel1.Controls.Add(this.groupBox7);
             this.verticalFlowPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.verticalFlowPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.verticalFlowPanel1.Location = new System.Drawing.Point(3, 3);
@@ -680,70 +699,6 @@ namespace EVEMon
             this.btnIdentifyScreens.Text = "Identify Screens";
             this.btnIdentifyScreens.UseVisualStyleBackColor = true;
             this.btnIdentifyScreens.Click += new System.EventHandler(this.btnIdentifyScreens_Click);
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.cbCheckTranquilityStatus);
-            this.groupBox7.Controls.Add(this.label15);
-            this.groupBox7.Controls.Add(this.label14);
-            this.groupBox7.Controls.Add(this.numericStatusInterval);
-            this.groupBox7.Location = new System.Drawing.Point(3, 271);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(362, 75);
-            this.groupBox7.TabIndex = 7;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Tranquility Status";
-            // 
-            // cbCheckTranquilityStatus
-            // 
-            this.cbCheckTranquilityStatus.AutoSize = true;
-            this.cbCheckTranquilityStatus.Location = new System.Drawing.Point(15, 21);
-            this.cbCheckTranquilityStatus.Name = "cbCheckTranquilityStatus";
-            this.cbCheckTranquilityStatus.Size = new System.Drawing.Size(159, 17);
-            this.cbCheckTranquilityStatus.TabIndex = 3;
-            this.cbCheckTranquilityStatus.Text = "Check for Tranquility Status";
-            this.cbCheckTranquilityStatus.UseVisualStyleBackColor = true;
-            this.cbCheckTranquilityStatus.CheckedChanged += new System.EventHandler(this.cbCheckTranquilityStatus_CheckedChanged);
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(187, 49);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(44, 13);
-            this.label15.TabIndex = 2;
-            this.label15.Text = "minutes";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(12, 49);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(107, 13);
-            this.label14.TabIndex = 1;
-            this.label14.Text = "Update Status Every";
-            // 
-            // numericStatusInterval
-            // 
-            this.numericStatusInterval.Location = new System.Drawing.Point(125, 47);
-            this.numericStatusInterval.Maximum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.numericStatusInterval.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericStatusInterval.Name = "numericStatusInterval";
-            this.numericStatusInterval.Size = new System.Drawing.Size(47, 21);
-            this.numericStatusInterval.TabIndex = 0;
-            this.numericStatusInterval.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
             // 
             // tabPage3
             // 
@@ -1027,6 +982,170 @@ namespace EVEMon
             this.flowLayoutPanel6.TabIndex = 5;
             this.flowLayoutPanel6.WrapContents = false;
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.flowLayoutPanel11);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(472, 466);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Updates";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel11
+            // 
+            this.flowLayoutPanel11.AutoSize = true;
+            this.flowLayoutPanel11.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel11.Controls.Add(this.groupBox8);
+            this.flowLayoutPanel11.Controls.Add(this.groupBox9);
+            this.flowLayoutPanel11.Controls.Add(this.groupBox7);
+            this.flowLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel11.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel11.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel11.Name = "flowLayoutPanel11";
+            this.flowLayoutPanel11.Size = new System.Drawing.Size(466, 460);
+            this.flowLayoutPanel11.TabIndex = 9;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox8.AutoSize = true;
+            this.groupBox8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox8.Controls.Add(this.flowLayoutPanel10);
+            this.groupBox8.Location = new System.Drawing.Point(3, 3);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(234, 43);
+            this.groupBox8.TabIndex = 0;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Version Checking";
+            // 
+            // flowLayoutPanel10
+            // 
+            this.flowLayoutPanel10.AutoSize = true;
+            this.flowLayoutPanel10.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel10.Controls.Add(this.cbAutomaticallySearchForNewVersions);
+            this.flowLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel10.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel10.Location = new System.Drawing.Point(3, 17);
+            this.flowLayoutPanel10.Name = "flowLayoutPanel10";
+            this.flowLayoutPanel10.Size = new System.Drawing.Size(228, 23);
+            this.flowLayoutPanel10.TabIndex = 0;
+            // 
+            // cbAutomaticallySearchForNewVersions
+            // 
+            this.cbAutomaticallySearchForNewVersions.AutoSize = true;
+            this.cbAutomaticallySearchForNewVersions.Location = new System.Drawing.Point(3, 3);
+            this.cbAutomaticallySearchForNewVersions.Name = "cbAutomaticallySearchForNewVersions";
+            this.cbAutomaticallySearchForNewVersions.Size = new System.Drawing.Size(222, 17);
+            this.cbAutomaticallySearchForNewVersions.TabIndex = 0;
+            this.cbAutomaticallySearchForNewVersions.Text = "Disable Automatic EVEMon Version Check";
+            this.cbAutomaticallySearchForNewVersions.UseVisualStyleBackColor = true;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox9.AutoSize = true;
+            this.groupBox9.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox9.Controls.Add(this.flowLayoutPanel12);
+            this.groupBox9.Location = new System.Drawing.Point(3, 52);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(234, 43);
+            this.groupBox9.TabIndex = 9;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "XML Update";
+            // 
+            // flowLayoutPanel12
+            // 
+            this.flowLayoutPanel12.AutoSize = true;
+            this.flowLayoutPanel12.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel12.Controls.Add(this.cbAutomaticEOSkillUpdate);
+            this.flowLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel12.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel12.Location = new System.Drawing.Point(3, 17);
+            this.flowLayoutPanel12.Name = "flowLayoutPanel12";
+            this.flowLayoutPanel12.Size = new System.Drawing.Size(228, 23);
+            this.flowLayoutPanel12.TabIndex = 0;
+            // 
+            // cbAutomaticEOSkillUpdate
+            // 
+            this.cbAutomaticEOSkillUpdate.AutoSize = true;
+            this.cbAutomaticEOSkillUpdate.Location = new System.Drawing.Point(3, 3);
+            this.cbAutomaticEOSkillUpdate.Name = "cbAutomaticEOSkillUpdate";
+            this.cbAutomaticEOSkillUpdate.Size = new System.Drawing.Size(191, 17);
+            this.cbAutomaticEOSkillUpdate.TabIndex = 1;
+            this.cbAutomaticEOSkillUpdate.Text = "Disable Automatic Skill XML Update";
+            this.cbAutomaticEOSkillUpdate.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox7.AutoSize = true;
+            this.groupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox7.Controls.Add(this.cbCheckTranquilityStatus);
+            this.groupBox7.Controls.Add(this.numericStatusInterval);
+            this.groupBox7.Controls.Add(this.label14);
+            this.groupBox7.Controls.Add(this.label15);
+            this.groupBox7.Location = new System.Drawing.Point(3, 101);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(234, 79);
+            this.groupBox7.TabIndex = 8;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Tranquility Status";
+            // 
+            // cbCheckTranquilityStatus
+            // 
+            this.cbCheckTranquilityStatus.AutoSize = true;
+            this.cbCheckTranquilityStatus.Location = new System.Drawing.Point(6, 20);
+            this.cbCheckTranquilityStatus.Name = "cbCheckTranquilityStatus";
+            this.cbCheckTranquilityStatus.Size = new System.Drawing.Size(159, 17);
+            this.cbCheckTranquilityStatus.TabIndex = 3;
+            this.cbCheckTranquilityStatus.Text = "Check for Tranquility Status";
+            this.cbCheckTranquilityStatus.UseVisualStyleBackColor = true;
+            // 
+            // numericStatusInterval
+            // 
+            this.numericStatusInterval.Location = new System.Drawing.Point(119, 38);
+            this.numericStatusInterval.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.numericStatusInterval.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericStatusInterval.Name = "numericStatusInterval";
+            this.numericStatusInterval.Size = new System.Drawing.Size(47, 21);
+            this.numericStatusInterval.TabIndex = 0;
+            this.numericStatusInterval.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 40);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(107, 13);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "Update Status Every";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(172, 40);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(44, 13);
+            this.label15.TabIndex = 2;
+            this.label15.Text = "minutes";
+            // 
             // flowLayoutPanel7
             // 
             this.flowLayoutPanel7.AutoSize = true;
@@ -1054,6 +1173,51 @@ namespace EVEMon
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
             this.flowLayoutPanel8.Size = new System.Drawing.Size(162, 29);
             this.flowLayoutPanel8.TabIndex = 6;
+            // 
+            // flowLayoutPanel9
+            // 
+            this.flowLayoutPanel9.AutoSize = true;
+            this.flowLayoutPanel9.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel9.Controls.Add(this.checkBox1);
+            this.flowLayoutPanel9.Controls.Add(this.checkBox2);
+            this.flowLayoutPanel9.Controls.Add(this.checkBox3);
+            this.flowLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel9.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanel9.Name = "flowLayoutPanel9";
+            this.flowLayoutPanel9.Padding = new System.Windows.Forms.Padding(9, 0, 9, 0);
+            this.flowLayoutPanel9.Size = new System.Drawing.Size(356, 70);
+            this.flowLayoutPanel9.TabIndex = 3;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(12, 3);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(102, 17);
+            this.checkBox1.TabIndex = 0;
+            this.checkBox1.Text = "Minimize to Tray";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(12, 26);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(171, 17);
+            this.checkBox2.TabIndex = 1;
+            this.checkBox2.Text = "Set window title to training time";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(12, 49);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(264, 17);
+            this.checkBox3.TabIndex = 2;
+            this.checkBox3.Text = "Run in \"safe for work\" mode (no portraits or colors)";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -1101,9 +1265,6 @@ namespace EVEMon
             this.flpScreenSelect.PerformLayout();
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericStatusInterval)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.verticalFlowPanel3.ResumeLayout(false);
             this.verticalFlowPanel3.PerformLayout();
@@ -1127,9 +1288,26 @@ namespace EVEMon
             this.groupBox3.PerformLayout();
             this.flowLayoutPanel6.ResumeLayout(false);
             this.flowLayoutPanel6.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            this.flowLayoutPanel11.ResumeLayout(false);
+            this.flowLayoutPanel11.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.flowLayoutPanel10.ResumeLayout(false);
+            this.flowLayoutPanel10.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
+            this.flowLayoutPanel12.ResumeLayout(false);
+            this.flowLayoutPanel12.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericStatusInterval)).EndInit();
             this.flowLayoutPanel7.ResumeLayout(false);
             this.flowLayoutPanel7.PerformLayout();
             this.flowLayoutPanel8.ResumeLayout(false);
+            this.flowLayoutPanel9.ResumeLayout(false);
+            this.flowLayoutPanel9.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1203,13 +1381,25 @@ namespace EVEMon
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.RadioButton rbCustomProxy;
         private System.Windows.Forms.RadioButton rbDefaultProxy;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.NumericUpDown numericStatusInterval;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.CheckBox cbCheckTranquilityStatus;
         private System.Windows.Forms.CheckBox cbShowBalloonTips;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.CheckBox cbAutomaticEOSkillUpdate;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel10;
+        private System.Windows.Forms.CheckBox cbAutomaticallySearchForNewVersions;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel9;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox cbCloseToTray;
         private System.Windows.Forms.CheckBox cbRunAtStartup;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel11;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel12;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.CheckBox cbCheckTranquilityStatus;
+        private System.Windows.Forms.NumericUpDown numericStatusInterval;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label14;
     }
 }

@@ -10,8 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVEMon.Common", "EVEMon.Com
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVEMon.NetworkLogger", "EVEMon.NetworkLogger\EVEMon.NetworkLogger.csproj", "{45877BAD-6688-42DF-A110-DBE9839F99D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVEMonInstallBuilder", "EVEMonInstallBuilder\EVEMonInstallBuilder.csproj", "{5CE8E302-3577-41BC-A35F-C88AC625F7A7}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EVEMon.WinHook", "EVEMon.WinHook\EVEMon.WinHook.vcproj", "{F9553086-E8BE-463B-9A68-1F7794EB060D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVEMon.WindowRelocator", "EVEMon.WindowRelocator\EVEMon.WindowRelocator.csproj", "{F0627E15-E8DF-404F-BF82-C48D890F9C5C}"
