@@ -43,6 +43,8 @@ namespace EVEMon
             this.verticalFlowPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -93,7 +95,7 @@ namespace EVEMon
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(288, 3);
+            this.btnOk.Location = new System.Drawing.Point(226, 3);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 0;
@@ -153,7 +155,7 @@ namespace EVEMon
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(366, 59);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(270, 59);
             this.flowLayoutPanel2.TabIndex = 0;
             this.flowLayoutPanel2.WrapContents = false;
             // 
@@ -180,12 +182,14 @@ namespace EVEMon
             this.verticalFlowPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.verticalFlowPanel1.Controls.Add(this.flowLayoutPanel2);
             this.verticalFlowPanel1.Controls.Add(this.label5);
+            this.verticalFlowPanel1.Controls.Add(this.label6);
+            this.verticalFlowPanel1.Controls.Add(this.linkLabel1);
             this.verticalFlowPanel1.Controls.Add(this.tableLayoutPanel1);
             this.verticalFlowPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.verticalFlowPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.verticalFlowPanel1.Location = new System.Drawing.Point(9, 9);
             this.verticalFlowPanel1.Name = "verticalFlowPanel1";
-            this.verticalFlowPanel1.Size = new System.Drawing.Size(366, 301);
+            this.verticalFlowPanel1.Size = new System.Drawing.Size(366, 345);
             this.verticalFlowPanel1.TabIndex = 10;
             // 
             // tableLayoutPanel1
@@ -197,12 +201,12 @@ namespace EVEMon
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnOk, 1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 272);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 311);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0, 9, 0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(366, 29);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(304, 29);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // flowLayoutPanel1
@@ -219,6 +223,26 @@ namespace EVEMon
             this.flowLayoutPanel1.TabIndex = 0;
             this.flowLayoutPanel1.WrapContents = false;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 263);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(357, 26);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "This version of EVEMon was built from an out of date source repository.  Please d" +
+                "ownload the new version:";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(3, 289);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(154, 13);
+            this.linkLabel1.TabIndex = 8;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "http://evemon.battleclinic.com";
+            // 
             // AboutWindow
             // 
             this.AcceptButton = this.btnOk;
@@ -226,7 +250,7 @@ namespace EVEMon
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(384, 319);
+            this.ClientSize = new System.Drawing.Size(384, 363);
             this.Controls.Add(this.verticalFlowPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -268,5 +292,7 @@ namespace EVEMon
         private System.Windows.Forms.FlowLayoutPanel verticalFlowPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }
